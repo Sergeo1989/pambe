@@ -30,11 +30,6 @@ class Country
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $continent_name;
-
-    /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="country")
      */
     private $regions;
@@ -75,18 +70,6 @@ class Country
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getContinentName(): ?string
-    {
-        return $this->continent_name;
-    }
-
-    public function setContinentName(string $continent_name): self
-    {
-        $this->continent_name = $continent_name;
 
         return $this;
     }
