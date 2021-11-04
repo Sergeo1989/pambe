@@ -1,0 +1,157 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% trans_default_domain ea.i18n.translationDomain %}
+
+<!DOCTYPE html>
+<html lang="{{ ea.i18n.htmlLocale }}" dir="{{ ea.i18n.textDirection }}">
+
+<head>
+    {% block head_metas %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <meta name="generator" content="EasyAdmin" />
+    {% endblock head_metas %}
+    
+    {% set page_title_block_output %}{% block page_title %}{{ block('content_title') }}{% endblock %}{% endset %}
+    <title>{{ page_title_block_output|striptags|raw }}</title>
+
+    {% block configured_stylesheets %}
+        {{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea.assets.cssAssets ?? [] }, with_context = false) }}
+        {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
+    {% endblock %}
+
+    {% block head_stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/easyadmin/app.css') }}">
+    {% endblock %}
+
+    {% block head_favicon %}
+        <link rel="shortcut icon" href="{{ asset(ea.dashboardFaviconPath) }}">
+    {% endblock %}
+
+    {% block configured_javascripts %}
+        {{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: ea.assets.jsAssets ?? [] }, with_context = false) }}
+        {{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
+    {% endblock %}
+
+    {% block head_javascript %}
+        <script src="{{ asset('bundles/easyadmin/app.js') }}"></script>
+    {% endblock head_javascript %}
+
+    {% block configured_head_contents %}
+        {% for htmlContent in ea.assets.headContents ?? [] %}
+            {{ htmlContent|raw }}
+        {% endfor %}
+    {% endblock %}
+</head>
+{% block body %}
+    <body id="{% block body_id %}{% endblock %}" class="ea {% block body_class %}{% endblock %}">
+        {% block javascript_page_layout %}
+            <script>
+                document.body.classList.add(
+                    'ea-content-width-' + (localStorage.getItem('ea/content/width') || '{{ ea.crud.contentWidth ?? ea.dashboardContentWidth ?? 'normal' }}'),
+                    'ea-sidebar-width-' + (localStorage.getItem('ea/sidebar/width') || '{{ ea.crud.sidebarWidth ?? ea.dashboardSidebarWidth ?? 'normal' }}')
+                );
+            </script>
+        {% endblock javascript_page_layout %}
+        {% block wrapper_wrapper %}
+            {% block flash_messages %}
+                {{ include(ea.templatePath('flash_messages')) }}
+            {% endblock flash_messages %}
+
+            {% set impersonator_permission = constant('Symfony\\Component\\Security\\Core\\Authorization\\Voter\\AuthenticatedVoter::IS_IMPERSONATOR') is defined ? 'IS_IMPERSONATOR' : 'ROLE_PREVIOUS_ADMIN' %}
+
+            <div id="app"> 
+                <div id="sidebar" class="active">
+                    {% block sidebar %}
+                        <div class="sidebar-wrapper active">
+                            {% block header %}
+                                <div class="sidebar-header">
+                                    {% block header_navbar %}
+                                        <div class="d-flex justify-content-between">
+                                            <div class="logo">
+                                                {% block header_logo %}
+                                                    <a title="{{ ea.dashboardTitle|striptags }}" href="{{ path(ea.dashboardRouteName) }}">{{ ea.dashboardTitle|raw }}</a>
+                                                {% endblock header_logo %}
+                                            </div>
+                                            <div class="toggler">
+                                                <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                                            </div>
+                                        </div>
+                                    {% endblock header_navbar %}
+                                </div>
+                            {% endblock header %}
+                            {% block main_menu_wrapper %}
+                                {{ include(ea.templatePath('main_menu')) }}
+                            {% endblock main_menu_wrapper %}
+                            <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+                        </div>
+                    {% endblock sidebar %}
+                </div>
+                <div id="main">
+                    {% block content %}
+                        {% block content_header_wrapper %}
+                            {% set has_help_message = (ea.crud.helpMessage ?? '') is not empty %}
+                                <header class="mb-3">
+                                    <a href="#" class="burger-btn d-block d-xl-none">
+                                        <i class="bi bi-justify fs-3"></i>
+                                    </a>
+                                </header>
+                                {% block content_header %}
+                                    <div class="page-heading">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 order-md-1 order-last">
+                                                <h3>{% block content_title %}{% endblock %}</h3>
+                                                {% block content_help %}
+                                                    {% if has_help_message %}
+                                                        <p class="text-subtitle text-muted">{{ ea.crud.helpMessage|e('html_attr') }}</p>
+                                                    {% endif %}
+                                                {% endblock content_help %}
+                                            </div>
+                                            <div class="col-12 col-md-6 order-md-2 order-first">
+                                                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                                    <ol class="breadcrumb">
+                                                        <li class="breadcrumb-item"><a href="{{ path(ea.dashboardRouteName) }}">Tableau de bord</a></li>
+                                                        <li class="breadcrumb-item active" aria-current="page">Pambe</li>
+                                                    </ol>
+                                                </nav>
+                                                {% block page_actions_wrapper %}
+                                                    <div class="page-actions">{% block page_actions %}{% endblock %}</div>
+                                                {% endblock %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endblock content_header %}
+                        {% endblock content_header_wrapper %}
+                        <div class="page-content">
+                            {% block main %}{% endblock %}
+                        </div>
+                        {% block content_footer_wrapper %}
+                            {% set content_footer = block('content_footer') is defined ? block('content_footer') : '' %}
+                            <footer>
+                                <div class="footer clearfix mb-0 text-muted">
+                                    <div class="float-start">
+                                        <p>2021 &copy; Mazer</p>
+                                    </div>
+                                    <div class="float-end">
+                                        <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a
+                                                href="http://ahmadsaugi.com">A. Saugi</a></p>
+                                    </div>
+                                </div>
+                            </footer>
+                        {% endblock %}
+                    {% endblock content %}
+                </div>
+            </div>
+        {% endblock wrapper_wrapper %}
+
+        {% block body_javascript %}{% endblock body_javascript %}
+
+        {% block configured_body_contents %}
+            {% for htmlContent in ea.assets.bodyContents ?? [] %}
+                {{ htmlContent|raw }}
+            {% endfor %}
+        {% endblock %}
+    </body>
+{% endblock body %}
+</html>

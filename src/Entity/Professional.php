@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProfessionalRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,7 +58,7 @@ class Professional
     /**
      * @ORM\Column(type="boolean")
      */
-    private $verified;
+    private $verified = false;
 
     /**
      * @ORM\Column(type="datetime")

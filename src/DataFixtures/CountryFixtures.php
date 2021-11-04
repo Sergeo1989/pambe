@@ -270,6 +270,18 @@ class CountryFixtures extends Fixture
             'ZM' => 'Zambie',
             'ZW' => 'Zimbabwe',
         ];
+        $cameroon_regions = [
+            'AD' => 'Adamaoua',
+            'NO' => 'Nord-Ouest',
+            'CE' => 'Centre',
+            'LT' => 'Littoral',
+            'EN' => 'Extrême-Nord',
+            'SU' => 'Sud',
+            'NW' => 'Nord-Ouest',
+            'SW' => 'Sud-Ouest',
+            'ES' => 'Est',
+            'OU' => 'Ouest',
+        ];
 
         foreach ($countries as $iso_code => $name) {
             $country = new Country();
