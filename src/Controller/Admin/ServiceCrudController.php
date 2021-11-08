@@ -27,8 +27,8 @@ class ServiceCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->onlyOnIndex(),
-            TextField::new('title'),
+            IdField::new('id', 'ID')->onlyOnIndex(),
+            TextField::new('title', 'Titre'),
             TextEditorField::new('description'),
         ];
     }

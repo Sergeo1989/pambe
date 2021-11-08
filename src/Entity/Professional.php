@@ -100,6 +100,11 @@ class Professional
      */
     private $professionalServices;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $website;
+
     public function __construct()
     {
         $this->category_professional_professionals = new ArrayCollection();
@@ -392,6 +397,18 @@ class Professional
                 $professionalService->setProfessional(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
 
         return $this;
     }

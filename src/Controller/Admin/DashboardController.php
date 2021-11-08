@@ -3,9 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CategoryProfessional;
+use App\Entity\City;
 use App\Entity\Country;
+use App\Entity\Language;
+use App\Entity\Professional;
 use App\Entity\Region;
 use App\Entity\Service;
+use App\Entity\SocialMedia;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -72,10 +76,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('Tableau de bord', 'bi bi-grid-fill');
         yield MenuItem::section('Catalogue');
         yield MenuItem::linkToCrud('Catégories', 'bi bi-wallet-fill', CategoryProfessional::class);
+        yield MenuItem::linkToCrud('Professionnels', 'bi bi-person-lines-fill', Professional::class);
         yield MenuItem::linkToCrud('Services', 'bi bi-person-bounding-box', Service::class);
         yield MenuItem::section('Zone');
         yield MenuItem::linkToCrud('Pays', 'bi bi-geo-alt-fill', Country::class);
         yield MenuItem::linkToCrud('Régions', 'bi bi-geo-alt-fill', Region::class);
+        yield MenuItem::linkToCrud('Villes', 'bi bi-geo-alt-fill', City::class);
+        yield MenuItem::section('Configuration');
+        yield MenuItem::linkToCrud('Langues', 'bi bi-pin', Language::class);
+        yield MenuItem::linkToCrud('Médias sociaux', 'bi bi-pin', SocialMedia::class);
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'bi bi-x-circle');
     }
@@ -87,15 +96,16 @@ class DashboardController extends AbstractDashboardController
                         ->displayUserAvatar(true);
     }
 
-    public function configureActions(): Actions
+   public function configureActions(): Actions
     {
         return Actions::new()
+                        ->add(Crud::PAGE_INDEX, Action::DETAIL)
                         ->add(Crud::PAGE_INDEX, Action::NEW)
-                        ->add(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                            return $action->displayAsButton();
-                        })
-                        ->add(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                            return $action->displayAsButton();
-                        });
+                        ->add(Crud::PAGE_INDEX, Action::EDIT)
+                        ->add(Crud::PAGE_INDEX, Action::DELETE)
+                        ->add(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN)
+                        ->add(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
+                        ->add(Crud::PAGE_NEW, Action::SAVE_AND_RETURN)
+                        ->add(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER);
     }
 }
