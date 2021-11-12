@@ -1,0 +1,210 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% extends ea.templatePath('layout') %}
+{% form_theme edit_form with ea.crud.formThemes only %}
+
+{% trans_default_domain ea.i18n.translationDomain %}
+
+{% block body_id 'ea-edit-' ~ entity.name ~ '-' ~ entity.primaryKeyValue %}
+{% block body_class 'ea-edit ea-edit-' ~ entity.name %}
+
+{% block configured_head_contents %}
+    {{ parent() }}
+    {% for htmlContent in edit_form.vars.ea_crud_form.assets.headContents %}
+        {{ htmlContent|raw }}
+    {% endfor %}
+{% endblock %}
+
+{% block configured_body_contents %}
+    {{ parent() }}
+    {% for htmlContent in edit_form.vars.ea_crud_form.assets.bodyContents %}
+        {{ htmlContent|raw }}
+    {% endfor %}
+{% endblock %}
+
+{% block configured_stylesheets %}
+    {{ parent() }}
+    {{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: edit_form.vars.ea_crud_form.assets.cssAssets }, with_context = false) }}
+    {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: edit_form.vars.ea_crud_form.assets.webpackEncoreAssets }, with_context = false) }}
+{% endblock %}
+
+{% block configured_javascripts %}
+    {{ parent() }}
+    {{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: edit_form.vars.ea_crud_form.assets.jsAssets }, with_context = false) }}
+    {{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: edit_form.vars.ea_crud_form.assets.webpackEncoreAssets }, with_context = false) }}
+{% endblock %}
+
+{% block content_title %}
+    {%- apply spaceless -%}
+        {% set custom_page_title = ea.crud.customPageTitle(pageName, entity ? entity.instance : null) %}
+        {{ custom_page_title is null
+            ? (ea.crud.defaultPageTitle|trans(ea.i18n.translationParameters, 'EasyAdminBundle'))|raw
+            : (custom_page_title|trans(ea.i18n.translationParameters))|raw }}
+    {%- endapply -%}
+{% endblock %}
+
+{% block page_actions %}
+    {% for action in entity.actions %}
+        {{ include(action.templatePath, { action: action }, with_context = false) }}
+    {% endfor %}
+{% endblock %}
+
+{% block main %}
+    {% set url = ea_url().setController('App\\Controller\\Admin\\ProfessionalCrudController').setAction('displayAjax') %}
+    {% block edit_form %}
+        {{ form(edit_form) }}
+    {% endblock edit_form %}
+    <input type="hidden" id="professional_id" value="{{ entity.instance.id }}">
+    <input type="hidden" id="professional_ajax_url" value="{{ url }}">
+    <section class="list-group-button-badge">
+        <div class="row match-height">
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Expériences</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <ul id="exp_list" class="list-group">
+                                {% for qualification in qualifications %}
+                                    {% if qualification.type == 1 %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span> <b>Titre :</b> {{qualification.title}} <br/> <b>Lieu :</b> {{qualification.place}} </span>
+                                            <span> <b>Date de début :</b> {{qualification.startDate|date('d/m/Y')}} <br/> <b>Date de fin :</b> {{qualification.endDate|date('d/m/Y')}} </span>
+                                            <span style="color:red;" class="ml-1"><i class="far fa-trash-alt"></i></span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul><br/>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#exp_modal" class="btn btn-primary">Ajouter une expérience</button>
+                            <div class="modal fade text-left modal-borderless" id="exp_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Expérience</h5>
+                                            <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                                <i data-feather="x"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body"> 
+                                            <div id="exp_error" class="alert alert-dismissible fade">
+                                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="exp_title">Titre</label>
+                                                    <input type="text" class="form-control" id="exp_title" placeholder="Entrer un titre">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="exp_place">Lieu</label>
+                                                    <input type="text" class="form-control" id="exp_place" placeholder="Entrer un lieu">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="exp_date_start">Date de début</label>
+                                                    <input type="date" class="form-control" id="exp_date_start">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="exp_date_end">Date de fin</label>
+                                                    <input type="date" class="form-control" id="exp_date_end">
+                                                </div>
+                                                <div class="col-md-12 form-group">
+                                                    <label for="exp_description">Description</label>
+                                                    <textarea class="form-control" id="exp_description"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
+                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">Fermer</span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary ml-1" id="exp_btn_add">
+                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">Valider</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Qualifications</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <ul id="qual_list" class="list-group">
+                                {% for qualification in qualifications%}
+                                    {% if qualification.type == 0 %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span> <b>Titre :</b> {{qualification.title}} <br/> <b>Lieu :</b> {{qualification.place}} </span>
+                                            <span> <b>Date de début :</b> {{qualification.startDate|date('d/m/Y')}} <br/> <b>Date de fin :</b> {{qualification.endDate|date('d/m/Y')}} </span>
+                                            <span style="color:red;" class="ml-1"><i class="far fa-trash-alt"></i></span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul><br/>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#qual_modal" class="btn btn-primary">Ajouter une qualification</button>
+                            <div class="modal fade text-left modal-borderless" id="qual_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Qualification</h5>
+                                            <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                                <i data-feather="x"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body"> 
+                                            <div id="qual_error" class="alert alert-danger alert-dismissible fade">
+                                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="qual_title">Titre</label>
+                                                    <input type="text" class="form-control" id="qual_title" placeholder="Entrer un titre">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="qual_place">Lieu</label>
+                                                    <input type="text" class="form-control" id="qual_place" placeholder="Entrer un lieu">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="qual_date_start">Date de début</label>
+                                                    <input type="date" class="form-control" id="qual_date_start">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="qual_date_end">Date de fin</label>
+                                                    <input type="date" class="form-control" id="qual_date_end">
+                                                </div>
+                                                <div class="col-md-12 form-group">
+                                                    <label for="qual_description">Description</label>
+                                                    <textarea class="form-control" id="qual_description"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
+                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">Fermer</span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary ml-1" id="qual_btn_add">
+                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">Valider</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block delete_form %}
+        {{ include('@EasyAdmin/crud/includes/_delete_form.html.twig', { entity_id: entity.primaryKeyValue }, with_context = false) }}
+    {% endblock delete_form %}
+{% endblock %}

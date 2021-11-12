@@ -6,9 +6,15 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="Cette adresse e-mail existe déjà."
+ * )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -299,5 +305,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->admin = $admin;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->status = true;
+        $this->date_add = new \DateTime("now");
+        $this->date_upd = new \DateTime("now");
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->date_upd = new \DateTime("now");
     }
 }

@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -17,7 +18,13 @@ class UserFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new Email([
+                        'message' => 'L\'email {{ value }} n\'est pas valide.',
+                    ])
+                ],
+            ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom'
             ])
@@ -29,10 +36,10 @@ class UserFormType extends AbstractType
                 'label'  => 'Mot de passe',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Le contenu ne doit pas être vide',
+                        'message' => 'Le mot de passe ne doit pas être vide',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 8,
                         'minMessage' => 'Votre mot de passe doit avoir au moins {{ limit }} caractères',
                         'max' => 4096,
                     ]),

@@ -46,13 +46,18 @@ class SocialMedia
     private $title;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProfessionalSocialMedia::class, mappedBy="social_media")
+     * @ORM\ManyToMany(targetEntity=Professional::class, mappedBy="social_medias")
      */
-    private $professionalSocialMedia;
+    private $professionals;
 
     public function __construct()
     {
-        $this->professionalSocialMedia = new ArrayCollection();
+        $this->professionals = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -84,36 +89,6 @@ class SocialMedia
         return $this;
     }
 
-    /**
-     * @return Collection|ProfessionalSocialMedia[]
-     */
-    public function getProfessionalSocialMedia(): Collection
-    {
-        return $this->professionalSocialMedia;
-    }
-
-    public function addProfessionalSocialMedium(ProfessionalSocialMedia $professionalSocialMedium): self
-    {
-        if (!$this->professionalSocialMedia->contains($professionalSocialMedium)) {
-            $this->professionalSocialMedia[] = $professionalSocialMedium;
-            $professionalSocialMedium->setSocialMedia($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfessionalSocialMedium(ProfessionalSocialMedia $professionalSocialMedium): self
-    {
-        if ($this->professionalSocialMedia->removeElement($professionalSocialMedium)) {
-            // set the owning side to null (unless already changed)
-            if ($professionalSocialMedium->getSocialMedia() === $this) {
-                $professionalSocialMedium->setSocialMedia(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getDateUpd(): ?\DateTimeInterface
     {
         return $this->date_upd;
@@ -139,5 +114,32 @@ class SocialMedia
     public function getIconFile()
     {
         return $this->iconFile;
+    }
+
+    /**
+     * @return Collection|Professional[]
+     */
+    public function getProfessionals(): Collection
+    {
+        return $this->professionals;
+    }
+
+    public function addProfessional(Professional $professional): self
+    {
+        if (!$this->professionals->contains($professional)) {
+            $this->professionals[] = $professional;
+            $professional->addSocialMedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfessional(Professional $professional): self
+    {
+        if ($this->professionals->removeElement($professional)) {
+            $professional->removeSocialMedia($this);
+        }
+
+        return $this;
     }
 }

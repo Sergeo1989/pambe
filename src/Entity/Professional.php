@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\ProfessionalRepository;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProfessionalRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Professional
 {
@@ -71,47 +71,64 @@ class Professional
     private $date_upd;
 
     /**
-     * @ORM\OneToMany(targetEntity=CategoryProfessionalProfessional::class, mappedBy="professional")
-     */
-    private $category_professional_professionals;
-
-    /**
-     * @ORM\OneToOne(targetEntity=CategoryProfessional::class, cascade={"persist", "remove"})
-     */
-    private $category_professional_default;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ProfessionalLanguage::class, mappedBy="professional")
-     */
-    private $professionalLanguages;
-
-    /**
      * @ORM\OneToMany(targetEntity=Qualification::class, mappedBy="professional")
      */
     private $qualifications;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ProfessionalSocialMedia::class, mappedBy="professional")
-     */
-    private $professionalSocialMedia;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ProfessionalService::class, mappedBy="professional")
-     */
-    private $professionalServices;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $website;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Language::class, inversedBy="professionals")
+     */
+    private $languages;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=SocialMedia::class, inversedBy="professionals")
+     */
+    private $social_medias;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=CategoryProfessional::class, inversedBy="professionals")
+     */
+    private $category_professional_default;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=CategoryProfessional::class, inversedBy="all_professionals")
+     */
+    private $category_professionals;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ProfessionalImage::class, cascade={"persist", "remove"})
+     */
+    private $profil;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ProfessionalImage::class, cascade={"persist", "remove"})
+     */
+    private $cover;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProfessionalImage::class, mappedBy="professional", cascade={"persist", "remove"})
+     */
+    private $galleries;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="professional", cascade={"persist", "remove"})
+     */
+    private $services;
+
     public function __construct()
     {
         $this->category_professional_professionals = new ArrayCollection();
-        $this->professionalLanguages = new ArrayCollection();
         $this->qualifications = new ArrayCollection();
-        $this->professionalSocialMedia = new ArrayCollection();
-        $this->professionalServices = new ArrayCollection();
+        $this->languages = new ArrayCollection();
+        $this->social_medias = new ArrayCollection();
+        $this->category_professionals = new ArrayCollection();
+        $this->galleries = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -240,78 +257,6 @@ class Professional
     }
 
     /**
-     * @return Collection|CategoryProfessionalProfessional[]
-     */
-    public function getCategoryProfessionalProfessionals(): Collection
-    {
-        return $this->category_professional_professionals;
-    }
-
-    public function addCategoryProfessionalProfessional(CategoryProfessionalProfessional $category_professional_professional): self
-    {
-        if (!$this->category_professional_professionals->contains($category_professional_professional)) {
-            $this->category_professional_professionals[] = $category_professional_professional;
-            $category_professional_professional->setProfessional($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategoryProfessionalProfessional(CategoryProfessionalProfessional $category_professional_professional): self
-    {
-        if ($this->category_professional_professionals->removeElement($category_professional_professional)) {
-            // set the owning side to null (unless already changed)
-            if ($category_professional_professional->getProfessional() === $this) {
-                $category_professional_professional->setProfessional(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getCategoryProfessionalDefault(): ?CategoryProfessional
-    {
-        return $this->category_professional_default;
-    }
-
-    public function setCategoryProfessionalDefault(?CategoryProfessional $category_professional_default): self
-    {
-        $this->category_professional_default = $category_professional_default;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ProfessionalLanguage[]
-     */
-    public function getProfessionalLanguages(): Collection
-    {
-        return $this->professionalLanguages;
-    }
-
-    public function addProfessionalLanguage(ProfessionalLanguage $professionalLanguage): self
-    {
-        if (!$this->professionalLanguages->contains($professionalLanguage)) {
-            $this->professionalLanguages[] = $professionalLanguage;
-            $professionalLanguage->setProfessional($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfessionalLanguage(ProfessionalLanguage $professionalLanguage): self
-    {
-        if ($this->professionalLanguages->removeElement($professionalLanguage)) {
-            // set the owning side to null (unless already changed)
-            if ($professionalLanguage->getProfessional() === $this) {
-                $professionalLanguage->setProfessional(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Qualification[]
      */
     public function getQualifications(): Collection
@@ -341,66 +286,6 @@ class Professional
         return $this;
     }
 
-    /**
-     * @return Collection|ProfessionalSocialMedia[]
-     */
-    public function getProfessionalSocialMedia(): Collection
-    {
-        return $this->professionalSocialMedia;
-    }
-
-    public function addProfessionalSocialMedium(ProfessionalSocialMedia $professionalSocialMedium): self
-    {
-        if (!$this->professionalSocialMedia->contains($professionalSocialMedium)) {
-            $this->professionalSocialMedia[] = $professionalSocialMedium;
-            $professionalSocialMedium->setProfessional($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfessionalSocialMedium(ProfessionalSocialMedia $professionalSocialMedium): self
-    {
-        if ($this->professionalSocialMedia->removeElement($professionalSocialMedium)) {
-            // set the owning side to null (unless already changed)
-            if ($professionalSocialMedium->getProfessional() === $this) {
-                $professionalSocialMedium->setProfessional(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ProfessionalService[]
-     */
-    public function getProfessionalServices(): Collection
-    {
-        return $this->professionalServices;
-    }
-
-    public function addProfessionalService(ProfessionalService $professionalService): self
-    {
-        if (!$this->professionalServices->contains($professionalService)) {
-            $this->professionalServices[] = $professionalService;
-            $professionalService->setProfessional($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfessionalService(ProfessionalService $professionalService): self
-    {
-        if ($this->professionalServices->removeElement($professionalService)) {
-            // set the owning side to null (unless already changed)
-            if ($professionalService->getProfessional() === $this) {
-                $professionalService->setProfessional(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getWebsite(): ?string
     {
         return $this->website;
@@ -411,5 +296,192 @@ class Professional
         $this->website = $website;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Language[]
+     */
+    public function getLanguages(): Collection
+    {
+        return $this->languages;
+    }
+
+    public function addLanguage(Language $language): self
+    {
+        if (!$this->languages->contains($language)) {
+            $this->languages[] = $language;
+        }
+
+        return $this;
+    }
+
+    public function removeLanguage(Language $language): self
+    {
+        $this->languages->removeElement($language);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SocialMedia[]
+     */
+    public function getSocialMedias(): Collection
+    {
+        return $this->social_medias;
+    }
+
+    public function addSocialMedia(SocialMedia $socialMedia): self
+    {
+        if (!$this->social_medias->contains($socialMedia)) {
+            $this->social_medias[] = $socialMedia;
+        }
+
+        return $this;
+    }
+
+    public function removeSocialMedia(SocialMedia $socialMedia): self
+    {
+        $this->social_medias->removeElement($socialMedia);
+
+        return $this;
+    }
+
+    public function getCategoryProfessionalDefault(): ?CategoryProfessional
+    {
+        return $this->category_professional_default;
+    }
+
+    public function setCategoryProfessionalDefault(?CategoryProfessional $category_professional_default): self
+    {
+        $this->category_professional_default = $category_professional_default;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CategoryProfessional[]
+     */
+    public function getCategoryProfessionals(): Collection
+    {
+        return $this->category_professionals;
+    }
+
+    public function addCategoryProfessional(CategoryProfessional $categoryProfessional): self
+    {
+        if (!$this->category_professionals->contains($categoryProfessional)) {
+            $this->category_professionals[] = $categoryProfessional;
+        }
+
+        return $this;
+    }
+
+    public function removeCategoryProfessional(CategoryProfessional $categoryProfessional): self
+    {
+        $this->category_professionals->removeElement($categoryProfessional);
+
+        return $this;
+    }
+
+    public function getProfil(): ?ProfessionalImage
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(?ProfessionalImage $profil): self
+    {
+        $this->profil = $profil;
+
+        return $this;
+    }
+
+    public function getCover(): ?ProfessionalImage
+    {
+        return $this->cover;
+    }
+
+    public function setCover(?ProfessionalImage $cover): self
+    {
+        $this->cover = $cover;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProfessionalImage[]
+     */
+    public function getGalleries(): Collection
+    {
+        return $this->galleries;
+    }
+
+    public function addGallery(ProfessionalImage $gallery): self
+    {
+        if (!$this->galleries->contains($gallery)) {
+            $this->galleries[] = $gallery;
+            $gallery->setProfessional($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGallery(ProfessionalImage $gallery): self
+    {
+        if ($this->galleries->removeElement($gallery)) {
+            // set the owning side to null (unless already changed)
+            if ($gallery->getProfessional() === $this) {
+                $gallery->setProfessional(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Service[]
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+
+    public function addService(Service $service): self
+    {
+        if (!$this->services->contains($service)) {
+            $this->services[] = $service;
+            $service->setProfessional($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): self
+    {
+        if ($this->services->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getProfessional() === $this) {
+                $service->setProfessional(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->status = true;
+        $this->verified = false;
+        $this->date_add = new \DateTime("now");
+        $this->date_upd = new \DateTime("now");
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->date_upd = new \DateTime("now");
     }
 }

@@ -49,6 +49,7 @@ class DashboardController extends AbstractDashboardController
                         'crud/index' => 'admin/crud/index.html.twig',
                     ])
                     ->showEntityActionsInlined()
+                    ->setDefaultSort(['id' => 'DESC'])
                     ->setEntityPermission('ROLE_ADMIN');
     }
 
@@ -68,6 +69,8 @@ class DashboardController extends AbstractDashboardController
                         ->addJsFile('assets/vendors/apexcharts/apexcharts.js')
                         ->addJsFile('assets/js/pages/dashboard.js')
                         ->addJsFile('assets/js/main.js')
+                        ->addJsFile('assets/vendors/jquery/jquery.min.js')
+                        ->addJsFile('assets/js/custom.js')
                         ;
     }
 

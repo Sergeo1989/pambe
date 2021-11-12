@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\SocialMedia;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -32,10 +34,27 @@ class SocialMediaCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('title'),
-            TextField::new('iconFile', 'Icône')->setFormType(VichImageType::class)
-                                        ->onlyOnForms(),
-            ImageField::new('icon', 'Icône')->setBasePath('/uploads/images/socialmedia/')
-                                        ->onlyOnIndex(),
+            TextField::new('iconFile', 'Icône')
+                        ->setFormType(VichImageType::class)
+                        ->onlyOnForms(),
+            ImageField::new('icon', 'Icône')
+                        ->setBasePath('/uploads/images/socialmedia/')
+                        ->onlyOnIndex(),
         ];
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+                ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
+                    return $action->setIcon('fa fa-eye')->addCssClass('btn btn-info');
+                })
+                ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
+                    return $action->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
+                })
+                ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
+                    return $action->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
+                })
+                ;
     }
 }

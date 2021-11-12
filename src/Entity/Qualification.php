@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=QualificationRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Qualification
 {
@@ -199,5 +200,23 @@ class Qualification
         $this->professional = $professional;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->status = true;
+        $this->date_add = new \DateTime("now");
+        $this->date_upd = new \DateTime("now");
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->date_upd = new \DateTime("now");
     }
 }

@@ -30,18 +30,23 @@ class Language
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProfessionalLanguage::class, mappedBy="language")
+     * @ORM\ManyToMany(targetEntity=Professional::class, mappedBy="languages")
      */
-    private $professionalLanguages;
+    private $professionals;
 
     public function __construct()
     {
-        $this->professionalLanguages = new ArrayCollection();
+        $this->professionals = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getIsoCode(): ?string
@@ -69,30 +74,27 @@ class Language
     }
 
     /**
-     * @return Collection|ProfessionalLanguage[]
+     * @return Collection|Professional[]
      */
-    public function getProfessionalLanguages(): Collection
+    public function getProfessionals(): Collection
     {
-        return $this->professionalLanguages;
+        return $this->professionals;
     }
 
-    public function addProfessionalLanguage(ProfessionalLanguage $professionalLanguage): self
+    public function addProfessional(Professional $professional): self
     {
-        if (!$this->professionalLanguages->contains($professionalLanguage)) {
-            $this->professionalLanguages[] = $professionalLanguage;
-            $professionalLanguage->setLanguage($this);
+        if (!$this->professionals->contains($professional)) {
+            $this->professionals[] = $professional;
+            $professional->addLanguage($this);
         }
 
         return $this;
     }
 
-    public function removeProfessionalLanguage(ProfessionalLanguage $professionalLanguage): self
+    public function removeProfessional(Professional $professional): self
     {
-        if ($this->professionalLanguages->removeElement($professionalLanguage)) {
-            // set the owning side to null (unless already changed)
-            if ($professionalLanguage->getLanguage() === $this) {
-                $professionalLanguage->setLanguage(null);
-            }
+        if ($this->professionals->removeElement($professional)) {
+            $professional->removeLanguage($this);
         }
 
         return $this;

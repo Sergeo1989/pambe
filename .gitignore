@@ -18,3 +18,11 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
+/public/uploads/images/socialmedia/
+/public/uploads/images/professional/
+/public/uploads/images/service/
+/migrations/*
