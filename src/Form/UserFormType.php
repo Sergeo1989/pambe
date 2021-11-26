@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -21,7 +22,10 @@ class UserFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new Email([
-                        'message' => 'L\'email {{ value }} n\'est pas valide.',
+                        'message' => 'L\'e-mail {{ value }} n\'est pas valide.',
+                    ]),
+                    new NotBlank([
+                        'message' => 'L\'e-mail ne doit pas être vide.',
                     ])
                 ],
             ])
@@ -51,6 +55,9 @@ class UserFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'constraints' => [
+                new UniqueEntity(['fields' => ['email'], 'message' => 'Cette adresse e-mail existe déjà.']),
+            ]
         ]);
     }
 }

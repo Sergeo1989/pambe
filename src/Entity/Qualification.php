@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=QualificationRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class Qualification
+class Qualification implements \JsonSerializable
 {
     public const QUALIFICATION = 0;
     public const EXPERIENCE = 1;
@@ -218,5 +218,18 @@ class Qualification
     public function onPreUpdate()
     {
         $this->date_upd = new \DateTime("now");
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'            => $this->getId(),
+            'title'         => $this->getTitle(),
+            'place'         => $this->getPlace(),
+            'start_date'    => $this->getStartDate()->format('d/m/Y'),
+            'end_date'      => $this->getEndDate()->format('d/m/Y'),
+            'description'   => $this->getDescription(),
+            'type'          => $this->getType()
+        ];
     }
 }

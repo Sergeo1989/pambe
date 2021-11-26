@@ -1,6 +1,6 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+app_home:
+    path: /
+    controller: App\Controller\Front\HomeController::index
 admin:
     path: /admin
     controller: App\Controller\Admin\DashboardController::index
@@ -10,3 +10,9 @@ app_admin_login:
 app_admin_logout:
     path: /admin/logout
     controller: App\Controller\Admin\SecurityController::logout
+app_login:
+    path: /login
+    controller: App\Controller\Front\SecurityController::login
+app_logout:
+    path: /logout
+    controller: App\Controller\Front\SecurityController::logout

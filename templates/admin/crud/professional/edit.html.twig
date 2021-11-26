@@ -68,10 +68,10 @@
                             <ul id="exp_list" class="list-group">
                                 {% for qualification in qualifications %}
                                     {% if qualification.type == 1 %}
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <li id="experience-{{qualification.id}}" class="list-group-item d-flex justify-content-between align-items-center">
                                             <span> <b>Titre :</b> {{qualification.title}} <br/> <b>Lieu :</b> {{qualification.place}} </span>
                                             <span> <b>Date de début :</b> {{qualification.startDate|date('d/m/Y')}} <br/> <b>Date de fin :</b> {{qualification.endDate|date('d/m/Y')}} </span>
-                                            <span style="color:red;" class="ml-1"><i class="far fa-trash-alt"></i></span>
+                                            <span class="ml-1"><a style="color:red;" data-id="{{qualification.id}}" href="javascript:"><i class="far fa-trash-alt"></i></a></span>
                                         </li>
                                     {% endif %}
                                 {% endfor %}
@@ -101,11 +101,11 @@
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     <label for="exp_date_start">Date de début</label>
-                                                    <input type="date" class="form-control" id="exp_date_start">
+                                                    <input type="date" value="{{'now'|date('d/m/Y')}}" class="form-control" id="exp_date_start">
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     <label for="exp_date_end">Date de fin</label>
-                                                    <input type="date" class="form-control" id="exp_date_end">
+                                                    <input type="date" value="{{'now'|date('d/m/Y')}}" class="form-control" id="exp_date_end">
                                                 </div>
                                                 <div class="col-md-12 form-group">
                                                     <label for="exp_description">Description</label>
@@ -140,10 +140,10 @@
                             <ul id="qual_list" class="list-group">
                                 {% for qualification in qualifications%}
                                     {% if qualification.type == 0 %}
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <li id="qualification-{{qualification.id}}" class="list-group-item d-flex justify-content-between align-items-center">
                                             <span> <b>Titre :</b> {{qualification.title}} <br/> <b>Lieu :</b> {{qualification.place}} </span>
                                             <span> <b>Date de début :</b> {{qualification.startDate|date('d/m/Y')}} <br/> <b>Date de fin :</b> {{qualification.endDate|date('d/m/Y')}} </span>
-                                            <span style="color:red;" class="ml-1"><i class="far fa-trash-alt"></i></span>
+                                            <span class="ml-1"><a style="color:red;" data-id="{{qualification.id}}" href="javascript:"><i class="far fa-trash-alt"></i></a></span>
                                         </li>
                                     {% endif %}
                                 {% endfor %}
@@ -173,11 +173,11 @@
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     <label for="qual_date_start">Date de début</label>
-                                                    <input type="date" class="form-control" id="qual_date_start">
+                                                    <input type="date" value="{{'now'|date('d/m/Y')}}" class="form-control" id="qual_date_start">
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     <label for="qual_date_end">Date de fin</label>
-                                                    <input type="date" class="form-control" id="qual_date_end">
+                                                    <input type="date" value="{{'now'|date('d/m/Y')}}" class="form-control" id="qual_date_end">
                                                 </div>
                                                 <div class="col-md-12 form-group">
                                                     <label for="qual_description">Description</label>

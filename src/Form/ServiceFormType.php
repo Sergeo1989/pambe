@@ -11,6 +11,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ServiceFormType extends AbstractType
 {
@@ -31,6 +32,11 @@ class ServiceFormType extends AbstractType
             ])
             ->add('title', TextType::class, [
                 'label' => 'Titre',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le titre ne doit pas être vide.',
+                    ])
+                ]
             ])
             ->add('price', MoneyType::class, [
                 'label' => 'Prix',

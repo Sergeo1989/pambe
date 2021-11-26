@@ -7,13 +7,13 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
     private $encoder;
     
-    public function __construct(UserPasswordEncoderInterface $encoder){
+    public function __construct(UserPasswordHasherInterface $encoder){
         $this->encoder = $encoder;
     }
 
@@ -26,7 +26,7 @@ class UserFixtures extends Fixture
              ->setDateAdd(new DateTime('now'))
              ->setDateUpd(new DateTime('now'))
              ->setStatus(false)
-             ->setPassword($this->encoder->encodePassword($user1, 'admin123'));
+             ->setPassword($this->encoder->hashPassword($user1, 'admin123'));
         $manager->persist($user1);
 
         $user2 = new User();
@@ -36,7 +36,7 @@ class UserFixtures extends Fixture
              ->setDateAdd(new DateTime('now'))
              ->setDateUpd(new DateTime('now'))
              ->setStatus(false)
-             ->setPassword($this->encoder->encodePassword($user2, 'professionnel123'));
+             ->setPassword($this->encoder->hashPassword($user2, 'professionnel123'));
 
         $professionnal1 = new Professional();
         $professionnal1->setUser($user2)

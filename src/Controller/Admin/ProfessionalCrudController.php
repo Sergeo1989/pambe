@@ -11,6 +11,7 @@ use App\Form\UserFormType;
 use App\Form\ProfessionalImageFormType;
 use App\Form\ServiceFormType;
 use App\Repository\ProfessionalRepository;
+use App\Repository\QualificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -29,7 +30,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ProfessionalCrudController extends AbstractCrudController
 {
@@ -37,13 +38,15 @@ class ProfessionalCrudController extends AbstractCrudController
     private $context;
     private $em;
     private $professionalRepo;
-    private $encoder;
+    private $qualificationRepo;
+    private $hasher;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, EntityManagerInterface $em, ProfessionalRepository $professionalRepo)
+    public function __construct(UserPasswordHasherInterface $hasher, EntityManagerInterface $em, ProfessionalRepository $professionalRepo, QualificationRepository $qualificationRepo)
     {
-        $this->encoder = $encoder;
+        $this->hasher = $hasher;
         $this->em = $em;
         $this->professionalRepo = $professionalRepo;
+        $this->qualificationRepo = $qualificationRepo;
     }
 
     public static function getEntityFqcn(): string
@@ -60,7 +63,8 @@ class ProfessionalCrudController extends AbstractCrudController
                     ->setEntityLabelInSingular('professionnel')
                     ->setPageTitle(Crud::PAGE_INDEX, 'Tous les %entity_label_plural%')
                     ->setPageTitle(Crud::PAGE_EDIT, 'Modifier un %entity_label_singular%')
-                    ->setPageTitle(Crud::PAGE_DETAIL, '%entity_label_singular%');
+                    ->setPageTitle(Crud::PAGE_DETAIL, '%entity_label_singular%')
+                    ->setPageTitle(Crud::PAGE_NEW, 'Ajouter un %entity_label_singular%');
     }
 
     public function configureFields(string $pageName): iterable
@@ -123,7 +127,7 @@ class ProfessionalCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $user = $entityInstance->getUser();
-        $user->setPassword($this->encoder->encodePassword($user, $user->getPassword()));
+        $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
         parent::persistEntity($entityManager, $entityInstance);
     }
 
@@ -193,15 +197,34 @@ class ProfessionalCrudController extends AbstractCrudController
             $experience->setDescription($description ?? '');
             $experience->setType(Qualification::EXPERIENCE);
             $experience->setProfessional($this->professionalRepo->find($professional_id));
-
+            
             $this->em->persist($experience);
             $this->em->flush();
 
             $this->response = [
                 'status' => true,
-                'value' => $this->context->getRequest()->request->all()
+                'value' => $experience
             ];
         }
+    }
+
+    private function displayAjaxRemoveExperience()
+    {
+        $experience_id = (int)$this->context->getRequest()->request->all()['experience_id'];
+
+        $experience = $this->qualificationRepo->find($experience_id);
+
+        if(isset($experience)){
+            $this->em->remove($experience);
+            $this->em->flush();
+            $this->response = [
+                'status' => true
+            ];
+        }
+        else
+            $this->response = [
+                'status' => false
+            ];
     }
 
     private function displayAjaxAddQualification(){
@@ -228,22 +251,41 @@ class ProfessionalCrudController extends AbstractCrudController
                 'message' => 'La date de début doit être inférieur à la date de fin.'
             ];
         else{
-            $experience = new Qualification();
-            $experience->setTitle($title);
-            $experience->setPlace($place);
-            $experience->setStartDate(new \DateTime($date_start));
-            $experience->setEndDate(new \DateTime($date_end));
-            $experience->setDescription($description ?? '');
-            $experience->setType(Qualification::QUALIFICATION);
-            $experience->setProfessional($this->professionalRepo->find($professional_id));
+            $qualification = new Qualification();
+            $qualification->setTitle($title);
+            $qualification->setPlace($place);
+            $qualification->setStartDate(new \DateTime($date_start));
+            $qualification->setEndDate(new \DateTime($date_end));
+            $qualification->setDescription($description ?? '');
+            $qualification->setType(Qualification::QUALIFICATION);
+            $qualification->setProfessional($this->professionalRepo->find($professional_id));
 
-            $this->em->persist($experience);
+            $this->em->persist($qualification);
             $this->em->flush();
 
             $this->response = [
                 'status' => true,
-                'value' => $this->context->getRequest()->request->all()
+                'value' => $qualification
             ];
         }
+    }
+
+    private function displayAjaxRemoveQualification()
+    {
+        $qualification_id = (int)$this->context->getRequest()->request->all()['qualification_id'];
+
+        $qualification = $this->qualificationRepo->find($qualification_id);
+
+        if(isset($qualification)){
+            $this->em->remove($qualification);
+            $this->em->flush();
+            $this->response = [
+                'status' => true
+            ];
+        }
+        else
+            $this->response = [
+                'status' => false
+            ];
     }
 }
