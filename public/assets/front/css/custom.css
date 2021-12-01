@@ -1,0 +1,46 @@
+/*---------------------------------------------
+
+Author:         IziPresta
+Author Email:   contact@izipresta.com
+description: Our custom pambe CSS
+
+----------------------------------------------*/
+.social-profile-colored li .whatsapp-bg:hover{
+    background-color: #25D366;
+}
+.social-profile-colored li .linkedin-bg:hover{
+    background-color: #0e76a8;
+}
+.social-profile-colored li .youtube-bg:hover{
+    background-color: #FF0000;
+}
+.social-profile-colored li .pinterest-bg:hover{
+    background-color: #E60023;
+}
+.login-and-signup-wrap .theme-btn{
+    font-size: 14px;
+    line-height: 37px;
+}
+@media only screen and (max-width: 479px) {
+    .user-chosen-select-container{
+        margin-top: 5px;
+    }
+}
+@media only screen and (min-width: 480px) {
+    .user-chosen-select-container{
+        margin-left: 5px;
+    }
+}
+.contact{
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    padding-left: 7px;
+}
+.menu{
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 0;
+    padding-top: 13px
+}
+.breadcrumb-area {
+    padding-top: 300px;
+}

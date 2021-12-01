@@ -1,0 +1,23 @@
+# OUR MAIN MENU
+main_menu:
+    design:
+        menu:
+            - { label: 'Accueil', route: 'app_home', icon: 'fa fa-home' }
+            - { label: 'Menu 1', route: 'route_1' }
+            - label: 'Menu 2'
+              children:
+                - label: 'Menu 21'
+                  cssClass: 'col-lg-6'
+                  children:
+                    - label: 'Menu 211'
+                    - label: 'Menu 212'
+                - { label: 'Menu 22', route: 'route_22', cssClass: 'col-lg-6' }
+            - label: 'Menu 3'
+              children:
+                - { label: 'Menu 31', route: 'route_31', cssClass: 'col-lg-6' }
+                - { label: 'Menu 32', route: 'route_32', cssClass: 'col-lg-6' }
+            - label: 'Menu 4'
+              children:
+                - { label: 'Menu 41', route: 'route_41', cssClass: 'col-lg-6' }
+                - { label: 'Menu 42', route: 'route_42', cssClass: 'col-lg-6' }
+               

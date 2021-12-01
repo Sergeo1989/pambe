@@ -20,3 +20,9 @@ vich_uploader:
             namer: Vich\UploaderBundle\Naming\UniqidNamer
             delete_on_update: false
             delete_on_remove: false
+        banner_images:
+            uri_prefix: '%app.path.banner_images%'
+            upload_destination: '%kernel.project_dir%/public%app.path.banner_images%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            delete_on_update: true
+            delete_on_remove: true

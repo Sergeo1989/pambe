@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Banner;
 use App\Entity\CategoryProfessional;
 use App\Entity\City;
 use App\Entity\Country;
@@ -10,6 +11,7 @@ use App\Entity\Professional;
 use App\Entity\Region;
 use App\Entity\Service;
 use App\Entity\SocialMedia;
+use App\Entity\SocialUrl;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -87,7 +89,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Villes', 'bi bi-geo-alt-fill', City::class);
         yield MenuItem::section('Configuration');
         yield MenuItem::linkToCrud('Langues', 'bi bi-pin', Language::class);
-        yield MenuItem::linkToCrud('Médias sociaux', 'bi bi-pin', SocialMedia::class);
+        yield MenuItem::linkToCrud('Médias', 'bi bi-pin', SocialMedia::class);
+        yield MenuItem::linkToCrud('Réseaux sociaux', 'bi bi-pin', SocialUrl::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
+        yield MenuItem::linkToCrud('Bannières', 'bi bi-pin', Banner::class);
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'bi bi-x-circle');
     }

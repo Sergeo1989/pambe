@@ -1,0 +1,94 @@
+            {% block header %}
+                <header class="header-area">
+                    <div class="header-top-bar bg-dark-opacity py-2 padding-right-30px padding-left-30px">
+                        <div class="container-fluid">
+                            <div class="row">
+                                {{ render(url('app_social_url')) }}
+                                <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
+                                    <p class="login-and-signup-wrap">
+                                        {% if is_granted("ROLE_PROFESSIONNEL") %}
+                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
+                                                <span class="mr-1 la la-user-plus"></span>Espace professionnel
+                                            </a>
+                                        {% else %}
+                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
+                                                <span class="mr-1 la la-user-plus"></span>Devenir professionnel
+                                            </a>
+                                        {% endif %}
+                                    </p>
+                                    <div class="user-chosen-select-container">
+                                        <select class="user-chosen-select">
+                                            <option value="1" selected>English</option>
+                                            <option value="2">French</option>
+                                        </select>
+                                    </div>
+                                </div><!-- end col-lg-6 -->
+                            </div><!-- end row -->
+                        </div><!-- end container-fluid -->
+                    </div><!-- end header-top-bar -->
+                    <div class="header-menu-wrapper padding-right-30px padding-left-30px">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="menu-full-width">
+                                        {% block logo %}
+                                            <div class="logo">
+                                                <a href="{{ path("app_home") }}"><img src="{{ asset('assets/front/images/logo-white.png') }}" alt="pambe"></a>
+                                                <div class="d-flex align-items-center">
+                                                    <a href="#" class="btn-gray add-listing-btn-show font-size-24 mr-2 flex-shrink-0" data-toggle="tooltip" data-placement="left" title="Add Listing">
+                                                        <i class="la la-plus"></i>
+                                                    </a>
+                                                    <div class="menu-toggle">
+                                                        <span class="menu__bar"></span>
+                                                        <span class="menu__bar"></span>
+                                                        <span class="menu__bar"></span>
+                                                    </div><!-- end menu-toggle -->
+                                                </div>
+                                            </div><!-- end logo -->
+                                        {% endblock %}
+                                        <div class="quick-search-form d-flex align-items-center">
+                                            <form action="#" class="w-100">
+                                                <div class="header-search position-relative">
+                                                    <i class="la la-search form-icon"></i>
+                                                    <input type="search" placeholder="Rechercher">
+                                                    <div class="instant-results">
+                                                        <ul class="instant-results-list">
+                                                            <li><a href="#" class="d-flex align-items-center"><span class="icon-element bg-1 mr-2"><i class="la la-glass"></i></span>Food & Drinks</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div><!-- end quick-search-form -->
+                                        <div class="main-menu-content ml-auto">
+                                            <nav class="main-menu">
+                                                <ul>
+                                                    {% if app.user %}
+                                                        <li><a href="#" class="text-white"><span class="mr-1 la la-sign-in"></span>Mon compte</a></li>
+                                                    {% else %}
+                                                        <li><a href="#" class="text-white" data-toggle="modal" data-target="#signUpModal"><span class="mr-1 la la-user-plus"></span>Inscription</a></li>
+                                                        <li><a href="#" class="text-white" data-toggle="modal" data-target="#loginModal"><span class="mr-1 la la-sign-in"></span>Connexion</a></li>
+                                                    {% endif %}
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                        <div class="nav-right-content">
+                                            <a href="#" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
+                                                Trouver un professionnel
+                                            </a>
+                                        </div><!-- end nav-right-content -->
+                                    </div><!-- end menu-full-width -->
+                                </div><!-- end col-lg-12 -->
+                            </div><!-- end row -->
+                        </div><!-- end container-fluid -->
+                    </div><!-- end header-menu-wrapper -->
+                    <div class="header-top-bar bg-dark-opacity">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-12 d-flex header-top-info font-size-14">
+                                     {{ render(url('app_main_menu')) }}
+                                </div><!-- end col-lg-6 -->
+                            </div><!-- end row -->
+                        </div><!-- end container-fluid -->
+                    </div><!-- end header-top-bar -->
+                </header>
+            {% endblock %}

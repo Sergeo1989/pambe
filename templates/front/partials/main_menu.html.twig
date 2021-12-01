@@ -1,0 +1,39 @@
+<div class="main-menu-content menu">
+    <nav class="main-menu">
+        <ul>
+            {% for menu in main_menu.main_menu.design.menu %}
+                <li>
+                    {{ _self.render_menu_item(menu) }}
+                    {% if menu.children is defined %}
+                        <div class="dropdown-menu-item mega-menu">
+                            <ul class="row no-gutters">
+                                {% for menuSub in menu.children %}
+                                    <li class="{{ menuSub.cssClass ?? "" }} mega-menu-item">
+                                        {{ _self.render_submenu_item(menuSub) }}
+                                        {% if menuSub.children is defined %}
+                                            <ul>
+                                                {% for menuSubSub in menuSub.children %}
+                                                <li>{{ _self.render_submenu_item(menuSubSub) }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+</div>
+{% macro render_menu_item(menu) %}
+    <a href="{{ menu.route is defined ? path(menu.route) : "#" }}">{{ menu.label }} 
+        {% if menu.children is defined %}
+            <span class="la la-angle-down"></span>
+        {% endif %}
+    </a>
+{% endmacro %}
+{% macro render_submenu_item(menu) %}
+    <a href="{{ menu.route is defined ? path(menu.route) : "#" }}">{{ menu.label }}</a>
+{% endmacro %}

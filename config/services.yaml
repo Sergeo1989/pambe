@@ -9,6 +9,7 @@ parameters:
     app.path.social_media_images: /uploads/images/socialmedia
     app.path.professional_images: /uploads/images/professional
     app.path.service_images: /uploads/images/service
+    app.path.banner_images: /uploads/images/banner
 
 services:
     # default configuration for services in *this* file

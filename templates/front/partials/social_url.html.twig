@@ -1,0 +1,25 @@
+{% set facebook     = social_url.facebook %}
+{% set twitter      = social_url.twitter %}
+{% set instagram    = social_url.instagram %}
+{% set whatsapp     = social_url.whatsapp %}
+{% set linkedin     = social_url.linkedin %}
+{% set youtube      = social_url.youtube %}
+{% set pinterest    = social_url.pinterest %}
+
+<div class="col-lg-6 d-flex align-items-center header-top-info">
+    {% if facebook or twitter or instagram or whatsapp or linkedin or youtube or pinterest %}
+        <span class="mr-2 text-white font-weight-semi-bold font-size-14">Suivez-Nous:</span>
+        <ul class="social-profile social-profile-colored">
+            {% if facebook %} <li><a href="{{ facebook }}" class="facebook-bg"><i class="lab la-facebook-f"></i></a></li>{% endif %}
+            {% if twitter %}<li><a href="{{ twitter }}" class="twitter-bg"><i class="lab la-twitter"></i></a></li>{% endif %}
+            {% if instagram %}<li><a href="{{ instagram }}" class="instagram-bg"><i class="lab la-instagram"></i></a></li>{% endif %}
+            {% if whatsapp %}<li><a href="{{ whatsapp }}" class="whatsapp-bg"><i class="la la-whatsapp"></i></a></li>{% endif %}
+            {% if linkedin %}<li><a href="{{ linkedin }}" class="linkedin-bg"><i class="lab la-linkedin"></i></a></li>{% endif %}
+            {% if youtube %}<li><a href="{{ youtube }}" class="youtube-bg"><i class="lab la-youtube"></i></a></li>{% endif %}
+            {% if pinterest %}<li><a href="{{ pinterest }}" class="pinterest-bg"><i class="la la-pinterest"></i></a></li>{% endif %}
+        </ul>
+        <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+            <a href="{{ path("app_contact") }}">Contact</a>
+        </span>
+    {% endif %}
+</div>

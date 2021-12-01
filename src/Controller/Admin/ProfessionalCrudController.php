@@ -74,11 +74,11 @@ class ProfessionalCrudController extends AbstractCrudController
         $lastname = TextField::new('user.lastname', 'Nom');
         $user = TextField::new('user', false)->setFormType(UserFormType::class);
         $profile = TextField::new('profil', 'Profil')
-                            ->setFormType(professionalImageFormType::class)
+                            ->setFormType(ProfessionalImageFormType::class)
                             ->setHelp("Résolution: 1200x1200 pixels");
-        $cover = TextField::new('cover', 'Couverture de page')->setFormType(professionalImageFormType::class)
+        $cover = TextField::new('cover', 'Couverture de page')->setFormType(ProfessionalImageFormType::class)
                             ->setHelp("Résolution: 1200x300 pixels");
-        $galleries = CollectionField::new('galleries')->setEntryType(professionalImageFormType::class)
+        $galleries = CollectionField::new('galleries')->setEntryType(ProfessionalImageFormType::class)
                             ->setHelp("Résolution: 1200x1200 pixels");
         $services = CollectionField::new('services')->setEntryType(ServiceFormType::class);
         $name = TextField::new('user', 'Nom complet', User::class);

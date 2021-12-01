@@ -13,6 +13,44 @@ app_admin_logout:
 app_login:
     path: /login
     controller: App\Controller\Front\SecurityController::login
+app_account:
+    path: /account
+    controller: App\Controller\Front\AccountController::index
 app_logout:
     path: /logout
     controller: App\Controller\Front\SecurityController::logout
+app_social_url:
+    path: /social_url
+    controller: App\Controller\Front\Partials\SocialUrlController::index
+app_banner:
+    path: /banner
+    controller: App\Controller\Front\Partials\BannerController::index
+app_main_menu:
+    path: /main_menu
+    controller: App\Controller\Front\Partials\MainMenuController::index
+app_contact:
+    path: /contact
+    controller: App\Controller\Front\ContactController::index
+
+route_1:
+    path: /main_menu
+    controller: App\Controller\Front\Partials\MainMenuController::index
+route_21:
+    path: /main_menu
+    controller: App\Controller\Front\Partials\MainMenuController::index
+route_22:
+    path: /main_menu
+    controller: App\Controller\Front\Partials\MainMenuController::index
+route_31:
+    path: /main_menu
+    controller: App\Controller\Front\Partials\MainMenuController::index
+route_32:
+    path: /main_menu
+    controller: App\Controller\Front\Partials\MainMenuController::index
+route_41:
+    path: /main_menu
+    controller: App\Controller\Front\Partials\MainMenuController::index
+route_42:
+    path: /main_menu
+    controller: App\Controller\Front\Partials\MainMenuController::index
+            

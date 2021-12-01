@@ -5,17 +5,10 @@ namespace App\Controller\Front;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends AbstractController
+class ContactController extends AbstractController
 {
-    public function __construct()
-    {
-
-    }
-
     public function index(): Response
     {
-        return $this->render('front/home/index.html.twig', [
-            'users' => []
-        ]);
+        return $this->render('front/contact/index.html.twig');
     }
 }

@@ -1,0 +1,9 @@
+<div id="fullscreen-slide-container">
+    <ul class="slides-container">
+        {% for banner in banners %}
+            <li><img class="lazy" src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ vich_uploader_asset(banner, 'imageFile')|imagine_filter('banner') }}" alt=""></li>
+        {% else %}
+            <li><img class="lazy" src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/hero-bg.jpg') }}" alt=""></li>
+        {% endfor %}
+    </ul>
+</div>
