@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Professional
 {
+    public const NORMAL = 0;
+    public const VIP = 1;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -119,6 +122,21 @@ class Professional
      * @ORM\OneToMany(targetEntity=Service::class, mappedBy="professional", cascade={"persist", "remove"})
      */
     private $services;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $level;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $position;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -473,6 +491,8 @@ class Professional
     {
         $this->status = true;
         $this->verified = false;
+        $this->level = self::NORMAL;
+        $this->position = 0;
         $this->date_add = new \DateTime("now");
         $this->date_upd = new \DateTime("now");
     }
@@ -483,5 +503,41 @@ class Professional
     public function onPreUpdate()
     {
         $this->date_upd = new \DateTime("now");
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(?int $level): self
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

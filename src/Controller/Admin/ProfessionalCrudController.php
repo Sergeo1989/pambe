@@ -21,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
@@ -66,7 +67,7 @@ class ProfessionalCrudController extends AbstractCrudController
                     ->setPageTitle(Crud::PAGE_DETAIL, '%entity_label_singular%')
                     ->setPageTitle(Crud::PAGE_NEW, 'Ajouter un %entity_label_singular%');
     }
-
+ 
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id', 'ID');
@@ -76,6 +77,7 @@ class ProfessionalCrudController extends AbstractCrudController
         $profile = TextField::new('profil', 'Profil')
                             ->setFormType(ProfessionalImageFormType::class)
                             ->setHelp("Résolution: 1200x1200 pixels");
+        $level = ChoiceField::new('level', 'Niveau')->setChoices(fn() => ['VIP' => Professional::VIP, 'NORMAL' => Professional::NORMAL]);
         $cover = TextField::new('cover', 'Couverture de page')->setFormType(ProfessionalImageFormType::class)
                             ->setHelp("Résolution: 1200x300 pixels");
         $galleries = CollectionField::new('galleries')->setEntryType(ProfessionalImageFormType::class)
@@ -102,7 +104,7 @@ class ProfessionalCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName)
             return [$id, $email, $name, $date_add, $date_upd, $default_category, $verified, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
-            return [$email, $firstname, $lastname, $phone, $website, $profile, $cover, $galleries, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $services];
+            return [$email, $firstname, $lastname, $phone, $website, $profile, $cover, $galleries, $level, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $services];
         elseif(Crud::PAGE_DETAIL === $pageName)
             return [$email, $name, $phone, $website, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $verified, $status];
         elseif(Crud::PAGE_NEW === $pageName)

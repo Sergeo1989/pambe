@@ -2,9 +2,13 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Admin;
+use App\Entity\Article;
 use App\Entity\Banner;
+use App\Entity\CategoryArticle;
 use App\Entity\CategoryProfessional;
 use App\Entity\City;
+use App\Entity\Comment;
 use App\Entity\Country;
 use App\Entity\Language;
 use App\Entity\Professional;
@@ -12,6 +16,7 @@ use App\Entity\Region;
 use App\Entity\Service;
 use App\Entity\SocialMedia;
 use App\Entity\SocialUrl;
+use App\Entity\Testimonial;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -87,11 +92,17 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Pays', 'bi bi-geo-alt-fill', Country::class);
         yield MenuItem::linkToCrud('Régions', 'bi bi-geo-alt-fill', Region::class);
         yield MenuItem::linkToCrud('Villes', 'bi bi-geo-alt-fill', City::class);
+        yield MenuItem::section('Blog');
+        yield MenuItem::linkToCrud('Catégories', 'bi bi-pin', CategoryArticle::class);
+        yield MenuItem::linkToCrud('Articles', 'bi bi-pin', Article::class);
+        yield MenuItem::linkToCrud('Commentaires', 'bi bi-pin', Comment::class);
         yield MenuItem::section('Configuration');
         yield MenuItem::linkToCrud('Langues', 'bi bi-pin', Language::class);
         yield MenuItem::linkToCrud('Médias', 'bi bi-pin', SocialMedia::class);
         yield MenuItem::linkToCrud('Réseaux sociaux', 'bi bi-pin', SocialUrl::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
+        yield MenuItem::linkToCrud('Témoignages', 'bi bi-pin', Testimonial::class);
         yield MenuItem::linkToCrud('Bannières', 'bi bi-pin', Banner::class);
+        yield MenuItem::linkToCrud('Administrateurs', 'bi bi-pin', Admin::class);
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'bi bi-x-circle');
     }

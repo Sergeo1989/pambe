@@ -37,7 +37,7 @@ class ProfessionalImage
      * @ORM\Column(type="datetime")
      */
     private $date_upd;
-
+ 
     /**
      * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="galleries")
      */

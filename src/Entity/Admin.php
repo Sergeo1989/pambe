@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\AdminRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AdminRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Admin
 {
@@ -21,11 +24,43 @@ class Admin
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="admin", cascade={"persist", "remove"})
      */
     private $user;
-
+ 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $identifier;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Testimonial::class, mappedBy="admin")
+     */
+    private $testimonials;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="admin")
+     */
+    private $articles;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_add;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_upd;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $status;
+
+    public function __construct()
+    {
+        $this->content = new ArrayCollection();
+        $this->testimonials = new ArrayCollection();
+        $this->articles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -54,5 +89,119 @@ class Admin
         $this->identifier = $identifier;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Testimonial[]
+     */
+    public function getTestimonials(): Collection
+    {
+        return $this->testimonials;
+    }
+
+    public function addTestimonial(Testimonial $testimonial): self
+    {
+        if (!$this->testimonials->contains($testimonial)) {
+            $this->testimonials[] = $testimonial;
+            $testimonial->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTestimonial(Testimonial $testimonial): self
+    {
+        if ($this->testimonials->removeElement($testimonial)) {
+            // set the owning side to null (unless already changed)
+            if ($testimonial->getAdmin() === $this) {
+                $testimonial->setAdmin(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getAdmin() === $this) {
+                $article->setAdmin(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDateAdd(): ?\DateTimeInterface
+    {
+        return $this->date_add;
+    }
+
+    public function setDateAdd(\DateTimeInterface $date_add): self
+    {
+        $this->date_add = $date_add;
+
+        return $this;
+    }
+
+    public function getDateUpd(): ?\DateTimeInterface
+    {
+        return $this->date_upd;
+    }
+
+    public function setDateUpd(?\DateTimeInterface $date_upd): self
+    {
+        $this->date_upd = $date_upd;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->status = true;
+        $this->date_add = new \DateTime("now");
+        $this->date_upd = new \DateTime("now");
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->date_upd = new \DateTime("now");
     }
 }

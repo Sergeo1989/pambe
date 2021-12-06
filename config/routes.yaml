@@ -13,6 +13,7 @@ app_admin_logout:
 app_login:
     path: /login
     controller: App\Controller\Front\SecurityController::login
+    methods: POST
 app_account:
     path: /account
     controller: App\Controller\Front\AccountController::index
@@ -31,26 +32,15 @@ app_main_menu:
 app_contact:
     path: /contact
     controller: App\Controller\Front\ContactController::index
-
-route_1:
-    path: /main_menu
-    controller: App\Controller\Front\Partials\MainMenuController::index
-route_21:
-    path: /main_menu
-    controller: App\Controller\Front\Partials\MainMenuController::index
-route_22:
-    path: /main_menu
-    controller: App\Controller\Front\Partials\MainMenuController::index
-route_31:
-    path: /main_menu
-    controller: App\Controller\Front\Partials\MainMenuController::index
-route_32:
-    path: /main_menu
-    controller: App\Controller\Front\Partials\MainMenuController::index
-route_41:
-    path: /main_menu
-    controller: App\Controller\Front\Partials\MainMenuController::index
-route_42:
-    path: /main_menu
-    controller: App\Controller\Front\Partials\MainMenuController::index
-            
+app_blog:
+    path: /blog
+    controller: App\Controller\Front\BlogController::index
+app_about:
+    path: /about
+    controller: App\Controller\Front\AboutController::index
+app_professional:
+    path: /professional
+    controller: App\Controller\Front\ProfessionalController::show
+app_category_pro:
+    path: /professional/{slug}/category
+    controller: App\Controller\Front\CategoryProController::show

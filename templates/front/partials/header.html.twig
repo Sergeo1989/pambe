@@ -3,12 +3,20 @@
                     <div class="header-top-bar bg-dark-opacity py-2 padding-right-30px padding-left-30px">
                         <div class="container-fluid">
                             <div class="row">
-                                {{ render(url('app_social_url')) }}
+                                <div class="col-lg-6 d-flex align-items-center header-top-info">
+                                    {{ render(url('app_social_url')) }}
+                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+                                        <a href="{{ path("app_contact") }}">Contact</a>
+                                    </span>
+                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+                                        <a href="{{ path("app_about") }}">{{ "à"|upper }} propos</a>
+                                    </span>
+                                </div>
                                 <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
                                     <p class="login-and-signup-wrap">
                                         {% if is_granted("ROLE_PROFESSIONNEL") %}
                                             <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
-                                                <span class="mr-1 la la-user-plus"></span>Espace professionnel
+                                               Espace professionnel
                                             </a>
                                         {% else %}
                                             <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
@@ -22,10 +30,10 @@
                                             <option value="2">French</option>
                                         </select>
                                     </div>
-                                </div><!-- end col-lg-6 -->
-                            </div><!-- end row -->
-                        </div><!-- end container-fluid -->
-                    </div><!-- end header-top-bar -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="header-menu-wrapper padding-right-30px padding-left-30px">
                         <div class="container-fluid">
                             <div class="row">
@@ -65,7 +73,6 @@
                                                     {% if app.user %}
                                                         <li><a href="#" class="text-white"><span class="mr-1 la la-sign-in"></span>Mon compte</a></li>
                                                     {% else %}
-                                                        <li><a href="#" class="text-white" data-toggle="modal" data-target="#signUpModal"><span class="mr-1 la la-user-plus"></span>Inscription</a></li>
                                                         <li><a href="#" class="text-white" data-toggle="modal" data-target="#loginModal"><span class="mr-1 la la-sign-in"></span>Connexion</a></li>
                                                     {% endif %}
                                                 </ul>
@@ -75,20 +82,20 @@
                                             <a href="#" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
                                                 Trouver un professionnel
                                             </a>
-                                        </div><!-- end nav-right-content -->
-                                    </div><!-- end menu-full-width -->
-                                </div><!-- end col-lg-12 -->
-                            </div><!-- end row -->
-                        </div><!-- end container-fluid -->
-                    </div><!-- end header-menu-wrapper -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="header-top-bar bg-dark-opacity">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-lg-12 d-flex header-top-info font-size-14">
-                                     {{ render(url('app_main_menu')) }}
-                                </div><!-- end col-lg-6 -->
-                            </div><!-- end row -->
-                        </div><!-- end container-fluid -->
-                    </div><!-- end header-top-bar -->
+                                    {{ render(url('app_main_menu')) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </header>
             {% endblock %}

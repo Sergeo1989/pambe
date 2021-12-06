@@ -7,17 +7,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryProfessionalRepository::class)
+ * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  * @UniqueEntity(
  *     fields={"name"},
- *     message="Cette catégorie existe déjà."
+ *     message="Cette catégorie de professionnel existe déjà."
  * )
  */
 class CategoryProfessional
 {
+    public const NORMAL = 0;
+    public const POPULAR = 1;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -45,6 +52,55 @@ class CategoryProfessional
      * @ORM\ManyToMany(targetEntity=Professional::class, mappedBy="category_professionals")
      */
     private $all_professionals;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $view;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $icon;
+
+    /**
+     * @Vich\UploadableField(mapping="category_pro_images", fileNameProperty="icon")
+     * @var File
+     * @Assert\Image(
+     *     minWidth = 200,
+     *     maxWidth = 400,
+     *     minHeight = 200,
+     *     maxHeight = 400
+     * )
+     */
+    private $iconFile;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date_upd;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $position;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $grade;
+
 
     public function __construct()
     {
@@ -140,6 +196,116 @@ class CategoryProfessional
         if ($this->all_professionals->removeElement($allProfessional)) {
             $allProfessional->removeCategoryProfessional($this);
         }
+
+        return $this;
+    }
+
+    public function getView(): ?int
+    {
+        return $this->view;
+    }
+
+    public function setView(?int $view): self
+    {
+        $this->view = $view;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->view = 0;
+        $this->grade = self::NORMAL;
+        $this->position = 0;
+        $this->status = true;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function setIconFile(File $iconFile = null)
+    {
+        $this->iconFile = $iconFile;
+
+        if ($iconFile) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->date_upd = new \DateTime('now');
+        }
+    }
+
+    public function getIconFile()
+    {
+        return $this->iconFile;
+    }
+
+    public function getDateUpd(): ?\DateTimeInterface
+    {
+        return $this->date_upd;
+    }
+
+    public function setDateUpd(\DateTimeInterface $date_upd): self
+    {
+        $this->date_upd = $date_upd;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getGrade(): ?int
+    {
+        return $this->grade;
+    }
+
+    public function setGrade(?int $grade): self
+    {
+        $this->grade = $grade;
 
         return $this;
     }

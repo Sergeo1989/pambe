@@ -28,11 +28,16 @@ security:
                 secret: '%kernel.secret%'
                 lifetime: 31536000  # 365 days in seconds
                 path: /admin
+                remember_me_parameter: _remember_me
             context: pambe
         front:
-            lazy: true
+            pattern: ^/
             provider: app_user_provider
-            custom_authenticator: App\Security\Front\LoginFormAuthenticator
+            form_login:
+                check_path: app_login
+                success_handler: authentication_handler
+                failure_handler: authentication_handler
+            anonymous: false
             logout:
                 path: app_logout
                 target: app_home

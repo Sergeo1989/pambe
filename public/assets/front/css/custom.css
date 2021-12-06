@@ -44,3 +44,20 @@ description: Our custom pambe CSS
 .breadcrumb-area {
     padding-top: 300px;
 }
+.section-padding, .section--padding{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.section-heading .sec__title{
+    margin-bottom: 5px;
+}
+.mega-menu-item h6{
+    margin-left: 24px;
+    margin-bottom: 9px;
+}
+.main-menu ul li .mega-menu{
+    left: -10px;
+}
+.menu {
+    margin-left: 30px;
+}

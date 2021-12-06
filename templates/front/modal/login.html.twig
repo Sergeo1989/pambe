@@ -2,47 +2,48 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header align-items-center mh-bg">
-                            <h5 class="modal-title" id="loginModalTitle">Hey, Welcome back!</h5>
+                            <h5 class="modal-title" id="loginModalTitle">Bonjour, Content de vous revoir !</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true" class="la la-times-circle"></span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form method="post" class="form-box">
+                            <form method="post" action="{{ path("app_login") }}" id="login-form" class="form-box">
                                 <div class="input-box">
-                                    <label class="label-text">Email</label>
+                                    <label for="email" class="label-text">E-mail</label>
                                     <div class="form-group">
                                         <span class="la la-user form-icon"></span>
-                                        <input class="form-control form-control-styled" type="text" name="text" placeholder="Enter email address">
+                                        <input class="form-control form-control-styled" type="text" id="email" name="email" placeholder="Entrer votre adresse e-mail">
                                     </div>
                                 </div>
                                 <div class="input-box">
-                                    <label class="label-text">Password</label>
+                                    <label for="password" class="label-text">Mot de passe</label>
                                     <div class="form-group">
                                         <span class="la la-lock form-icon"></span>
-                                        <input class="form-control form-control-styled" type="text" name="text" placeholder="Enter password">
+                                        <input class="form-control form-control-styled" type="password" id="password" name="password" placeholder="Entrer votre mot de passe">
                                     </div>
                                 </div>
+                                <input type="hidden" id="_csrf_token" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                                 <div class="input-box d-flex align-items-center justify-content-between pb-4 user-action-meta">
                                     <div class="custom-checkbox">
                                         <input type="checkbox" id="keepMeSignedChb">
-                                        <label for="keepMeSignedChb" class="font-size-14">Keep me signed in</label>
+                                        <label for="keepMeSignedChb" class="font-size-14">Se souvenir de moi</label>
                                     </div>
-                                    <a href="javascript:void(0)" class="margin-bottom-10px lost-pass-btn font-size-14">Lost Password?</a>
+                                    <a href="javascript:void(0)" class="margin-bottom-10px lost-pass-btn font-size-14">Mot de passe oublié ?</a>
                                 </div>
                                 <div class="btn-box">
                                     <button type="submit" class="theme-btn gradient-btn w-100">
-                                        <i class="la la-sign-in mr-1"></i> Login to Account
+                                        <i class="la la-sign-in mr-1"></i> Connectez-vous
                                     </button>
                                     <p class="sub-text-box text-right pt-1 font-weight-medium font-size-14">
-                                        New to Listhub? <a class="text-color-2 signup-btn" href="javascript:void(0)">Create account</a>
+                                        Nouveau chez Pambe ? <a class="text-color-2 signup-btn" href="javascript:void(0)">Créer un compte</a>
                                     </p>
                                 </div>
                                 <div class="icon-element font-size-16 font-weight-semi-bold mt-5 mb-4 mx-auto">
-                                    OR
+                                    OU
                                 </div>
                                 <div class="text-center">
-                                    <p class="font-size-15 font-weight-medium">Login with your social network</p>
+                                    <p class="font-size-15 font-weight-medium">Connectez-vous avec votre réseau social</p>
                                     <ul class="social-profile social-profile-colored py-3">
                                         <li>
                                             <a href="#" class="google-bg mx-1" data-toggle="tooltip" data-placement="top" title="Google">
@@ -54,7 +55,7 @@
                                                 <i class="lab la-facebook-f"></i>
                                             </a>
                                         </li>
-                                        <li>
+                                        <li> 
                                             <a href="#" class="twitter-bg mx-1" data-toggle="tooltip" data-placement="top" title="Twitter">
                                                 <i class="lab la-twitter"></i>
                                             </a>

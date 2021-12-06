@@ -1,3 +1,522 @@
 {% extends 'front/layout.html.twig' %}
 
 {% block title %}{{ 'Accueil - '~ parent() }}{% endblock %}
+
+{% block content %}
+                {% block hero_wrapper %}
+                    <section class="hero-wrapper overflow-hidden">
+                        {% block banner %}
+                            <div class="overlay"></div><!-- end overlay -->
+                            {{ render(url('app_banner')) }}
+                        {% endblock %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="hero-heading text-center">
+                                        <div class="section-heading">
+                                            <h2 class="sec__title cd-headline slide">
+                                                Qui Recherchez-vous ?
+                                                <span class="cd-words-wrapper py-0">
+                                                {% for category in my_app.categoriesProPopular %}
+                                                    <b class="{{ loop.first ? "is-visible" : "" }}">{{ category.name|e }}</b>
+                                                {% endfor %}
+                                            </span>
+                                            </h2>
+                                            <p class="sec__desc">
+                                                Trouver des professionnels qualifiés pour vous rendre le meilleur service.
+                                            </p>
+                                        </div>
+                                    </div><!-- end hero-heading -->
+                                    <div class="main-search-input">
+                                        <div class="main-search-input-item">
+                                            <form action="#" class="form-box">
+                                                <div class="form-group mb-0">
+                                                    <span class="la la-search form-icon"></span>
+                                                    <input class="form-control" type="search" placeholder="De quoi avez-vous besoin ?">
+                                                </div>
+                                            </form>
+                                        </div><!-- end main-search-input-item -->
+                                        <div class="main-search-input-item user-chosen-select-container">
+                                            <select class="user-chosen-select">
+                                                <option value="0">Selectionner une categorie</option>
+                                                <option value="1">Shops</option>
+                                            </select>
+                                        </div><!-- end main-search-input-item -->
+                                        <div class="main-search-input-item user-chosen-select-container">
+                                            <select class="user-chosen-select">
+                                                <option value="0">Selectionner un service</option>
+                                                <option value="1">Shops</option>
+                                            </select>
+                                        </div><!-- end main-search-input-item -->
+                                        <div class="main-search-input-item">
+                                            <button class="theme-btn gradient-btn border-0 w-100" type="submit"><i class="la la-search mr-2"></i>Rechercher</button>
+                                        </div><!-- end main-search-input-item -->
+                                    </div><!-- end main-search-input -->
+                                    <div class="highlighted-categories">
+                                        <div class="d-flex align-items-end justify-content-center highlight-search-desc py-5 text-center">
+                                            <img src="{{ asset('assets/front/images/arrow-shape.png') }}" alt="" class="mr-5 cat-arrow-icon">
+                                            <h5 class="highlighted__title">Just looking around? Let us suggest you <br> something hot & happening!</h5>
+                                        </div>
+                                        {% if categories_pro_popular|length > 0 %}
+                                            <div class="highlight-lists d-flex justify-content-center mt-4">
+                                                {% for category in my_app.categoriesProPopular|slice(0, 6) %}
+                                                    <div class="hero-category-item">
+                                                        <a href="{{ path("app_category_pro", {"slug" : category.slug}) }}" class="d-block hero-cat-link hover-y">
+                                                            <span class="icon-element bg-1 mx-auto"><i class="la la-building-o"></i></span>
+                                                            {{ category.name|e }}
+                                                        </a>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="svg-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+                                <path fill="#F5F7FC" class="elementor-shape-fill" d="M500,97C126.7,96.3,0.8,19.8,0,0v100l1000,0V1C1000,19.4,873.3,97.8,500,97z"></path>
+                            </svg>
+                        </div>
+                    </section><!-- end hero-wrapper -->
+                {% endblock %}
+
+                {% block vip_home %}
+                    <section class="card-area section-padding vip">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-heading text-center">
+                                        <h2 class="sec__title">Professionnels VIP</h2>
+                                        <p class="sec__desc">
+                                            On aime, on adore travailler avec ceux qui savent ce qu'ils font.
+                                        </p>
+                                    </div><!-- end section-heading -->
+                                </div><!-- end col-lg-12 -->
+                            </div><!-- end row -->
+                            <div class="row padding-top-60px">
+                            {% for i in 1..4 %}
+                                <div class="col-lg-3 responsive-column">
+                                    <div class="card-item">
+                                        <div class="card-image">
+                                            <a href="#" class="d-block">
+                                                <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/img1.jpg') }}" class="card__img lazy" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="card-content">
+                                            <a href="#" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="TechyDevs">
+                                                <img src="{{ asset('assets/front/images/photoshop.png') }}" alt="author-img">
+                                            </a>
+                                            <h4 class="card-title pt-3">
+                                                <a href="#">Roma’s Ristorante</a>
+                                                <i class="la la-check-circle ml-1" data-toggle="tooltip" data-placement="top" title="Vérifié"></i>
+                                            </h4>
+                                            <p class="card-sub"><a href="#"><i class="la la-map-marker mr-1 text-color-2"></i>Bishop Avenue, New York</a></p>
+                                            <ul class="listing-meta d-flex align-items-center">
+                                                <li class="d-flex align-items-center">
+                                                    <span class="rate flex-shrink-0">4.7</span>
+                                                    <span class="rate-text">5 avis</span>
+                                                </li>
+                                            </ul>
+                                            <ul class="info-list padding-top-20px">
+                                                <li><span class="la la-calendar-check-o icon"></span>
+                                                    Opened a few days ago
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div><!-- end card-item -->
+                                </div><!-- end col-lg-4 -->
+                            {% endfor %}
+                            </div><!-- end row -->
+                            <div class="more-link-wrap text-right">
+                                <a href="#" class="btn-text font-weight-medium">Voir plus de professionnels prêts à vous aider <i class="la la-arrow-right icon"></i></a>
+                            </div>
+                        </div><!-- end container -->
+                    </section><!-- end card-area -->
+                {% endblock %}
+
+                {% block category_area %}
+                    <section class="category-area bg-gray arrow-down-shape position-relative section-padding">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-heading text-center">
+                                        <h2 class="sec__title">Catégories populaires</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                            {% for category in my_app.categoriesProPopular|slice(0, 8) %}
+                                <div class="col-lg-3 responsive-column">
+                                    <div class="category-item overflow-hidden">
+                                        <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category') }}" alt="{{ category.name|e }}" class="lazy cat-img">
+                                        <div class="category-content d-flex align-items-center justify-content-center">
+                                            <a href="#" class="category-link d-flex flex-column justify-content-center w-100 h-100">
+                                                <div class="icon-element mb-3 mx-auto">
+                                                    <span class="la la-dumbbell"></span>
+                                                </div>
+                                                <div class="cat-content">
+                                                    <h4 class="cat__title mb-3">{{ category.name|e }}</h4>
+                                                    <span class="badge">{{ category.professionals|length }} Professionnels</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div><!-- end row -->
+                            <div class="more-btn-box pt-3 text-center">
+                                <a href="#" class="btn-gray hover-scale-2">parcourir toutes les catégories <i class="la la-arrow-right ml-2"></i></a>
+                            </div>
+                        </div><!-- end container -->
+                    </section><!-- end category-area -->
+                {% endblock %}
+
+                {% block new_home %}
+                    <section class="card-area section-padding vip">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-heading text-center">
+                                        <h2 class="sec__title">Nouveaux professionnels</h2>
+                                    </div><!-- end section-heading -->
+                                </div><!-- end col-lg-12 -->
+                            </div><!-- end row -->
+                            <div class="row padding-top-60px">
+                            {% for i in 1..8 %}
+                                <div class="col-lg-3 responsive-column">
+                                    <div class="card-item">
+                                        <div class="card-image">
+                                            <a href="#" class="d-block">
+                                                <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/img1.jpg') }}" class="card__img lazy" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="card-content">
+                                            <a href="#" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="TechyDevs">
+                                                <img src="{{ asset('assets/front/images/photoshop.png') }}" alt="author-img">
+                                            </a>
+                                            <h4 class="card-title pt-3">
+                                                <a href="#">Roma’s Ristorante</a>
+                                                <i class="la la-check-circle ml-1" data-toggle="tooltip" data-placement="top" title="Claimed"></i>
+                                            </h4>
+                                            <p class="card-sub"><a href="#"><i class="la la-map-marker mr-1 text-color-2"></i>Bishop Avenue, New York</a></p>
+                                            <ul class="listing-meta d-flex align-items-center">
+                                                <li class="d-flex align-items-center">
+                                                    <span class="rate flex-shrink-0">4.7</span>
+                                                    <span class="rate-text">5 avis</span>
+                                                </li>
+                                            </ul>
+                                            <ul class="info-list padding-top-20px">
+                                                <li><span class="la la-calendar-check-o icon"></span>
+                                                    Opened a few days ago
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div><!-- end card-item -->
+                                </div><!-- end col-lg-4 -->
+                            {% endfor %}
+                            </div><!-- end row -->
+
+                        </div><!-- end container -->
+                    </section><!-- end card-area -->
+                {% endblock %}
+             
+                {% block funfact_area %}
+                    <section class="funfact-area bg-gradient-gray section--padding text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-heading">
+                                        <h2 class="sec__title">Since 2004 & Still Counting</h2>
+                                        <p class="sec__desc">
+                                            Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, <br>
+                                            a feugiat eros. Nunc ut lacinia tortors.
+                                        </p>
+                                    </div><!-- end section-heading -->
+                                </div><!-- end col-lg-12 -->
+                            </div><!-- end row -->
+                            <div class="row padding-top-60px">
+                                <div class="col-lg-3 responsive-column">
+                                    <div class="counter-item d-flex align-items-center">
+                                        <div class="counter-icon section-icon flex-shrink-0 bg-opacity-1">
+                                            <svg class="svg-icon-color" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 438.891 438.891" xml:space="preserve">
+                                                <g>
+                                                                <path d="M347.968,57.503h-39.706V39.74c0-5.747-6.269-8.359-12.016-8.359h-30.824c-7.314-20.898-25.6-31.347-46.498-31.347
+                                                                    c-20.668-0.777-39.467,11.896-46.498,31.347h-30.302c-5.747,0-11.494,2.612-11.494,8.359v17.763H90.923
+                                                                    c-23.53,0.251-42.78,18.813-43.886,42.318v299.363c0,22.988,20.898,39.706,43.886,39.706h257.045
+                                                                    c22.988,0,43.886-16.718,43.886-39.706V99.822C390.748,76.316,371.498,57.754,347.968,57.503z M151.527,52.279h28.735
+                                                                    c5.016-0.612,9.045-4.428,9.927-9.404c3.094-13.474,14.915-23.146,28.735-23.51c13.692,0.415,25.335,10.117,28.212,23.51
+                                                                    c0.937,5.148,5.232,9.013,10.449,9.404h29.78v41.796H151.527V52.279z M370.956,399.185c0,11.494-11.494,18.808-22.988,18.808
+                                                                    H90.923c-11.494,0-22.988-7.314-22.988-18.808V99.822c1.066-11.964,10.978-21.201,22.988-21.42h39.706v26.645
+                                                                    c0.552,5.854,5.622,10.233,11.494,9.927h154.122c5.98,0.327,11.209-3.992,12.016-9.927V78.401h39.706
+                                                                    c12.009,0.22,21.922,9.456,22.988,21.42V399.185z"></path>
+                                                    <path d="M179.217,233.569c-3.919-4.131-10.425-4.364-14.629-0.522l-33.437,31.869l-14.106-14.629
+                                                                    c-3.919-4.131-10.425-4.363-14.629-0.522c-4.047,4.24-4.047,10.911,0,15.151l21.42,21.943c1.854,2.076,4.532,3.224,7.314,3.135
+                                                                    c2.756-0.039,5.385-1.166,7.314-3.135l40.751-38.661c4.04-3.706,4.31-9.986,0.603-14.025
+                                                                    C179.628,233.962,179.427,233.761,179.217,233.569z"></path>
+                                                    <path d="M329.16,256.034H208.997c-5.771,0-10.449,4.678-10.449,10.449s4.678,10.449,10.449,10.449H329.16
+                                                                    c5.771,0,10.449-4.678,10.449-10.449S334.931,256.034,329.16,256.034z"></path>
+                                                    <path d="M179.217,149.977c-3.919-4.131-10.425-4.364-14.629-0.522l-33.437,31.869l-14.106-14.629
+                                                                    c-3.919-4.131-10.425-4.364-14.629-0.522c-4.047,4.24-4.047,10.911,0,15.151l21.42,21.943c1.854,2.076,4.532,3.224,7.314,3.135
+                                                                    c2.756-0.039,5.385-1.166,7.314-3.135l40.751-38.661c4.04-3.706,4.31-9.986,0.603-14.025
+                                                                    C179.628,150.37,179.427,150.169,179.217,149.977z"></path>
+                                                    <path d="M329.16,172.442H208.997c-5.771,0-10.449,4.678-10.449,10.449s4.678,10.449,10.449,10.449H329.16
+                                                                    c5.771,0,10.449-4.678,10.449-10.449S334.931,172.442,329.16,172.442z"></path>
+                                                    <path d="M179.217,317.16c-3.919-4.131-10.425-4.363-14.629-0.522l-33.437,31.869l-14.106-14.629
+                                                                    c-3.919-4.131-10.425-4.363-14.629-0.522c-4.047,4.24-4.047,10.911,0,15.151l21.42,21.943c1.854,2.076,4.532,3.224,7.314,3.135
+                                                                    c2.756-0.039,5.385-1.166,7.314-3.135l40.751-38.661c4.04-3.706,4.31-9.986,0.603-14.025
+                                                                    C179.628,317.554,179.427,317.353,179.217,317.16z"></path>
+                                                    <path d="M329.16,339.626H208.997c-5.771,0-10.449,4.678-10.449,10.449s4.678,10.449,10.449,10.449H329.16
+                                                                    c5.771,0,10.449-4.678,10.449-10.449S334.931,339.626,329.16,339.626z"></path>
+                                                            </g>
+                                            </svg>
+                                        </div>
+                                        <div class="counter-content pl-3">
+                                            <h3 class="counter__number text-color-3 mb-2">
+                                                <span class="counter">40,000</span>
+                                                <span class="count-symbol">+</span>
+                                            </h3>
+                                            <p class="counter__title">Listings Pages</p>
+                                        </div><!-- end counter-content -->
+                                    </div><!-- end counter-item -->
+                                </div><!-- end col-lg-3 -->
+                                <div class="col-lg-3 responsive-column">
+                                    <div class="counter-item d-flex align-items-center">
+                                        <div class="counter-icon section-icon flex-shrink-0 bg-opacity-2">
+                                            <svg class="svg-icon-color-2" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 490.667 490.667" xml:space="preserve">
+                                                <g>
+                                                            <path d="M245.333,85.333c-41.173,0-74.667,33.493-74.667,74.667s33.493,74.667,74.667,74.667S320,201.173,320,160
+                                                                C320,118.827,286.507,85.333,245.333,85.333z M245.333,213.333C215.936,213.333,192,189.397,192,160
+                                                                c0-29.397,23.936-53.333,53.333-53.333s53.333,23.936,53.333,53.333S274.731,213.333,245.333,213.333z"></path>
+                                                    </g>
+                                                <g>
+                                                            <path d="M394.667,170.667c-29.397,0-53.333,23.936-53.333,53.333s23.936,53.333,53.333,53.333S448,253.397,448,224
+                                                                S424.064,170.667,394.667,170.667z M394.667,256c-17.643,0-32-14.357-32-32c0-17.643,14.357-32,32-32s32,14.357,32,32
+                                                                C426.667,241.643,412.309,256,394.667,256z"></path>
+                                                </g>
+                                                <g>
+                                                            <path d="M97.515,170.667c-29.419,0-53.333,23.936-53.333,53.333s23.936,53.333,53.333,53.333s53.333-23.936,53.333-53.333
+                                                                S126.933,170.667,97.515,170.667z M97.515,256c-17.643,0-32-14.357-32-32c0-17.643,14.357-32,32-32c17.643,0,32,14.357,32,32
+                                                                C129.515,241.643,115.157,256,97.515,256z"></path>
+                                                </g>
+                                                <g>
+                                                            <path d="M245.333,256c-76.459,0-138.667,62.208-138.667,138.667c0,5.888,4.779,10.667,10.667,10.667S128,400.555,128,394.667
+                                                                c0-64.704,52.629-117.333,117.333-117.333s117.333,52.629,117.333,117.333c0,5.888,4.779,10.667,10.667,10.667
+                                                                c5.888,0,10.667-4.779,10.667-10.667C384,318.208,321.792,256,245.333,256z"></path>
+                                                </g>
+                                                <g>
+                                                            <path d="M394.667,298.667c-17.557,0-34.752,4.8-49.728,13.867c-5.013,3.072-6.635,9.621-3.584,14.656
+                                                                c3.093,5.035,9.621,6.635,14.656,3.584C367.637,323.712,380.992,320,394.667,320c41.173,0,74.667,33.493,74.667,74.667
+                                                                c0,5.888,4.779,10.667,10.667,10.667c5.888,0,10.667-4.779,10.667-10.667C490.667,341.739,447.595,298.667,394.667,298.667z"></path>
+                                                </g>
+                                                <g>
+                                                            <path d="M145.707,312.512c-14.955-9.045-32.149-13.845-49.707-13.845c-52.928,0-96,43.072-96,96
+                                                                c0,5.888,4.779,10.667,10.667,10.667s10.667-4.779,10.667-10.667C21.333,353.493,54.827,320,96,320
+                                                                c13.675,0,27.029,3.712,38.635,10.752c5.013,3.051,11.584,1.451,14.656-3.584C152.363,322.133,150.741,315.584,145.707,312.512z"></path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div class="counter-content pl-3">
+                                            <h3 class="counter__number text-color-4 mb-2">
+                                                <span class="counter">25,100</span>
+                                                <span class="count-symbol">+</span>
+                                            </h3>
+                                            <p class="counter__title">Happy Clients</p>
+                                        </div><!-- end counter-content -->
+                                    </div><!-- end counter-item -->
+                                </div><!-- end col-lg-3 -->
+                                <div class="col-lg-3 responsive-column">
+                                    <div class="counter-item d-flex align-items-center">
+                                        <div class="counter-icon section-icon flex-shrink-0 bg-opacity-3">
+                                            <svg class="svg-icon-color-3" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                                <g><g><path d="m475.571 189.773c-.912-.912-1.839-1.802-2.774-2.682v-28.821c0-28.659-23.316-51.975-51.975-51.975h-91.169v-26.12c0-27.886-22.687-50.572-50.572-50.572h-85.363c-27.886 0-50.572 22.686-50.572 50.572v26.12h-91.171c-28.659 0-51.975 23.316-51.975 51.975v231.351c0 28.659 23.316 51.975 51.975 51.975h108.516c4.142 0 7.5-3.358 7.5-7.5s-3.358-7.5-7.5-7.5h-108.516c-20.389 0-36.976-16.587-36.976-36.976v-151.3c14.686 21.784 38.844 36.677 66.519 38.728v27.306c0 15.595 12.688 28.283 28.283 28.283 15.596 0 28.284-12.688 28.284-28.283v-27.061h125.329c0 .12-.004.239-.004.359 0 25.539 7.659 49.898 21.877 70.467l-15.922 15.922c-5.56-1.573-11.79-.184-16.157 4.185l-61.159 61.159c-12.106 12.106-12.106 31.804 0 43.91 12.134 12.134 31.775 12.136 43.91 0l61.159-61.159c4.368-4.368 5.758-10.597 4.185-16.157l15.936-15.936c42.143 29.025 98.319 29.117 140.56.235v9.343c0 20.389-16.587 36.976-36.976 36.976h-118.464c-4.142 0-7.5 3.358-7.5 7.5s3.358 7.5 7.5 7.5h118.463c28.659 0 51.975-23.316 51.975-51.975v-21.407c.934-.878 1.861-1.768 2.774-2.681 48.569-48.569 48.575-127.186 0-175.761zm-317.427-109.598c0-19.615 15.958-35.573 35.573-35.573h85.363c19.615 0 35.573 15.958 35.573 35.573v26.12h-15.999v-26.12c0-10.793-8.781-19.574-19.574-19.574h-85.363c-10.793 0-19.574 8.781-19.574 19.574v26.12h-15.999zm30.998 26.12v-26.12c0-2.522 2.052-4.574 4.575-4.574h85.363c2.523 0 4.575 2.052 4.575 4.574v26.12zm-66.056 175.007h-26.568v-25.248c0-7.325 5.959-13.284 13.284-13.284s13.284 5.959 13.284 13.284zm-13.284 36.337c-7.325 0-13.284-5.959-13.284-13.284v-8.054h26.568v8.054c0 7.325-5.959 13.284-13.284 13.284zm28.283-55.344v-6.241c0-15.595-12.688-28.283-28.284-28.283-15.595 0-28.283 12.688-28.283 28.283v5.931c-37.233-3.336-66.519-34.696-66.519-72.782v-30.933c0-20.389 16.587-36.976 36.976-36.976h368.847c20.389 0 36.976 16.587 36.976 36.976v16.731c-47.425-32.537-114.229-28.988-157.987 14.771-19.815 19.814-32.114 45.141-35.467 72.522h-126.259zm87.267 200.395c-6.272 6.272-16.425 6.273-22.698 0-3.032-3.032-4.701-7.062-4.701-11.349s1.669-8.318 4.701-11.349l42.369-42.369 22.698 22.698zm61.159-61.159-8.184 8.184-22.698-22.698 8.184-8.184c.288-.287.665-.431 1.042-.431s.754.144 1.041.43c.002.001.003.003.005.004l20.61 20.61c.574.575.574 1.51 0 2.085zm5.662-17.635-10.726-10.726 13.167-13.167c1.672 1.885 3.4 3.733 5.197 5.529 1.801 1.801 3.649 3.527 5.531 5.194zm18.244-28.969c-20.641-20.64-32.008-48.084-32.008-77.274s11.367-56.634 32.008-77.274c42.706-42.707 111.836-42.713 154.548 0 42.707 42.706 42.713 111.836 0 154.548-42.708 42.708-111.836 42.713-154.548 0z"></path><path d="m469.969 287.951c-4.047-.88-8.043 1.686-8.922 5.735-3.052 14.034-10.06 26.848-20.268 37.055-29.341 29.34-76.832 29.343-106.176 0-29.273-29.273-29.273-76.903 0-106.176 29.341-29.341 76.832-29.344 106.176 0 10.197 10.197 17.203 22.997 20.26 37.016.882 4.047 4.879 6.616 8.925 5.73 4.047-.882 6.612-4.878 5.73-8.925-3.67-16.832-12.076-32.194-24.308-44.427-35.203-35.203-92.181-35.207-127.388 0-35.121 35.121-35.121 92.267 0 127.388 35.12 35.12 92.265 35.122 127.388 0 12.245-12.245 20.654-27.624 24.318-44.474.879-4.047-1.688-8.041-5.735-8.922z"></path></g></g>
+                                            </svg>
+                                        </div>
+                                        <div class="counter-content pl-3">
+                                            <h3 class="counter__number text-color-5 mb-2">
+                                                <span class="counter">12,100</span>
+                                                <span class="count-symbol">+</span>
+                                            </h3>
+                                            <p class="counter__title">Company Joined</p>
+                                        </div><!-- end counter-content -->
+                                    </div><!-- end counter-item -->
+                                </div><!-- end col-lg-3 -->
+                                <div class="col-lg-3 responsive-column">
+                                    <div class="counter-item d-flex align-items-center">
+                                        <div class="counter-icon section-icon flex-shrink-0 bg-opacity-4">
+                                            <svg class="svg-icon-color-4" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                                <g id="outline12"><path d="M344,273.992H320a23.865,23.865,0,0,0-5.14.585A7.919,7.919,0,0,0,312,274H280V222.641A36.684,36.684,0,0,0,243.359,186H232a8,8,0,0,0-8,8v28.562a62.323,62.323,0,0,1-8.859,32.032l-12.616,20.979-36.048,14.419H120a8,8,0,0,0-8,8v104a8,8,0,0,0,8,8h47.961c.014,0,.025.008.039.008h31.016l31.046,7.758A7.71,7.71,0,0,0,232,418h72a7.924,7.924,0,0,0,2.89-.583,23.916,23.916,0,0,0,5.11.575h24a24.026,24.026,0,0,0,24-24,23.708,23.708,0,0,0-3.211-11.766,23.767,23.767,0,0,0,4.969-36.234,23.627,23.627,0,0,0,0-32,23.9,23.9,0,0,0-17.758-40Zm-184,120H128v-88h32Zm142.242-48a23.438,23.438,0,0,0-3.031,27.767A23.948,23.948,0,0,0,288,393.992,23.7,23.7,0,0,0,289.477,402H232.984l-31.046-7.758A7.71,7.71,0,0,0,200,394H176V303.414l34.969-13.984c.105-.042.17-.133.273-.179a7.9,7.9,0,0,0,2.342-1.534c.061-.06.1-.134.158-.2a7.967,7.967,0,0,0,1.117-1.4l14.008-23.3A78.464,78.464,0,0,0,240,222.562V202h3.359A20.662,20.662,0,0,1,264,222.641v64.273a55.368,55.368,0,0,1-34.969,51.648,8,8,0,0,0,5.938,14.86A71.156,71.156,0,0,0,279.769,290h17.7a23.244,23.244,0,0,0,4.77,23.992,23.627,23.627,0,0,0,0,32Zm33.758,56H312a8,8,0,0,1,0-16h24a8,8,0,0,1,0,16Zm8-32H320a8,8,0,0,1,0-16h24a8,8,0,0,1,0,16Zm0-32H320a8,8,0,0,1,0-16h24a8,8,0,0,1,0,16Zm0-32H320a8,8,0,0,1,0-16h24a8,8,0,0,1,0,16Z"></path><path d="M206.609,113.969l15.282,11.093-5.836,17.954a16,16,0,0,0,24.625,17.89l15.273-11.1,15.281,11.1a15.756,15.756,0,0,0,18.805.008,15.767,15.767,0,0,0,5.813-17.891l-5.836-17.961L305.3,113.969a16.006,16.006,0,0,0-9.406-28.953l-18.883.007-5.836-17.961v-.007a16,16,0,0,0-30.438.007L234.9,85.016H216.016a16.008,16.008,0,0,0-9.407,28.953ZM234.9,101.016a15.965,15.965,0,0,0,15.219-11.055l5.8-18.055a.843.843,0,0,1,.039.1l5.836,17.953a15.967,15.967,0,0,0,15.219,11.055h18.883L280.6,112.125A15.964,15.964,0,0,0,274.8,130l5.844,17.969-15.289-11.11a15.984,15.984,0,0,0-18.8.008l-15.274,11.094L237.109,130a15.968,15.968,0,0,0-5.812-17.891l-15.281-11.093Z"></path><path d="M136.047,205.805l15.273,11.109a16,16,0,0,0,24.625-17.891l-5.836-17.961,15.282-11.1a16,16,0,0,0-9.407-28.945l-18.882.007-5.836-17.961v-.007a16,16,0,0,0-30.438.007l-5.836,17.954H96.109A16.006,16.006,0,0,0,86.7,169.969l15.281,11.093-5.836,17.954a15.774,15.774,0,0,0,5.813,17.9,15.756,15.756,0,0,0,18.805-.008Zm-24.656-37.7L96.109,157.016h18.883a15.967,15.967,0,0,0,15.219-11.055l5.8-18.055s.015.032.039.1l5.836,17.953A15.965,15.965,0,0,0,157.1,157.016h18.882l-15.281,11.1A15.953,15.953,0,0,0,154.891,186l5.836,17.969-15.282-11.11a15.983,15.983,0,0,0-18.8.008l-15.274,11.094L117.2,186A15.988,15.988,0,0,0,111.391,168.109Z"></path><path d="M391.266,123.062v-.007a16,16,0,0,0-30.438.007l-5.836,17.954H336.109a16.006,16.006,0,0,0-9.406,28.953l15.281,11.093-5.836,17.954a15.774,15.774,0,0,0,5.813,17.9,15.756,15.756,0,0,0,18.805-.008l15.281-11.1,15.273,11.109a16,16,0,0,0,24.625-17.891l-5.836-17.961,15.282-11.1a16,16,0,0,0-9.407-28.945l-18.882.007Zm9.437,45.055A15.953,15.953,0,0,0,394.891,186l5.836,17.969-15.282-11.11a15.983,15.983,0,0,0-18.8.008l-15.274,11.094L357.2,186a15.988,15.988,0,0,0-5.812-17.891l-15.282-11.093h18.883a15.967,15.967,0,0,0,15.219-11.055l5.8-18.055s.015.032.039.1l5.836,17.953A15.965,15.965,0,0,0,397.1,157.016h18.882Z"></path><path d="M256,16C123.664,16,16,123.664,16,256S123.664,496,256,496,496,388.336,496,256,388.336,16,256,16Zm0,464C132.484,480,32,379.516,32,256S132.484,32,256,32,480,132.484,480,256,379.516,480,256,480Z"></path><path d="M432,256a175.64,175.64,0,0,1-25.82,91.82,8,8,0,1,0,13.64,8.36A191.6,191.6,0,0,0,448,256a193.977,193.977,0,0,0-1.625-25.031,8,8,0,1,0-15.859,2.062A179.013,179.013,0,0,1,432,256Z"></path><path d="M80,256a179.013,179.013,0,0,1,1.484-22.969,8,8,0,1,0-15.859-2.062A193.977,193.977,0,0,0,64,256a190.874,190.874,0,0,0,15.258,75.133,8,8,0,0,0,14.719-6.266A175,175,0,0,1,80,256Z"></path></g>
+                                            </svg>
+                                        </div>
+                                        <div class="counter-content pl-3">
+                                            <h3 class="counter__number text-color-6 mb-2">
+                                                <span class="counter">18,200</span>
+                                                <span class="count-symbol">+</span>
+                                            </h3>
+                                            <p class="counter__title">Five Star Ratings</p>
+                                        </div><!-- end counter-content -->
+                                    </div><!-- end counter-item -->
+                                </div><!-- end col-lg-3 -->
+                            </div><!-- end row -->
+                        </div><!-- end container -->
+                    </section><!-- end funfact-area -->
+                {% endblock %}
+
+                {% block cta_area %}
+                    <section class="cta-area padding-bottom-80px padding-top-80px">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="cta-content-box">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-5">
+                                                <div class="cta-img">
+                                                    <img class="lazy" src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/img37.jpg') }}" alt="">
+                                                    <div class="cta-img-shape">
+                                                        <svg viewBox="0 0 500 150" preserveAspectRatio="none">
+                                                            <path d="M627.25,-82.39 C346.22,43.91 512.69,168.25 560.66,205.75 L500.00,150.00 L500.00,0.00 Z" style="stroke: none; fill: #fff;"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <div class="cta-content">
+                                                    <div class="section-heading">
+                                                        <div class="gradient-icon mb-3">
+                                                            <svg viewBox="-4 0 511 511.99964" width="40" xmlns="http://www.w3.org/2000/svg">
+                                                                <defs>
+                                                                    <linearGradient id="svg-gradient10">
+                                                                        <stop offset="5%" stop-color="#ff6b6b" />
+                                                                        <stop offset="95%" stop-color="#ffbb3d" />
+                                                                    </linearGradient>
+                                                                </defs>
+                                                                <path d="m498.429688 219.339844c-5.308594-8.015625-13.355469-13.539063-22.710938-15.632813 6.035156-11.542969 5.789062-25.945312-1.898438-37.550781-5.46875-8.261719-13.71875-13.597656-22.699218-15.617188 1.601562-3.054687 2.785156-6.351562 3.492187-9.828124 1.960938-9.667969.046875-19.519532-5.402343-27.742188-5.308594-8.019531-13.355469-13.542969-22.710938-15.632812 6.035156-11.542969 5.789062-25.945313-1.898438-37.554688-11.238281-16.972656-34.199218-21.640625-51.175781-10.398438l-36.757812 24.34375c-19.59375-9.9375-40.433594-16.988281-62.0625-21.003906-6.835938-10.378906-14.785157-20.027344-23.683594-28.652344l-15.207031-14.738281c-11.136719-10.796875-28.601563-12.417969-41.53125-3.851562-15.296875 10.128906-19.5 30.816406-9.371094 46.113281.398438.605469.789062 1.214844 1.175781 1.824219-49.847656 10.085937-95.277343 36.539062-128.902343 75.300781-36.488282 42.066406-56.585938 95.941406-56.585938 151.699219 0 10.6875.730469 21.394531 2.175781 31.816406 11.136719 81.019531 65.105469 150.839844 140.839844 182.21875 28.085937 11.640625 57.886719 17.546875 88.5625 17.546875 48.582031 0 95.085937-14.878906 134.488281-43.023438 38.546875-27.539062 67.386719-65.542968 83.40625-109.902343 1.496094-4.132813-.648437-8.699219-4.78125-10.191407-4.136718-1.492187-8.699218.648438-10.191406 4.785157-14.917969 41.308593-41.78125 76.699219-77.691406 102.351562-36.683594 26.207031-79.988282 40.058594-125.230469 40.058594-23.390625 0-46.230469-3.691406-68.089844-10.972656l64.773438-42.894531c.003906-.003907.007812-.003907.011719-.007813.003906 0 .003906-.003906.007812-.007813l53.832031-35.648437h.003907c4.832031-3.203125 8.132812-8.09375 9.289062-13.777344 1.15625-5.683593.03125-11.480469-3.171875-16.3125l-.710937-1.078125 10.457031-6.925781c7.460937-4.941406 16.433593-6.878906 25.269531-5.460937 12.792969 2.054687 25.785156-.757813 36.582031-7.910157l86.734375-57.4375c-.59375 7.523438-1.570312 15.003907-2.933594 22.359375-.804687 4.324219 2.050782 8.480469 6.375 9.28125.488282.09375.980469.136719 1.460938.136719 3.761719 0 7.105469-2.679687 7.816406-6.511719 2.207032-11.871094 3.476563-24.03125 3.804688-36.207031l24.441406-16.1875c8.222656-5.445313 13.835938-13.769531 15.796875-23.433594 1.964844-9.667969.046875-19.519531-5.398437-27.742187zm-177.21875-135.378906-24.324219 16.109374-4.789063-12.902343c-2-5.382813-4.292968-10.660157-6.832031-15.824219 12.339844 3.128906 24.355469 7.347656 35.945313 12.617188zm-252.097657 55.191406c32.316407-37.253906 76.335938-62.296875 124.492188-70.980469 7.726562 18.71875 9.578125 39.632813 4.960937 59.566406l-19.410156 83.855469c-3.050781-3.257812-7.011719-5.503906-11.472656-6.410156-5.6875-1.160156-11.480469-.03125-16.3125 3.171875l-54.980469 36.40625c-.003906 0-.003906 0-.007813.003906 0 0-.003906 0-.003906.003906l-79.296875 52.511719c-.433593-5.59375-.660156-11.230469-.660156-16.863281 0-51.921875 18.714844-102.09375 52.691406-141.265625zm207.191407 250.441406c-.308594 1.515625-1.191407 2.824219-2.484376 3.679688h.003907l-47.28125 31.308593-87.753907-130.871093c-2.449218-3.652344-7.394531-4.625-11.046874-2.175782-3.648438 2.449219-4.625 7.390625-2.175782 11.042969l87.699219 130.796875-67.496094 44.699219c-67.070312-29.335938-115.066406-91.289063-126.605469-163.378907l79.390626-52.402343 9.136718 13.632812c1.539063 2.289063 4.054688 3.527344 6.621094 3.527344 1.523438 0 3.066406-.433594 4.425781-1.347656 3.652344-2.449219 4.628907-7.394531 2.179688-11.046875l-9.074219-13.535156 48.320312-31.894532c1.285157-.855468 2.828126-1.152344 4.34375-.84375 1.515626.308594 2.824219 1.191406 3.679688 2.480469l107.273438 161.984375c.851562 1.285156 1.152343 2.828125.84375 4.34375zm211.921874-145.683594c-1.117187 5.5-4.308593 10.234375-8.988281 13.332032l-27.941406 18.503906c-.007813.003906-.015625.011718-.027344.015625l-99.730469 66.046875c-7.460937 4.941406-16.433593 6.882812-25.269531 5.460937-12.789062-2.050781-25.78125.757813-36.582031 7.910157l-10.457031 6.925781-87.859375-132.667969 22.710937-98.105469c5.847657-25.273437 2.765625-51.894531-8.375-75.085937-.101562-.242188-.210937-.476563-.335937-.707032-2.140625-4.382812-4.570313-8.636718-7.285156-12.738281-5.28125-7.976562-3.089844-18.761719 4.890624-24.046875 6.742188-4.464844 15.851563-3.621094 21.65625 2.007813l15.207032 14.742187c16.449218 15.949219 29.359375 35.730469 37.328125 57.207032l8.28125 22.308593c.015625.042969.03125.078125.046875.117188.019531.050781.042968.105469.0625.15625.058594.136719.113281.261719.171875.367187.160156.335938.335937.667969.546875.984375 2.429687 3.667969 7.367187 4.671875 11.03125 2.242188l84.910156-56.226563c9.65625-6.394531 22.714844-3.742187 29.109375 5.914063s3.742187 22.714843-5.914063 29.109375l-7.371093 4.882812s-.003907 0-.007813.003906l-16.441406 10.890626c-.023438.015624-.039062.03125-.0625.042968-.09375.066406-.183594.128906-.257812.191406-3.398438 2.496094-4.277344 7.242188-1.921876 10.796876 2.425782 3.667968 7.367188 4.671874 11.035157 2.242187l16.453125-10.898437c4.675781-3.089844 10.273437-4.179688 15.769531-3.0625 5.496094 1.117187 10.234375 4.308593 13.328125 8.988281 3.097656 4.675781 4.191406 10.28125 3.074219 15.777343-1.117188 5.5-4.308594 10.234376-8.988281 13.332032l-23.820313 15.777344c-3.667969 2.425781-4.671875 7.363281-2.242187 11.03125 1.53125 2.3125 4.0625 3.566406 6.644531 3.566406 1.507812 0 3.035156-.429688 4.386719-1.324219l3.6875-2.441406 12.757812-8.449219c9.660156-6.394531 22.714844-3.742188 29.109375 5.914062 6.394531 9.660157 3.742187 22.714844-5.914063 29.113282l-11.898437 7.878906c-.0625.039062-.125.082031-.1875.125l-11.734375 7.769531c-3.667969 2.425781-4.671875 7.367188-2.242188 11.035157 1.53125 2.3125 4.0625 3.566406 6.644532 3.566406 1.507812 0 3.035156-.429688 4.386718-1.324219l3.6875-2.441406s0-.003907.003907-.003907l12.757812-8.445312c4.675781-3.097656 10.277344-4.191406 15.777344-3.070312 5.5 1.113281 10.234375 4.308593 13.332031 8.984374 3.09375 4.675782 4.183594 10.28125 3.066406 15.777344zm0 0"/>
+                                                            </svg>
+                                                        </div>
+                                                        <h2 class="sec__title mb-3 font-size-30 line-height-40">Listhub is the best way to find & discover <br> great local businesses</h2>
+                                                        <p class="sec__desc mb-4">
+                                                            Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero a feugiat
+                                                        </p>
+                                                    </div>
+                                                    <div class="btn-box">
+                                                        <a href="#" class="theme-btn gradient-btn" data-toggle="modal" data-target="#signUpModal"><i class="la la-user-plus mr-2"></i>Create an Account</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                {% endblock %}
+
+                <div class="section-block"></div>
+        
+                {% block testimonial_area %}
+                    <section class="testimonial-area section-padding text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-heading">
+                                        <h2 class="sec__title">Ne nous croyez pas <br> Lisez ce que disent les clients</h2>
+                                        <p class="sec__desc">
+                                            Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero,<br>
+                                            a feugiat eros. Nunc ut lacinia tortors.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if testimonials|length > 0 %}
+                                <div class="row padding-top-60px">
+                                    <div class="col-lg-12">
+                                        <div class="testimonial-carousel owl-trigger-action">
+                                        {% for testimonial in testimonials %}
+                                            <div class="testimonial-item">
+                                                <div class="testi-comment border border-color">
+                                                    <p class="testi__desc">{{ testimonial.content|raw }}</p>
+                                                </div>
+                                                <div class="testi-content">
+                                                    <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" class="testi__img" alt="testimonial image">
+                                                    <h4 class="tesi__title">{{ testimonial.admin.user.lastname ~' '~ testimonial.admin.user.firstname }}</h4>
+                                                    <span class="testi__meta">{{ testimonial.admin.user.address|default('Aucune adresse') }}</span>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </section>
+                {% endblock %}
+
+                <div class="section-block"></div>
+
+                {% block blog_area %}
+                    <section class="blog-area section-padding overflow-hidden">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-heading text-center">
+                                        <h2 class="sec__title">Derniers Conseils & Articles</h2>
+                                        <p class="sec__desc">
+                                            Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, <br>
+                                            a feugiat eros. Nunc ut lacinia tortors.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row padding-top-60px">
+                                <div class="col-lg-12">
+                                    <div class="card-carousel owl-trigger-action">
+                                    {% for i in 1..4 %}
+                                        <div class="card-item card-item-layout-2">
+                                            <div class="card-image">
+                                                <a href="#" class="d-block">
+                                                    <img src="{{ asset('assets/front/images/img10.jpg') }}" class="card__img" alt="blog image">
+                                                    <span class="badge">January 15, 2020</span>
+                                                </a>
+                                                <div class="post-share">
+                                                    <span class="la la-share-alt share-icon"></span>
+                                                <div class="post-share-social">
+                                                    <a href="#" class="post-share-social-icon"><i class="lab la-facebook-f"></i></a>
+                                                    <a href="#" class="post-share-social-icon"><i class="lab la-twitter"></i></a>
+                                                    <a href="#" class="post-share-social-icon"><i class="lab la-instagram"></i></a>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-content">
+                                                <a href="#" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="Kamran Adi">
+                                                    <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="author-img">
+                                                </a>
+                                                <ul class="listing-meta d-flex justify-content-center align-items-center">
+                                                    <li>
+                                                        <a href="#" class="listing-cat-link">Travel</a>,
+                                                        <a href="#" class="listing-cat-link">News</a>
+                                                    </li>
+                                                </ul>
+                                                <h4 class="card-title pt-2">
+                                                    <a href="#">Five Of Nature’s Swimming Pools</a>
+                                                </h4>
+                                                <p class="card-sub mt-3">
+                                                    Have you ever seen an elephant fly? Early Wednesday morning, Walt Disney Studios Motion Pictures released
+                                                </p>
+                                                <ul class="listing-action d-flex justify-content-around align-items-center border-top border-top-color mt-4 pt-4">
+                                                    <li class="pill"><i class="la la-share mr-1"></i>275</li>
+                                                    <li class="pill"><i class="la la-eye mr-1"></i>319</li>
+                                                    <li class="pill"><i class="la la-comment mr-1"></i>24</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="more-btn-box pt-5 text-center">
+                                <a href="{{ path("app_blog") }}" class="theme-btn gradient-btn"><i class="la la-list-alt mr-2"></i>Voir toutes les publications</a>
+                            </div>
+                        </div>
+                    </section>
+                {% endblock %}    
+{% endblock %}

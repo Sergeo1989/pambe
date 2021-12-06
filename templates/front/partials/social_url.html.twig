@@ -6,7 +6,7 @@
 {% set youtube      = social_url.youtube %}
 {% set pinterest    = social_url.pinterest %}
 
-<div class="col-lg-6 d-flex align-items-center header-top-info">
+
     {% if facebook or twitter or instagram or whatsapp or linkedin or youtube or pinterest %}
         <span class="mr-2 text-white font-weight-semi-bold font-size-14">Suivez-Nous:</span>
         <ul class="social-profile social-profile-colored">
@@ -18,8 +18,4 @@
             {% if youtube %}<li><a href="{{ youtube }}" class="youtube-bg"><i class="lab la-youtube"></i></a></li>{% endif %}
             {% if pinterest %}<li><a href="{{ pinterest }}" class="pinterest-bg"><i class="la la-pinterest"></i></a></li>{% endif %}
         </ul>
-        <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
-            <a href="{{ path("app_contact") }}">Contact</a>
-        </span>
     {% endif %}
-</div>

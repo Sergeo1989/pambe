@@ -7,9 +7,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CategoryProfessionalCrudController extends AbstractCrudController
 {
@@ -31,7 +36,17 @@ class CategoryProfessionalCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('name', 'Nom'),
-            TextEditorField::new('description')
+            TextEditorField::new('description'),
+            TextField::new('iconFile', 'Icône')
+                        ->setFormType(VichImageType::class)
+                        ->setHelp("La largeur et la hauteur doivent être comprise entre 200px et 400px")
+                        ->onlyOnForms(),
+            ImageField::new('icon', 'Icône')
+                        ->setBasePath('/uploads/images/categorypro/')
+                        ->onlyOnIndex(),
+            BooleanField::new('status')->onlyOnIndex(),
+            ChoiceField::new('grade', 'Niveau')->setChoices(fn() => ['Standard' => CategoryProfessional::NORMAL, 'Populaire' => CategoryProfessional::POPULAR])->onlyWhenUpdating(),
+            IntegerField::new('position')->onlyWhenUpdating()
         ];
     }
 
