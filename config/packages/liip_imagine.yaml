@@ -8,7 +8,12 @@ liip_imagine:
             quality: 75
             filters:
                 auto_rotate: ~
-                thumbnail: { size: [32, 32], mode: outbound }
+                thumbnail: { size: [128, 128], mode: outbound }
+        cover_small:
+            quality: 75
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [370, 246], mode: outbound }
         banner:
             quality: 75
             filters:

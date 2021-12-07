@@ -1,0 +1,43 @@
+{% set image = article.articleImages is defined and article.articleImages is not empty ? vich_uploader_asset(article.articleImages[0], 'imageFile') : asset('assets/front/images/img10.jpg')  %}
+{% set categories = article.categoryArticles %}
+<div class="card-item card-item-layout-2">
+    <div class="card-image">
+        <a href="{{ path('app_blog_article', {'slug': article.slug}) }}" class="d-block">
+            <img src="{{ image|imagine_filter('cover_small') }}" class="card__img" alt="{{ article.title }}">
+            <span class="badge">{{ article.dateAdd|format_datetime('full', 'none') }}</span>
+        </a>
+        <div class="post-share">
+            <span class="la la-share-alt share-icon"></span>
+            <div class="post-share-social">
+                <a href="#" class="post-share-social-icon"><i class="lab la-facebook-f"></i></a>
+                <a href="#" class="post-share-social-icon"><i class="lab la-twitter"></i></a>
+                <a href="#" class="post-share-social-icon"><i class="lab la-instagram"></i></a>
+            </div>
+        </div>
+    </div> 
+    <div class="card-content">
+        <a href="#" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ article.admin.user.firstname|title }}">
+            <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="{{ article.admin.user.lastname|title }}">
+        </a>
+        {% if categories|length > 0 %}
+            <ul class="listing-meta d-flex justify-content-center align-items-center">
+                <li>
+                    {% for category in categories %}
+                        <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="listing-cat-link">{{ category.name }}</a>{{ loop.last ? "" : ","}}
+                    {% endfor %}
+                </li>
+            </ul>
+        {% endif %}
+        <h4 class="card-title pt-2">
+            <a href="{{ path('app_blog_article', {'slug': article.slug}) }}">{{ article.title|title }}</a>
+        </h4>
+        <p class="card-sub mt-3">
+            {{ article.content|striptags|u.truncate(100, '...', false) }}
+        </p>
+        <ul class="listing-action d-flex justify-content-around align-items-center border-top border-top-color mt-4 pt-4">
+            <li class="pill"><i class="la la-share mr-1"></i>{{ article.share }}</li>
+            <li class="pill"><i class="la la-eye mr-1"></i>{{ article.view }}</li>
+            <li class="pill"><i class="la la-comment mr-1"></i>{{ article.comments|length }}</li>
+        </ul>
+    </div>
+</div>

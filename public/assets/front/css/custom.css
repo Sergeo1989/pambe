@@ -61,3 +61,9 @@ description: Our custom pambe CSS
 .menu {
     margin-left: 30px;
 }
+.card-item .card-title i.green {
+    color: #40CC6F;
+}
+.card-item .card-title i.red {
+    color: #e4354c;
+}

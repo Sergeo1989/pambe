@@ -82,6 +82,16 @@ class Article
      */
     private $articleImages;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $view;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $share;
+
     public function __construct()
     {
         $this->categoryArticles = new ArrayCollection();
@@ -254,6 +264,8 @@ class Article
     {
         $this->status = true;
         $this->position = 0;
+        $this->view = 0;
+        $this->share = 0;
         $this->date_add = new \DateTime("now");
         $this->date_upd = new \DateTime("now");
     }
@@ -292,6 +304,30 @@ class Article
                 $articleImage->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getView(): ?int
+    {
+        return $this->view;
+    }
+
+    public function setView(?int $view): self
+    {
+        $this->view = $view;
+
+        return $this;
+    }
+
+    public function getShare(): ?int
+    {
+        return $this->share;
+    }
+
+    public function setShare(?int $share): self
+    {
+        $this->share = $share;
 
         return $this;
     }

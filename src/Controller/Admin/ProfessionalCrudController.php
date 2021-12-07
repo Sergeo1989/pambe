@@ -12,6 +12,7 @@ use App\Form\ProfessionalImageFormType;
 use App\Form\ServiceFormType;
 use App\Repository\ProfessionalRepository;
 use App\Repository\QualificationRepository;
+use App\Service\ContextService;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -41,13 +42,20 @@ class ProfessionalCrudController extends AbstractCrudController
     private $professionalRepo;
     private $qualificationRepo;
     private $hasher;
+    private $contextService;
 
-    public function __construct(UserPasswordHasherInterface $hasher, EntityManagerInterface $em, ProfessionalRepository $professionalRepo, QualificationRepository $qualificationRepo)
+    public function __construct(
+        UserPasswordHasherInterface $hasher, 
+        EntityManagerInterface $em, 
+        ProfessionalRepository $professionalRepo, 
+        QualificationRepository $qualificationRepo,
+        ContextService $contextService)
     {
         $this->hasher = $hasher;
         $this->em = $em;
         $this->professionalRepo = $professionalRepo;
         $this->qualificationRepo = $qualificationRepo;
+        $this->contextService = $contextService;
     }
 
     public static function getEntityFqcn(): string
@@ -86,6 +94,7 @@ class ProfessionalCrudController extends AbstractCrudController
         $name = TextField::new('user', 'Nom complet', User::class);
         $firstname = TextField::new('user.firstname', 'Prénom');
         $phone = TelephoneField::new('user.phone', 'Téléphone');
+        $address = TextField::new('user.address', 'Adresse');
         $website = UrlField::new('website', 'Site web');
         $date_add = DateTimeField::new('date_add', 'Date d\'ajout');
         $date_upd = DateTimeField::new('date_upd', 'Date de mise à jour');
@@ -104,9 +113,9 @@ class ProfessionalCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName)
             return [$id, $email, $name, $date_add, $date_upd, $default_category, $verified, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
-            return [$email, $firstname, $lastname, $phone, $website, $profile, $cover, $galleries, $level, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $services];
+            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $level, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $services];
         elseif(Crud::PAGE_DETAIL === $pageName)
-            return [$email, $name, $phone, $website, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $verified, $status];
+            return [$email, $name, $phone, $address, $website, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $verified, $status];
         elseif(Crud::PAGE_NEW === $pageName)
             return [$user, $website, $profile, $cover, $galleries, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description];
     }
@@ -129,8 +138,18 @@ class ProfessionalCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $user = $entityInstance->getUser();
+        $user->setRoles(['ROLE_PROFESSIONAL']);
         $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
+        $entityInstance->setSlug($this->contextService->slug($user));
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $user = $entityInstance->getUser();
+        $user->setRoles(['ROLE_PROFESSIONAL']);
+        $entityInstance->setSlug($this->contextService->slug($user));
+        parent::updateEntity($entityManager, $entityInstance);
     }
 
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore

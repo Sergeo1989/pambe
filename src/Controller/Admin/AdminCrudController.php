@@ -84,6 +84,7 @@ class AdminCrudController extends AbstractCrudController
     {
         $entityInstance->setIdentifier(uniqid(date('Y')));
         $user = $entityInstance->getUser();
+        $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
         parent::persistEntity($entityManager, $entityInstance);
     }

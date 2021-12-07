@@ -12,4 +12,9 @@ class CategoryProController extends AbstractController
     {
         return $this->render('front/professional/category/show.html.twig', compact('categoryPro'));
     }
+
+    public function showPopular(): Response
+    {
+        return $this->render('front/professional/category/show_popular.html.twig');
+    }
 }

@@ -1,22 +1,25 @@
 {% extends 'front/blog/layout.html.twig' %}
 
+{% block title %}{{ category.name|title ~' - '~ parent() }}{% endblock %}
+
 {% block breadcrumb_blog_area %}
     {% embed "front/partials/breadcrumb.html.twig" %}
         {% block breadcrumb_heading %}
             <div class="section-heading">
-                <h2 class="sec__title text-white font-size-40 mb-0">Nos Actualités</h2>
+                <h2 class="sec__title text-white font-size-40 mb-0">{{ category.name|title }}</h2>
             </div>
         {% endblock %}
         {% block breadcrumb_links %}
-            <li>Blog</li>
+            <li>{{ category.name|title }}</li>
         {% endblock %}
-    {% endembed %}  
+    {% endembed %}
 {% endblock %}
 
 {% block articles %}
-    {% for article in articles %}
+    {% for article in category.articles %}
         <div class="col-lg-4 responsive-column">
             {% include "front/partials/blog/article.html.twig" with {"article" : article} %}
         </div>
     {% endfor %}
 {% endblock %}
+

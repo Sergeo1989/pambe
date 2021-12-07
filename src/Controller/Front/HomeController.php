@@ -1,39 +1,31 @@
 <?php
 
 namespace App\Controller\Front;
- 
-use App\Repository\CategoryProfessionalRepository;
+
 use App\Repository\TestimonialRepository;
+use App\Service\BlogService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends AbstractController
 {
-    private $categoryProRepo;
     private $testimonialRepo;
+    private $blogService;
 
-    public function __construct(CategoryProfessionalRepository $categoryProRepo, TestimonialRepository $testimonialRepo)
+    public function __construct(TestimonialRepository $testimonialRepo, BlogService $blogService)
     {
-        $this->categoryProRepo = $categoryProRepo;
         $this->testimonialRepo = $testimonialRepo;
+        $this->blogService = $blogService;
     }
 
     public function index(): Response
     {
         $testimonials = $this->testimonialRepo->findBy(['status' => true]);
-        $categories_pro = $this->categoryProRepo->findBy(['status' => true]);
-
-
-        usort($categories_pro, function ($a, $b)
-        {
-            if ($a->getView() == $b->getView())
-                return 0;
-            return ($a->getView() < $b->getView()) ? 1 : -1;
-        });
+        $articles = $this->blogService->getAllArticle();
 
         return $this->render('front/home/index.html.twig', [
-            'categories_pro_popular' => $categories_pro,
-            'testimonials' => $testimonials
+            'testimonials' => $testimonials,
+            'articles' => $articles,
         ]);
     }
 }

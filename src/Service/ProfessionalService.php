@@ -8,11 +8,13 @@ use App\Repository\ProfessionalRepository;
 
 class ProfessionalService
 {
+    private $context;
     private $categoryProRepo;
     private $professionalRepo;
 
-    public function __construct(CategoryProfessionalRepository $categoryProRepo, ProfessionalRepository $professionalRepo)
+    public function __construct(ContextService $context, CategoryProfessionalRepository $categoryProRepo, ProfessionalRepository $professionalRepo)
     {
+        $this->context = $context;
         $this->categoryProRepo = $categoryProRepo;
         $this->professionalRepo = $professionalRepo;
     }
@@ -36,28 +38,21 @@ class ProfessionalService
     {
         $categories_pro = $this->getAllProfessionalCategory();
 
-        usort($categories_pro, function ($a, $b)
-        {
-            if ($a->getView() == $b->getView())
-                return 0;
-            return ($a->getView() < $b->getView()) ? 1 : -1;
-        });
-
-        return $categories_pro;
+        return $this->context->sort($categories_pro, 'view');
     }
 
     /**
-     * Cette fonction retourne tous les professionnels vérifiés et ayant un statut actif
+     * Cette fonction retourne tous les professionnels ayant un statut actif
      *
      * @return Professional[]
      */
     public function getAllProfessional()
     {
-        return $this->professionalRepo->findBy(['verified' => true, 'status' => true]);
+        return $this->professionalRepo->findBy(['status' => true]);
     }
 
     /**
-     * Cette fonction retourne tous les professionnels vip vérifiés, ayant un statut actif et triés 
+     * Cette fonction retourne tous les professionnels vip ayant un statut actif et triés 
      * selon une position
      *
      * @return Professional[]
@@ -69,18 +64,11 @@ class ProfessionalService
                 return $professional;
         });
 
-        usort($professionals_vip, function ($a, $b)
-        {
-            if ($a->getPosition() == $b->getPosition())
-                return 0;
-            return ($a->getPosition() < $b->getPosition()) ? 1 : -1;
-        });
-
-        return $professionals_vip;
+        return $this->context->sort($professionals_vip, 'position');
     }
 
     /**
-     * Cette fonction retourne tous les nouveaux professionnels vérifiés, ayant un statut actif et triés 
+     * Cette fonction retourne tous les nouveaux professionnels ayant un statut actif et triés 
      * selon une position
      *
      * @return Professional[]
@@ -94,13 +82,6 @@ class ProfessionalService
                 return $professional;
         });
 
-        usort($professionals_new, function ($a, $b)
-        {
-            if ($a->getPosition() == $b->getPosition())
-                return 0;
-            return ($a->getPosition() < $b->getPosition()) ? 1 : -1;
-        });
-
-        return $professionals_new;
+        return $this->context->sort($professionals_new, 'position');
     }
 }

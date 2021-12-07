@@ -1,4 +1,7 @@
 {
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
@@ -112,17 +115,26 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "gedmo/doctrine-extensions": {
+        "version": "v3.3.1"
+    },
     "imagine/imagine": {
         "version": "1.2.4"
     },
     "jms/metadata": {
         "version": "2.5.1"
     },
+    "knplabs/knp-components": {
+        "version": "v3.3.0"
+    },
     "knplabs/knp-menu": {
         "version": "v3.3.0"
     },
     "knplabs/knp-menu-bundle": {
         "version": "v3.2.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.8.0"
     },
     "laminas/laminas-code": {
         "version": "4.4.3"
@@ -269,6 +281,18 @@
         },
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+        },
+        "files": [
+            "./config/packages/stof_doctrine_extensions.yaml"
         ]
     },
     "symfony/asset": {
@@ -640,6 +664,12 @@
     },
     "twig/extra-bundle": {
         "version": "v3.3.3"
+    },
+    "twig/intl-extra": {
+        "version": "v3.3.4"
+    },
+    "twig/string-extra": {
+        "version": "v3.3.4"
     },
     "twig/twig": {
         "version": "v3.3.3"

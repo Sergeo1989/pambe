@@ -18,17 +18,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ArticleCrudController extends AbstractCrudController
 {
     private $context;
-    private $slugger;
 
-    public function __construct(ContextService $context, SluggerInterface $slugger)
+    public function __construct(ContextService $context)
     {
         $this->context = $context;
-        $this->slugger = $slugger;
     }
 
     public static function getEntityFqcn(): string
@@ -79,7 +76,13 @@ class ArticleCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $entityInstance->setAdmin($this->context->getUser()->getAdmin());
-        $entityInstance->setSlug($this->slugger->slug(strtolower($entityInstance->getTitle())));
+        $entityInstance->setSlug($this->context->slug($entityInstance->getTitle()));
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->setSlug($this->context->slug($entityInstance->getTitle()));
         parent::persistEntity($entityManager, $entityInstance);
     }
 }

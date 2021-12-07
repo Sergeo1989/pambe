@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CategoryArticle;
+use App\Service\ContextService;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -14,16 +15,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CategoryArticleCrudController extends AbstractCrudController
 {
-    private $slugger;
+    private $context;
 
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(ContextService $context)
     {
-        $this->slugger = $slugger;
+        $this->context = $context;
     }
 
     public static function getEntityFqcn(): string
@@ -74,7 +74,13 @@ class CategoryArticleCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $entityInstance->setSlug($this->slugger->slug(strtolower($entityInstance->getName())));
+        $entityInstance->setSlug($this->context->slug($entityInstance->getName()));
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->setSlug($this->context->slug($entityInstance->getName()));
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }

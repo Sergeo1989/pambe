@@ -1,0 +1,33 @@
+                        <section class="testimonial-area section-padding text-center">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="section-heading">
+                                            <h2 class="sec__title">Ne nous croyez pas <br> Lisez ce que disent les clients</h2>
+                                            <p class="sec__desc">
+                                                Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero,<br>
+                                                a feugiat eros. Nunc ut lacinia tortors.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row padding-top-60px">
+                                    <div class="col-lg-12">
+                                        <div class="testimonial-carousel owl-trigger-action">
+                                            {% for testimonial in testimonials %}
+                                                <div class="testimonial-item">
+                                                    <div class="testi-comment border border-color">
+                                                        <p class="testi__desc">{{ testimonial.content|raw }}</p>
+                                                    </div>
+                                                    <div class="testi-content">
+                                                        <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" class="testi__img" alt="testimonial image">
+                                                        <h4 class="tesi__title">{{ testimonial.admin.user.lastname ~' '~ testimonial.admin.user.firstname }}</h4>
+                                                        <span class="testi__meta">{{ testimonial.admin.user.address|default('Aucune adresse') }}</span>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>

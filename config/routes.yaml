@@ -35,12 +35,27 @@ app_contact:
 app_blog:
     path: /blog
     controller: App\Controller\Front\BlogController::index
+app_blog_article:
+    path: /blog/{slug}/article
+    controller: App\Controller\Front\BlogController::show
+app_blog_category:
+    path: /blog/article/{slug}/category
+    controller: App\Controller\Front\BlogController::category
 app_about:
     path: /about
     controller: App\Controller\Front\AboutController::index
-app_professional:
-    path: /professional
+app_professional_show:
+    path: /professional/{slug}/show
     controller: App\Controller\Front\ProfessionalController::show
+app_professional_new:
+    path: /professional/new
+    controller: App\Controller\Front\ProfessionalController::new
+app_professional_vip:
+    path: /professional/vip
+    controller: App\Controller\Front\ProfessionalController::vip
 app_category_pro:
     path: /professional/{slug}/category
     controller: App\Controller\Front\CategoryProController::show
+app_category_popular:
+    path: /professional/category/popular
+    controller: App\Controller\Front\CategoryProController::showPopular

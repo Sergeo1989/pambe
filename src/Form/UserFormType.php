@@ -30,10 +30,22 @@ class UserFormType extends AbstractType
                 ],
             ])
             ->add('firstname', TextType::class, [
-                'label' => 'Prénom'
+                'required' => true,
+                'label' => 'Prénom',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le prénom ne doit pas être vide.',
+                    ])
+                ]
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Nom'
+                'required' => true,
+                'label' => 'Nom',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le nom ne doit pas être vide.',
+                    ])
+                ]
             ])
             ->add('password', PasswordType::class, [
                 'required' => true,
@@ -48,6 +60,15 @@ class UserFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+            ])
+            ->add('address', TextType::class, [
+                'required' => true,
+                'label' => 'adresse',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'L\'adresse ne doit pas être vide.',
+                    ])
+                ]
             ]);  
     }
     
