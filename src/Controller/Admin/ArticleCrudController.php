@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use App\Entity\CategoryArticle;
+use App\Entity\KeywordArticle;
 use App\Form\ArticleImageFormType;
 use App\Service\ContextService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,7 +55,8 @@ class ArticleCrudController extends AbstractCrudController
             TextEditorField::new('content', 'Contenu')->hideOnIndex(),
             CollectionField::new('articleImages', 'Images d\'articles')->setEntryType(ArticleImageFormType::class)
                             ->setHelp("Résolution: 770x490 pixels")->onlyOnForms(),
-            AssociationField::new('categoryArticles', 'Catégories', CategoryArticle::class)
+            AssociationField::new('categoryArticles', 'Catégories', CategoryArticle::class),
+            AssociationField::new('keywords', 'Mots Clés', KeywordArticle::class)
         ];
     }
 

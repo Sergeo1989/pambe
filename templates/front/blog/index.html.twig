@@ -20,3 +20,8 @@
         </div>
     {% endfor %}
 {% endblock %}
+
+{% block paginator_blog %}
+    {% do articles.setPageRange(4) %}
+    {{ knp_pagination_render(articles, 'front/partials/pagination.html.twig') }}              
+{% endblock %}

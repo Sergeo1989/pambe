@@ -2,7 +2,7 @@
     <div class="category-item overflow-hidden">
         <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category') }}" alt="{{ category.name|e }}" class="lazy cat-img">
         <div class="category-content d-flex align-items-center justify-content-center">
-            <a href="#" class="category-link d-flex flex-column justify-content-center w-100 h-100">
+            <a href="{{ path("app_category_pro", {"slug" : category.slug}) }}" class="category-link d-flex flex-column justify-content-center w-100 h-100">
                 <div class="icon-element mb-3 mx-auto">
                     <span class="la la-dumbbell"></span>
                 </div>

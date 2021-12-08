@@ -5,22 +5,26 @@ namespace App\Service;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryArticleRepository;
 use App\Repository\CommentRepository;
+use App\Repository\KeywordArticleRepository;
 
 class BlogService
 {
     private $context;
     private $categoryArtRepo;
+    private $keywordArtRepo;
     private $articleRepo;
     private $commentRepo;
 
     public function __construct(
         ContextService $context,
         CategoryArticleRepository $categoryArtRepo, 
+        KeywordArticleRepository $keywordArtRepo, 
         ArticleRepository $articleRepo, 
         CommentRepository $commentRepo)
     {
         $this->context = $context;
         $this->categoryArtRepo = $categoryArtRepo;
+        $this->keywordArtRepo = $keywordArtRepo;
         $this->articleRepo = $articleRepo;
         $this->commentRepo = $commentRepo;
     }
@@ -32,6 +36,15 @@ class BlogService
      */
     public function getAllArticleCategory(){
         return $this->categoryArtRepo->findBy(['status' => true]);
+    }
+
+    /**
+     * Cette fonction retourne toutes les mots clés ayant un statut actif
+     *
+     * @return KeywordArticle[]
+     */
+    public function getAllArticleKeyword(){
+        return $this->keywordArtRepo->findBy(['status' => true]);
     }
 
     /**

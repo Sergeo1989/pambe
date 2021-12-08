@@ -138,6 +138,11 @@ class Professional
      */
     private $slug;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $available;
+
     public function __construct()
     {
         $this->category_professional_professionals = new ArrayCollection();
@@ -493,6 +498,7 @@ class Professional
         $this->verified = false;
         $this->level = self::NORMAL;
         $this->position = 0;
+        $this->available = true;
         $this->date_add = new \DateTime("now");
         $this->date_upd = new \DateTime("now");
     }
@@ -537,6 +543,18 @@ class Professional
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getAvailable(): ?bool
+    {
+        return $this->available;
+    }
+
+    public function setAvailable(?bool $available): self
+    {
+        $this->available = $available;
 
         return $this;
     }

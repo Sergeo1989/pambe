@@ -1,0 +1,16 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'à propos - '|capitalize ~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">{{ 'à propos'|capitalize }}</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>{{ 'à propos'|capitalize }}</li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

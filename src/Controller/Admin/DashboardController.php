@@ -10,6 +10,7 @@ use App\Entity\CategoryProfessional;
 use App\Entity\City;
 use App\Entity\Comment;
 use App\Entity\Country;
+use App\Entity\KeywordArticle;
 use App\Entity\Language;
 use App\Entity\Professional;
 use App\Entity\Region;
@@ -94,6 +95,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Villes', 'bi bi-geo-alt-fill', City::class);
         yield MenuItem::section('Blog');
         yield MenuItem::linkToCrud('Catégories', 'bi bi-pin', CategoryArticle::class);
+        yield MenuItem::linkToCrud('Mots Clés', 'bi bi-pin', KeywordArticle::class);
         yield MenuItem::linkToCrud('Articles', 'bi bi-pin', Article::class);
         yield MenuItem::linkToCrud('Commentaires', 'bi bi-pin', Comment::class);
         yield MenuItem::section('Configuration');

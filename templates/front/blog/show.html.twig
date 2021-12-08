@@ -1,0 +1,619 @@
+{% extends 'front/blog/layout.html.twig' %}
+
+{% block meta %}
+    <meta name="description" content="{{ article.content|striptags|u.truncate(100, '...', false) }}">
+    <meta name="keywords" content="{{ article.keywords|map(k => "#{k.name}")|join(', ') }}">
+{% endblock %}
+
+{% block title %}{{ article.title ~' - '~ parent() }}{% endblock %}
+
+{% block breadcrumb_blog_area %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">{{ article.title|title }}</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+                <li><a href="{{ path('app_blog') }}">Blog</a></li>
+                <li>{{ article.title|title }}</li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block blog_article %}
+    <section class="blog-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card-item single-card">
+                        <div class="card-image after-none">
+                            <div class="single-slider owl-trigger-action owl-trigger-action-3">
+                                {% for cover in article.articleImages %}
+                                    <div class="single-slider-item">
+                                        <img src="{{ vich_uploader_asset(cover, 'imageFile') }}" class="card__img" alt="{{ article.title }}">
+                                    </div>
+                                {% else %}
+                                    <div class="single-slider-item">
+                                        <img src="{{ asset('assets/front/images/img10.jpg') }}" class="card__img" alt="{{ article.title }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title font-size-25 mb-0">{{ article.title|e }}</h4>
+                            <div class="d-flex flex-wrap align-items-center pt-3">
+                                <a href="#" class="d-flex align-items-center text-gray mr-3">
+                                    <div class="user-thumb user-thumb-sm d-inline-block mr-2">
+                                        <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="{{ article.admin.user.firstname }}">
+                                    </div>
+                                    <span class="font-weight-medium">Par {{ article.admin.user.lastname|capitalize }}</span>
+                                </a>
+                                <ul class="listing-meta d-flex align-items-center pt-0">
+                                    <li class="mr-3">
+                                        <i class="la la-calendar mr-1"></i>{{ article.dateAdd|date('M j, Y') }}
+                                    </li>
+                                    <li class="mr-3">
+                                        <i class="la la-tags mr-1"></i>
+                                        {% for category in article.categoryArticles %}
+                                            <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="listing-cat-link">{{ category.name }}</a>{{ loop.last ? "" : ","}}
+                                        {% endfor %}
+                                    </li>
+                                    <li class="mr-3">
+                                        <i class="la la-comment mr-1"></i>
+                                        <a href="javascript:void(0)" class="listing-cat-link">{{ article.comments|length }} Commentaire{{ article.comments|length  > 1 ? "s" : ""}}</a>
+                                    </li>
+                                    <li>
+                                        <i class="la la-share-alt mr-1"></i>
+                                        <a href="javascript:void(0)" class="listing-cat-link">{{ article.share }} Partage{{ article.share > 1 ? "s" : ""}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <br/>{{ article.content|raw }}<br/>
+                            {% if article.keywords|length > 0 %}
+                                <h3 class="widget-title">Mots clés:</h3>
+                                <ul class="tag-list tag-list-sm mb-4">
+                                    {% for keyword in article.keywords %}
+                                        <li><a href="javascript:void(0)">{{ keyword.name|e }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                            <h3 class="widget-title">Partager cette publication:</h3>
+                            <ul class="social-profile social-profile-styled">
+                                <li><a href="#" class="facebook-bg" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#" class="twitter-bg" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#" class="instagram-bg" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#" class="youtube-bg" data-toggle="tooltip" data-placement="top" title="Youtube"><i class="la la-youtube"></i></a></li>
+                                <li><a href="#" class="behance-bg" data-toggle="tooltip" data-placement="top" title="Behance"><i class="la la-behance"></i></a></li>
+                                <li><a href="#" class="dribbble-bg" data-toggle="tooltip" data-placement="top" title="Dribbble"><i class="la la-dribbble"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <ul class="post-nav d-flex align-items-center justify-content-between margin-bottom-80px">
+                        <li class="prev-post">
+                            <a href="#">
+                                <i class="la la-angle-left"></i>
+                                <span class="d-block font-size-12 line-height-20">Article Suivant</span>
+                                <span class="text-truncate">What to Do if You Overspent During the Holidays</span>
+                            </a>
+                        </li>
+                        <li class="next-post text-right">
+                            <a href="#">
+                                <i class="la la-angle-right"></i>
+                                <span class="d-block font-size-12 line-height-20">Article Précédent</span>
+                                <span class="text-truncate ml-auto">The Best Coffee Shops In Sydney Neighborhoods</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="bg-gray p-4 radius-round margin-bottom-80px">
+                        <div class="hosted-by d-flex">
+                            <a href="javascript:void(0)" class="user-thumb user-thumb-lg flex-shrink-0 mr-3">
+                                <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="{{ article.admin.user.firstname }}">
+                            </a>
+                            <div>
+                                <h4 class="font-size-20"><a href="user-profile.html" class="text-color">{{ article.admin.user.lastname ~' '~ article.admin.user.firstname }}</a></h4>
+                                <a href="mailto:{{ article.admin.user.email|e }}" class="btn-text font-weight-regular">{{ article.admin.user.email }}</a>
+                                <p class="pt-2 pb-3">The functional aspect comes first in the work process because it’s the core of the object: What is its purpose? something else? Shape, texture</p>
+                                <ul class="social-profile social-profile-styled">
+                                    <li><a href="#" class="facebook-bg" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="lab la-facebook-f"></i></a></li>
+                                    <li><a href="#" class="twitter-bg" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="lab la-twitter"></i></a></li>
+                                    <li><a href="#" class="instagram-bg" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="lab la-instagram"></i></a></li>
+                                    <li><a href="#" class="youtube-bg" data-toggle="tooltip" data-placement="top" title="Youtube"><i class="la la-youtube"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- end author-box -->
+                    <div class="row margin-bottom-50px">
+                        <div class="col-lg-12">
+                            <h3 class="widget-title font-size-24 pb-4">Publications Similaires</h3>
+                        </div><!-- end col-lg-12 -->
+                        <div class="col-lg-6 responsive-column">
+                            <div class="card-item card-item-layout-2">
+                                <div class="card-image">
+                                    <a href="blog-single.html" class="d-block">
+                                        <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/img10.jpg') }}" class="card__img lazy" alt="blog image">
+                                        <span class="badge">January 15, 2020</span>
+                                    </a>
+                                    <div class="post-share">
+                                        <span class="la la-share-alt share-icon"></span>
+                                        <div class="post-share-social">
+                                            <a href="#" class="post-share-social-icon"><i class="lab la-facebook-f"></i></a>
+                                            <a href="#" class="post-share-social-icon"><i class="lab la-twitter"></i></a>
+                                            <a href="#" class="post-share-social-icon"><i class="lab la-instagram"></i></a>
+                                        </div>
+                                    </div>
+                                </div><!-- end card-image -->
+                                <div class="card-content">
+                                    <a href="#" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="Kamran Adi">
+                                        <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="author-img">
+                                    </a>
+                                    <ul class="listing-meta d-flex justify-content-center align-items-center">
+                                        <li>
+                                            <a href="#" class="listing-cat-link">Travel</a>,
+                                            <a href="#" class="listing-cat-link">News</a>
+                                        </li>
+                                    </ul>
+                                    <h4 class="card-title pt-2">
+                                        <a href="blog-single.html">Five Of Nature’s Swimming Pools</a>
+                                    </h4>
+                                    <p class="card-sub mt-3">
+                                        Have you ever seen an elephant fly?   Early Wednesday morning, Walt Disney Studios Motion Pictures released
+                                    </p>
+                                    <ul class="listing-action d-flex justify-content-around align-items-center border-top border-top-color mt-4 pt-4">
+                                        <li class="pill"><i class="la la-share mr-1"></i>275</li>
+                                        <li class="pill"><i class="la la-eye mr-1"></i>319</li>
+                                        <li class="pill"><i class="la la-comment mr-1"></i>24</li>
+                                    </ul>
+                                </div><!-- end card-content -->
+                            </div><!-- end card-item -->
+                        </div><!-- end col-lg-6 -->
+                        <div class="col-lg-6 responsive-column">
+                            <div class="card-item card-item-layout-2" >
+                                <div class="card-image">
+                                    <a href="blog-single.html" class="d-block">
+                                        <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/img11.jpg') }}" class="card__img lazy" alt="blog image">
+                                        <span class="badge">March 15, 2020</span>
+                                    </a>
+                                    <div class="post-share">
+                                        <span class="la la-share-alt share-icon"></span>
+                                        <div class="post-share-social">
+                                            <a href="#" class="post-share-social-icon"><i class="lab la-facebook-f"></i></a>
+                                            <a href="#" class="post-share-social-icon"><i class="lab la-twitter"></i></a>
+                                            <a href="#" class="post-share-social-icon"><i class="lab la-instagram"></i></a>
+                                        </div>
+                                    </div>
+                                </div><!-- end card-image -->
+                                <div class="card-content">
+                                    <a href="#" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="Kamran Adi">
+                                        <img src="{{ asset('assets/front/images/avatar-img2.jpg') }}" alt="author-img">
+                                    </a>
+                                    <ul class="listing-meta d-flex justify-content-center align-items-center">
+                                        <li>
+                                            <a href="#" class="listing-cat-link">BusinessOwners</a>,
+                                            <a href="#" class="listing-cat-link">Restaurants</a>
+                                        </li>
+                                    </ul>
+                                    <h4 class="card-title pt-2">
+                                        <a href="blog-single.html">The joyless side of happy hour</a>
+                                    </h4>
+                                    <p class="card-sub mt-3">
+                                        Have you ever seen an elephant fly?   Early Wednesday morning, Walt Disney Studios Motion Pictures released
+                                    </p>
+                                    <ul class="listing-action d-flex justify-content-around align-items-center border-top border-top-color mt-4 pt-4">
+                                        <li class="pill"><i class="la la-share mr-1"></i>275</li>
+                                        <li class="pill"><i class="la la-eye mr-1"></i>319</li>
+                                        <li class="pill"><i class="la la-comment mr-1"></i>24</li>
+                                    </ul>
+                                </div><!-- end card-content -->
+                            </div><!-- end card-item -->
+                        </div><!-- end col-lg-6 -->
+                    </div><!-- end row -->
+                    <div class="block-card mb-4">
+                        <div class="block-card-header">
+                            <h2 class="widget-title pb-0">Commentaire{{ article.comments|length > 1 ? 's' : '' }} <span class="ml-1 text-color-2">({{ article.comments|length }})</span></h2>
+                        </div>
+                        <div class="block-card-body">
+                            <div class="comments-list">
+                                <div class="comment">
+                                    <div class="user-thumb user-thumb-lg flex-shrink-0">
+                                        <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="author-img">
+                                    </div>
+                                    <div class="comment-body">
+                                        <div class="meta-data">
+                                            <h4 class="comment__title">Adam Smith</h4>
+                                            <span class="comment__meta">San Francisco, CA</span>
+                                            <span class="comment__meta">4/12/2020</span>
+                                        </div>
+                                        <p class="comment-desc">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                            Ut enim ad minim veniam, quis nostrud exercitation.
+                                        </p>
+                                        <div class="comment-action d-flex align-items-center justify-content-between">
+                                            <a class="btn-gray btn-gray-sm" href="#" data-toggle="modal" data-target="#replayModal">
+                                                <i class="la la-reply mr-1"></i>Répondre
+                                            </a>
+                                            <p class="feedback-box">
+                                                <button type="button" class="btn-gray btn-gray-sm mr-1">
+                                                    <i class="la la-thumbs-o-up mr-1"></i>Utile <span class="text-color font-weight-semi-bold">2</span>
+                                                </button>
+                                                <button type="button" class="btn-gray btn-gray-sm">
+                                                    <i class="la la-smile-o mr-1"></i>Amusant
+                                                </button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="text-center">
+                            <div class="section-pagination">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination flex-wrap justify-content-center">
+                                        <li class="page-item">
+                                            <a class="page-link" href="#" aria-label="Previous">
+                                                <span aria-hidden="true"><i class="la la-arrow-left"></i></span>
+                                                <span class="sr-only">Précédent</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link page-link-active" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#" aria-label="Next">
+                                                <span aria-hidden="true"><i class="la la-arrow-right"></i></span>
+                                                <span class="sr-only">Suivant</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <p class="font-size-15 text-center pt-1">1 à 5</p>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="block-card">
+                        <div class="block-card-header">
+                            <h2 class="widget-title pb-0">Ajouter un Commentaire</h2>
+                            <p>Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont marqués d'un *.</p>
+                        </div><!-- end block-card-header -->
+                        <div class="block-card-body">
+                            <form method="post" class="form-box row">
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Nom</label>
+                                        <div class="form-group">
+                                            <span class="la la-user form-icon"></span>
+                                            <input class="form-control form-control-styled" type="text" name="name" placeholder="Votre nom">
+                                        </div>
+                                    </div>
+                                </div><!-- end col-lg-6 -->
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">E-mail</label>
+                                        <div class="form-group">
+                                            <span class="la la-envelope-o form-icon"></span>
+                                            <input class="form-control form-control-styled" type="email" name="email" placeholder="Adresse e-mail">
+                                        </div>
+                                    </div>
+                                </div><!-- end col-lg-6 -->
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">Message</label>
+                                        <div class="form-group">
+                                            <span class="la la-pencil form-icon"></span>
+                                            <textarea class="message-control form-control" name="message" placeholder="Ecrivez votre message ici"></textarea>
+                                        </div>
+                                    </div>
+                                </div><!-- end col-lg-12 -->
+                                <div class="col-lg-12">
+                                    <div class="custom-checkbox mb-4">
+                                        <input type="checkbox" id="agreeChb2">
+                                        <label for="agreeChb2" class="text-gray font-size-15">Enregistrez mon nom et mon adresse e-mail dans ce navigateur pour la prochaine fois que je commenterai.</label>
+                                    </div>
+                                </div><!-- end col-lg-12 -->
+                                <div class="col-lg-12">
+                                    <div class="btn-box pt-1">
+                                        <button class="theme-btn gradient-btn border-0">Poster un commentaire<i class="la la-arrow-right ml-2"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar mb-0">
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Rechercher</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <form action="#" class="form-box">
+                                <div class="form-group">
+                                    <span class="la la-search form-icon"></span>
+                                    <input class="form-control form-control-styled" type="search" placeholder="Que cherchez-vous ?">
+                                    <p class="font-size-13">Cliquez sur le bouton Rechercher</p>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <button type="submit" class="theme-btn gradient-btn border-0 w-100">
+                                        <i class="la la-search mr-2"></i>Rechercher
+                                    </button>
+                                </div><!-- end form-group -->
+                            </form>
+                        </div><!-- end sidebar-widget -->
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Astuces</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <div class="card-item card-item-layout-4 mb-0">
+                                <a href="#" class="card-image d-block">
+                                    <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/img31.jpg') }}" class="card__img lazy" alt="">
+                                    <span class="badge">Commencez maintenat</span>
+                                    <div class="card-content">
+                                        <h4 class="card-title pb-2 font-size-18 line-height-26">Want to learn how to code in 7 weeks?</h4>
+                                        <span class="bg-white text-color py-1 px-2 rounded font-size-14 font-weight-medium">Check it out <i class="la la-angle-right ml-1"></i></span>
+                                    </div>
+                                </a>
+                            </div><!-- end card-item -->
+                        </div><!-- end sidebar-widget -->
+                        <div class="sidebar-widget overflow-hidden">
+                            <h3 class="widget-title">Twitter Feed</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <ul class="list-items list-items-style-2">
+                                <li>
+                                    <span class="d-block pb-1"><i class="la la-twitter font-size-18 mr-1"></i>Get ahead by adding some templates to your #creative toolbox. Here's our pick of the top premium graphic design… <a href="#" class="text-color" target="_blank">https://t.co/HRlOwqNvbA</a></span>
+                                    <span>2 days ago</span>
+                                </li>
+                                <li>
+                                    <span class="d-block pb-1"><i class="la la-twitter font-size-18 mr-1"></i>Get ahead by adding some templates to your #creative toolbox. Here's our pick of the top premium graphic design… <a href="#" class="text-color" target="_blank">https://t.co/HRlOwqNvbA</a></span>
+                                    <span>2 days ago</span>
+                                </li>
+                            </ul>
+                            <div class="twitter-bg-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="c02__header-bg-icon  twtr-color-fill--blue-light">
+                                    <path opacity="0" d="M0 0h24v24H0z"></path>
+                                    <path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"></path>
+                                </svg>
+                            </div>
+                        </div><!-- end sidebar-widget -->
+                        {% set categories = my_app.categoriesArt %}
+                        {% if categories|length > 0 %}
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Filtrer par Categories</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <div class="category-list">
+                                {% for category in categories|slice(0, 4) %}
+                                    <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="generic-img-card d-block hover-y overflow-hidden mb-3">
+                                        <img src="{{ asset('assets/front/images/img-loading.png')|imagine_filter('category_art_small') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category_art_small') }}" alt="{{ category.name }}" class="generic-img-card-img lazy">
+                                        <div class="generic-img-card-content d-flex align-items-center justify-content-between">
+                                            <span class="badge">{{ category.name }}</span>
+                                            <span class="generic-img-card-counter">{{ category.articles|length }}</span>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                                <div class="collapse collapse-content" id="showMoreOptionCollapse2">
+                                    {% for category in categories|slice(4, categories|length) %}
+                                        <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="generic-img-card d-block hover-y overflow-hidden mb-3">
+                                            <img src="{{ asset('assets/front/images/img-loading.png')|imagine_filter('category_art_small') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category_art_small') }}" alt="{{ category.name }}" class="generic-img-card-img lazy">
+                                            <div class="generic-img-card-content d-flex align-items-center justify-content-between">
+                                                <span class="badge">{{ category.name }}</span>
+                                                <span class="generic-img-card-counter">{{ category.articles|length }}</span>
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                                <a class="collapse-btn" data-toggle="collapse" href="#showMoreOptionCollapse2" role="button" aria-expanded="false" aria-controls="showMoreOptionCollapse2">
+                                    <span class="collapse-btn-hide">Afficher Plus <i class="la la-plus ml-1"></i></span>
+                                    <span class="collapse-btn-show">Afficher Moins <i class="la la-minus ml-1"></i></span>
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if my_app.keywordsArt|length > 0 %}
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Mots Clés</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <ul class="tag-list">
+                                {% for keyword in my_app.keywordsArt %}
+                                    <li><a href="javascript:void(0)">{{ keyword.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        <div class="sidebar-widget">
+                            <div class="section-tab section-tab-layout-2 mb-4">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="popular-tab" data-toggle="tab" href="#popular" role="tab" aria-controls="popular" aria-selected="true">
+                                            Popular
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="recent-tab" data-toggle="tab" href="#recent" role="tab" aria-controls="recent" aria-selected="false">
+                                            Recent
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="popular" role="tabpanel" aria-labelledby="popular-tab">
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="blog-single.html" class="d-block">
+                                                <img src="images/single-listing-small-img1.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            <a href="#">Tips,</a>
+                                            <span>,</span>
+                                            <a href="#">Location</a>
+                                        </span>
+                                            <h4 class="mini-list-title"><a href="blog-single.html">Great Experience At MiFost Villa</a></h4>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            July 9, 2020
+                                        </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="blog-single.html" class="d-block">
+                                                <img src="images/single-listing-small-img2.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            <a href="#">Culture</a>
+                                            <span>,</span>
+                                            <a href="#">Coffee</a>
+                                            <span>,</span>
+                                            <a href="#">Shop</a>
+                                        </span>
+                                            <h4 class="mini-list-title"><a href="blog-single.html">Coffee On Street & Look Super Car</a></h4>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            July 9, 2020
+                                        </span>
+                                        </div><!-- end mini-list-body-->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="blog-single.html" class="d-block">
+                                                <img src="images/single-listing-small-img3.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            <a href="#">Culture</a>
+                                            <span>,</span>
+                                            <a href="#">Travel</a>
+                                        </span>
+                                            <h4 class="mini-list-title"><a href="blog-single.html">Discover Venice, Italy</a></h4>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            July 9, 2020
+                                        </span>
+                                        </div><!-- end mini-list-body-->
+                                    </div><!-- end mini-list-card -->
+                                </div>
+                                <div class="tab-pane fade" id="recent" role="tabpanel" aria-labelledby="recent-tab">
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="blog-single.html" class="d-block">
+                                                <img src="images/single-listing-small-img3.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            <a href="#">Culture</a>
+                                            <span>,</span>
+                                            <a href="#">Travel</a>
+                                        </span>
+                                            <h4 class="mini-list-title"><a href="blog-single.html">Discover Venice, Italy</a></h4>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            July 9, 2020
+                                        </span>
+                                        </div><!-- end mini-list-body-->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="blog-single.html" class="d-block">
+                                                <img src="images/single-listing-small-img2.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            <a href="#">Culture</a>
+                                            <span>,</span>
+                                            <a href="#">Coffee</a>
+                                            <span>,</span>
+                                            <a href="#">Shop</a>
+                                        </span>
+                                            <h4 class="mini-list-title"><a href="blog-single.html">Coffee On Street & Look Super Car</a></h4>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            July 9, 2020
+                                        </span>
+                                        </div><!-- end mini-list-body-->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="blog-single.html" class="d-block">
+                                                <img src="images/single-listing-small-img1.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            <a href="#">Tips,</a>
+                                            <span>,</span>
+                                            <a href="#">Location</a>
+                                        </span>
+                                            <h4 class="mini-list-title"><a href="blog-single.html">Great Experience At MiFost Villa</a></h4>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                            July 9, 2020
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Follow & Connect</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <div class="icon-block-wrap d-flex flex-wrap align-items-center ml-n1">
+                                <a href="#" class="icon-block d-flex align-items-center flex-grow-1 hover-scale-2">
+                                    <span class="icon-element icon-element-sm f-bg-rgb">
+                                        <i class="la la-facebook"></i>
+                                    </span>
+                                    <div class="pl-2 flex-grow-1">
+                                        <span class="text-color font-weight-bold font-size-17 d-block line-height-20">9,809</span>
+                                        <span class="text-gray font-weight-medium font-size-13 d-block line-height-20">Followers</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="icon-block d-flex align-items-center flex-grow-1 hover-scale-2">
+                                    <span class="icon-element icon-element-sm t-bg-rgb">
+                                        <i class="la la-twitter"></i>
+                                    </span>
+                                    <div class="pl-2 flex-grow-1">
+                                        <span class="text-color font-weight-bold font-size-17 d-block line-height-20">789</span>
+                                        <span class="text-gray font-weight-medium font-size-13 d-block line-height-20">Followers</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="icon-block d-flex align-items-center flex-grow-1 hover-scale-2">
+                                    <span class="icon-element icon-element-sm i-bg-rgb">
+                                        <i class="la la-instagram"></i>
+                                    </span>
+                                    <div class="pl-2 flex-grow-1">
+                                        <span class="text-color font-weight-bold font-size-17 d-block line-height-20">12,809</span>
+                                        <span class="text-gray font-weight-medium font-size-13 d-block line-height-20">Followers</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="icon-block d-flex align-items-center flex-grow-1 hover-scale-2">
+                                    <span class="icon-element icon-element-sm y-bg-rgb">
+                                        <i class="la la-youtube"></i>
+                                    </span>
+                                    <div class="pl-2 flex-grow-1">
+                                        <span class="text-color font-weight-bold font-size-17 d-block line-height-20">20,876</span>
+                                        <span class="text-gray font-weight-medium font-size-13 d-block line-height-20">Subscriber</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Hosted by</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <div class="hosted-by d-flex align-items-center">
+                                <a href="user-profile.html" class="user-thumb user-thumb-md flex-shrink-0 mr-3">
+                                    <img src="images/avatar-img.jpg" alt="author-img">
+                                </a>
+                                <div>
+                                    <h4 class="font-size-18"><a href="user-profile.html" class="text-color">Mark Hardson</a></h4>
+                                    <span class="font-size-13 text-gray font-weight-medium d-block line-height-22">20 listing hosted</span>
+                                </div>
+                            </div>
+                            <ul class="list-items py-4">
+                                <li><i class="la la-phone mr-2 text-color-2 font-size-18"></i><a href="#" class="before-none">+ 61 23 8093 3400</a></li>
+                                <li><i class="la la-envelope mr-2 text-color-2 font-size-18"></i><a href="#" class="before-none">listhub@gmail.com</a></li>
+                            </ul>
+                            <div class="btn-box">
+                                <a href="user-profile.html" class="theme-btn gradient-btn w-100"><i class="la la-user mr-2"></i>View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

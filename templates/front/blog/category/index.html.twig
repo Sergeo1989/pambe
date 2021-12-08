@@ -16,10 +16,14 @@
 {% endblock %}
 
 {% block articles %}
-    {% for article in category.articles %}
+    {% for article in articles %}
         <div class="col-lg-4 responsive-column">
             {% include "front/partials/blog/article.html.twig" with {"article" : article} %}
         </div>
     {% endfor %}
 {% endblock %}
 
+{% block paginator_blog %}
+    {% do articles.setPageRange(4) %}
+    {{ knp_pagination_render(articles, 'front/partials/pagination.html.twig') }}              
+{% endblock %}

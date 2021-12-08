@@ -58,4 +58,4 @@ app_category_pro:
     controller: App\Controller\Front\CategoryProController::show
 app_category_popular:
     path: /professional/category/popular
-    controller: App\Controller\Front\CategoryProController::showPopular
+    controller: App\Controller\Front\CategoryProController::popular

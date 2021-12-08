@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\CategoryArticle;
+use App\Entity\KeywordArticle;
 use App\Service\ContextService;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -10,14 +10,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class CategoryArticleCrudController extends AbstractCrudController
+class KeywordArticleCrudController extends AbstractCrudController
 {
     private $context;
 
@@ -28,16 +25,16 @@ class CategoryArticleCrudController extends AbstractCrudController
 
     public static function getEntityFqcn(): string
     {
-        return CategoryArticle::class;
+        return KeywordArticle::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->setEntityLabelInPlural('catégories d\'articles')
-                    ->setEntityLabelInSingular('catégorie d\'article')
+        return $crud->setEntityLabelInPlural('mots clés')
+                    ->setEntityLabelInSingular('mot clé')
                     ->setPageTitle(Crud::PAGE_INDEX, 'Tous les %entity_label_plural%')
-                    ->setPageTitle(Crud::PAGE_EDIT, 'Modifier une %entity_label_singular%')
-                    ->setPageTitle(Crud::PAGE_NEW, 'Ajouter une %entity_label_singular%');
+                    ->setPageTitle(Crud::PAGE_EDIT, 'Modifier un %entity_label_singular%')
+                    ->setPageTitle(Crud::PAGE_NEW, 'Ajouter un %entity_label_singular%');
     }
 
     public function configureFields(string $pageName): iterable
@@ -45,16 +42,9 @@ class CategoryArticleCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('name', 'Nom'),
-            TextEditorField::new('description')->hideOnIndex(),
-            TextField::new('iconFile', 'Icône')
-                        ->setFormType(VichImageType::class)
-                        ->setHelp("La largeur et la hauteur doivent être comprise entre 1920px et 601px")
-                        ->onlyOnForms(),
-            ImageField::new('icon', 'Icône')
-                        ->setBasePath('/uploads/images/categoryart/')
-                        ->onlyOnIndex(),
-            BooleanField::new('status')->onlyOnIndex(),
-            IntegerField::new('position')->onlyWhenUpdating()
+            DateTimeField::new('date_add', 'Date de création')->onlyOnIndex(),
+            DateTimeField::new('date_upd', 'Date de mise à jour')->onlyOnIndex(),
+            BooleanField::new('status')->onlyOnIndex()
         ];
     }
 

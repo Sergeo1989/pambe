@@ -24,6 +24,11 @@ liip_imagine:
             filters:
                 auto_rotate: ~
                 thumbnail: { size: [263, 175], mode: outbound }
+        category_art_small:
+            quality: 75
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [310, 60], mode: outbound }
         small:
             quality: 80
             filters:

@@ -92,11 +92,17 @@ class Article
      */
     private $share;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=KeywordArticle::class, inversedBy="articles")
+     */
+    private $keywords;
+
     public function __construct()
     {
         $this->categoryArticles = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->articleImages = new ArrayCollection();
+        $this->keywords = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -328,6 +334,33 @@ class Article
     public function setShare(?int $share): self
     {
         $this->share = $share;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|KeywordArticle[]
+     */
+    public function getKeywords(): Collection
+    {
+        return $this->keywords;
+    }
+
+    public function addKeyword(KeywordArticle $keyword): self
+    {
+        if (!$this->keywords->contains($keyword)) {
+            $this->keywords[] = $keyword;
+            $keyword->addArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKeyword(KeywordArticle $keyword): self
+    {
+        if ($this->keywords->removeElement($keyword)) {
+            $keyword->removeArticle($this);
+        }
 
         return $this;
     }
