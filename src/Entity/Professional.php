@@ -5,11 +5,15 @@ namespace App\Entity;
 use App\Repository\ProfessionalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProfessionalRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  */
 class Professional
 {
@@ -142,6 +146,29 @@ class Professional
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $available;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nb_of_service;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $promote_video;
+
+    /**
+     * @Vich\UploadableField(mapping="professional_video", fileNameProperty="promote_video")
+     * @Assert\File(
+     *     mimeTypes = {"video/mp4"},
+     *     mimeTypesMessage = "Mauvais type de fichier - veuillez choisir une vidéo MP4.",
+     *     maxSize = "250M",
+     *     maxSizeMessage="Taille maximale de la vidéo : 250MB."
+     * )
+     * @var File
+     */
+    private $promote_video_file;
 
     public function __construct()
     {
@@ -498,6 +525,7 @@ class Professional
         $this->verified = false;
         $this->level = self::NORMAL;
         $this->position = 0;
+        $this->nb_of_service = 6;
         $this->available = true;
         $this->date_add = new \DateTime("now");
         $this->date_upd = new \DateTime("now");
@@ -557,5 +585,43 @@ class Professional
         $this->available = $available;
 
         return $this;
+    }
+
+    public function getNbOfService(): ?int
+    {
+        return $this->nb_of_service;
+    }
+
+    public function setNbOfService(?int $nb_of_service): self
+    {
+        $this->nb_of_service = $nb_of_service;
+
+        return $this;
+    }
+
+    public function getPromoteVideo(): ?string
+    {
+        return $this->promote_video;
+    }
+
+    public function setPromoteVideo(?string $promote_video): self
+    {
+        $this->promote_video = $promote_video;
+
+        return $this;
+    }
+
+    public function getPromoteVideoFile()
+    {
+        return $this->promote_video_file;
+    }
+
+    public function setPromoteVideoFile(File $promote_video_file = null)
+    {
+        $this->promote_video_file = $promote_video_file;
+
+        if ($promote_video_file) {
+            $this->date_upd = new \DateTime('now');
+        }
     }
 }

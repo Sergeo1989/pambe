@@ -67,3 +67,35 @@ description: Our custom pambe CSS
 .card-item .card-title i.red {
     color: #e4354c;
 }
+.pro-cover{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 0;
+    padding-bottom: 25%; 
+    position: relative;
+}
+
+.user-profile{
+    width: 10%;
+    height: 40%; 
+    position: absolute;
+    left: 15%;
+    bottom: 4%;
+}
+.profile-name{
+    position: absolute;
+    left: 27%;
+    bottom: 10%;
+    display: inline-block;
+}
+.reviews{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.service{
+    padding: 0 10px 15px 10px !important;
+}
+.service .card-title{
+    font-size: 18px;
+}

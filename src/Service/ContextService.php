@@ -24,12 +24,12 @@ class ContextService
 
     public function isAdmin()
     {
-        return $this->security->isGranted('ROLE_ADMIN');
+        return $this->security->isGranted("ROLE_ADMIN");
     }
 
     public function isSuperAdmin()
     {
-        return $this->security->isGranted('ROLE_SUPER_ADMIN');
+        return $this->security->isGranted("ROLE_SUPER_ADMIN");
     }
 
     public function hasRole($role)

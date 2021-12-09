@@ -1,39 +1,41 @@
-            {% block header %}
-                <header class="header-area">
-                    <div class="header-top-bar bg-dark-opacity py-2 padding-right-30px padding-left-30px">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-lg-6 d-flex align-items-center header-top-info">
-                                    {{ render(url('app_social_url')) }}
-                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
-                                        <a href="{{ path("app_contact") }}">Contact</a>
-                                    </span>
-                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
-                                        <a href="{{ path("app_about") }}">{{ "à"|upper }} propos</a>
-                                    </span>
-                                </div>
-                                <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
-                                    <p class="login-and-signup-wrap">
-                                        {% if is_granted("ROLE_PROFESSIONNEL") %}
-                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
-                                               Espace professionnel
-                                            </a>
-                                        {% else %}
-                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
-                                                <span class="mr-1 la la-user-plus"></span>Devenir professionnel
-                                            </a>
-                                        {% endif %}
-                                    </p>
-                                    <div class="user-chosen-select-container">
-                                        <select class="user-chosen-select">
-                                            <option value="1" selected>English</option>
-                                            <option value="2">French</option>
-                                        </select>
+            {% block header_content %}
+                <header class="{% block header_class %}header-area{% endblock %}">
+                    {% block header_top_bar %}
+                        <div class="header-top-bar bg-dark-opacity py-2 padding-right-30px padding-left-30px">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-6 d-flex align-items-center header-top-info">
+                                        {{ render(url('app_social_url')) }}
+                                        <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+                                            <a href="{{ path("app_contact") }}">Contact</a>
+                                        </span>
+                                        <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+                                            <a href="{{ path("app_about") }}">À propos</a>
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
+                                        <p class="login-and-signup-wrap">
+                                            {% if is_granted("ROLE_PROFESSIONNEL") %}
+                                                <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
+                                                Espace professionnel
+                                                </a>
+                                            {% else %}
+                                                <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
+                                                    <span class="mr-1 la la-user-plus"></span>Devenir professionnel
+                                                </a>
+                                            {% endif %}
+                                        </p>
+                                        <div class="user-chosen-select-container">
+                                            <select class="user-chosen-select">
+                                                <option value="1" selected>English</option>
+                                                <option value="2">French</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endblock %}
                     <div class="header-menu-wrapper padding-right-30px padding-left-30px">
                         <div class="container-fluid">
                             <div class="row">
@@ -98,4 +100,4 @@
                         </div>
                     </div>
                 </header>
-            {% endblock %}
+            {% endblock %} 

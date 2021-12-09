@@ -20,6 +20,7 @@ security:
         admin:
             lazy: true
             provider: app_user_provider
+            user_checker: App\Security\Admin\AdminChecker
             custom_authenticator: App\Security\Admin\LoginFormAuthenticator
             logout:
                 path: app_admin_logout

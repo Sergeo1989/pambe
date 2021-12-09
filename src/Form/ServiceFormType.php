@@ -20,11 +20,11 @@ class ServiceFormType extends AbstractType
         $builder
             ->add('thumbnailFile', VichImageType::class, [
                 'label' => 'Mise en avant',
-                'help' => 'Résolution: 1200x300 pixels',
+                'help' => 'Résolution: 200x50 pixels',
                 'constraints' => [
                         new Image([
-                            'minWidth' => 1200,
-                            'minHeight' => 300,
+                            'minWidth' => 200,
+                            'minHeight' => 50,
                             'minWidthMessage' => 'La largeur de l\'image est trop petite',
                             'minHeightMessage' => 'La hauteur de l\'image est trop petite'
                             ])

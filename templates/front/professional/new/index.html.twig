@@ -1,8 +1,8 @@
-{% extends 'front/layout.html.twig' %}
+{% extends 'front/professional/layout.html.twig' %}
 
 {% block title %}{{ 'Nouveaux professionnels - '~ parent() }}{% endblock %}
 
-{% block content %}
+{% block pro_breadcrumb %}
     {% embed "front/partials/breadcrumb.html.twig" %}
         {% block breadcrumb_heading %}
             <div class="section-heading">
@@ -13,6 +13,9 @@
             <li>Nouveaux professionnels</li>
         {% endblock %}
     {% endembed %}
+{% endblock %}
+
+{% block pro_content %}
     <section class="card-area section-padding">
         <div class="container">
             {% if professionals|length > 0 %}

@@ -80,6 +80,11 @@ class Service
      */
     private $professional;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $description_size;
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
@@ -264,5 +269,17 @@ class Service
     public function onPreUpdate()
     {
         $this->date_upd = new \DateTime("now");
+    }
+
+    public function getDescriptionSize(): ?int
+    {
+        return $this->description_size;
+    }
+
+    public function setDescriptionSize(?int $description_size): self
+    {
+        $this->description_size = $description_size;
+
+        return $this;
     }
 }

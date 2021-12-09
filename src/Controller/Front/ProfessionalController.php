@@ -22,7 +22,8 @@ class ProfessionalController extends AbstractController
 
     public function show(Professional $professional): Response
     {
-        return $this->render('front/professional/show.html.twig', compact('professional'));
+        $url = $this->generateUrl("app_professional_show", ["slug" => $professional->getSlug()]);
+        return $this->render('front/professional/show.html.twig', compact('professional', 'url'));
     }
 
     public function new(Request $request): Response

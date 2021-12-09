@@ -1,1 +1,1191 @@
 {% extends 'front/layout.html.twig' %}
+
+{% set profile = professional.profil ? vich_uploader_asset(professional.profil, 'imageFile') : asset('assets/front/images/photoshop.png') %}
+{% set cover = professional.cover ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
+
+{% block meta %}
+    {% if professional.shortDescription is not empty %}
+        <meta name="description" content="{{ professional.shortDescription|striptags|u.truncate(150, '...', false) }}">
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{ professional.user.lastname ~' - '~ parent() }}{% endblock %}
+
+{% block header %}
+    {% embed "front/partials/header.html.twig" %}
+        {% block header_content %}
+            <header class="header-area position-inherit top-auto bg-white">
+    <div class="header-top-bar bg-dark py-2 padding-right-30px padding-left-30px">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 d-flex align-items-center header-top-info">
+                                    {{ render(url('app_social_url')) }}
+                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+                                        <a href="{{ path("app_contact") }}">Contact</a>
+                                    </span>
+                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+                                        <a href="{{ path("app_about") }}">À propos</a>
+                                    </span>
+                                </div>
+                                <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
+                                    <p class="login-and-signup-wrap">
+                                        {% if is_granted("ROLE_PROFESSIONNEL") %}
+                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
+                                               Espace professionnel
+                                            </a>
+                                        {% else %}
+                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
+                                                <span class="mr-1 la la-user-plus"></span>Devenir professionnel
+                                            </a>
+                                        {% endif %}
+                                    </p>
+                                    <div class="user-chosen-select-container">
+                                        <select class="user-chosen-select">
+                                            <option value="1" selected>English</option>
+                                            <option value="2">French</option>
+                                        </select>
+                                    </div>
+                                </div>
+            </div> {# Fin validation #}
+        </div><!-- end container-fluid -->
+    </div><!-- end header-top-bar -->
+    <div class="header-menu-wrapper padding-right-30px padding-left-30px">
+        <div class="container-fluid ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="menu-full-width">
+                        <div class="logo">
+                            <a href="index.html" class="sticky-logo-hide"><img src="images/logo-black.png" alt="logo"></a>
+                            <a href="index.html" class="sticky-logo-show"><img src="images/logo-white.png" alt="logo"></a>
+                            <div class="d-flex align-items-center">
+                                <a href="add-listing.html" class="btn-gray add-listing-btn-show font-size-24 mr-2 flex-shrink-0 text-color" data-toggle="tooltip" data-placement="left" title="Add Listing">
+                                    <i class="la la-plus"></i>
+                                </a>
+                                <div class="menu-toggle menu-toggle-black">
+                                    <span class="menu__bar"></span>
+                                    <span class="menu__bar"></span>
+                                    <span class="menu__bar"></span>
+                                </div><!-- end menu-toggle -->
+                            </div>
+                        </div><!-- end logo -->
+                        <div class="main-menu-content main-menu-content-2 border-left-color">
+                            <nav class="main-menu main-menu-2">
+                                <ul>
+                                    <li>
+                                        <a href="#">home <span class="la la-angle-down"></span></a>
+                                        <ul class="dropdown-menu-item">
+                                            <li><a href="index.html">home one</a></li>
+                                       
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">listings <span class="la la-angle-down"></span></a>
+                                        <ul class="dropdown-menu-item">
+                                            <li><a href="listing-grid.html">listing grid</a></li>
+                                       
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">pages <span class="la la-angle-down"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#">blog <span class="la la-angle-down"></span></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div><!-- end main-menu-content -->
+                        <div class="nav-right-content ml-auto">
+                            <a href="add-listing.html" class="theme-btn gradient-btn add-listing-btn-hide">
+                                <i class="la la-plus mr-2"></i>Add Listing
+                            </a>
+                        </div><!-- end nav-right-content -->
+                    </div><!-- end menu-full-width -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end header-menu-wrapper -->
+</header>
+        {% endblock %} 
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    <section class="full-screen-slider-area pro-cover" style="background-image: url('{{ cover }}')">
+        <div class="profile-area">
+            <a href="javascript:void(0)" class="user-thumb user-profile d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ professional.user.lastname ~ ' ' ~ professional.user.firstname }}">
+                <img src="{{ profile|imagine_filter('profile') }}" alt="{{ professional.user.firstname|e }}">
+            </a>
+            <div class="align-items-center profile-name">
+                <h2 class="sec__title mb-0" style="color:white;">{{ professional.user.lastname|title ~' '~ professional.user.firstname|title }}</h2>
+                <p class="sec__desc py-2 font-size-17" style="color:white;"><i class="la la-map-marker mr-1 text-color-4"></i>{{ professional.user.address|e }}</p>
+                <div class="hover-tooltip-box pt-2">
+                    {% if professional.verified %}
+                        <span class="text-color-4"><i class="la la-check-circle mr-1 text-color-4"></i>Certifié</span>
+                    {% endif %}
+                    <div class="hover-tooltip">
+                        <p>This business has been claimed by the owner or a representative. <a href="javascript:void(0)">En apprendre plus</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="breadcrumb-area bg-gradient-gray py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content breadcrumb-content-2 d-flex flex-wrap align-items-end justify-content-between">
+                        <div class="section-heading">
+                            <ul class="list-items bread-list bread-list-2 bg-transparent rounded-0 p-0">
+                                <li><a href="{{ path("app_home") }}">Accueil</a></li>
+                                <li>{{ professional.user.lastname ~ ' ' ~ professional.user.firstname }}</li>
+                            </ul>
+                            <div class="d-flex flex-wrap align-items-center reviews">
+                                <div class="star-rating-wrap d-flex align-items-center">
+                                    <div class="star-rating text-color-5 font-size-18">
+                                        <span><i class="la la-star"></i></span>
+                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                    </div>
+                                    <p class="font-size-14 pl-2 font-weight-medium">0 avis</p>
+                                </div>
+                                <div class="timestamp font-weight-medium ml-3 pl-3 border-left border-left-color line-height-20">
+                                    <span class="{{ professional.available ? "text-color-4" : "text-color-2" }} mr-2">{{ professional.available ? "disponible" : "absent" }}</span>
+                                </div>
+                            </div>
+                            <div class="btn-box pt-3">
+                                <a href="#review" class="btn-gray mr-1"><i class="la la-star mr-1"></i>Écrire un avis</a>
+                                <a href="#" class="btn-gray mr-1"><i class="la la-bookmark mr-1"></i>Favoris</a>
+                                <a href="#" class="btn-gray" data-toggle="modal" data-target="#shareModal"><i class="la la-external-link mr-1"></i>Partager</a>
+                            </div>
+                        </div>
+                        <div class="btn-box d-flex align-items-center">
+                            <span class="btn-gray mr-2"><i class="la la-eye mr-1"></i>Vues - 0</span>
+                            <span class="btn-gray mr-2"><i class="la la-heart mr-1"></i>Favoris - 0</span>
+                            <div class="dropdown dot-action-wrap">
+                                <button class="dot-action-btn dropdown-toggle after-none border-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="la la-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#reportModal"><i class="la la-flag mr-1"></i>Report</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="listing-detail-area padding-top-60px padding-bottom-100px">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="listing-detail-wrap">
+                        {% if professional.description is not empty %}
+                            <div class="block-card mb-4">
+                                <div class="block-card-header">
+                                    <h2 class="widget-title">À propos</h2>
+                                    <div class="stroke-shape"></div>
+                                </div>
+                                <div class="block-card-body">
+                                    {{ professional.description|raw }}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if professional.services|length > 0 %}
+                            <div class="block-card mb-4">
+                                <div class="block-card-header">
+                                    <h2 class="widget-title">Services</h2>
+                                    <div class="stroke-shape"></div>
+                                </div>
+                                <div class="block-card-body">
+                                    <div class="row">
+                                        {% for service in professional.services %}
+                                            <div class="col-lg-6 responsive-column">
+                                                <div class="card-item">
+                                                    <div class="card-image">
+                                                        <a href="javascript:void(0)" class="d-block">
+                                                            <img src="{{ vich_uploader_asset(service, 'thumbnailFile')|imagine_filter('cover_small') }}" class="card__img lazy" alt="{{ service.title|e }}">
+                                                        </a>
+                                                    </div>
+                                                    <div class="card-content service">
+                                                        <h4 class="card-title pt-3">
+                                                            <a href="javascript:void(0)">{{ service.title|e }}</a>
+                                                        </h4>
+                                                        {{ service.description|raw }} 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% set video_url = vich_uploader_asset(professional, 'promote_video_file') %}
+                        {% if video_url is not empty %}
+                            <div class="block-card mb-4">
+                                <div class="block-card-header">
+                                    <h2 class="widget-title">Vidéo Promotionnelle</h2>
+                                    <div class="stroke-shape"></div>
+                                </div>
+                                <div class="block-card-body">
+                                    <div class="video-box">
+                                        <img class="lazy" src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/single-listing-img7.jpg') }}" alt="{{ professional.promoteVideo }}">
+                                        <div class="video-content">
+                                            <a class="icon-element icon-element-lg icon-element-white hover-scale mx-auto" href="{{ video_url }}" data-fancybox="" title="Play Video">
+                                                <i class="la la-play"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="block-card mb-4">
+                            <div class="block-card-header">
+                                <h2 class="widget-title">Location / Contact</h2>
+                                <div class="stroke-shape"></div>
+                            </div><!-- end block-card-header -->
+                            <div class="block-card-body">
+                                <div class="map-container height-400">
+                                    <div id="map"></div>
+                                </div>
+                                <ul class="list-items list--items list-items-style-2 py-4">
+                                    <li><span class="text-color"><i class="la la-map mr-2 text-color-2 font-size-18"></i>Address:</span> 12345 Little Baker St, Melbourne</li>
+                                    <li><span class="text-color"><i class="la la-phone mr-2 text-color-2 font-size-18"></i>Phone:</span><a href="#">+ 61 23 8093 3400</a></li>
+                                    <li><span class="text-color"><i class="la la-envelope mr-2 text-color-2 font-size-18"></i>Email:</span><a href="#">listhub@gmail.com</a></li>
+                                    <li><span class="text-color"><i class="la la-globe mr-2 text-color-2 font-size-18"></i>Website:</span><a href="#">www.techydevs.com</a></li>
+                                </ul>
+                                <ul class="social-profile social-profile-styled">
+                                    <li><a href="#" class="facebook-bg" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="lab la-facebook-f"></i></a></li>
+                                    <li><a href="#" class="twitter-bg" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="lab la-twitter"></i></a></li>
+                                    <li><a href="#" class="instagram-bg" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="lab la-instagram"></i></a></li>
+                                    <li><a href="#" class="youtube-bg" data-toggle="tooltip" data-placement="top" title="Youtube"><i class="la la-youtube"></i></a></li>
+                                    <li><a href="#" class="behance-bg" data-toggle="tooltip" data-placement="top" title="Behance"><i class="la la-behance"></i></a></li>
+                                    <li><a href="#" class="dribbble-bg" data-toggle="tooltip" data-placement="top" title="Dribbble"><i class="la la-dribbble"></i></a></li>
+                                </ul>
+                            </div><!-- end block-card-body -->
+                        </div><!-- end block-card -->
+                        <div class="block-card mb-4">
+                            <div class="block-card-header">
+                                <h2 class="widget-title">Questions & Answers</h2>
+                                <div class="stroke-shape"></div>
+                            </div><!-- end block-card-header -->
+                            <div class="block-card-body">
+                                <div class="accordion-item" id="accordion">
+                                    <div class="card">
+                                        <div class="card-header" id="headingOne">
+                                            <h5>
+                                                <button class="btn btn-link d-flex align-items-center justify-content-between" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Once this list has been developed, the member takes the clients?
+                                                    <i class="la la-minus"></i>
+                                                    <i class="la la-plus"></i>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                                            </div>
+                                        </div>
+                                    </div><!-- end card -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingTwo">
+                                            <h5>
+                                                <button class="btn btn-link d-flex align-items-center justify-content-between" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    A cooling off period is usually where one party - usually?
+                                                    <i class="la la-minus"></i>
+                                                    <i class="la la-plus"></i>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                                            </div>
+                                        </div>
+                                    </div><!-- end card -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingThree">
+                                            <h5>
+                                                <button class="btn btn-link d-flex align-items-center justify-content-between" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    It is also import to take note of the prevailing market conditions?
+                                                    <i class="la la-minus"></i>
+                                                    <i class="la la-plus"></i>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                                            </div>
+                                        </div>
+                                    </div><!-- end card -->
+                                </div>
+                            </div><!-- end block-card-body -->
+                        </div><!-- end block-card -->
+                        <div class="block-card mb-4">
+                            <div class="block-card-header">
+                                <h2 class="widget-title">Rating Stats</h2>
+                                <div class="stroke-shape"></div>
+                            </div><!-- end block-card-header -->
+                            <div class="block-card-body">
+                                <div class="review-content d-flex flex-wrap align-items-center">
+                                    <div class="review-rating-summary">
+                                        <span class="stats-average__count">
+                                        4.6
+                                        </span><!-- end stats-average__count -->
+                                        <div class="star-rating-wrap">
+                                            <p class="font-size-14 font-weight-medium">out of 5.0</p>
+                                            <div class="star-rating text-color-5 font-size-18">
+                                                <span><i class="la la-star"></i></span>
+                                                <span class="ml-n1"><i class="la la-star"></i></span>
+                                                <span class="ml-n1"><i class="la la-star"></i></span>
+                                                <span class="ml-n1"><i class="la la-star"></i></span>
+                                                <span class="ml-n1"><i class="la la-star"></i></span>
+                                            </div>
+                                        </div>
+                                    </div><!-- end review-rating-summary -->
+                                    <div class="review-bars d-flex flex-row flex-wrap flex-grow-1 align-items-center">
+                                        <div class="review-bars-item">
+                                            <span class="review-bars-name">Service</span>
+                                            <div class="review-bars-inner d-flex w-100 align-items-center">
+                                                <span class="review-bars-review" data-rating="4.6">
+                                                    <span class="review-bars-review-inner"></span>
+                                                </span>
+                                                <span class="pill">4.6</span>
+                                            </div>
+                                        </div><!-- end review-bars-item -->
+                                        <div class="review-bars-item">
+                                            <span class="review-bars-name">Value for Money</span>
+                                            <div class="review-bars-inner d-flex w-100 align-items-center">
+                                                <span class="review-bars-review" data-rating="4.0">
+                                                    <span class="review-bars-review-inner"></span>
+                                                </span>
+                                                <span class="pill">4.0</span>
+                                            </div>
+                                        </div><!-- end review-bars-item -->
+                                        <div class="review-bars-item">
+                                            <span class="review-bars-name">Quality</span>
+                                            <div class="review-bars-inner d-flex w-100 align-items-center">
+                                                <span class="review-bars-review" data-rating="2.8">
+                                                    <span class="review-bars-review-inner"></span>
+                                                </span>
+                                                <span class="pill">2.8</span>
+                                            </div>
+                                        </div><!-- end review-bars-item -->
+                                        <div class="review-bars-item">
+                                            <span class="review-bars-name">Location</span>
+                                            <div class="review-bars-inner d-flex w-100 align-items-center">
+                                                <span class="review-bars-review" data-rating="3.9">
+                                                    <span class="review-bars-review-inner"></span>
+                                                </span>
+                                                <span class="pill">3.9</span>
+                                            </div>
+                                        </div><!-- end review-bars-item -->
+                                    </div><!-- end review-bars -->
+                                </div><!-- end review-content -->
+                            </div><!-- end block-card-body -->
+                        </div><!-- end block-card -->
+                        <div class="block-card mb-4">
+                            <div class="block-card-header">
+                                <h2 class="widget-title">Reviews <span class="ml-1 text-color-2">(5)</span></h2>
+                                <div class="stroke-shape"></div>
+                            </div><!-- end block-card-header -->
+                            <div class="block-card-body">
+                                <div class="comments-list">
+                                    <div class="comment">
+                                        <div class="user-thumb user-thumb-lg flex-shrink-0">
+                                            <img src="images/avatar-img.jpg" alt="author-img">
+                                        </div>
+                                        <div class="comment-body">
+                                            <div class="meta-data d-flex align-items-center justify-content-between">
+                                                <div>
+                                                    <h4 class="comment__title">Adam Smith</h4>
+                                                    <span class="comment__meta">San Francisco, CA</span>
+                                                </div>
+                                                <div class="star-rating-wrap text-center">
+                                                    <div class="star-rating text-color-5 font-size-18">
+                                                        <span><i class="la la-star"></i></span>
+                                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    </div>
+                                                    <p class="font-size-13 font-weight-medium">04/10/2020</p>
+                                                </div>
+                                            </div>
+                                            <p class="comment-desc">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                                Ut enim ad minim veniam, quis nostrud exercitation.
+                                            </p>
+                                            <div class="review-photos d-flex flex-wrap align-items-center ml-n1 mb-3">
+                                                <a href="images/single-listing-img1.jpg" class="d-inline-block" data-fancybox="gallery">
+                                                    <img class="lazy" src="images/img-loading.png" data-src="images/single-listing-img1.jpg" alt="review image">
+                                                </a>
+                                                <a href="images/single-listing-img2.jpg" class="d-inline-block" data-fancybox="gallery">
+                                                    <img class="lazy" src="images/img-loading.png" data-src="images/single-listing-img2.jpg" alt="review image">
+                                                </a>
+                                            </div><!-- end review-photos -->
+                                            <div class="comment-action d-flex align-items-center justify-content-between">
+                                                <a class="btn-gray btn-gray-sm" href="#" data-toggle="modal" data-target="#replayModal">
+                                                    <i class="la la-reply mr-1"></i>Reply
+                                                </a>
+                                                <p class="feedback-box">
+                                                    <button type="button" class="btn-gray btn-gray-sm mr-1">
+                                                        <i class="la la-thumbs-o-up mr-1"></i>Useful <span class="text-color font-weight-semi-bold">2</span>
+                                                    </button>
+                                                    <button type="button" class="btn-gray btn-gray-sm">
+                                                        <i class="la la-smile-o mr-1"></i>Funny
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div><!-- end comment -->
+                                    <div class="comment comment-reply">
+                                        <div class="user-thumb user-thumb-lg flex-shrink-0">
+                                            <img src="images/avatar-img2.jpg" alt="author-img">
+                                        </div>
+                                        <div class="comment-body">
+                                            <div class="meta-data d-flex align-items-center justify-content-between">
+                                                <div>
+                                                    <h4 class="comment__title">Comment from Jeremiah. of Super Duper Burgers</h4>
+                                                    <span class="comment__meta">Business Manager</span>
+                                                    <span class="comment__meta">4/12/2020</span>
+                                                </div>
+                                            </div>
+                                            <p class="comment-desc">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                            </p>
+                                        </div>
+                                    </div><!-- end comment -->
+                                    <div class="comment">
+                                        <div class="user-thumb user-thumb-lg flex-shrink-0">
+                                            <img src="images/avatar-img3.jpg" alt="author-img">
+                                        </div>
+                                        <div class="comment-body">
+                                            <div class="meta-data d-flex align-items-center justify-content-between">
+                                                <div>
+                                                    <h4 class="comment__title">Mark Hardson</h4>
+                                                    <span class="comment__meta">Los Angeles, CA</span>
+                                                </div>
+                                                <div class="star-rating-wrap text-center">
+                                                    <div class="star-rating text-color-5 font-size-18">
+                                                        <span><i class="la la-star"></i></span>
+                                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                                        <span class="ml-n1"><i class="la la-star-o"></i></span>
+                                                    </div>
+                                                    <p class="font-size-13 font-weight-medium">02/8/2020</p>
+                                                </div>
+                                            </div>
+                                            <p class="comment-desc">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                                Ut enim ad minim veniam, quis nostrud exercitation.
+                                            </p>
+                                            <div class="review-photos d-flex flex-wrap align-items-center ml-n1 mb-3">
+                                                <a href="images/single-listing-img1.jpg" class="d-inline-block" data-fancybox="gallery">
+                                                    <img class="lazy" src="images/img-loading.png" data-src="images/single-listing-img3.jpg" alt="review image">
+                                                </a>
+                                            </div><!-- end review-photos -->
+                                            <div class="comment-action d-flex align-items-center justify-content-between">
+                                                <a class="btn-gray btn-gray-sm" href="#" data-toggle="modal" data-target="#replayModal">
+                                                    <i class="la la-reply mr-1"></i>Reply
+                                                </a>
+                                                <p class="feedback-box">
+                                                    <button type="button" class="btn-gray btn-gray-sm mr-1">
+                                                        <i class="la la-thumbs-o-up mr-1"></i>Useful <span class="text-color font-weight-semi-bold">2</span>
+                                                    </button>
+                                                    <button type="button" class="btn-gray btn-gray-sm">
+                                                        <i class="la la-smile-o mr-1"></i>Funny
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div><!-- end comment -->
+                                </div>
+                                <div class="text-center">
+                                    <div class="pagination-wrapper d-inline-block">
+                                        <div class="section-pagination">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination flex-wrap justify-content-center">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Previous">
+                                                            <span aria-hidden="true"><i class="la la-angle-left"></i></span>
+                                                            <span class="sr-only">Previous</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                    <li class="page-item"><a class="page-link page-link-active" href="#">2</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Next">
+                                                            <span aria-hidden="true"><i class="la la-angle-right"></i></span>
+                                                            <span class="sr-only">Next</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div><!-- end section-pagination -->
+                                        <ul class="pagination-simple d-flex align-items-center justify-content-center pt-3">
+                                            <li class="mr-4">
+                                                <a href="#" class="pagination-simple-nav first-nav"><i class="la la-long-arrow-left mr-1"></i>First</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="pagination-simple-nav last-nav active">Last<i class="la la-long-arrow-right ml-1"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div><!-- end block-card-body -->
+                        </div><!-- end block-card -->
+                        <div class="block-card" id="review">
+                            <div class="block-card-header">
+                                <h2 class="widget-title pb-1">Add a Review</h2>
+                                <p>Your email address will not be published. Required fields are marked *</p>
+                            </div><!-- end block-card-header -->
+                            <div class="block-card-body">
+                                <div class="add-rating-bars review-bars d-flex flex-row flex-wrap flex-grow-1 align-items-center justify-content-between">
+                                    <div class="review-bars-item mx-0 mt-0">
+                                        <span class="review-bars-name">Service</span>
+                                        <div class="review-bars-inner pt-1">
+                                            <form class="leave-rating">
+                                                <input type="radio" name="rating" id="rating-1" value="1">
+                                                <label for="rating-1" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-2" value="2">
+                                                <label for="rating-2" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-3" value="3">
+                                                <label for="rating-3" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-4" value="4">
+                                                <label for="rating-4" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-5" value="5">
+                                                <label for="rating-5" class="fa fa-star"></label>
+                                            </form>
+                                        </div>
+                                    </div><!-- end review-bars-item -->
+                                    <div class="review-bars-item mx-0 mt-0">
+                                        <span class="review-bars-name">Value for Money</span>
+                                        <div class="review-bars-inner pt-1">
+                                            <form class="leave-rating">
+                                                <input type="radio" name="rating" id="rating-6" value="1">
+                                                <label for="rating-6" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-7" value="2">
+                                                <label for="rating-7" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-8" value="3">
+                                                <label for="rating-8" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-9" value="4">
+                                                <label for="rating-9" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-10" value="5">
+                                                <label for="rating-10" class="fa fa-star"></label>
+                                            </form>
+                                        </div>
+                                    </div><!-- end review-bars-item -->
+                                    <div class="review-bars-item mx-0 mt-0">
+                                        <span class="review-bars-name">Quality</span>
+                                        <div class="review-bars-inner pt-1">
+                                            <form class="leave-rating">
+                                                <input type="radio" name="rating" id="rating-11" value="1">
+                                                <label for="rating-11" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-12" value="2">
+                                                <label for="rating-12" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-13" value="3">
+                                                <label for="rating-13" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-14" value="4">
+                                                <label for="rating-14" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-15" value="5">
+                                                <label for="rating-15" class="fa fa-star"></label>
+                                            </form>
+                                        </div>
+                                    </div><!-- end review-bars-item -->
+                                    <div class="review-bars-item mx-0 mt-0">
+                                        <span class="review-bars-name">Location</span>
+                                        <div class="review-bars-inner pt-1">
+                                            <form class="leave-rating">
+                                                <input type="radio" name="rating" id="rating-16" value="1">
+                                                <label for="rating-16" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-17" value="2">
+                                                <label for="rating-17" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-18" value="3">
+                                                <label for="rating-18" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-19" value="4">
+                                                <label for="rating-19" class="fa fa-star"></label>
+                                                <input type="radio" name="rating" id="rating-20" value="5">
+                                                <label for="rating-20" class="fa fa-star"></label>
+                                            </form>
+                                        </div>
+                                    </div><!-- end review-bars-item -->
+                                </div><!-- end review-bars -->
+                                <form method="post" class="form-box row pt-3">
+                                    <div class="col-lg-6">
+                                        <div class="input-box">
+                                            <label class="label-text">Name</label>
+                                            <div class="form-group">
+                                                <span class="la la-user form-icon"></span>
+                                                <input class="form-control" type="text" name="name" placeholder="Your Name">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-6 -->
+                                    <div class="col-lg-6">
+                                        <div class="input-box">
+                                            <label class="label-text">Email</label>
+                                            <div class="form-group">
+                                                <span class="la la-envelope-o form-icon"></span>
+                                                <input class="form-control" type="email" name="email" placeholder="Email Address">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-6 -->
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">Review</label>
+                                            <div class="form-group">
+                                                <span class="la la-pencil form-icon"></span>
+                                                <textarea class="message-control form-control" name="message" placeholder="Tell about your experience or leave a tip for others"></textarea>
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-12 -->
+                                    <div class="col-lg-12">
+                                        <div class="file-upload-wrap file-upload-wrap-2">
+                                            <input type="file" name="files[]" class="multi file-upload-input with-preview" multiple>
+                                            <span class="file-upload-text"><i class="la la-photo mr-2"></i>Add Photos</span>
+                                        </div>
+                                    </div><!-- end col-lg-12 -->
+                                    <div class="col-lg-12">
+                                        <div class="btn-box pt-1">
+                                            <button class="theme-btn gradient-btn border-0">Submit Review<i class="la la-arrow-right ml-2"></i></button>
+                                        </div>
+                                    </div><!-- end col-lg-12 -->
+                                </form>
+                            </div><!-- end block-card-body -->
+                        </div><!-- end block-card -->
+                    </div><!-- end listing-detail-wrap -->
+                </div><!-- end col-lg-8 -->
+                <div class="col-lg-4">
+                    <div class="sidebar mb-0">
+                        <div class="sidebar-widget">
+                            <div class="d-flex align-items-center pb-3">
+                                <svg class="mr-2" width="55" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 316.658 316.658" xml:space="preserve">
+                                    <g>
+                                            <path style="fill:#222220;" d="M257.591,183.075c-11.104-12.792-26.45-21.154-43.217-23.551l-38.492-6.036V86.313
+                                                c0-15.952-12.979-28.93-28.931-28.93h-0.433c-15.952,0-28.931,12.978-28.931,28.93v107.881L77.794,177.14
+                                                c-7.993-3.425-17.104-2.614-24.367,2.176c-7.262,4.788-11.597,12.841-11.597,21.539v0.363c0,7.361,3.155,14.389,8.656,19.28
+                                                l67.102,59.669v28.989c0,4.143,3.357,7.5,7.5,7.5s7.5-3.357,7.5-7.5V276.8c0-2.142-0.916-4.182-2.517-5.604l-69.618-61.906
+                                                c-2.303-2.048-3.623-4.989-3.623-8.071v-0.363c0-3.695,1.77-6.982,4.854-9.017c3.087-2.035,6.807-2.366,10.201-0.911l50.24,21.532
+                                                c0.462,0.199,0.948,0.355,1.453,0.458c0.751,0.155,1.509,0.189,2.25,0.114c0.084-0.008,0.166-0.024,0.249-0.035
+                                                c0.155-0.021,0.311-0.041,0.464-0.071c0.134-0.026,0.265-0.063,0.396-0.096c0.1-0.026,0.2-0.047,0.299-0.077
+                                                c0.149-0.044,0.294-0.098,0.439-0.152c0.08-0.029,0.162-0.056,0.241-0.088c0.142-0.058,0.28-0.124,0.417-0.19
+                                                c0.081-0.039,0.164-0.075,0.243-0.117c0.123-0.065,0.241-0.137,0.36-0.208c0.091-0.055,0.184-0.107,0.273-0.166
+                                                c0.1-0.066,0.194-0.138,0.291-0.208c0.102-0.075,0.205-0.147,0.304-0.227c0.079-0.064,0.153-0.134,0.23-0.201
+                                                c0.106-0.094,0.214-0.187,0.315-0.287c0.068-0.067,0.131-0.139,0.196-0.208c0.1-0.106,0.2-0.21,0.293-0.323
+                                                c0.072-0.086,0.136-0.177,0.204-0.265c0.078-0.102,0.157-0.201,0.23-0.307c0.092-0.135,0.175-0.275,0.258-0.416
+                                                c0.04-0.067,0.083-0.13,0.121-0.198c0.36-0.652,0.628-1.362,0.782-2.114c0.104-0.503,0.152-1.01,0.152-1.512V86.313
+                                                c0-7.681,6.249-13.93,13.931-13.93h0.433c7.682,0,13.931,6.249,13.931,13.93v72.025c0,0.277,0.018,0.551,0.047,0.82
+                                                c-0.396,3.933,2.339,7.535,6.291,8.154l44.88,7.037c0.036,0.006,0.071,0.011,0.107,0.017c27.148,3.857,47.621,27.444,47.621,54.866
+                                                v0.766c0,12.69-3.097,25.349-8.956,36.606l-20.345,39.088c-1.913,3.675-0.484,8.203,3.189,10.115c1.106,0.576,2.29,0.85,3.457,0.85
+                                                c2.707,0,5.322-1.472,6.658-4.039l20.345-39.088c6.969-13.388,10.651-28.44,10.651-43.532v-0.766
+                                                C274.828,212.275,268.706,195.883,257.591,183.075z"/>
+                                            <path style="fill:#222220;" d="M146.735,37.79c4.143,0,7.5-3.357,7.5-7.5V7.5c0-4.143-3.357-7.5-7.5-7.5s-7.5,3.357-7.5,7.5v22.79
+                                                C139.235,34.433,142.593,37.79,146.735,37.79z"/>
+                                            <path style="fill:#222220;" d="M193.189,98.897c0,4.143,3.357,7.5,7.5,7.5h22.79c4.143,0,7.5-3.357,7.5-7.5s-3.357-7.5-7.5-7.5
+                                                h-22.79C196.547,91.397,193.189,94.755,193.189,98.897z"/>
+                                            <path style="fill:#222220;" d="M194.744,56.468c1.919,0,3.839-0.732,5.304-2.196l16.115-16.115c2.929-2.93,2.929-7.678,0-10.607
+                                                c-2.93-2.928-7.678-2.928-10.607,0L189.44,43.664c-2.929,2.93-2.929,7.678,0,10.607C190.905,55.735,192.825,56.468,194.744,56.468z
+                                                "/>
+                                            <path style="fill:#222220;" d="M87.521,54.271c1.465,1.464,3.385,2.196,5.304,2.196s3.839-0.732,5.304-2.196
+                                                c2.929-2.93,2.929-7.678,0-10.607L82.013,27.549c-2.93-2.928-7.678-2.928-10.607,0c-2.929,2.93-2.929,7.678,0,10.607L87.521,54.271
+                                                z"/>
+                                            <path style="fill:#222220;" d="M64.419,106.397h22.79c4.143,0,7.5-3.357,7.5-7.5s-3.357-7.5-7.5-7.5h-22.79
+                                                c-4.143,0-7.5,3.357-7.5,7.5S60.276,106.397,64.419,106.397z"/>
+                                        </g>
+                                </svg>
+                                <h3 class="widget-title pb-0 line-height-26">“La chance aide parfois, le travail toujours.”</h3>
+                            </div>
+                            <a href="#" class="theme-btn gradient-btn w-100">Contactez-Moi</a>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Informations générales </h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <ul class="list-items list-items-style-2">
+                                {% if professional.website %}
+                                    <li><i class="la la-globe mr-2 text-color-2 font-size-18"></i><a href="{{ professional.website }}">{{ professional.website }}</a></li>
+                                {% endif %}
+                                {% if professional.user.email %}
+                                    <li><i class="la la-envelope mr-2 text-color-2 font-size-18"></i><a href="mailto:{{ professional.user.email }}">{{ professional.user.email }}</a></li>
+                                {% endif %}
+                                {% if professional.user.phone %}
+                                    <li><i class="la la-phone mr-2 text-color-2 font-size-18"></i><a href="tel:{{ professional.user.phone }}">{{ professional.user.phone }}</a></li>
+                                {% endif %}
+                                {% if professional.country %}
+                                    <li><i class="la la-map-signs mr-2 text-color-2 font-size-18"></i><a href="javascript:void(0)">{{ professional.country.name }}{{ professional.region ? ", "~ professional.region.name : "" }}</a></li>
+                                {% endif %}
+                                {% if professional.languages|length > 0 %}
+                                    <li><i class="la la-language mr-2 text-color-2 font-size-18"></i><a href="#">{{ professional.languages|map(l => "#{l.name}")|join(', ') }} <i class="la la-external-link ml-1"></i></a></li>
+                                {% endif %}
+                                <li><i class="la la-comment mr-2 text-color-2 font-size-18"></i><a href="#" data-toggle="modal" data-target="#messageModal">Envoyez un message</a></li>
+                            </ul>
+                        </div>
+                        <div class="card-item card-item-layout-4">
+                            <a href="#" class="card-image d-block">
+                                <img src="{{ asset('assets/front/images/single-listing-img1.jpg') }}" class="card__img" alt="">
+                                <span class="badge gradient-btn font-size-16 font-weight-semi-bold">50% de réduction</span>
+                                <div class="card-content">
+                                    <h4 class="card-title pb-3">Commandez 1 burger et obtenez 50 % de rabais sur le deuxième</h4>
+                                    <span class="bg-white text-color py-1 px-2 rounded font-size-15 font-weight-medium">Expire le 14/10/2020</span>
+                                </div>
+                            </a>
+                        </div><!-- end card-item -->
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Rendez-vous</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <form method="post" class="form-box">
+                                <div class="form-group">
+                                    <span class="la la-calendar-o form-icon"></span>
+                                    <input class="date-dropper-input form-control" type="text"  placeholder="Check in"/>
+                                </div>
+                                <div class="user-chosen-select-container">
+                                    <select class="user-chosen-select">
+                                        <option value="0">Time Slots</option>
+                                        <option value="1">8:00am - 8:30am</option>
+                                        <option value="2">9:00am - 9:30am</option>
+                                    </select>
+                                </div><!-- end user-chosen-select-container -->
+                            </form>
+                            <div class="quantity-wrap d-flex align-items-center justify-content-between py-4">
+                                <span class="font-weight-semi-bold"><i class="la la-user-plus mr-1"></i>Personnes:</span>
+                                <div class="quantity-item d-flex align-items-center justify-content-end">
+                                    <button class="qtyDec"><i class="la la-minus"></i></button>
+                                    <input class="qtyInput" type="text" name="qty-input" value="0">
+                                    <button class="qtyInc"><i class="la la-plus"></i></button>
+                                </div>
+                            </div><!-- end quantity-wrap -->
+                            <div class="btn-box">
+                                <a href="booking.html" class="theme-btn gradient-btn w-100">Démendez un rendez-vous<i class="la la-arrow-right ml-2"></i></a>
+                            </div>
+                        </div>
+                        {% set categories = professional.categoryProfessionals %}
+                        {% if categories|length > 0 %}
+                            <div class="sidebar-widget">
+                                <h3 class="widget-title">Categories</h3>
+                                <div class="stroke-shape mb-4"></div>
+                                <div class="category-list">
+                                    {% for category in categories|slice(0, 4) %}
+                                        <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="generic-img-card d-block hover-y overflow-hidden mb-3">
+                                            <img src="{{ asset('assets/front/images/img-loading.png')|imagine_filter('category_art_small') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category_art_small') }}" alt="{{ category.name|e }}" class="generic-img-card-img lazy">
+                                            <div class="generic-img-card-content d-flex align-items-center justify-content-between">
+                                                <span class="badge">{{ category.name }}</span>
+                                                <span class="generic-img-card-counter">{{ category.allProfessionals|length }}</span>
+                                            </div>
+                                        </a>
+                                   {% endfor %}
+                                    <div class="collapse collapse-content" id="showMoreOptionCollapse2">
+                                        {% for category in categories|slice(4, categories|length) %}
+                                            <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="generic-img-card d-block hover-y overflow-hidden mb-3">
+                                                <img src="{{ asset('assets/front/images/img-loading.png')|imagine_filter('category_art_small') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category_art_small') }}" alt="{{ category.name|e }}" class="generic-img-card-img lazy">
+                                                <div class="generic-img-card-content d-flex align-items-center justify-content-between">
+                                                    <span class="badge">{{ category.name }}</span>
+                                                    <span class="generic-img-card-counter">{{ category.AllProfessionals|length }}</span>
+                                                </div>
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                    <a class="collapse-btn" data-toggle="collapse" href="#showMoreOptionCollapse2" role="button" aria-expanded="false" aria-controls="showMoreOptionCollapse2">
+                                        <span class="collapse-btn-hide">Afficher Plus <i class="la la-plus ml-1"></i></span>
+                                        <span class="collapse-btn-show">Afficher Plus <i class="la la-minus ml-1"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Tag Clouds</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <ul class="tag-list">
+                                <li><a href="#">technology</a></li>
+                                <li><a href="#">fashion</a></li>
+                                <li><a href="#">art</a></li>
+                                <li><a href="#">design</a></li>
+                                <li><a href="#">food</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">marketing</a></li>
+                                <li><a href="#">video</a></li>
+                                <li><a href="#">music</a></li>
+                                <li><a href="#">lifestyle</a></li>
+                                <li><a href="#">adventure</a></li>
+                            </ul>
+                        </div><!-- end sidebar-widget -->
+                        <div class="sidebar-widget">
+                            <div class="section-tab section-tab-layout-2 mb-4">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="popular-tab" data-toggle="tab" href="#popular" role="tab" aria-controls="popular" aria-selected="true">
+                                            Popular
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="recent-tab" data-toggle="tab" href="#recent" role="tab" aria-controls="recent" aria-selected="false">
+                                            Recent
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="popular" role="tabpanel" aria-labelledby="popular-tab">
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img1.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Mel’s Drive-In</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                <a href="#">Dinner</a>,
+                                                <a href="#">Breakfast</a>
+                                            </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img2.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Soma Pizza</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                <a href="#">Pizza</a>,
+                                                <a href="#">Burgers</a>,
+                                                <a href="#">Fast food</a>
+                                            </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img3.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Pearl’s Deluxe Burgers</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                <a href="#">Breakfast</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img4.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Box Kitchen</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star-o"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star-o"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                <a href="#">Food Stands</a>,
+                                                <a href="#">Burgers</a>
+                                            </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                </div>
+                                <div class="tab-pane fade" id="recent" role="tabpanel" aria-labelledby="recent-tab">
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img3.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Pearl’s Deluxe Burgers</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                <a href="#">Breakfast</a>
+                                            </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img4.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Box Kitchen</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star-o"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star-o"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                <a href="#">Food Stands</a>,
+                                                <a href="#">Burgers</a>
+                                            </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img1.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Mel’s Drive-In</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                <a href="#">Dinner</a>,
+                                                <a href="#">Breakfast</a>
+                                            </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img2.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Soma Pizza</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                <a href="#">Pizza</a>,
+                                                <a href="#">Burgers</a>,
+                                                <a href="#">Fast food</a>
+                                            </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                </div>
+                            </div>
+                        </div><!-- end sidebar-widget -->
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title pb-1">You Might Also Consider</h3>
+                            <div class="hover-tooltip-box mb-4 d-inline-block">
+                                <span class="text-gray">Sponsored <i class="la la-exclamation-circle"></i></span>
+                                <div class="hover-tooltip">
+                                    <p>Business owners paid for these ads. For more information visit <a href="#">Listhub for Business</a>.</p>
+                                </div>
+                            </div>
+                            <div class="sponsor-list">
+                                <div class="sponsor-item mb-4">
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img3.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Lers Ros Thai</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-bold text-color">
+                                            1.8 miles
+                                        </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                    <p class="font-size-14 font-weight-medium pt-2">"I am taking away one star for terrible service. The rant first: We made a…"
+                                        <a href="listing-details.html" class="text-color-2">Read more</a>
+                                    </p>
+                                </div><!-- end sponsor-item -->
+                                <div class="sponsor-item">
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="listing-details.html" class="d-block">
+                                                <img src="images/single-listing-small-img4.jpg" alt="similar listing image">
+                                            </a>
+                                        </div><!-- end mini-list-img -->
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="listing-details.html">Kam Lok Restaurant</a></h4>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="star-rating text-color-5 font-size-16">
+                                                    <span><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                    <span class="ml-n1"><i class="la la-star"></i></span>
+                                                </div>
+                                                <p class="font-size-14 pl-2 font-weight-medium">1348 reviews</p>
+                                            </div>
+                                            <span class="category-link after-none pl-0 font-size-14 font-weight-bold text-color">
+                                            1.8 miles
+                                        </span>
+                                        </div><!-- end mini-list-body -->
+                                    </div><!-- end mini-list-card -->
+                                    <p class="font-size-14 font-weight-medium pt-2">"This place seems to be a favorite among locals. I came here twice and was blown…"
+                                        <a href="listing-details.html" class="text-color-2">Read more</a>
+                                    </p>
+                                </div><!-- end sponsor-item -->
+                            </div><!-- end sponsor-list -->
+                        </div><!-- end sidebar-widget -->
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Subscribe</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <form method="post" class="form-box">
+                                <div class="form-group">
+                                    <span class="la la-envelope-o form-icon"></span>
+                                    <input class="form-control form-control-styled" type="text" name="email" placeholder="Enter your email"/>
+                                </div>
+                            </form>
+                            <div class="btn-box">
+                                <button type="submit" class="theme-btn gradient-btn w-100 border-0">Subscribe Now<i class="la la-arrow-right ml-2"></i></button>
+                                <span class="font-size-13 font-weight-medium">You can unsubscribe at any time</span>
+                            </div><!-- end btn-box -->
+                        </div><!-- end sidebar-widget -->
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Follow & Connect</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <div class="icon-block-wrap d-flex flex-wrap align-items-center ml-n1">
+                                <a href="#" class="icon-block d-flex align-items-center flex-grow-1 hover-scale-2">
+                                    <span class="icon-element icon-element-sm f-bg-rgb">
+                                        <i class="la la-facebook"></i>
+                                    </span>
+                                    <div class="pl-2 flex-grow-1">
+                                        <span class="text-color font-weight-bold font-size-17 d-block line-height-20">9,809</span>
+                                        <span class="text-gray font-weight-medium font-size-13 d-block line-height-20">Followers</span>
+                                    </div>
+                                </a><!-- end icon-block -->
+                                <a href="#" class="icon-block d-flex align-items-center flex-grow-1 hover-scale-2">
+                                    <span class="icon-element icon-element-sm t-bg-rgb">
+                                        <i class="la la-twitter"></i>
+                                    </span>
+                                    <div class="pl-2 flex-grow-1">
+                                        <span class="text-color font-weight-bold font-size-17 d-block line-height-20">789</span>
+                                        <span class="text-gray font-weight-medium font-size-13 d-block line-height-20">Followers</span>
+                                    </div>
+                                </a><!-- end icon-block -->
+                                <a href="#" class="icon-block d-flex align-items-center flex-grow-1 hover-scale-2">
+                                    <span class="icon-element icon-element-sm i-bg-rgb">
+                                        <i class="la la-instagram"></i>
+                                    </span>
+                                    <div class="pl-2 flex-grow-1">
+                                        <span class="text-color font-weight-bold font-size-17 d-block line-height-20">12,809</span>
+                                        <span class="text-gray font-weight-medium font-size-13 d-block line-height-20">Followers</span>
+                                    </div>
+                                </a><!-- end icon-block -->
+                                <a href="#" class="icon-block d-flex align-items-center flex-grow-1 hover-scale-2">
+                                    <span class="icon-element icon-element-sm y-bg-rgb">
+                                        <i class="la la-youtube"></i>
+                                    </span>
+                                    <div class="pl-2 flex-grow-1">
+                                        <span class="text-color font-weight-bold font-size-17 d-block line-height-20">20,876</span>
+                                        <span class="text-gray font-weight-medium font-size-13 d-block line-height-20">Subscriber</span>
+                                    </div>
+                                </a><!-- end icon-block -->
+                            </div><!-- end icon-block-wrap -->
+                        </div><!-- end sidebar-widget -->
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Hosted by</h3>
+                            <div class="stroke-shape mb-4"></div>
+                            <div class="hosted-by d-flex align-items-center">
+                                <a href="user-profile.html" class="user-thumb user-thumb-md flex-shrink-0 mr-3">
+                                    <img src="images/avatar-img.jpg" alt="author-img">
+                                </a>
+                                <div>
+                                    <h4 class="font-size-18"><a href="user-profile.html" class="text-color">Mark Hardson</a></h4>
+                                    <span class="font-size-13 text-gray font-weight-medium d-block line-height-22">20 listing hosted</span>
+                                </div>
+                            </div>
+                            <ul class="list-items py-4">
+                                <li><i class="la la-phone mr-2 text-color-2 font-size-18"></i><a href="#" class="before-none">+ 61 23 8093 3400</a></li>
+                                <li><i class="la la-envelope mr-2 text-color-2 font-size-18"></i><a href="#" class="before-none">listhub@gmail.com</a></li>
+                            </ul>
+                            <div class="btn-box">
+                                <a href="user-profile.html" class="theme-btn gradient-btn w-100"><i class="la la-user mr-2"></i>View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include "front/modal/professional/share_link.html.twig" with {"url" : url} %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent()}}
+    <script src="{{ asset('assets/front/js/gmap-script.js') }}"></script>
+    <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/copy-text-script.js') }}"></script>
+{% endblock %}

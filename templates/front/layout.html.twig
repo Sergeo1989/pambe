@@ -26,7 +26,9 @@
                 </div>
             {% endblock %}
 
-            {% embed "front/partials/header.html.twig" %}{% endembed %}
+            {% block header %} 
+                {% embed "front/partials/header.html.twig" %}{% endembed %}
+            {% endblock %}
 
             {% block content %}{% endblock %}
            
@@ -48,6 +50,8 @@
             
         {% endblock %}
 
-        {% embed "front/partials/javascripts.html.twig" %}{% endembed %}
+        {% block javascripts %}
+            {% embed "front/partials/javascripts.html.twig" %}{% endembed %}
+        {% endblock %}
     </body>
 </html>

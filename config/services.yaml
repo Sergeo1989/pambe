@@ -9,6 +9,7 @@ parameters:
     app.path.social_media_images: /uploads/images/socialmedia
     app.path.category_pro_images: /uploads/images/categorypro
     app.path.professional_images: /uploads/images/professional
+    app.path.professional_video: /uploads/video/professional
     app.path.service_images: /uploads/images/service
     app.path.banner_images: /uploads/images/banner
     app.path.category_art_images: /uploads/images/categoryart

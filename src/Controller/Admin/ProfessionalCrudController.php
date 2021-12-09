@@ -26,13 +26,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Symfony\Component\DomCrawler\Field\FileFormField;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ProfessionalCrudController extends AbstractCrudController
 {
@@ -90,6 +93,7 @@ class ProfessionalCrudController extends AbstractCrudController
                             ->setHelp("Résolution: 1200x300 pixels");
         $galleries = CollectionField::new('galleries')->setEntryType(ProfessionalImageFormType::class)
                             ->setHelp("Résolution: 1200x1200 pixels");
+        $video = TextField::new('promote_video_file', 'Vidéo promotionnelle')->setFormType(VichFileType::class);
         $services = CollectionField::new('services')->setEntryType(ServiceFormType::class);
         $name = TextField::new('user', 'Nom complet', User::class);
         $firstname = TextField::new('user.firstname', 'Prénom');
@@ -113,7 +117,7 @@ class ProfessionalCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName)
             return [$id, $email, $name, $date_add, $date_upd, $default_category, $verified, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
-            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $level, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $services];
+            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $video, $level, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $services];
         elseif(Crud::PAGE_DETAIL === $pageName)
             return [$email, $name, $phone, $address, $website, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $verified, $status];
         elseif(Crud::PAGE_NEW === $pageName)
