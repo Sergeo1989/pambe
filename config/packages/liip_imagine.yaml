@@ -19,6 +19,16 @@ liip_imagine:
             filters:
                 auto_rotate: ~
                 thumbnail: { size: [1920, 1024], mode: outbound }
+        gallery:
+            quality: 75
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [339, 230], mode: outbound }
+        service:
+            quality: 75
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [100, 75], mode: outbound }
         category:
             quality: 75
             filters:

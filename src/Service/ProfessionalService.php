@@ -12,13 +12,15 @@ class ProfessionalService
     private $categoryProRepo;
     private $professionalRepo;
 
-    public function __construct(ContextService $context, CategoryProfessionalRepository $categoryProRepo, ProfessionalRepository $professionalRepo)
+    public function __construct(
+        ContextService $context, 
+        CategoryProfessionalRepository $categoryProRepo,
+        ProfessionalRepository $professionalRepo)
     {
         $this->context = $context;
         $this->categoryProRepo = $categoryProRepo;
         $this->professionalRepo = $professionalRepo;
     }
-
 
     /**
      * Cette fonction retourne toutes les catégories de professionnels ayant un statut actif
@@ -83,5 +85,10 @@ class ProfessionalService
         });
 
         return $this->context->sort($professionals_new, 'position');
+    }
+
+    public function addView(Professional $professional): void{
+        $professional->setView($professional->getView() + 1);
+        $this->context->save($professional);
     }
 }

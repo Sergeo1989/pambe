@@ -1,13 +1,13 @@
-{% set facebook     = social_url.facebook %}
-{% set twitter      = social_url.twitter %}
-{% set instagram    = social_url.instagram %}
-{% set whatsapp     = social_url.whatsapp %}
-{% set linkedin     = social_url.linkedin %}
-{% set youtube      = social_url.youtube %}
-{% set pinterest    = social_url.pinterest %}
+{% set facebook     = social_url ? social_url.facebook : null %}
+{% set twitter      = social_url ? social_url.twitter : null %}
+{% set instagram    = social_url ? social_url.instagram : null %}
+{% set whatsapp     = social_url ? social_url.whatsapp : null %}
+{% set linkedin     = social_url ? social_url.linkedin : null %}
+{% set youtube      = social_url ? social_url.youtube : null %}
+{% set pinterest    = social_url ? social_url.pinterest : null %}
 
 
-    {% if facebook or twitter or instagram or whatsapp or linkedin or youtube or pinterest %}
+    {% if social_url is not null %}
         <span class="mr-2 text-white font-weight-semi-bold font-size-14">Suivez-Nous:</span>
         <ul class="social-profile social-profile-colored">
             {% if facebook %} <li><a href="{{ facebook }}" class="facebook-bg"><i class="lab la-facebook-f"></i></a></li>{% endif %}

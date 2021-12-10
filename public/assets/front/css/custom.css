@@ -72,13 +72,13 @@ description: Our custom pambe CSS
     background-position: center;
     background-size: cover;
     height: 0;
-    padding-bottom: 25%; 
+    padding-bottom: 17%; 
     position: relative;
 }
 
 .user-profile{
     width: 10%;
-    height: 40%; 
+    height: 58.85%; 
     position: absolute;
     left: 15%;
     bottom: 4%;
@@ -86,7 +86,7 @@ description: Our custom pambe CSS
 .profile-name{
     position: absolute;
     left: 27%;
-    bottom: 10%;
+    bottom: 13%;
     display: inline-block;
 }
 .reviews{
@@ -99,3 +99,60 @@ description: Our custom pambe CSS
 .service .card-title{
     font-size: 18px;
 }
+.user-chosen-select-container {
+    margin-left: 0;
+}
+.gallery{
+    padding: 5px 0 5px 0;
+}
+.expdesc{
+    background-clip: text;
+    color: #717073;
+}
+.qual{
+    padding-top: 20px;
+}
+.list-items li {
+    margin-bottom: 10px;
+}
+.breadcrumb-content .list-items li {
+    margin-bottom: 0;
+}
+.block-card-body .accordion-item .card-body {
+    padding: 0 20px 10px 20px;
+}
+.block-card-body .accordion-item .card-body .list{
+    padding-bottom: 10px;
+}
+.responsive-column .mini-list-card .mini-list-img img {
+    width: 100px;
+    height: 75px;
+}
+.responsive-column .mini-list-card .mini-list-img {
+    margin-bottom: 13px;
+}
+.sidebar-widget, .card-item {
+    margin-bottom: 20px;
+}
+.social-profile-styled li .whatsapp-bg {
+    color: #25D366;
+}
+.social-profile-styled li .linkedin-bg {
+    color: #0e76a8;
+}
+.social-profile-styled li .pinterest-bg {
+    color: #E60023;
+}
+.social-profile-styled li .whatsapp-bg:hover {
+    background-color: #25D366;
+    color: #fff;
+}
+.social-profile-styled li .linkedin-bg:hover {
+    background-color: #0e76a8;
+    color: #fff;
+}
+.social-profile-styled li .pinterest-bg:hover {
+    background-color: #E60023;
+    color: #fff;
+}
+

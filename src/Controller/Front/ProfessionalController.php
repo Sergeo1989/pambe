@@ -23,6 +23,8 @@ class ProfessionalController extends AbstractController
     public function show(Professional $professional): Response
     {
         $url = $this->generateUrl("app_professional_show", ["slug" => $professional->getSlug()]);
+        // A terminer: Empêcher le professionnel d'augmenter ses propre vues
+        $this->professionalService->addView($professional);
         return $this->render('front/professional/show.html.twig', compact('professional', 'url'));
     }
 

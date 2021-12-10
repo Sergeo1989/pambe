@@ -6,8 +6,8 @@ use App\Entity\CategoryProfessional;
 use App\Entity\Language;
 use App\Entity\Professional;
 use App\Entity\Qualification;
-use App\Entity\SocialMedia;
 use App\Form\UserFormType;
+use App\Form\SocialFormType;
 use App\Form\ProfessionalImageFormType;
 use App\Form\ServiceFormType;
 use App\Repository\ProfessionalRepository;
@@ -26,13 +26,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
-use Symfony\Component\DomCrawler\Field\FileFormField;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -41,7 +39,6 @@ class ProfessionalCrudController extends AbstractCrudController
 {
     private $response;
     private $context;
-    private $em;
     private $professionalRepo;
     private $qualificationRepo;
     private $hasher;
@@ -49,13 +46,11 @@ class ProfessionalCrudController extends AbstractCrudController
 
     public function __construct(
         UserPasswordHasherInterface $hasher, 
-        EntityManagerInterface $em, 
         ProfessionalRepository $professionalRepo, 
         QualificationRepository $qualificationRepo,
         ContextService $contextService)
     {
         $this->hasher = $hasher;
-        $this->em = $em;
         $this->professionalRepo = $professionalRepo;
         $this->qualificationRepo = $qualificationRepo;
         $this->contextService = $contextService;
@@ -99,6 +94,7 @@ class ProfessionalCrudController extends AbstractCrudController
         $firstname = TextField::new('user.firstname', 'Prénom');
         $phone = TelephoneField::new('user.phone', 'Téléphone');
         $address = TextField::new('user.address', 'Adresse');
+        $social_media = TextField::new('socialUrl', 'Médias Sociaux')->setFormType(SocialFormType::class);;
         $website = UrlField::new('website', 'Site web');
         $date_add = DateTimeField::new('date_add', 'Date d\'ajout');
         $date_upd = DateTimeField::new('date_upd', 'Date de mise à jour');
@@ -106,7 +102,6 @@ class ProfessionalCrudController extends AbstractCrudController
         $region = AssociationField::new('region', 'Région', Region::class);
         $city = AssociationField::new('city', 'Ville', City::class);
         $langues = AssociationField::new('languages', 'Langues', Language::class);
-        $social_medias = AssociationField::new('social_medias', 'Médias sociaux', SocialMedia::class);
         $categories = AssociationField::new('category_professionals', 'Catégories', CategoryProfessional::class);
         $default_category = AssociationField::new('category_professional_default', 'Catégorie principale', CategoryProfessional::class);
         $short_description = TextEditorField::new('short_description', 'Courte description');
@@ -117,11 +112,11 @@ class ProfessionalCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName)
             return [$id, $email, $name, $date_add, $date_upd, $default_category, $verified, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
-            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $video, $level, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $services];
+            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $video, $level, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $services, $social_media];
         elseif(Crud::PAGE_DETAIL === $pageName)
-            return [$email, $name, $phone, $address, $website, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description, $verified, $status];
+            return [$email, $name, $phone, $address, $website, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $verified, $status];
         elseif(Crud::PAGE_NEW === $pageName)
-            return [$user, $website, $profile, $cover, $galleries, $default_category, $country, $region, $city, $langues, $social_medias, $categories, $short_description, $description];
+            return [$user, $website, $profile, $cover, $galleries, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description];
     }
 
     public function configureActions(Actions $actions): Actions
@@ -222,13 +217,10 @@ class ProfessionalCrudController extends AbstractCrudController
             $experience->setDescription($description ?? '');
             $experience->setType(Qualification::EXPERIENCE);
             $experience->setProfessional($this->professionalRepo->find($professional_id));
-            
-            $this->em->persist($experience);
-            $this->em->flush();
 
             $this->response = [
                 'status' => true,
-                'value' => $experience
+                'value' => $this->contextService->save($experience)
             ];
         }
     }
@@ -240,8 +232,7 @@ class ProfessionalCrudController extends AbstractCrudController
         $experience = $this->qualificationRepo->find($experience_id);
 
         if(isset($experience)){
-            $this->em->remove($experience);
-            $this->em->flush();
+            $this->contextService->delete($experience);
             $this->response = [
                 'status' => true
             ];
@@ -285,12 +276,9 @@ class ProfessionalCrudController extends AbstractCrudController
             $qualification->setType(Qualification::QUALIFICATION);
             $qualification->setProfessional($this->professionalRepo->find($professional_id));
 
-            $this->em->persist($qualification);
-            $this->em->flush();
-
             $this->response = [
                 'status' => true,
-                'value' => $qualification
+                'value' => $this->contextService->save($qualification)
             ];
         }
     }
@@ -302,8 +290,7 @@ class ProfessionalCrudController extends AbstractCrudController
         $qualification = $this->qualificationRepo->find($qualification_id);
 
         if(isset($qualification)){
-            $this->em->remove($qualification);
-            $this->em->flush();
+            $this->contextService->delete($qualification);
             $this->response = [
                 'status' => true
             ];

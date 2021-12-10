@@ -3,18 +3,32 @@
 namespace App\Service;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ContextService
 {
+    private $em;
     private $security;
     private $slugger;
 
-    public function __construct(Security $security, SluggerInterface $slugger)
+    public function __construct(EntityManagerInterface $em, Security $security, SluggerInterface $slugger)
     {
+        $this->em = $em;
         $this->security = $security;
         $this->slugger = $slugger;
+    }
+
+    public function save(object $object){
+        $this->em->persist($object);
+        $this->em->flush();
+        return $object;
+    }
+
+    public function delete(object $object){
+        $this->em->remove($object);
+        $this->em->flush();
     }
 
     public function getUser(): User

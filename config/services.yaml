@@ -6,7 +6,6 @@
 parameters:
     locale: fr
     app_locales: en|fr|de|el
-    app.path.social_media_images: /uploads/images/socialmedia
     app.path.category_pro_images: /uploads/images/categorypro
     app.path.professional_images: /uploads/images/professional
     app.path.professional_video: /uploads/video/professional
@@ -17,14 +16,6 @@ parameters:
     pambe.security.authentication_handler: App\Security\Front\AuthenticationHandler
 
 services:
-    authentication_handler:
-        class: '%pambe.security.authentication_handler%'
-        public: false
-        arguments:
-            - '@router'
-            - '@session'
-        tags:
-            - { name: 'monolog.logger', channel: 'security' }
 
     # default configuration for services in *this* file
     _defaults:

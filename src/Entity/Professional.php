@@ -93,11 +93,6 @@ class Professional
     private $languages;
 
     /**
-     * @ORM\ManyToMany(targetEntity=SocialMedia::class, inversedBy="professionals")
-     */
-    private $social_medias;
-
-    /**
      * @ORM\ManyToOne(targetEntity=CategoryProfessional::class, inversedBy="professionals")
      */
     private $category_professional_default;
@@ -170,15 +165,41 @@ class Professional
      */
     private $promote_video_file;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $view;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $share;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="user")
+     */
+    private $likes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="professional")
+     */
+    private $professionalLikes;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ProfessionalSocialUrl::class, inversedBy="professional", cascade={"persist", "remove"})
+     */
+    private $socialUrl;
+
     public function __construct()
     {
         $this->category_professional_professionals = new ArrayCollection();
         $this->qualifications = new ArrayCollection();
         $this->languages = new ArrayCollection();
-        $this->social_medias = new ArrayCollection();
         $this->category_professionals = new ArrayCollection();
         $this->galleries = new ArrayCollection();
         $this->services = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->professionalLikes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -231,6 +252,18 @@ class Professional
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    public function getSocialUrl(): ?ProfessionalSocialUrl
+    {
+        return $this->socialUrl;
+    }
+    
+    public function setSocialUrl(?ProfessionalSocialUrl $socialUrl): self
+    {
+        $this->socialUrl = $socialUrl;
+        
         return $this;
     }
 
@@ -372,30 +405,6 @@ class Professional
         return $this;
     }
 
-    /**
-     * @return Collection|SocialMedia[]
-     */
-    public function getSocialMedias(): Collection
-    {
-        return $this->social_medias;
-    }
-
-    public function addSocialMedia(SocialMedia $socialMedia): self
-    {
-        if (!$this->social_medias->contains($socialMedia)) {
-            $this->social_medias[] = $socialMedia;
-        }
-
-        return $this;
-    }
-
-    public function removeSocialMedia(SocialMedia $socialMedia): self
-    {
-        $this->social_medias->removeElement($socialMedia);
-
-        return $this;
-    }
-
     public function getCategoryProfessionalDefault(): ?CategoryProfessional
     {
         return $this->category_professional_default;
@@ -525,6 +534,8 @@ class Professional
         $this->verified = false;
         $this->level = self::NORMAL;
         $this->position = 0;
+        $this->view = 0;
+        $this->share = 0;
         $this->nb_of_service = 6;
         $this->available = true;
         $this->date_add = new \DateTime("now");
@@ -623,5 +634,97 @@ class Professional
         if ($promote_video_file) {
             $this->date_upd = new \DateTime('now');
         }
+    }
+
+    public function getView(): ?int
+    {
+        return $this->view;
+    }
+
+    public function setView(int $view): self
+    {
+        $this->view = $view;
+
+        return $this;
+    }
+
+    public function getShare(): ?int
+    {
+        return $this->share;
+    }
+
+    public function setShare(?int $share): self
+    {
+        $this->share = $share;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProfessionalLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(ProfessionalLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(ProfessionalLike $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProfessionalLike[]
+     */
+    public function getProfessionalLikes(): Collection
+    {
+        return $this->professionalLikes;
+    }
+
+    public function addProfessionalLike(ProfessionalLike $professionalLike): self
+    {
+        if (!$this->professionalLikes->contains($professionalLike)) {
+            $this->professionalLikes[] = $professionalLike;
+            $professionalLike->setProfessional($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfessionalLike(ProfessionalLike $professionalLike): self
+    {
+        if ($this->professionalLikes->removeElement($professionalLike)) {
+            // set the owning side to null (unless already changed)
+            if ($professionalLike->getProfessional() === $this) {
+                $professionalLike->setProfessional(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isLikedByUser(Professional $user): bool 
+    {
+        foreach ($this->professionalLikes as $like) 
+            if($like->getProfessional() === $user) return true;
+        
+        return false;
     }
 }

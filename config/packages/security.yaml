@@ -32,16 +32,13 @@ security:
                 remember_me_parameter: _remember_me
             context: pambe
         front:
-            pattern: ^/
+            lazy: true
             provider: app_user_provider
-            form_login:
-                check_path: app_login
-                success_handler: authentication_handler
-                failure_handler: authentication_handler
-            anonymous: false
+            user_checker: App\Security\Front\OtherChecker
+            custom_authenticator: App\Security\Front\LoginFormAuthenticator
             logout:
                 path: app_logout
-                target: app_home
+                target: app_login
             context: pambe
 
             # activate different ways to authenticate
