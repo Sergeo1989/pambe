@@ -15,7 +15,7 @@
                                     </div>
                                     <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
                                         <p class="login-and-signup-wrap">
-                                            {% if is_granted("ROLE_PROFESSIONNEL") %}
+                                            {% if is_granted("ROLE_PROFESSIONAL") %}
                                                 <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
                                                 Espace professionnel
                                                 </a>
@@ -64,7 +64,7 @@
                                                     <div class="instant-results">
                                                         <ul class="instant-results-list">
                                                             <li><a href="#" class="d-flex align-items-center"><span class="icon-element bg-1 mr-2"><i class="la la-glass"></i></span>Food & Drinks</a></li>
-                                                        </ul>
+                                                        </ul> 
                                                     </div>
                                                 </div>
                                             </form>
@@ -73,9 +73,15 @@
                                             <nav class="main-menu">
                                                 <ul>
                                                     {% if app.user %}
-                                                        <li><a href="#" class="text-white"><span class="mr-1 la la-sign-in"></span>Mon compte</a></li>
+                                                        <li>
+                                                            <a href="#" class="text-white">Mon compte <span class="la la-angle-down"></span></a>
+                                                            <ul class="dropdown-menu-item">
+                                                                <li><a href="{{ path('app_account') }}"><span class="mr-1 la la-user-circle"></span>Profil</a></li>
+                                                                <li><a href="{{ path('app_logout') }}"><span class="mr-1 la la-sign-out"></span>Déconnexion</a></li>
+                                                            </ul>
+                                                        </li>
                                                     {% else %}
-                                                        <li><a href="#" class="text-white" data-toggle="modal" data-target="#loginModal"><span class="mr-1 la la-sign-in"></span>Connexion</a></li>
+                                                        <li><a href="{{ path("app_login") }}" class="text-white"><span class="mr-1 la la-sign-in"></span>Connexion</a></li>
                                                     {% endif %}
                                                 </ul>
                                             </nav>

@@ -1,0 +1,74 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Modification - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Modification</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Modification</li>
+        {% endblock %}
+    {% endembed %}
+    <section class="add-listing-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    {% embed "front/partials/professional/edit/breadcrumb.html.twig" %}
+                        {% block breadcrumb_service %}
+                            <a class="active" href="javascript:void(0)">Services</a>
+                        {% endblock %}
+                    {% endembed %}
+                    <div class="block-card mb-4">
+                        <div class="block-card-header">
+                            <h2 class="widget-title">Services</h2>
+                            <div class="stroke-shape"></div>
+                        </div>
+                        <div class="block-card-body">
+                            {{ form_start(serviceForm, {'method': 'post', 'attr': {'class': 'form-box'} }) }}
+                                <a href="#" id="service" data-collection="#service-bloc" class="theme-btn gradient-btn">Ajouter un service</a>
+                                {{ form_widget(serviceForm._token) }}
+                                <div 
+                                    id="service-bloc" 
+                                    data-prototype="{{ include("front/partials/professional/edit/_service.html.twig", {form: serviceForm.services.vars.prototype})|e("html_attr") }}" 
+                                    data-index="{{ serviceForm.services|length > 0 ? serviceForm.services|last.vars.name + 1 : 0}}"> 
+                                    {% for service in serviceForm.services %}
+                                        {% include "front/partials/professional/edit/_service.html.twig" with {form: service} %}
+                                    {% endfor %}
+                                </div>
+                                <div class="submit-wrap pt-3">
+                                    <div class="btn-box mt-3 ml-3">
+                                        <button type="submit" class="theme-btn gradient-btn border-0">Enregistrer</button>
+                                    </div>
+                                </div>
+                            {{ form_end(serviceForm, {render_rest: false}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+    {% embed "front/partials/stylesheets.html.twig" %}
+        {% block stylesheets_content %}
+            {{ parent() }}
+            <link rel="stylesheet" href="{{ asset('assets/front/css/jquery-te-1.4.0.css') }}">
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+{% block javascripts %}
+    {% embed "front/partials/javascripts.html.twig" %}
+        {% block javascripts_content %}
+            {{ parent() }}
+            <script src="{{ asset('assets/front/js/jquery-te-1.4.0.min.js') }}"></script>
+            <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYzby4yYDVaXPmtu4jZAGR258K6IYwjIY&libraries"></script>
+            <script src="{{ asset('assets/front/js/map-add.js') }}"></script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

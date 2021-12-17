@@ -145,4 +145,44 @@
         });
     });
 
+    $(window).on('load', function(){
+        var url  = $('#professional_ajax_url').val();
+
+        $("#Professional_skill").autocomplete({
+            autoFocus: false,
+            classes: {
+                "ui-autocomplete": "highlight"
+            },
+            source: function(data, cb){
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        q: data.term,
+                        rand: new Date().getTime(),
+                        ajax: 1,
+                        action: 'get_skills'
+                    },
+                    success: function(res){
+                        console.log(res.data);
+                        if (res.data.length === 0) {
+                            $('#Professional_skill_id').val("0");
+                        }
+                        var result = $.map(res.data, function(skill){
+                            return{
+                                label: skill.name,
+                                value: skill.name,
+                                id: skill.id
+                            }
+                        })
+                        cb(result);
+                    }
+                })
+            },
+            select: function(event, ui) {
+                $('#Professional_skill_id').val(ui.item.id);
+            }
+        });
+    });
 })();

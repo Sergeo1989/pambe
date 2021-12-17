@@ -13,7 +13,11 @@ app_admin_logout:
 app_login:
     path: /login
     controller: App\Controller\Front\SecurityController::login
-    methods: POST
+    methods: POST|GET
+app_register:
+    path: /register
+    controller: App\Controller\Front\RegistrationController::register
+    methods: POST|GET
 app_account:
     path: /account
     controller: App\Controller\Front\AccountController::index
@@ -53,6 +57,40 @@ app_professional_new:
 app_professional_vip:
     path: /professional/vip
     controller: App\Controller\Front\ProfessionalController::vip
+app_professional_like:
+    path: /professional/{slug}/like
+    controller: App\Controller\Front\ProfessionalController::like
+app_professional_information:
+    path: /professional/information/edit
+    controller: App\Controller\Front\ProfessionalController::information
+app_professional_coordonnee:
+    path: /professional/coordonnee/edit
+    controller: App\Controller\Front\ProfessionalController::coordonnee
+app_professional_gallery:
+    path: /professional/gallery/edit
+    controller: App\Controller\Front\ProfessionalController::gallery
+app_professional_gallery_image_delete:
+    path: /professional/gallery/{id}/delete
+    controller: App\Controller\Front\ProfessionalController::deleteImage
+    methods: DELETE
+    requirements:
+        id: '\d+'
+app_professional_service:
+    path: /professional/service/edit
+    controller: App\Controller\Front\ProfessionalController::service
+app_professional_training:
+    path: /professional/training/edit
+    controller: App\Controller\Front\ProfessionalController::training
+app_professional_reference:
+    path: /professional/reference/edit
+    controller: App\Controller\Front\ProfessionalController::reference
+app_professional_area:
+    path: /professional/index
+    controller: App\Controller\Front\ProfessionalController::index
+app_professional_ajax:
+    path: /professional/ajax
+    controller: App\Controller\Front\ProfessionalController::displayAjax
+    methods: POST
 app_category_pro:
     path: /professional/{slug}/category
     controller: App\Controller\Front\CategoryProController::show

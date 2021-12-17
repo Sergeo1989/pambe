@@ -121,7 +121,7 @@ description: Our custom pambe CSS
 .block-card-body .accordion-item .card-body {
     padding: 0 20px 10px 20px;
 }
-.block-card-body .accordion-item .card-body .list{
+.block-card-body .card-body .list{
     padding-bottom: 10px;
 }
 .responsive-column .mini-list-card .mini-list-img img {
@@ -155,4 +155,63 @@ description: Our custom pambe CSS
     background-color: #E60023;
     color: #fff;
 }
+.height-250 {
+    height: 250px;
+}
+.login, .register{
+    margin: 0 auto;
+    width: 450px;
+    padding: 20px;
+    background: #fff;
+}
+.breadcrumb-pro{
+    text-align: center;
+}
+.breadcrumb-pro a{
+    text-align: center;
+    color: #34393e;
+}
+.breadcrumb-pro a.active{
+    color: #7b68ee !important;
+}
+.profile.file-upload-wrap-2 .file-upload-input, .cover.file-upload-wrap-2 .file-upload-input{
+    width: 195px;
+}
+.cover a img{
+    width: 256px;
+    height: auto;
+}
+.profile a img{
+    width: 120px;
+    height: auto;
+}
+.file-upload-wrap-2 label{
+    margin-right: 10px;
+}
+.add-experience, .add-qualification, .add-certification{
+    margin-top: -37px;
+    font-size: 14px;
+    line-height: 37px;
+}
+#experience .card, #qualification .card, #certification .card{
+    margin-bottom: 20px;
+}
+#experience .card-body, #qualification .card-body, #certification .card-body {
+    padding-bottom: 0;
+}
+#experience .delete, #qualification .delete, #certification .delete{
+    text-align: center;
+    border-top: 1px solid #e3e3e3;
+    padding-bottom: 6px;
+}
+#experience .delete a, #qualification .delete a, #certification .delete a{
+    color: #7b68ee !important;
+}
+#experience .delete a:hover, #qualification .delete a:hover, #certification .delete a:hover{
+    color: #7e74bb !important
+}
+#qualification_btn, #experience_btn, #certification_btn{
+    margin-left: 16px;
+}    
 
+ 

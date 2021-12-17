@@ -1,0 +1,105 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Inscription - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Inscrivez-Vous</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Inscription</li>
+        {% endblock %}
+    {% endembed %}
+    <section>
+        <div class="register">
+            {{ form_start(registration, {'method': 'post', 'attr': {'class': 'form-box'} }) }}
+                <div class="input-box">
+                    <label class="label-text">E-mail</label>
+                    <div class="form-group">
+                        <span class="la la-envelope form-icon"></span>
+                        {{ form_widget(registration.user.email, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Adresse e-mail'}}) }}
+                    </div>
+                    {{ form_errors(registration.user.email) }}
+                </div>
+                <div class="input-box">
+                    <label class="label-text">Nom</label>
+                    <div class="form-group">
+                        <span class="la la-user form-icon"></span>
+                        {{ form_widget(registration.user.lastname, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Nom'}}) }}
+                    </div>
+                    {{ form_errors(registration.user.lastname) }}
+                </div>
+                <div class="input-box">
+                    <label class="label-text">Prénom</label>
+                    <div class="form-group">
+                        <span class="la la-user form-icon"></span>
+                        {{ form_widget(registration.user.firstname, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Prénom'}}) }}
+                    </div>
+                    {{ form_errors(registration.user.firstname) }}
+                </div>
+                <div class="input-box">
+                    <label class="label-text">Adresse</label>
+                    <div class="form-group">
+                        <span class="la la-map form-icon"></span>
+                        {{ form_widget(registration.user.address, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Adresse'}}) }}
+                    </div>
+                    {{ form_errors(registration.user.address) }}
+                </div>
+                <div class="input-box">
+                    <label class="label-text">Mot de passe</label>
+                    <div class="form-group">
+                        <span class="la la-lock form-icon"></span>
+                        {{ form_widget(registration.user.password, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Mot de passe'}}) }}
+                    </div>
+                    {{ form_errors(registration.user.password) }}
+                </div>
+                <div class="input-box py-4 user-action-meta">
+                    <div class="custom-checkbox">
+                        {{ form_widget(registration.agreeTerms) }}
+                        <label for="registration_form_agreeTerms" class="font-size-14">By signing up, you agree to our <a href="privacy-policy.html" class="text-color-2">Privacy Policy.</a></label>
+                    </div>
+                </div>
+                <div class="btn-box">
+                    <button type="submit" class="theme-btn gradient-btn w-100">
+                        <i class="la la-user-plus mr-1"></i> Enregistrer
+                    </button>
+                    <p class="sub-text-box text-right pt-1 font-weight-medium font-size-14">
+                        Déjà sur Pambe? <a class="text-color-2 login-btn" href="javascript:void(0)">Connexion</a>
+                        </p>
+                </div>
+                <div class="icon-element font-size-16 font-weight-semi-bold mt-5 mb-4 mx-auto">
+                                    OU
+                </div>
+                <div class="text-center">
+                    <p class="font-size-15 font-weight-medium">Connectez-vous avec un réseau social</p>
+                    <ul class="social-profile social-profile-colored py-3">
+                        <li>
+                            <a href="#" class="google-bg mx-1" data-toggle="tooltip" data-placement="top" title="Google">
+                                <i class="lab la-google"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="facebook-bg mx-1" data-toggle="tooltip" data-placement="top" title="Facebook">
+                                <i class="lab la-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="twitter-bg mx-1" data-toggle="tooltip" data-placement="top" title="Twitter">
+                                <i class="lab la-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="instagram-bg mx-1" data-toggle="tooltip" data-placement="top" title="Instagram">
+                                <i class="lab la-instagram"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="font-size-15 pb-3">Don't worry, we never any post to your social profile.</p>
+                </div>
+            {{ form_end(registration) }}
+        </div>
+    </section>
+{% endblock %}

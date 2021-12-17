@@ -1,0 +1,179 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Modification - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Modification</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Modification</li>
+        {% endblock %}
+    {% endembed %}
+    <section class="add-listing-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    {% embed "front/partials/professional/edit/breadcrumb.html.twig" %}
+                        {% block breadcrumb_coordonnee %}
+                            <a class="active" href="javascript:void(0)">Coordonnées</a>
+                        {% endblock %}
+                    {% endembed %}
+                    <div class="block-card mb-4">
+                        <div class="block-card-header">
+                            <h2 class="widget-title">Coordonnées</h2>
+                            <div class="stroke-shape"></div>
+                        </div>
+                        <div class="block-card-body">
+                            {{ form_start(coordonneeForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Téléphone</label>
+                                        <div class="form-group">
+                                            <span class="la la-phone form-icon"></span>
+                                            {{ form_widget(coordonneeForm.user.phone, {'attr': {'class': 'form-control', 'placeholder': 'Entrer un numéro de téléphone'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Site web</label>
+                                        <div class="form-group">
+                                            <span class="la la-globe form-icon"></span>
+                                            {{ form_widget(coordonneeForm.website, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrer votre site web'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">Adresse</label>
+                                        <div class="form-group">
+                                            <span class="la la-map-marker form-icon"></span>
+                                            {{ form_widget(coordonneeForm.user.address, {'attr': {'class': 'form-control', 'placeholder': 'Entrer une adresse'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-box">
+                                        <label class="label-text">Pays</label>
+                                        <div class="form-group user-chosen-select-container">
+                                            {{ form_widget(coordonneeForm.country, {'attr': {'class': 'user-chosen-select'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-box">
+                                        <label class="label-text">Région</label>
+                                        <div class="form-group user-chosen-select-container">
+                                            {{ form_widget(coordonneeForm.region, {'attr': {'class': 'user-chosen-select'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-box">
+                                        <label class="label-text">Ville</label>
+                                        <div class="form-group user-chosen-select-container">
+                                            {{ form_widget(coordonneeForm.city, {'attr': {'class': 'user-chosen-select'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">Lien Facebook</label>
+                                        <div class="form-group">
+                                            <span class="la la-facebook-f form-icon"></span>
+                                            {{ form_widget(coordonneeForm.socialUrl.facebook, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Lien Twitter</label>
+                                        <div class="form-group">
+                                            <span class="la la-twitter form-icon"></span>
+                                            {{ form_widget(coordonneeForm.socialUrl.twitter, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Lien Instagram</label>
+                                        <div class="form-group">
+                                            <span class="la la-instagram form-icon"></span>
+                                            {{ form_widget(coordonneeForm.socialUrl.instagram, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Lien Whatsapp</label>
+                                        <div class="form-group">
+                                            <span class="la la-whatsapp form-icon"></span>
+                                            {{ form_widget(coordonneeForm.socialUrl.whatsapp, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Lien Pinterest</label>
+                                        <div class="form-group">
+                                            <span class="la la-pinterest form-icon"></span>
+                                            {{ form_widget(coordonneeForm.socialUrl.pinterest, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Lien Youtube</label>
+                                        <div class="form-group">
+                                            <span class="la la-youtube form-icon"></span>
+                                            {{ form_widget(coordonneeForm.socialUrl.youtube, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">Lien Linkedin</label>
+                                        <div class="form-group">
+                                            <span class="la la-linkedin form-icon"></span>
+                                            {{ form_widget(coordonneeForm.socialUrl.linkedIn, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-wrap pt-3">
+                                    <div class="btn-box mt-3 ml-3">
+                                        <button type="submit" class="theme-btn gradient-btn border-0">Enregistrer</button>
+                                    </div>
+                                </div>
+                            {{ form_end(coordonneeForm) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+    {% embed "front/partials/stylesheets.html.twig" %}
+        {% block stylesheets_content %}
+            {{ parent() }}
+            <link rel="stylesheet" href="{{ asset('assets/front/css/jquery-te-1.4.0.css') }}">
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block javascripts %}
+    {% embed "front/partials/javascripts.html.twig" %}
+        {% block javascripts_content %}
+            {{ parent() }}
+            <script src="{{ asset('assets/front/js/jquery-te-1.4.0.min.js') }}"></script>
+            <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYzby4yYDVaXPmtu4jZAGR258K6IYwjIY&libraries"></script>
+            <script src="{{ asset('assets/front/js/map-add.js') }}"></script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

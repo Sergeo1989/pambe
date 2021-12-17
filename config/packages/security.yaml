@@ -19,6 +19,7 @@ security:
             security: false
         admin:
             lazy: true
+            pattern: ^/admin
             provider: app_user_provider
             user_checker: App\Security\Admin\AdminChecker
             custom_authenticator: App\Security\Admin\LoginFormAuthenticator
@@ -33,6 +34,7 @@ security:
             context: pambe
         front:
             lazy: true
+            pattern: ^/
             provider: app_user_provider
             user_checker: App\Security\Front\OtherChecker
             custom_authenticator: App\Security\Front\LoginFormAuthenticator
@@ -56,6 +58,6 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
     
     role_hierarchy:
-        ROLE_PROFESSIONNEL: ROLE_USER
+        ROLE_PROFESSIONAL: ROLE_USER
         ROLE_ADMIN: ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_PROFESSIONNEL]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]

@@ -1,0 +1,36 @@
+{% block breadcrumb_form_edit %}
+    <div class="alert alert-info font-size-15 text-color" role="alert">
+        <div class="row">
+            <div class="col-2 breadcrumb-pro">
+            {% block breadcrumb_information %}
+                <a href="{{ path('app_professional_information') }}">Informations</a>
+            {% endblock %} 
+            </div>
+            <div class="col-2 breadcrumb-pro">
+            {% block breadcrumb_coordonnee %}
+                <a href="{{ path('app_professional_coordonnee') }}">Coordonnées</a>
+            {% endblock %}
+            </div>
+            <div class="col-2 breadcrumb-pro">
+                {% block breadcrumb_service %}
+                    <a href="{{ path('app_professional_service') }}">Services</a>
+                {% endblock %}
+            </div>
+            <div class="col-2 breadcrumb-pro">
+                {% block breadcrumb_training %}
+                    <a href="{{ path('app_professional_training') }}">Formations</a>
+                {% endblock %}
+            </div>
+            <div class="col-2 breadcrumb-pro">
+                {% block breadcrumb_reference %}
+                    <a href="{{ path('app_professional_reference') }}">Références</a>
+                {% endblock %}
+            </div>
+            <div class="col-2 breadcrumb-pro">
+                {% block breadcrumb_gallery %}
+                    <a href="{{ path('app_professional_gallery') }}">Galleries</a>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

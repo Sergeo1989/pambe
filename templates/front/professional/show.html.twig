@@ -124,16 +124,9 @@
                 <img src="{{ profile|imagine_filter('profile') }}" alt="{{ professional.user.firstname|e }}">
             </a>
             <div class="align-items-center profile-name">
-                <h2 class="sec__title mb-0" style="color:white;">{{ professional.user|title }}</h2>
+                <h2 class="sec__title mb-0" style="color:white;">{{ professional.user|title }} {% if professional.verified %}<span style="font-size:14px;" class="text-color-4"><i class="la la-check-circle mr-1 text-color-4"></i>Certifié</span>{% endif %}</h2>
+                <h5 class="sec__title mb-0" style="color:white;">{{ professional.skill ? professional.skill.name|title : 'Erreur de compétence' }}</h5>
                 <p class="sec__desc py-2 font-size-17" style="color:white;"><i class="la la-map-marker mr-1 text-color-4"></i>{{ professional.user.address|e }}</p>
-                <div class="hover-tooltip-box pt-2">
-                    {% if professional.verified %}
-                        <span class="text-color-4"><i class="la la-check-circle mr-1 text-color-4"></i>Certifié</span>
-                    {% endif %}
-                    <div class="hover-tooltip">
-                        <p>This business has been claimed by the owner or a representative. <a href="javascript:void(0)">En apprendre plus</a></p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -165,18 +158,21 @@
                             </div>
                             <div class="btn-box">
                                 <a href="#review" class="btn-gray mr-1"><i class="la la-star mr-1"></i>Écrire un avis</a>
-                                {% if app.user and professional.isLikedByUser(app.user.professional) %}
-                                    <a href="#" class="btn-gray mr-1"><i class="la la-heart mr-1"></i>Favoris</a>
-                                {% else %}
-                                    <a href="#" class="btn-gray mr-1"><i class="la la-bookmark mr-1"></i>Favoris</a>
-                                {% endif %}
+                                <a href="{{ path("app_professional_like", {"slug" : professional.slug}) }}" class="js-like btn-gray mr-1">
+                                    {% if app.user and professional.isLikedByUser(app.user) %}
+                                        <i class="la la-heart mr-1"></i>
+                                    {% else %}
+                                        <i class="la la-bookmark mr-1"></i>
+                                    {% endif %}
+                                    Favoris
+                                </a>
                                 <a href="#" class="btn-gray mr-1" data-toggle="modal" data-target="#shareModal"><i class="la la-external-link mr-1"></i>Partager</a>
                                 <a href="#" class="btn-gray" data-toggle="modal" data-target="#messageModal"><i class="la la-mail-forward mr-1"></i>Contacter</a>
                             </div>
                         </div>
                         <div class="btn-box d-flex align-items-center">
                             <span class="btn-gray mr-2"><i class="la la-eye mr-1"></i>Vues - {{ professional.view }}</span>
-                            <span class="btn-gray mr-2 js-likes"><i class="la la-heart mr-1"></i>Favoris - {{ professional.professionalLikes|length }}</span>
+                            <span class="btn-gray mr-2 js-likes"><i class="la la-heart mr-1"></i>Favoris - {{ professional.likes|length }}</span>
                             <div class="dropdown dot-action-wrap">
                                 <button class="dot-action-btn dropdown-toggle after-none border-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="la la-ellipsis-v"></i>
@@ -315,8 +311,8 @@
                                 </div>
                             </div>
                         {% endif %}
-                        {% set video_url = vich_uploader_asset(professional, 'promote_video_file') %}
-                        {% if video_url is not empty %}
+  
+                        {% if professional.videoUrl is not empty %}
                             <div class="block-card mb-3">
                                 <div class="block-card-header">
                                     <h2 class="widget-title">Vidéo Promotionnelle</h2>
@@ -324,9 +320,9 @@
                                 </div>
                                 <div class="block-card-body">
                                     <div class="video-box">
-                                        <img class="lazy" src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/single-listing-img7.jpg') }}" alt="{{ professional.promoteVideo }}">
+                                        <img class="lazy" src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/single-listing-img7.jpg') }}" alt="{{ professional.user }}">
                                         <div class="video-content">
-                                            <a class="icon-element icon-element-lg icon-element-white hover-scale mx-auto" href="{{ video_url }}" data-fancybox="" title="Jouer la Vidéo">
+                                            <a class="icon-element icon-element-lg icon-element-white hover-scale mx-auto" href="{{ professional.videoUrl }}" data-fancybox="" title="Jouer la Vidéo">
                                                 <i class="la la-play"></i>
                                             </a>
                                         </div>
@@ -682,7 +678,7 @@
                                 </div>
                             </div><!-- end quantity-wrap -->
                             <div class="btn-box">
-                                <a href="booking.html" class="theme-btn gradient-btn w-100">Démendez un rendez-vous<i class="la la-arrow-right ml-2"></i></a>
+                                <a href="booking.html" class="theme-btn gradient-btn w-100">Démandez un rendez-vous<i class="la la-arrow-right ml-2"></i></a>
                             </div>
                         </div>
                         {% set categories = professional.categoryProfessionals %}
@@ -733,6 +729,17 @@
                                 </ul>
                             </div>
                         {% endif %}
+                        <div class="block-card mb-4">
+                            <div class="block-card-header">
+                                <h2 class="widget-title">Location</h2>
+                                <div class="stroke-shape"></div>
+                            </div>
+                            <div class="block-card-body">
+                                <div class="map-container height-250">
+                                    <div id="map"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -746,6 +753,7 @@
 
 {% block javascripts %}
     {{ parent()}}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYzby4yYDVaXPmtu4jZAGR258K6IYwjIY&libraries"></script>
     <script src="{{ asset('assets/front/js/gmap-script.js') }}"></script>
     <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
     <script src="{{ asset('assets/front/js/copy-text-script.js') }}"></script>

@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Professional\Information;
 
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserFormType extends AbstractType
@@ -47,30 +45,7 @@ class UserFormType extends AbstractType
                     ])
                 ]
             ])
-            ->add('password', PasswordType::class, [
-                'required' => true,
-                'label'  => 'Mot de passe',
-                'attr' => ['autocomplete' => 'password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Le mot de passe ne doit pas être vide',
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'Votre mot de passe doit avoir au moins {{ limit }} caractères',
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
-            ->add('address', TextType::class, [
-                'required' => true,
-                'label' => 'adresse',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'L\'adresse ne doit pas être vide.',
-                    ])
-                ]
-            ]);  
+           ;  
     }
     
     public function configureOptions(OptionsResolver $resolver)

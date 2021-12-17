@@ -1,0 +1,85 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Connexion - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Connectez-Vous</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Connexion</li>
+        {% endblock %}
+    {% endembed %}
+
+    <section class="overflow-hidden">
+        <div class="login">
+            <form method="post" id="login-form" class="form-box">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <div class="input-box">
+                    <label for="email" class="label-text">E-mail</label>
+                    <div class="form-group">
+                        <span class="la la-user form-icon"></span>
+                        <input class="form-control form-control-styled" value="{{ last_username }}" type="email" id="email" name="email" placeholder="Entrer votre adresse e-mail" autocomplete="email" required autofocus>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <label for="password" class="label-text">Mot de passe</label>
+                    <div class="form-group">
+                        <span class="la la-lock form-icon"></span>
+                        <input class="form-control form-control-styled" type="password" id="password" name="password" placeholder="Entrer votre mot de passe" autocomplete="current-password" required>
+                    </div>
+                </div>
+                <input type="hidden" id="_csrf_token" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="input-box d-flex align-items-center justify-content-between pb-4 user-action-meta">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="keepMeSignedChb" name="_remember_me">
+                        <label for="keepMeSignedChb" class="font-size-14">Se souvenir de moi</label>
+                    </div>
+                    <a href="javascript:void(0)" class="margin-bottom-10px lost-pass-btn font-size-14">Mot de passe oublié ?</a>
+                </div>
+                <div class="btn-box">
+                    <button type="submit" class="theme-btn gradient-btn w-100">
+                        <i class="la la-sign-in mr-1"></i> Connectez-vous
+                    </button>
+                    <p class="sub-text-box text-right pt-1 font-weight-medium font-size-14">
+                        Nouveau chez Pambe ? <a class="text-color-2 signup-btn" href="javascript:void(0)">Créer un compte</a>
+                    </p>
+                </div>
+                <div class="icon-element font-size-16 font-weight-semi-bold mt-5 mb-4 mx-auto">
+                                    OU
+                </div>
+                <div class="text-center">
+                    <p class="font-size-15 font-weight-medium">Connectez-vous avec votre réseau social</p>
+                    <ul class="social-profile social-profile-colored py-3">
+                        <li>
+                            <a href="#" class="google-bg mx-1" data-toggle="tooltip" data-placement="top" title="Google">
+                                <i class="lab la-google"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="facebook-bg mx-1" data-toggle="tooltip" data-placement="top" title="Facebook">
+                                <i class="lab la-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li> 
+                            <a href="#" class="twitter-bg mx-1" data-toggle="tooltip" data-placement="top" title="Twitter">
+                                <i class="lab la-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="instagram-bg mx-1" data-toggle="tooltip" data-placement="top" title="Instagram">
+                                <i class="lab la-instagram"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+{% endblock %}

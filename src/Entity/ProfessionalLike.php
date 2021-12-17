@@ -18,12 +18,12 @@ class ProfessionalLike
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="likes")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="likes")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="professionalLikes")
+     * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="likes")
      */
     private $professional;
 
@@ -32,12 +32,12 @@ class ProfessionalLike
         return $this->id;
     }
 
-    public function getUser(): ?Professional
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?Professional $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 

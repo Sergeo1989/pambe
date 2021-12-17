@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
-class ProfessionalImage
+class ProfessionalImage implements \Serializable
 {
     /**
      * @ORM\Id
@@ -110,5 +110,16 @@ class ProfessionalImage
     public function onPrePersist()
     {
         $this->date_upd = new \DateTime("now");
+    }
+
+    public function serialize()
+    {
+        $this->imageFile = base64_encode($this->imageFile);
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->imageFile = base64_decode($this->imageFile);
+
     }
 }

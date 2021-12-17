@@ -6,12 +6,14 @@ use App\Entity\CategoryProfessional;
 use App\Entity\Language;
 use App\Entity\Professional;
 use App\Entity\Qualification;
+use App\Entity\Skill;
 use App\Form\UserFormType;
 use App\Form\SocialFormType;
 use App\Form\ProfessionalImageFormType;
 use App\Form\ServiceFormType;
 use App\Repository\ProfessionalRepository;
 use App\Repository\QualificationRepository;
+use App\Repository\SkillRepository;
 use App\Service\ContextService;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -20,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -31,6 +34,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -41,6 +48,7 @@ class ProfessionalCrudController extends AbstractCrudController
     private $context;
     private $professionalRepo;
     private $qualificationRepo;
+    private $skillRepo;
     private $hasher;
     private $contextService;
 
@@ -48,11 +56,13 @@ class ProfessionalCrudController extends AbstractCrudController
         UserPasswordHasherInterface $hasher, 
         ProfessionalRepository $professionalRepo, 
         QualificationRepository $qualificationRepo,
+        SkillRepository $skillRepo,
         ContextService $contextService)
     {
         $this->hasher = $hasher;
         $this->professionalRepo = $professionalRepo;
         $this->qualificationRepo = $qualificationRepo;
+        $this->skillRepo = $skillRepo;
         $this->contextService = $contextService;
     }
 
@@ -88,7 +98,6 @@ class ProfessionalCrudController extends AbstractCrudController
                             ->setHelp("Résolution: 1200x300 pixels");
         $galleries = CollectionField::new('galleries')->setEntryType(ProfessionalImageFormType::class)
                             ->setHelp("Résolution: 1200x1200 pixels");
-        $video = TextField::new('promote_video_file', 'Vidéo promotionnelle')->setFormType(VichFileType::class);
         $services = CollectionField::new('services')->setEntryType(ServiceFormType::class);
         $name = TextField::new('user', 'Nom complet', User::class);
         $firstname = TextField::new('user.firstname', 'Prénom');
@@ -112,7 +121,7 @@ class ProfessionalCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName)
             return [$id, $email, $name, $date_add, $date_upd, $default_category, $verified, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
-            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $video, $level, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $services, $social_media];
+            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $level, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $services, $social_media];
         elseif(Crud::PAGE_DETAIL === $pageName)
             return [$email, $name, $phone, $address, $website, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $verified, $status];
         elseif(Crud::PAGE_NEW === $pageName)
@@ -137,7 +146,7 @@ class ProfessionalCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $user = $entityInstance->getUser();
-        $user->setRoles(['ROLE_PROFESSIONAL']);
+        $user->setRoles(["ROLE_PROFESSIONAL"]);
         $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
         $entityInstance->setSlug($this->contextService->slug($user));
         parent::persistEntity($entityManager, $entityInstance);
@@ -146,9 +155,52 @@ class ProfessionalCrudController extends AbstractCrudController
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $user = $entityInstance->getUser();
-        $user->setRoles(['ROLE_PROFESSIONAL']);
         $entityInstance->setSlug($this->contextService->slug($user));
         parent::updateEntity($entityManager, $entityInstance);
+    }
+
+    public function edit(AdminContext $context)
+    {
+        $request = $context->getRequest()->request->all();
+
+        if(!empty($request) && ($request["ea"]["newForm"]["btn"] === Action::SAVE_AND_CONTINUE || $request["ea"]["newForm"]["btn"] === Action::SAVE_AND_RETURN)){
+            $name = $request["Professional"]["skill"];
+            if(empty($name)) return parent::edit($context);
+            $id = $request["Professional"]["skill_id"];
+            if ($id == "0" || $id == "") {
+                $skill = new Skill();
+                $skill->setName($name);
+                $context->getEntity()->getInstance()->setSkill($skill);
+            }else{
+                $skill = $this->skillRepo->find((int)$id);
+                $context->getEntity()->getInstance()->setSkill($skill);
+            }
+        }
+        return parent::edit($context);
+    }
+
+    public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
+    {
+        $form = parent::createEditForm($entityDto, $formOptions, $context);
+        $skill = $entityDto->getInstance()->getSkill();
+        $form->get("skill")->setData($skill ? $skill->getName() : '');
+        $form->get("skill_id")->setData($skill ? strval($skill->getId()) : '0');
+        return $form;
+    }
+
+    public function createEditFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
+    {
+        $formBuilder = parent::createEditFormBuilder($entityDto, $formOptions, $context);
+        $formBuilder->add('skill', TextType::class, [
+            'required' => true,
+            'label' => 'Compétence',
+            'mapped'=> false
+            ])
+            ->add('skill_id', HiddenType::class, [
+            'mapped'=> false,
+            'empty_data' => '0'
+        ]);
+        return $formBuilder;
     }
 
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
@@ -299,5 +351,20 @@ class ProfessionalCrudController extends AbstractCrudController
             $this->response = [
                 'status' => false
             ];
+    }
+
+    private function displayAjaxGetSkills()
+    {
+        $search = $this->context->getRequest()->request->all()['q'];
+        if (null != $search) {
+            $skills = $this->skillRepo->findAllByTerm($search);
+        } else {
+            $skills = $this->skillRepo->findAll();
+        }
+
+        $this->response = [
+            'status' => 200,
+            'data' => $skills
+        ];
     }
 }

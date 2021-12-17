@@ -13,7 +13,11 @@
 
         <title>{% block title %}{{ website_title }}{% endblock %}</title>
         
-        {% embed "front/partials/stylesheets.html.twig" %}{% endembed %}
+        {% block stylesheets %}
+            {% embed "front/partials/stylesheets.html.twig" %}{% endembed %}
+        {% endblock %}
+        <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/front/css/custom.css') }}">
     </head>
     <body>
         {% block body %}
@@ -53,5 +57,7 @@
         {% block javascripts %}
             {% embed "front/partials/javascripts.html.twig" %}{% endembed %}
         {% endblock %}
+        <script src="{{ asset('assets/front/js/main.js') }}"></script>
+        <script src="{{ asset('assets/front/js/custom.js') }}"></script>
     </body>
 </html>

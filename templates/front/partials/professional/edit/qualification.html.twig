@@ -1,0 +1,8 @@
+<div class="card-body row">
+    <div class="list col-lg-6"><i class="la la-certificate text-color-2 mr-2 font-size-18"></i>{{ qualification.title }}</div>
+    <div class="list col-lg-6"><i class="la la-map-marker text-color-2 mr-2 font-size-18"></i>{{ qualification.place }}</div>
+    <div class="list col-lg-6"><i class="la la-hourglass-start text-color-2 mr-2 font-size-18"></i>{{ qualification.startDate|date('d/m/Y') }}</div>
+    <div class="list col-lg-6"><i class="la la-hourglass-end text-color-2 mr-2 font-size-18"></i>{{ qualification.endDate|date('d/m/Y') }}</div>
+    <div class="list col-lg-12 expdesc">{{ qualification.description }}</div>
+    <div class="list col-lg-12 delete"><a data-id="{{ qualification.id }}" href="#">Supprimer</a></div>
+</div>

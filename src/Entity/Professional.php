@@ -5,20 +5,19 @@ namespace App\Entity;
 use App\Repository\ProfessionalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProfessionalRepository::class)
  * @ORM\HasLifecycleCallbacks()
- * @Vich\Uploadable
  */
 class Professional
 {
     public const NORMAL = 0;
     public const VIP = 1;
+
+    public const YOUTUBE = 0;
+    public const VIMEO = 1;
 
     /**
      * @ORM\Id
@@ -148,24 +147,6 @@ class Professional
     private $nb_of_service;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @var string
-     */
-    private $promote_video;
-
-    /**
-     * @Vich\UploadableField(mapping="professional_video", fileNameProperty="promote_video")
-     * @Assert\File(
-     *     mimeTypes = {"video/mp4"},
-     *     mimeTypesMessage = "Mauvais type de fichier - veuillez choisir une vidéo MP4.",
-     *     maxSize = "250M",
-     *     maxSizeMessage="Taille maximale de la vidéo : 250MB."
-     * )
-     * @var File
-     */
-    private $promote_video_file;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $view;
@@ -176,19 +157,34 @@ class Professional
     private $share;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="user")
+     * @ORM\OneToOne(targetEntity=ProfessionalSocialUrl::class, inversedBy="professional", cascade={"persist", "remove"})
      */
-    private $likes;
+    private $socialUrl;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Skill::class, inversedBy="professional", cascade={"persist", "remove"})
+     */
+    private $skill;
 
     /**
      * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="professional")
      */
-    private $professionalLikes;
+    private $likes;
 
     /**
-     * @ORM\OneToOne(targetEntity=ProfessionalSocialUrl::class, inversedBy="professional", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Profile::class, inversedBy="professionals")
      */
-    private $socialUrl;
+    private $profile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $videoUrl;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $videoType;
 
     public function __construct()
     {
@@ -610,32 +606,6 @@ class Professional
         return $this;
     }
 
-    public function getPromoteVideo(): ?string
-    {
-        return $this->promote_video;
-    }
-
-    public function setPromoteVideo(?string $promote_video): self
-    {
-        $this->promote_video = $promote_video;
-
-        return $this;
-    }
-
-    public function getPromoteVideoFile()
-    {
-        return $this->promote_video_file;
-    }
-
-    public function setPromoteVideoFile(File $promote_video_file = null)
-    {
-        $this->promote_video_file = $promote_video_file;
-
-        if ($promote_video_file) {
-            $this->date_upd = new \DateTime('now');
-        }
-    }
-
     public function getView(): ?int
     {
         return $this->view;
@@ -660,6 +630,25 @@ class Professional
         return $this;
     }
 
+    public function isLikedByUser(User $user): bool 
+    {
+        foreach ($this->likes as $like) 
+            if ($like->getUser === $user) return true;
+        return false;
+    }
+
+    public function getSkill(): ?Skill
+    {
+        return $this->skill;
+    }
+
+    public function setSkill(?Skill $skill): self
+    {
+        $this->skill = $skill;
+
+        return $this;
+    }
+
     /**
      * @return Collection|ProfessionalLike[]
      */
@@ -672,7 +661,7 @@ class Professional
     {
         if (!$this->likes->contains($like)) {
             $this->likes[] = $like;
-            $like->setUser($this);
+            $like->setProfessional($this);
         }
 
         return $this;
@@ -682,49 +671,47 @@ class Professional
     {
         if ($this->likes->removeElement($like)) {
             // set the owning side to null (unless already changed)
-            if ($like->getUser() === $this) {
-                $like->setUser(null);
+            if ($like->getProfessional() === $this) {
+                $like->setProfessional(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|ProfessionalLike[]
-     */
-    public function getProfessionalLikes(): Collection
+    public function getProfile(): ?Profile
     {
-        return $this->professionalLikes;
+        return $this->profile;
     }
 
-    public function addProfessionalLike(ProfessionalLike $professionalLike): self
+    public function setProfile(?Profile $profile): self
     {
-        if (!$this->professionalLikes->contains($professionalLike)) {
-            $this->professionalLikes[] = $professionalLike;
-            $professionalLike->setProfessional($this);
-        }
+        $this->profile = $profile;
 
         return $this;
     }
 
-    public function removeProfessionalLike(ProfessionalLike $professionalLike): self
+    public function getVideoUrl(): ?string
     {
-        if ($this->professionalLikes->removeElement($professionalLike)) {
-            // set the owning side to null (unless already changed)
-            if ($professionalLike->getProfessional() === $this) {
-                $professionalLike->setProfessional(null);
-            }
-        }
+        return $this->videoUrl;
+    }
+
+    public function setVideoUrl(?string $videoUrl): self
+    {
+        $this->videoUrl = $videoUrl;
 
         return $this;
     }
 
-    public function isLikedByUser(Professional $user): bool 
+    public function getVideoType(): ?int
     {
-        foreach ($this->professionalLikes as $like) 
-            if($like->getProfessional() === $user) return true;
-        
-        return false;
+        return $this->videoType;
+    }
+
+    public function setVideoType(?int $videoType): self
+    {
+        $this->videoType = $videoType;
+
+        return $this;
     }
 }

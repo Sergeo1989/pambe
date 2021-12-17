@@ -1,5 +1,5 @@
-{% set profile = professional.profil ? vich_uploader_asset(professional.profil, 'imageFile') : asset('assets/front/images/photoshop.png') %}
-{% set cover = professional.cover ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
+{% set profile = professional.profil and professional.profil.image is not null ? vich_uploader_asset(professional.profil, 'imageFile') : asset('assets/front/images/photoshop.png') %}
+{% set cover = professional.cover and professional.cover.image is not null ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
 
 {% block professional %}
     <div class="col-lg-3 responsive-column">

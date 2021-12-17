@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
-class Service
+class Service implements \Serializable
 {
     /**
      * @ORM\Id
@@ -281,5 +281,16 @@ class Service
         $this->description_size = $description_size;
 
         return $this;
+    }
+
+    public function serialize()
+    {
+        $this->thumbnailFile = base64_encode($this->thumbnailFile);
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->thumbnailFile = base64_decode($this->thumbnailFile);
+
     }
 }

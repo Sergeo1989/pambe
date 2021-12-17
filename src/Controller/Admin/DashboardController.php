@@ -13,9 +13,9 @@ use App\Entity\Country;
 use App\Entity\KeywordArticle;
 use App\Entity\Language;
 use App\Entity\Professional;
+use App\Entity\Profile;
 use App\Entity\Region;
 use App\Entity\Service;
-use App\Entity\SocialMedia;
 use App\Entity\SocialUrl;
 use App\Entity\Testimonial;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -66,6 +66,7 @@ class DashboardController extends AbstractDashboardController
         return Assets::new()
                         ->addHtmlContentToHead('<link rel="preconnect" href="https://fonts.gstatic.com">')
                         ->addHtmlContentToHead('<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">')
+                        ->addHtmlContentToHead('<link href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css" rel="stylesheet">')
                         ->addCssFile('assets/css/bootstrap.css')
                         ->addCssFile('assets/vendors/iconly/bold.css')
                         ->addCssFile('assets/vendors/perfect-scrollbar/perfect-scrollbar.css')
@@ -77,8 +78,6 @@ class DashboardController extends AbstractDashboardController
                         ->addJsFile('assets/vendors/apexcharts/apexcharts.js')
                         ->addJsFile('assets/js/pages/dashboard.js')
                         ->addJsFile('assets/js/main.js')
-                        ->addJsFile('assets/vendors/jquery/jquery.min.js')
-                        ->addJsFile('assets/js/custom.js')
                         ;
     }
 
@@ -103,6 +102,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Réseaux sociaux', 'bi bi-pin', SocialUrl::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
         yield MenuItem::linkToCrud('Témoignages', 'bi bi-pin', Testimonial::class);
         yield MenuItem::linkToCrud('Bannières', 'bi bi-pin', Banner::class);
+        yield MenuItem::linkToCrud('Statuts', 'bi bi-pin', Profile::class);
         yield MenuItem::linkToCrud('Administrateurs', 'bi bi-pin', Admin::class);
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'bi bi-x-circle');

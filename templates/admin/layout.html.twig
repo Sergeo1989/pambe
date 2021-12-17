@@ -43,6 +43,9 @@
             {{ htmlContent|raw }}
         {% endfor %}
     {% endblock %}
+    <script src="{{ asset('assets/vendors/jquery/jquery.min.js') }}"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
 </head>
 {% block body %}
     <body id="{% block body_id %}{% endblock %}" class="ea {% block body_class %}{% endblock %}">

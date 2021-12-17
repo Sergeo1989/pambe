@@ -1,0 +1,56 @@
+{% extends 'front/layout.html.twig' %}
+
+{% import "front/macro/professional/qualification.html.twig" as modal %}
+
+{% block title %}{{ 'Modification - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Modification</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Modification</li>
+        {% endblock %}
+    {% endembed %}
+    <section class="add-listing-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    {% embed "front/partials/professional/edit/breadcrumb.html.twig" %}
+                        {% block breadcrumb_reference %}
+                            <a class="active" href="javascript:void(0)">Références</a>
+                        {% endblock %}
+                    {% endembed %}
+                    <div class="block-card mb-4">
+                        <div class="block-card-header">
+                            <h2 class="widget-title">Expériences professionnelles</h2>
+                            <div class="stroke-shape"></div>
+                        </div>
+                        <div class="block-card-body">
+                            <div class="block-card mb-3">
+                                <div class="block-card-header">
+                                    <h2 class="widget-title">Expériences</h2>
+                                    <a href="#" data-toggle="modal" data-target="#experienceModal" class="theme-btn gradient-btn float-right add-experience">Ajouter</a>
+                                    <div class="stroke-shape"></div>
+                                </div>
+                                <div id="experience" class="block-card-body">
+                                {% for qualification in app.user.professional.qualifications|reverse(true) %}
+                                    {% if qualification.type is constant('App\\Entity\\Qualification::EXPERIENCE') %}
+                                        <div id="experience_{{ qualification.id }}" class="card">
+                                            {% include "front/partials/professional/edit/qualification.html.twig" with {qualification: qualification} %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                </div>     
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {{ modal.render_modal('experience', 'Expériences') }}
+{% endblock %}

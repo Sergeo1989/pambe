@@ -22,7 +22,7 @@ function initMap(dom_el_id, lat, lng, marker_icon) {
         lng = -74.077644;
     }
     if (typeof marker_icon === 'undefined') {
-        marker_icon = '../images/map-marker.png';
+        marker_icon = './assets/front/images/map-marker.png';
     }
 
 
