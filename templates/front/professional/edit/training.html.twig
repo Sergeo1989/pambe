@@ -33,7 +33,7 @@
                             <div class="block-card mb-3">
                                 <div class="block-card-header">
                                     <h2 class="widget-title">Qualifications</h2>
-                                    <a href="#" data-toggle="modal" data-target="#qualificationModal" class="theme-btn gradient-btn float-right add-qualification">Ajouter</a>
+                                    <a href="#" data-toggle="modal" data-target="#qualificationModalAdd" class="theme-btn gradient-btn float-right add-qualification">Ajouter</a>
                                     <div class="stroke-shape"></div>
                                 </div>
                                 <div id="qualification" class="block-card-body">
@@ -49,7 +49,7 @@
                             <div class="block-card mb-3">
                                 <div class="block-card-header">
                                     <h2 class="widget-title">Certifications</h2>
-                                    <a href="#" data-toggle="modal" data-target="#certificationModal" class="theme-btn gradient-btn float-right add-certification">Ajouter</a>
+                                    <a href="#" data-toggle="modal" data-target="#certificationModalAdd" class="theme-btn gradient-btn float-right add-certification">Ajouter</a>
                                     <div class="stroke-shape"></div>
                                 </div>
                                 <div id="certification" class="block-card-body">
@@ -68,6 +68,8 @@
             </div>
         </div>
     </section>
-    {{ modal.render_modal('qualification', 'Qualifications') }}
-    {{ modal.render_modal('certification', 'Certifications') }}
+    {{ modal.render_modal('add','qualification', 'Qualifications') }}
+    {{ modal.render_modal('add', 'certification', 'Certifications') }}
+    {{ modal.render_modal('edit','qualification', 'Qualifications') }}
+    {{ modal.render_modal('edit', 'certification', 'Certifications') }}
 {% endblock %}

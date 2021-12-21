@@ -6,12 +6,13 @@ use App\Entity\Professional;
 use App\Entity\ProfessionalImage;
 use App\Entity\ProfessionalLike;
 use App\Entity\Qualification;
+use App\Entity\Service;
 use App\Form\Professional\Edit\CoordonneeFormType;
 use App\Form\Professional\Edit\GalleryFormType;
 use App\Form\Professional\Edit\InformationFormType;
-use App\Form\Professional\Edit\ServiceFormType;
 use App\Repository\ProfessionalLikeRepository;
 use App\Repository\QualificationRepository;
+use App\Repository\ServiceRepository;
 use App\Service\ContextService;
 use App\Service\ProfessionalService;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,34 +21,41 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfessionalController extends AbstractController
 {
     private $context;
+    private $translator;
     private $paginator;
     private $professionalService;
     private $likeRepo;
     private $qualificationRepo;
+    private $serviceRepo;
     private $request;
     private $response;
     private $status = 200;
 
     public function __construct(
         ContextService $context, 
+        TranslatorInterface $translator,
         PaginatorInterface $paginator, 
         ProfessionalService $professionalService,
         ProfessionalLikeRepository $likeRepo,
-        QualificationRepository $qualificationRepo)
+        QualificationRepository $qualificationRepo,
+        ServiceRepository $serviceRepo)
     {
         $this->context = $context;
+        $this->translator = $translator;
         $this->paginator = $paginator;
         $this->professionalService = $professionalService;
         $this->likeRepo = $likeRepo;
         $this->qualificationRepo = $qualificationRepo;
+        $this->serviceRepo = $serviceRepo;
     }
 
     /**
-     * @Security("is_granted('ROLE_PROFESSIONAL')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function index(){
 
@@ -121,11 +129,21 @@ class ProfessionalController extends AbstractController
     }
 
     /**
-     * @Security("is_granted('ROLE_PROFESSIONAL')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function information(Request $request)
     { 
         $professional = $this->context->getUser()->getProfessional();
+
+        if(is_null($professional))
+        {
+            $professional = new Professional();
+            $slug = $this->context->slug($this->context->getUser()->getEmail());
+            $professional->setSlug($slug);
+            $professional->setUser($this->context->getUser());
+            $this->context->save($professional);
+        }
+
         $form = $this->createForm(InformationFormType::class, $professional);
         $form->handleRequest($request);
 
@@ -143,7 +161,7 @@ class ProfessionalController extends AbstractController
     }
 
     /**
-     * @Security("is_granted('ROLE_PROFESSIONAL')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function coordonnee(Request $request)
     {
@@ -155,7 +173,9 @@ class ProfessionalController extends AbstractController
             
             $this->context->save($professional);
 
-            $this->addFlash('success', 'Contenu enregistré avec succès !');
+            $message = $this->translator->trans('success.message');
+
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('app_professional_service');
         }
 
@@ -165,7 +185,7 @@ class ProfessionalController extends AbstractController
     }
 
     /**
-     * @Security("is_granted('ROLE_PROFESSIONAL')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function gallery(Request $request)
     {
@@ -205,29 +225,15 @@ class ProfessionalController extends AbstractController
     }
 
     /**
-     * @Security("is_granted('ROLE_PROFESSIONAL')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function service(Request $request)
     {
-        $professional = $this->context->getUser()->getProfessional();
-        $form = $this->createForm(ServiceFormType::class, $professional);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->context->save($professional);
-
-            $this->addFlash('success', 'Contenu enregistré avec succès !');
-            return $this->redirectToRoute('app_professional_service');
-        }
-
-        return $this->render('front/professional/edit/service.html.twig', [
-            'serviceForm' => $form->createView(),
-        ]);
+        return $this->render('front/professional/edit/service.html.twig');
     }
 
     /**
-     * @Security("is_granted('ROLE_PROFESSIONAL')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function training(Request $request)
     {
@@ -235,7 +241,7 @@ class ProfessionalController extends AbstractController
     }
 
     /**
-     * @Security("is_granted('ROLE_PROFESSIONAL')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function reference(Request $request)
     {
@@ -257,7 +263,7 @@ class ProfessionalController extends AbstractController
         $this->request = $request;
 
         $this->response = [];
-
+        
         $action = str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $this->request->get("action"))));
         if (!empty($action) && method_exists($this, 'displayAjax' . $action)) {
             $this->{'displayAjax' . $action}();
@@ -266,9 +272,122 @@ class ProfessionalController extends AbstractController
         return new JsonResponse($this->response, $this->status);
     }
 
+    private function displayAjaxGetService()
+    {
+        $service_id = (int)$this->request->get('id');
+
+        $service = $this->serviceRepo->find($service_id);
+
+        if(isset($service))
+            $this->response = [
+                'status' => true,
+                'value' => $service
+            ];
+        else
+            $this->response = [
+                'status' => false
+            ];
+    }
+
+    private function displayAjaxAddService()
+    {
+        $file = $this->request->files->get('file');
+        $title = trim($this->request->get('title'));
+        $price = trim($this->request->get('price'));
+        $unit = trim($this->request->get('unit'));
+        $description = $this->request->get('description');
+        if(empty($file))
+            $this->response = [
+                'status' => false,
+                'message' => 'Entrer une image.'
+            ];
+        elseif(empty($title))
+            $this->response = [
+                'status' => false,
+                'message' => 'Entrer un titre.'
+            ];
+        elseif(!is_numeric($price))
+            $this->response = [
+                'status' => false,
+                'message' => 'Entrer un nombre.'
+            ];
+        else{
+            $service = new Service();
+            $service->setTitle($title)
+                    ->setPrice($price)
+                    ->setUnit($unit)
+                    ->setThumbnailFile($file)
+                    ->setDescription($description)
+                    ->setProfessional($this->context->getUser()->getProfessional());
+
+            $this->response = [
+                'status' => true,
+                'value' => $this->context->save($service)
+            ];
+        }
+    }
+
+    private function displayAjaxEditService()
+    {
+        $service_id = (int)$this->request->get('id');
+        $file = $this->request->files->get('file');
+        $title = trim($this->request->get('title'));
+        $price = trim($this->request->get('price'));
+        $unit = trim($this->request->get('unit'));
+        $description = $this->request->get('description');
+
+        $service = $this->serviceRepo->find($service_id);
+
+        if(isset($service)){
+            if(!empty($file)) $service->setThumbnailFile($file);
+           
+            $service->setTitle($title)
+                    ->setPrice($price)
+                    ->setUnit($unit)
+                    ->setDescription($description);
+
+            $this->response = [
+                'status' => true,
+                'value' => $this->context->save($service)
+            ];
+        }
+        else
+            $this->response = [
+                'status' => false
+            ];
+    }
+
+    private function displayAjaxRemoveService()
+    {
+        $service_id = (int)$this->request->get('id');
+
+        $service = $this->serviceRepo->find($service_id);
+
+        if(isset($service)){
+            $this->context->delete($service);
+            $this->response = [
+                'status' => true
+            ];
+        }
+        else
+            $this->response = [
+                'status' => false
+            ];
+    }
+
+    private function displayAjaxGetExperience()
+    {
+        $this->getQualification();
+    }
+
     private function displayAjaxAddExperience()
     {
         $this->addQualification(Qualification::EXPERIENCE);
+    }
+
+    private function displayAjaxEditExperience()
+    {
+        $this->editQualification();
     }
 
     private function displayAjaxRemoveExperience()
@@ -276,9 +395,19 @@ class ProfessionalController extends AbstractController
         $this->removeQualification();
     }
 
+    private function displayAjaxGetQualification()
+    {
+        $this->getQualification();
+    }
+
     private function displayAjaxAddQualification()
     {
         $this->addQualification(Qualification::QUALIFICATION);
+    }
+
+    private function displayAjaxEditQualification()
+    {
+        $this->editQualification();
     }
 
     private function displayAjaxRemoveQualification()
@@ -286,14 +415,41 @@ class ProfessionalController extends AbstractController
         $this->removeQualification();
     }
 
+    private function displayAjaxGetCertification()
+    {
+        $this->getQualification();
+    }
+
     private function displayAjaxAddCertification()
     {
         $this->addQualification(Qualification::CERTIFICATE);
     }
 
+    private function displayAjaxEditCertification()
+    {
+        $this->editQualification();
+    }
+
     private function displayAjaxRemoveCertification()
     {
         $this->removeQualification();
+    }
+
+    private function getQualification()
+    {
+        $qualification_id = (int)$this->request->get('id');
+
+        $qualification = $this->qualificationRepo->find($qualification_id);
+
+        if(isset($qualification))
+            $this->response = [
+                'status' => true,
+                'value' => $qualification
+            ];
+        else
+            $this->response = [
+                'status' => false
+            ];
     }
 
     private function addQualification($type)
@@ -332,6 +488,35 @@ class ProfessionalController extends AbstractController
             $this->response = [
                 'status' => true,
                 'value' => $this->context->save($qualification)
+            ];
+        }
+    }
+
+    private function editQualification()
+    {
+        $qualification_id = (int)$this->request->get('id');
+        $title = trim($this->request->get('title'));
+        $place = trim($this->request->get('place'));
+        $date_start = $this->request->get('start_date');
+        $date_end = $this->request->get('end_date');
+        $description = $this->request->get('description');
+
+        $qualification = $this->qualificationRepo->find($qualification_id);
+
+        if(isset($qualification)){
+            $qualification->setTitle($title);
+            $qualification->setPlace($place);
+            $qualification->setStartDate(new \DateTime($date_start));
+            $qualification->setEndDate(new \DateTime($date_end));
+            $qualification->setDescription($description);
+
+            $this->response = [
+                'status' => true,
+                'value' => $this->context->save($qualification)
+            ];
+        }else{
+            $this->response = [
+                'status' => false
             ];
         }
     }

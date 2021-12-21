@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="HCrgY1b" resname="success.message">
+        <source>success.message</source>
+        <target>Contenu enregistré avec succès</target>
+      </trans-unit>
+      <trans-unit id="6qHfwB." resname="global.edit">
+        <source>global.edit</source>
+        <target>Editer</target>
+      </trans-unit>
+      <trans-unit id="qtGYd7a" resname="global.delete">
+        <source>global.delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="zLV1AOX" resname="global.about">
+        <source>global.about</source>
+        <target>À propos</target>
+      </trans-unit>
+      <trans-unit id="L9RqqPZ" resname="global.professional_area">
+        <source>global.professional_area</source>
+        <target>Espace professionnel</target>
+      </trans-unit>
+      <trans-unit id="O4jVDyl" resname="global.become_a_professional">
+        <source>global.become_a_professional</source>
+        <target>Devenir professionnel</target>
+      </trans-unit>
+      <trans-unit id="IJUC2.s" resname="global.account">
+        <source>global.account</source>
+        <target>Mon compte</target>
+      </trans-unit>
+      <trans-unit id=".WqqWBR" resname="global.find_a_professional">
+        <source>global.find_a_professional</source>
+        <target>Trouver un professionnel</target>
+      </trans-unit>
+      <trans-unit id="cnBoV5L" resname="global.profile">
+        <source>global.profile</source>
+        <target>Profil</target>
+      </trans-unit>
+      <trans-unit id="hVgXLSk" resname="global.logout">
+        <source>global.logout</source>
+        <target>Déconnexion</target>
+      </trans-unit>
+      <trans-unit id="2x_lTMv" resname="global.login">
+        <source>global.login</source>
+        <target>Connexion</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

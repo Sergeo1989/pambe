@@ -1,6 +1,15 @@
+#app_home:
+    #path: /
+    #controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    #defaults:
+        #route: home
+        #permanent: true
+        #keepQueryParams: true
 app_home:
     path: /
     controller: App\Controller\Front\HomeController::index
+    #requirements:
+        #_locale: '%app_locale%'
 admin:
     path: /admin
     controller: App\Controller\Admin\DashboardController::index
@@ -14,10 +23,14 @@ app_login:
     path: /login
     controller: App\Controller\Front\SecurityController::login
     methods: POST|GET
+    #requirements:
+        #_locale: '%app_locale%'
 app_register:
     path: /register
     controller: App\Controller\Front\RegistrationController::register
     methods: POST|GET
+    #requirements:
+        #_locale: '%app_locale%'
 app_account:
     path: /account
     controller: App\Controller\Front\AccountController::index
@@ -36,39 +49,61 @@ app_main_menu:
 app_contact:
     path: /contact
     controller: App\Controller\Front\ContactController::index
+    #requirements:
+        #_locale: '%app_locale%'
 app_blog:
     path: /blog
     controller: App\Controller\Front\BlogController::index
+    #requirements:
+        #_locale: '%app_locale%'
 app_blog_article:
     path: /blog/{slug}/article
     controller: App\Controller\Front\BlogController::show
+    #requirements:
+        #_locale: '%app_locale%'
 app_blog_category:
     path: /blog/article/{slug}/category
     controller: App\Controller\Front\BlogController::category
+    #requirements:
+        #_locale: '%app_locale%'
 app_about:
     path: /about
     controller: App\Controller\Front\AboutController::index
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_show:
     path: /professional/{slug}/show
     controller: App\Controller\Front\ProfessionalController::show
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_new:
     path: /professional/new
     controller: App\Controller\Front\ProfessionalController::new
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_vip:
     path: /professional/vip
     controller: App\Controller\Front\ProfessionalController::vip
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_like:
     path: /professional/{slug}/like
     controller: App\Controller\Front\ProfessionalController::like
 app_professional_information:
     path: /professional/information/edit
     controller: App\Controller\Front\ProfessionalController::information
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_coordonnee:
     path: /professional/coordonnee/edit
     controller: App\Controller\Front\ProfessionalController::coordonnee
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_gallery:
     path: /professional/gallery/edit
     controller: App\Controller\Front\ProfessionalController::gallery
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_gallery_image_delete:
     path: /professional/gallery/{id}/delete
     controller: App\Controller\Front\ProfessionalController::deleteImage
@@ -78,22 +113,35 @@ app_professional_gallery_image_delete:
 app_professional_service:
     path: /professional/service/edit
     controller: App\Controller\Front\ProfessionalController::service
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_training:
     path: /professional/training/edit
     controller: App\Controller\Front\ProfessionalController::training
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_reference:
     path: /professional/reference/edit
     controller: App\Controller\Front\ProfessionalController::reference
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_area:
     path: /professional/index
     controller: App\Controller\Front\ProfessionalController::index
 app_professional_ajax:
     path: /professional/ajax
     controller: App\Controller\Front\ProfessionalController::displayAjax
-    methods: POST
+    methods: GET|POST
 app_category_pro:
     path: /professional/{slug}/category
     controller: App\Controller\Front\CategoryProController::show
+    #requirements:
+        #_locale: '%app_locale%'
 app_category_popular:
     path: /professional/category/popular
     controller: App\Controller\Front\CategoryProController::popular
+    #requirements:
+        #_locale: '%app_locale%'
+app_change_locale:
+    path: /application/{locale}/edit
+    controller: App\Controller\Front\HomeController::changeLocale

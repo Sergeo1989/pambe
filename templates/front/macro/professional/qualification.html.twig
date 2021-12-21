@@ -1,54 +1,55 @@
-{% macro render_modal(qualification, title) %}    
-    <div class="modal fade modal-container message-form" id="{{qualification}}Modal" tabindex="-1" role="dialog" aria-labelledby="{{qualification}}ModalTitle" aria-hidden="true">
+{% macro render_modal(form, qualification, title) %}    
+    <div class="modal fade modal-container message-form" id="{{qualification}}Modal{{form|title}}" tabindex="-1" role="dialog" aria-labelledby="{{qualification}}ModalTitle{{form|title}}" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header align-items-center mh-bg-2">
-                    <h5 class="modal-title" id="{{qualification}}ModalTitle">{{ title }}</h5>
+                    <h5 class="modal-title" id="{{qualification}}ModalTitle{{form|title}}">{{ title }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" class="la la-times-circle"></span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div id="{{qualification}}_error" class="alert alert-danger font-size-15 text-color" role="alert"></div>
-                    <form method="post" class="form-box row" id="{{qualification}}_form">
+                    <form method="post" class="form-box row" id="{{qualification}}_form_{{form}}">
                         <div class="input-box col-6">
                             <label class="label-text">Titre</label>
                             <div class="form-group">
                                 <span class="la la-certificate form-icon"></span>
-                                <input id="{{qualification}}_title" class="form-control" type="text" placeholder="Titre">
+                                <input id="{{qualification}}_title_{{form}}" class="form-control" type="text" placeholder="Titre">
                             </div>
                         </div>
                         <div class="input-box col-6">
                             <label class="label-text">Lieu</label>
                             <div class="form-group">
                                 <span class="la la-map-marker form-icon"></span>
-                                <input id="{{qualification}}_place" class="form-control" type="text" placeholder="Lieu">
+                                <input id="{{qualification}}_place_{{form}}" class="form-control" type="text" placeholder="Lieu">
                             </div>
                         </div>
                         <div class="input-box col-6">
                             <label class="label-text">Date de début</label>
                             <div class="form-group">
                                 <span class="la la-hourglass-start form-icon"></span>
-                                <input id="{{qualification}}_start_date" class="date-dropper-input form-control" type="text"  placeholder="Date de début"/>
+                                <input id="{{qualification}}_start_date_{{form}}" data-dd-format="d-m-Y" data-dd-lang="{{ app.request.locale }}" class="date-dropper-input form-control" type="text"  placeholder="Date de début"/>
                             </div>
                         </div>
                         <div class="input-box col-6">
                             <label class="label-text">Date de fin</label>
                             <div class="form-group">
                                 <span class="la la-hourglass-end form-icon"></span>
-                                <input id="{{qualification}}_end_date" class="date-dropper-input form-control" type="text"  placeholder="Date de fin"/>
+                                <input id="{{qualification}}_end_date_{{form}}" data-dd-lang="{{ app.request.locale }}" class="date-dropper-input form-control" type="text"  placeholder="Date de fin"/>
                             </div>
                         </div>
                         <div class="input-box col-12">
                             <label class="label-text">Description</label>
                             <div class="form-group">
                                 <span class="la la-pencil form-icon"></span>
-                                <textarea id="{{qualification}}_description" class="message-control form-control" placeholder="Entrer une description"></textarea>
+                                <textarea id="{{qualification}}_description_{{form}}" class="message-control form-control" placeholder="Entrer une description"></textarea>
                             </div>
                         </div>
-                        <input id="professional_ajax_url" class="form-control form-control-styled" type="hidden" value="{{ path("app_professional_ajax") }}">
+                        <input id="professional_ajax_url" type="hidden" value="{{ path("app_professional_ajax") }}">
+                        <input id="{{qualification}}_id_{{form}}" type="hidden" value="">
                         <div class="btn-box">
-                            <button id="{{qualification}}_btn" type="submit" class="theme-btn gradient-btn w-100">
+                            <button id="{{qualification}}_btn_{{form}}" type="submit" class="theme-btn gradient-btn w-100">
                                 Enregistrer<i class="la la-arrow-right ml-2"></i>
                             </button>
                         </div>

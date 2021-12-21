@@ -226,8 +226,8 @@ class Qualification implements \JsonSerializable
             'id'            => $this->getId(),
             'title'         => $this->getTitle(),
             'place'         => $this->getPlace(),
-            'start_date'    => $this->getStartDate()->format('d/m/Y'),
-            'end_date'      => $this->getEndDate()->format('d/m/Y'),
+            'start_date'    => $this->getStartDate()->format('d-m-Y'),
+            'end_date'      => $this->getEndDate()->format('d-m-Y'),
             'description'   => $this->getDescription(),
             'type'          => $this->getType()
         ];

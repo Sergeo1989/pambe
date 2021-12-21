@@ -5,6 +5,7 @@ namespace App\Controller\Front;
 use App\Repository\TestimonialRepository;
 use App\Service\BlogService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends AbstractController
@@ -27,5 +28,12 @@ class HomeController extends AbstractController
             'testimonials' => $testimonials,
             'articles' => $articles,
         ]);
+    }
+
+    public function changeLocale($locale, Request $request)
+    {
+        $request->getSession()->set('_locale', $locale);
+     
+        return $this->redirect($request->headers->get('referer'));
     }
 }

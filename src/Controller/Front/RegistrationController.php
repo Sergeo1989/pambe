@@ -2,7 +2,7 @@
 
 namespace App\Controller\Front;
 
-use App\Entity\Professional;
+use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Service\ContextService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,18 +14,16 @@ class RegistrationController extends AbstractController
 {
     public function register(ContextService $context, Request $request, UserPasswordHasherInterface $hashPassword): Response
     {
-        $professional = new Professional();
-        $form = $this->createForm(RegistrationFormType::class, $professional);
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->get('user')->getData();
+            $user = $form->getData();
 
             $user->setPassword($hashPassword->hashPassword($user, $user->getPassword()));
 
-            $professional->setSlug($context->slug($user));
-            
-            $context->save($professional);
+            $context->save($user);
 
             // do anything else you need here, like send an email
 

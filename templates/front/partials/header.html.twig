@@ -10,26 +10,34 @@
                                             <a href="{{ path("app_contact") }}">Contact</a>
                                         </span>
                                         <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
-                                            <a href="{{ path("app_about") }}">À propos</a>
+                                            <a href="{{ path("app_about") }}">{{ 'global.about'|trans }}</a>
                                         </span>
                                     </div>
                                     <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
                                         <p class="login-and-signup-wrap">
-                                            {% if is_granted("ROLE_PROFESSIONAL") %}
-                                                <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
-                                                Espace professionnel
+                                            {% if app.user and app.user.professional is not null %}
+                                                <a href="{{ path('app_professional_information') }}" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
+                                                    {{ 'global.professional_area'|trans }}
                                                 </a>
                                             {% else %}
-                                                <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
-                                                    <span class="mr-1 la la-user-plus"></span>Devenir professionnel
+                                                <a href="{{ path('app_professional_information') }}" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
+                                                    <span class="mr-1 la la-user-plus"></span>{{ 'global.become_a_professional'|trans }}
                                                 </a>
                                             {% endif %}
                                         </p>
-                                        <div class="user-chosen-select-container">
-                                            <select class="user-chosen-select">
-                                                <option value="1" selected>English</option>
-                                                <option value="2">French</option>
-                                            </select>
+                                        <div class="menu-locale">
+                                            <nav class="main-menu">
+                                                <a href="#" class="theme-btn gradient-btn dropdown-toggle locale" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    {{ app.request.locale|locale_name(app.request.locale)|title }} <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    {% for locale in locales %}
+                                                        {% if locale != app.request.locale %}
+                                                            <li style="padding-top: 0;"><a href="{{ path('app_change_locale', {locale: locale}) }}">{{ locale|locale_name(app.request.locale)|title }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>
@@ -74,21 +82,21 @@
                                                 <ul>
                                                     {% if app.user %}
                                                         <li>
-                                                            <a href="#" class="text-white">Mon compte <span class="la la-angle-down"></span></a>
+                                                            <a href="#" class="text-white">{{ 'global.account'|trans }} <span class="la la-angle-down"></span></a>
                                                             <ul class="dropdown-menu-item">
-                                                                <li><a href="{{ path('app_account') }}"><span class="mr-1 la la-user-circle"></span>Profil</a></li>
-                                                                <li><a href="{{ path('app_logout') }}"><span class="mr-1 la la-sign-out"></span>Déconnexion</a></li>
+                                                                <li><a href="{{ path('app_account') }}"><span class="mr-1 la la-user-circle"></span>{{ 'global.profile'|trans }}</a></li>
+                                                                <li><a href="{{ path('app_logout') }}"><span class="mr-1 la la-sign-out"></span>{{ 'global.logout'|trans }}</a></li>
                                                             </ul>
                                                         </li>
                                                     {% else %}
-                                                        <li><a href="{{ path("app_login") }}" class="text-white"><span class="mr-1 la la-sign-in"></span>Connexion</a></li>
+                                                        <li><a href="{{ path("app_login") }}" class="text-white"><span class="mr-1 la la-sign-in"></span>{{ 'global.login'|trans }}</a></li>
                                                     {% endif %}
                                                 </ul>
                                             </nav>
                                         </div>
                                         <div class="nav-right-content">
                                             <a href="#" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
-                                                Trouver un professionnel
+                                                {{ 'global.find_a_professional'|trans }}
                                             </a>
                                         </div>
                                     </div>

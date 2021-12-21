@@ -146,9 +146,8 @@ class ProfessionalCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $user = $entityInstance->getUser();
-        $user->setRoles(["ROLE_PROFESSIONAL"]);
         $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
-        $entityInstance->setSlug($this->contextService->slug($user));
+        $entityInstance->setSlug($this->contextService->slug($user->getEmail()));
         parent::persistEntity($entityManager, $entityInstance);
     }
 

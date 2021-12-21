@@ -199,19 +199,48 @@ description: Our custom pambe CSS
 #experience .card-body, #qualification .card-body, #certification .card-body {
     padding-bottom: 0;
 }
-#experience .delete, #qualification .delete, #certification .delete{
+#experience .form, #qualification .form, #certification .form{
     text-align: center;
     border-top: 1px solid #e3e3e3;
     padding-bottom: 6px;
 }
-#experience .delete a, #qualification .delete a, #certification .delete a{
+#experience .form a, #qualification .form a, #certification .form a{
     color: #7b68ee !important;
 }
-#experience .delete a:hover, #qualification .delete a:hover, #certification .delete a:hover{
+#experience .form a:hover, #qualification .form a:hover, #certification .form a:hover{
     color: #7e74bb !important
 }
-#qualification_btn, #experience_btn, #certification_btn{
+#qualification_btn_add, #experience_btn_add, #certification_btn_add, #service_btn_add,
+#qualification_btn_edit, #experience_btn_edit, #certification_btn_edit, #service_btn_edit{
     margin-left: 16px;
-}    
+}   
+.menu-locale{
+    padding-left: 5px;
+}
+.menu-locale .locale{
+    font-size: 14px;
+    line-height: 37px;
+} 
+.main-locale .main-menu ul li {
+    padding-top: 0 !important;
+}
+.menu-locale .dropdown-menu li a{
+    color: #808996;
+    display: block;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    text-transform: capitalize;
+    padding: 5px 25px;
+    font-weight: 500;
+    position: relative;
+    font-size: 15px;
+}
+.menu-locale .dropdown-menu li a:hover{
+    color: #7b68ee;
+}
+
 
  

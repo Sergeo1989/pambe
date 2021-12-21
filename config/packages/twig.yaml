@@ -3,6 +3,7 @@ twig:
     globals:
         website_title: Pambe
         my_app: '@App\Twig\AppExtension' 
+        locales: '%app_locales%'
 
 when@test:
     twig:

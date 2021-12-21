@@ -33,7 +33,7 @@
                             <div class="block-card mb-3">
                                 <div class="block-card-header">
                                     <h2 class="widget-title">Expériences</h2>
-                                    <a href="#" data-toggle="modal" data-target="#experienceModal" class="theme-btn gradient-btn float-right add-experience">Ajouter</a>
+                                    <a href="#" data-toggle="modal" data-target="#experienceModalAdd" class="theme-btn gradient-btn float-right add-experience">Ajouter</a>
                                     <div class="stroke-shape"></div>
                                 </div>
                                 <div id="experience" class="block-card-body">
@@ -52,5 +52,6 @@
             </div>
         </div>
     </section>
-    {{ modal.render_modal('experience', 'Expériences') }}
+    {{ modal.render_modal('add','experience', 'Expériences') }}
+    {{ modal.render_modal('edit','experience', 'Expériences') }}
 {% endblock %}

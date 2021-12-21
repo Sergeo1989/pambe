@@ -28,47 +28,57 @@
                             <div class="stroke-shape"></div>
                         </div>
                         <div class="block-card-body">
-                            {{ form_start(serviceForm, {'method': 'post', 'attr': {'class': 'form-box'} }) }}
-                                <a href="#" id="service" data-collection="#service-bloc" class="theme-btn gradient-btn">Ajouter un service</a>
-                                {{ form_widget(serviceForm._token) }}
-                                <div 
-                                    id="service-bloc" 
-                                    data-prototype="{{ include("front/partials/professional/edit/_service.html.twig", {form: serviceForm.services.vars.prototype})|e("html_attr") }}" 
-                                    data-index="{{ serviceForm.services|length > 0 ? serviceForm.services|last.vars.name + 1 : 0}}"> 
-                                    {% for service in serviceForm.services %}
-                                        {% include "front/partials/professional/edit/_service.html.twig" with {form: service} %}
-                                    {% endfor %}
+                            <div class="block-card mb-3">
+                                <div class="block-card-header">
+                                    <h2 class="widget-title">Vos Services</h2>
+                                    <a href="#" data-toggle="modal" data-target="#serviceModalAdd" class="theme-btn gradient-btn float-right add-experience">Ajouter</a>
+                                    <div class="stroke-shape"></div>
                                 </div>
-                                <div class="submit-wrap pt-3">
-                                    <div class="btn-box mt-3 ml-3">
-                                        <button type="submit" class="theme-btn gradient-btn border-0">Enregistrer</button>
+                                <div class="block-card-body">
+                                    <div id="service" class="row">
+                                        {% for service in app.user.professional.services|reverse(true) -%}
+                                            {% set image = service.thumbnail is not null ? vich_uploader_asset(service, 'thumbnailFile') : asset('assets/front/images/img1.jpg') %}
+                                            <div class="col-lg-4 responsive-column service_{{ service.id }}">
+                                                <div class="mini-list-card">
+                                                    <div class="mini-list-img">
+                                                        <a href="{{ vich_uploader_asset(service, 'thumbnailFile')|default('#') }}" class="d-block" data-fancybox="gallery">
+                                                            <img src="{{ image }}" alt="{{ service.title|e }}">
+                                                        </a>
+                                                    </div>
+                                                    <div class="mini-list-body">
+                                                        <h4 class="mini-list-title"><a href="javascript:void(0)">{{ service.title|e }}</a></h4>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="font-size-12">
+                                                                <a class="link-edit" data-id="{{ service.id }}" href="#">{{ 'global.edit'|trans }}</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="star-rating-wrap d-flex align-items-center">
+                                                            <div class="font-size-12">
+                                                                <a class="link-remove" data-id="{{ service.id }}" href="#">{{ 'global.delete'|trans }}</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {%- endfor %}
                                     </div>
-                                </div>
-                            {{ form_end(serviceForm, {render_rest: false}) }}
+                                </div>     
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    {% include "front/modal/professional/service_form.html.twig" with {form: 'add'} %}
+    {% include "front/modal/professional/service_form.html.twig" with {form: 'edit'} %}
 {% endblock %}
 
-{% block stylesheets %}
-    {% embed "front/partials/stylesheets.html.twig" %}
-        {% block stylesheets_content %}
-            {{ parent() }}
-            <link rel="stylesheet" href="{{ asset('assets/front/css/jquery-te-1.4.0.css') }}">
-        {% endblock %}
-    {% endembed %}
-{% endblock %}
 {% block javascripts %}
     {% embed "front/partials/javascripts.html.twig" %}
         {% block javascripts_content %}
             {{ parent() }}
-            <script src="{{ asset('assets/front/js/jquery-te-1.4.0.min.js') }}"></script>
             <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYzby4yYDVaXPmtu4jZAGR258K6IYwjIY&libraries"></script>
-            <script src="{{ asset('assets/front/js/map-add.js') }}"></script>
         {% endblock %}
     {% endembed %}
 {% endblock %}

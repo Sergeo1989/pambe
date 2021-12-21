@@ -138,7 +138,9 @@
                         <div class="section-heading">
                             <ul class="list-items bread-list bread-list-2 bg-transparent rounded-0 p-0">
                                 <li><a href="{{ path("app_home") }}">Accueil</a></li>
-                                <li><a href="{{ path("app_category_pro", {"slug": professional.categoryProfessionalDefault.slug}) }}">{{ professional.categoryProfessionalDefault }}</a></li>
+                                {% if professional.categoryProfessionalDefault %}
+                                    <li><a href="{{ path("app_category_pro", {"slug": professional.categoryProfessionalDefault.slug}) }}">{{ professional.categoryProfessionalDefault }}</a></li>
+                                {% endif %}
                                 <li>{{ professional.user }}</li>
                             </ul>
                             <div class="d-flex flex-wrap align-items-center reviews">
@@ -195,7 +197,7 @@
                         {% if professional.description is not empty %}
                             <div class="block-card mb-3">
                                 <div class="block-card-header">
-                                    <h2 class="widget-title">À propos</h2>
+                                    <h2 class="widget-title">{{ 'global.about'|trans }}</h2>
                                     <div class="stroke-shape"></div>
                                 </div>
                                 <div class="block-card-body">
@@ -218,7 +220,7 @@
                                                         <a href="{{ vich_uploader_asset(service, 'thumbnailFile') }}" class="d-block" data-fancybox="gallery">
                                                             <img src="{{ vich_uploader_asset(service, 'thumbnailFile')|imagine_filter('service') }}" alt="{{ service.title|e }}">
                                                         </a>
-                                                    </div><!-- end mini-list-img -->
+                                                    </div>
                                                     <div class="mini-list-body">
                                                         <h4 class="mini-list-title"><a href="javascript:void(0)">{{ service.title|e }}</a></h4>
                                                         <div class="star-rating-wrap d-flex align-items-center">
@@ -355,13 +357,13 @@
                             <div class="block-card-header">
                                 <h2 class="widget-title">Statistiques de Notation</h2>
                                 <div class="stroke-shape"></div>
-                            </div><!-- end block-card-header -->
+                            </div>
                             <div class="block-card-body">
                                 <div class="review-content d-flex flex-wrap align-items-center">
                                     <div class="review-rating-summary">
                                         <span class="stats-average__count">
                                         4.6
-                                        </span><!-- end stats-average__count -->
+                                        </span>
                                         <div class="star-rating-wrap">
                                             <p class="font-size-14 font-weight-medium">out of 5.0</p>
                                             <div class="star-rating text-color-5 font-size-18">
@@ -372,7 +374,7 @@
                                                 <span class="ml-n1"><i class="la la-star"></i></span>
                                             </div>
                                         </div>
-                                    </div><!-- end review-rating-summary -->
+                                    </div>
                                     <div class="review-bars d-flex flex-row flex-wrap flex-grow-1 align-items-center">
                                         <div class="review-bars-item">
                                             <span class="review-bars-name">Service</span>
@@ -382,7 +384,7 @@
                                                 </span>
                                                 <span class="pill">4.6</span>
                                             </div>
-                                        </div><!-- end review-bars-item -->
+                                        </div>
                                         <div class="review-bars-item">
                                             <span class="review-bars-name">Value for Money</span>
                                             <div class="review-bars-inner d-flex w-100 align-items-center">
@@ -391,7 +393,7 @@
                                                 </span>
                                                 <span class="pill">4.0</span>
                                             </div>
-                                        </div><!-- end review-bars-item -->
+                                        </div>
                                         <div class="review-bars-item">
                                             <span class="review-bars-name">Quality</span>
                                             <div class="review-bars-inner d-flex w-100 align-items-center">
@@ -400,7 +402,7 @@
                                                 </span>
                                                 <span class="pill">2.8</span>
                                             </div>
-                                        </div><!-- end review-bars-item -->
+                                        </div>
                                         <div class="review-bars-item">
                                             <span class="review-bars-name">Location</span>
                                             <div class="review-bars-inner d-flex w-100 align-items-center">
@@ -539,8 +541,8 @@
                                                 <label for="rating-20" class="fa fa-star"></label>
                                             </form>
                                         </div>
-                                    </div><!-- end review-bars-item -->
-                                </div><!-- end review-bars -->
+                                    </div>
+                                </div>
                                 <form method="post" class="form-box row pt-3">
                                     <div class="col-lg-6">
                                         <div class="input-box">
@@ -550,7 +552,7 @@
                                                 <input class="form-control" type="text" name="name" placeholder="Your Name">
                                             </div>
                                         </div>
-                                    </div><!-- end col-lg-6 -->
+                                    </div>
                                     <div class="col-lg-6">
                                         <div class="input-box">
                                             <label class="label-text">Email</label>
@@ -559,7 +561,7 @@
                                                 <input class="form-control" type="email" name="email" placeholder="Email Address">
                                             </div>
                                         </div>
-                                    </div><!-- end col-lg-6 -->
+                                    </div>
                                     <div class="col-lg-12">
                                         <div class="input-box">
                                             <label class="label-text">Review</label>
@@ -652,7 +654,7 @@
                                     <span class="bg-white text-color py-1 px-2 rounded font-size-15 font-weight-medium">Expire le 14/10/2020</span>
                                 </div>
                             </a>
-                        </div><!-- end card-item -->
+                        </div>
                         <div class="sidebar-widget">
                             <h3 class="widget-title">Rendez-vous</h3>
                             <div class="stroke-shape mb-4"></div>
@@ -667,7 +669,7 @@
                                         <option value="1">8:00am - 8:30am</option>
                                         <option value="2">9:00am - 9:30am</option>
                                     </select>
-                                </div><!-- end user-chosen-select-container -->
+                                </div>
                             </form>
                             <div class="quantity-wrap d-flex align-items-center justify-content-between py-4">
                                 <span class="font-weight-semi-bold"><i class="la la-user-plus mr-1"></i>Personnes:</span>
@@ -676,7 +678,7 @@
                                     <input class="qtyInput" type="text" name="qty-input" value="0">
                                     <button class="qtyInc"><i class="la la-plus"></i></button>
                                 </div>
-                            </div><!-- end quantity-wrap -->
+                            </div>
                             <div class="btn-box">
                                 <a href="booking.html" class="theme-btn gradient-btn w-100">Démandez un rendez-vous<i class="la la-arrow-right ml-2"></i></a>
                             </div>

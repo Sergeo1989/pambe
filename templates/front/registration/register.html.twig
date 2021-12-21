@@ -20,41 +20,41 @@
                     <label class="label-text">E-mail</label>
                     <div class="form-group">
                         <span class="la la-envelope form-icon"></span>
-                        {{ form_widget(registration.user.email, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Adresse e-mail'}}) }}
+                        {{ form_widget(registration.email, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Adresse e-mail'}}) }}
                     </div>
-                    {{ form_errors(registration.user.email) }}
+                    {{ form_errors(registration.email) }}
                 </div>
                 <div class="input-box">
                     <label class="label-text">Nom</label>
                     <div class="form-group">
                         <span class="la la-user form-icon"></span>
-                        {{ form_widget(registration.user.lastname, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Nom'}}) }}
+                        {{ form_widget(registration.lastname, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Nom'}}) }}
                     </div>
-                    {{ form_errors(registration.user.lastname) }}
+                    {{ form_errors(registration.lastname) }}
                 </div>
                 <div class="input-box">
                     <label class="label-text">Prénom</label>
                     <div class="form-group">
                         <span class="la la-user form-icon"></span>
-                        {{ form_widget(registration.user.firstname, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Prénom'}}) }}
+                        {{ form_widget(registration.firstname, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Prénom'}}) }}
                     </div>
-                    {{ form_errors(registration.user.firstname) }}
+                    {{ form_errors(registration.firstname) }}
                 </div>
                 <div class="input-box">
                     <label class="label-text">Adresse</label>
                     <div class="form-group">
                         <span class="la la-map form-icon"></span>
-                        {{ form_widget(registration.user.address, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Adresse'}}) }}
+                        {{ form_widget(registration.address, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Adresse'}}) }}
                     </div>
-                    {{ form_errors(registration.user.address) }}
+                    {{ form_errors(registration.address) }}
                 </div>
                 <div class="input-box">
                     <label class="label-text">Mot de passe</label>
                     <div class="form-group">
                         <span class="la la-lock form-icon"></span>
-                        {{ form_widget(registration.user.password, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Mot de passe'}}) }}
+                        {{ form_widget(registration.password, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Mot de passe'}}) }}
                     </div>
-                    {{ form_errors(registration.user.password) }}
+                    {{ form_errors(registration.password) }}
                 </div>
                 <div class="input-box py-4 user-action-meta">
                     <div class="custom-checkbox">
@@ -67,7 +67,7 @@
                         <i class="la la-user-plus mr-1"></i> Enregistrer
                     </button>
                     <p class="sub-text-box text-right pt-1 font-weight-medium font-size-14">
-                        Déjà sur Pambe? <a class="text-color-2 login-btn" href="javascript:void(0)">Connexion</a>
+                        Déjà sur Pambe? <a class="text-color-2" href="{{ path('app_login') }}">Connexion</a>
                         </p>
                 </div>
                 <div class="icon-element font-size-16 font-weight-semi-bold mt-5 mb-4 mx-auto">

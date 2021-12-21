@@ -78,7 +78,7 @@
                                     <div class="input-box">
                                         <label class="label-text">Spécialité</label>
                                         <div class="form-group user-chosen-select-container">
-                                            {{ form_widget(informationForm.skill, {'attr': {'class': 'user-chosen-select'} }) }}
+                                            {{ form_widget(informationForm.skill, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez votre spécialité'} }) }}
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +86,7 @@
                                     <div class="input-box">
                                         <label class="label-text d-flex align-items-center">Compétences</label>
                                         <div class="form-group user-chosen-select-container">
-                                            {{ form_widget(informationForm.category_professionals, {'attr': {'class': 'user-chosen-select'} }) }}
+                                            {{ form_widget(informationForm.category_professionals, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez vos compétences'} }) }}
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                                     <div class="input-box">
                                         <label class="label-text d-flex align-items-center">Langues</label>
                                         <div class="form-group user-chosen-select-container">
-                                            {{ form_widget(informationForm.languages, {'attr': {'class': 'user-chosen-select'} }) }}
+                                            {{ form_widget(informationForm.languages, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez vos langues'} }) }}
                                         </div>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@
                                     <div class="input-box">
                                         <label class="label-text">Courte Description</label>
                                         <div class="form-group">
-                                            {{ form_widget(informationForm.short_description, {'required': false, 'attr': {'class': 'message-control form-control user-text-editor'} }) }}
+                                            {{ form_widget(informationForm.short_description, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +110,7 @@
                                     <div class="input-box">
                                         <label class="label-text">Longue Description</label>
                                         <div class="form-group">
-                                            {{ form_widget(informationForm.description, {'required': false, 'attr': {'class': 'message-control form-control user-text-editor'} }) }}
+                                            {{ form_widget(informationForm.description, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
                                         </div>
                                     </div>
                                 </div>

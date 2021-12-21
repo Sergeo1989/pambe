@@ -1,0 +1,57 @@
+    <div class="modal fade modal-container message-form" id="serviceModal{{ form|title }}" tabindex="-1" role="dialog" aria-labelledby="serviceModalTitle{{ form|title }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header align-items-center mh-bg-2">
+                    <h5 class="modal-title" id="serviceModalTitle{{ form|title }}">Service</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="la la-times-circle"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="service_error" class="alert alert-danger font-size-15 text-color" role="alert"></div>
+                    <form method="post" class="form-box row" id="service_form_{{ form }}" enctype="multipart/form-data">
+                        <div class="input-box col-12">
+                            <div class="file-upload-wrap file-upload-wrap-2 profile">
+                                <input id="service_file_{{ form }}" type="file">
+                            </div>
+                        </div>
+                        <div class="input-box col-12">
+                            <label class="label-text">Titre</label>
+                            <div class="form-group">
+                                <span class="la la-heading form-icon"></span>
+                                <input id="service_title_{{ form }}" class="form-control" type="text" placeholder="Titre">
+                            </div>
+                        </div>
+                        <div class="input-box col-6">
+                            <label class="label-text">Prix</label>
+                            <div class="form-group">
+                                <span class="la la-money-bill form-icon"></span>
+                                <input id="service_price_{{ form }}" class="form-control" type="text"  placeholder="Entrer un prix"/>
+                            </div>
+                        </div>
+                        <div class="input-box col-6">
+                            <label class="label-text">Unité</label>
+                            <div class="form-group">
+                                <span class="la la-sheqel form-icon"></span>
+                                <input id="service_unit_{{ form }}" class="form-control" type="text"  placeholder="Entrer une unité"/>
+                            </div>
+                        </div>
+                        <div class="input-box col-12">
+                            <label class="label-text">Description</label>
+                            <div class="form-group">
+                                <span class="la la-pencil form-icon"></span>
+                                <textarea id="service_description_{{ form }}" class="message-control form-control" placeholder="Entrer une description"></textarea>
+                            </div>
+                        </div>
+                        <input id="professional_ajax_url" type="hidden" value="{{ path("app_professional_ajax") }}">
+                        <input id="service_id_{{ form }}" type="hidden" value="">
+                        <div class="btn-box">
+                            <button id="service_btn_{{ form }}" type="submit" class="theme-btn gradient-btn w-100">
+                                Enregistrer<i class="la la-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

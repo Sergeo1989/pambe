@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
-class Service implements \Serializable
+class Service implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -179,6 +179,8 @@ class Service implements \Serializable
             // if 'updatedAt' is not defined in your entity, use another property
             $this->date_upd = new \DateTime('now');
         }
+
+        return $this;
     }
 
     public function getDateAdd(): ?\DateTimeInterface
@@ -283,14 +285,16 @@ class Service implements \Serializable
         return $this;
     }
 
-    public function serialize()
+    public function jsonSerialize()
     {
-        $this->thumbnailFile = base64_encode($this->thumbnailFile);
-    }
-
-    public function unserialize($serialized)
-    {
-        $this->thumbnailFile = base64_decode($this->thumbnailFile);
-
+        return [
+            'id'            => $this->getId(),
+            'title'         => $this->getTitle(),
+            'price'         => $this->getPrice(),
+            'unit'          => $this->getUnit(),
+            'thumbnail'     => $this->getThumbnail(),
+            'thumbnailFile' => $this->getThumbnailFile(),
+            'description'   => $this->getDescription()
+        ];
     }
 }

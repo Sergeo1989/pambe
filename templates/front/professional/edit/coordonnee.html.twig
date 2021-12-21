@@ -60,7 +60,7 @@
                                     <div class="input-box">
                                         <label class="label-text">Pays</label>
                                         <div class="form-group user-chosen-select-container">
-                                            {{ form_widget(coordonneeForm.country, {'attr': {'class': 'user-chosen-select'} }) }}
+                                            {{ form_widget(coordonneeForm.country, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Sélectionnez un pays'} }) }}
                                         </div>
                                     </div>
                                 </div>
@@ -68,7 +68,7 @@
                                     <div class="input-box">
                                         <label class="label-text">Région</label>
                                         <div class="form-group user-chosen-select-container">
-                                            {{ form_widget(coordonneeForm.region, {'attr': {'class': 'user-chosen-select'} }) }}
+                                            {{ form_widget(coordonneeForm.region, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Sélectionnez une région'} }) }}
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                     <div class="input-box">
                                         <label class="label-text">Ville</label>
                                         <div class="form-group user-chosen-select-container">
-                                            {{ form_widget(coordonneeForm.city, {'attr': {'class': 'user-chosen-select'} }) }}
+                                            {{ form_widget(coordonneeForm.city, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Sélectionnez une ville'} }) }}
                                         </div>
                                     </div>
                                 </div>
