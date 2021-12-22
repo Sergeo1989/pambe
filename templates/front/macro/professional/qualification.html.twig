@@ -9,48 +9,48 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="{{qualification}}_error" class="alert alert-danger font-size-15 text-color" role="alert"></div>
+                    <div style="display:none;" id="{{qualification}}_error" class="alert alert-danger font-size-15 text-color" role="alert"></div>
                     <form method="post" class="form-box row" id="{{qualification}}_form_{{form}}">
                         <div class="input-box col-6">
-                            <label class="label-text">Titre</label>
+                            <label class="label-text">{{ 'global.title'|trans }}</label>
                             <div class="form-group">
                                 <span class="la la-certificate form-icon"></span>
-                                <input id="{{qualification}}_title_{{form}}" class="form-control" type="text" placeholder="Titre">
+                                <input id="{{qualification}}_title_{{form}}" class="form-control" type="text" placeholder="{{ 'global.title'|trans }}">
                             </div>
                         </div>
                         <div class="input-box col-6">
-                            <label class="label-text">Lieu</label>
+                            <label class="label-text">{{ 'global.place'|trans }}</label>
                             <div class="form-group">
                                 <span class="la la-map-marker form-icon"></span>
-                                <input id="{{qualification}}_place_{{form}}" class="form-control" type="text" placeholder="Lieu">
+                                <input id="{{qualification}}_place_{{form}}" class="form-control" type="text" placeholder="{{ 'global.place'|trans }}">
                             </div>
                         </div>
                         <div class="input-box col-6">
-                            <label class="label-text">Date de début</label>
+                            <label class="label-text">{{ 'global.start_date'|trans }}</label>
                             <div class="form-group">
                                 <span class="la la-hourglass-start form-icon"></span>
-                                <input id="{{qualification}}_start_date_{{form}}" data-dd-format="d-m-Y" data-dd-lang="{{ app.request.locale }}" class="date-dropper-input form-control" type="text"  placeholder="Date de début"/>
+                                <input id="{{qualification}}_start_date_{{form}}" data-dd-format="d-m-Y" data-dd-lang="{{ app.request.locale }}" class="date-dropper-input form-control" type="text"  placeholder="{{ 'global.start_date'|trans }}"/>
                             </div>
                         </div>
                         <div class="input-box col-6">
-                            <label class="label-text">Date de fin</label>
+                            <label class="label-text">{{ 'global.end_date'|trans }}</label>
                             <div class="form-group">
                                 <span class="la la-hourglass-end form-icon"></span>
-                                <input id="{{qualification}}_end_date_{{form}}" data-dd-lang="{{ app.request.locale }}" class="date-dropper-input form-control" type="text"  placeholder="Date de fin"/>
+                                <input id="{{qualification}}_end_date_{{form}}" data-dd-lang="{{ app.request.locale }}" class="date-dropper-input form-control" type="text"  placeholder="{{ 'global.end_date'|trans }}"/>
                             </div>
                         </div>
                         <div class="input-box col-12">
-                            <label class="label-text">Description</label>
+                            <label class="label-text">{{ 'global.description'|trans }}</label>
                             <div class="form-group">
                                 <span class="la la-pencil form-icon"></span>
-                                <textarea id="{{qualification}}_description_{{form}}" class="message-control form-control" placeholder="Entrer une description"></textarea>
+                                <textarea id="{{qualification}}_description_{{form}}" class="message-control form-control" placeholder="{{ 'Enter_a_description'|trans }}"></textarea>
                             </div>
                         </div>
                         <input id="professional_ajax_url" type="hidden" value="{{ path("app_professional_ajax") }}">
                         <input id="{{qualification}}_id_{{form}}" type="hidden" value="">
                         <div class="btn-box">
                             <button id="{{qualification}}_btn_{{form}}" type="submit" class="theme-btn gradient-btn w-100">
-                                Enregistrer<i class="la la-arrow-right ml-2"></i>
+                                {{ 'global.save'|trans }}<i class="la la-arrow-right ml-2"></i>
                             </button>
                         </div>
                     </form>

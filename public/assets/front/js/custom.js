@@ -75,16 +75,85 @@ description: Our custom pambe JS
                 dataType: "json",
                 success: function(data)
                 {
-                    if(data.success){
-                        var firstParent = link.parent();
-                        var correctParent = firstParent.parent();
-                        correctParent.remove();
+                    if(data.status){
+                        link.closest('.gallery').fadeOut(200, function(){
+                            link.closest('.gallery').remove();
+                        });
                     }else{
                         alert(data.error);
                     }
                 }
             });
         }
+    });
+
+    /** Get gallery professional image */
+    $(document).on('click', '[data-edit]', function(event) {
+        event.preventDefault(); 
+        var link = $(this);
+        var url = link.attr("href");
+
+        $.ajax({
+            method: "GET",
+            url: url,
+            contentType: "application/json",
+            dataType: "json",
+            success: function(data)
+            {
+                if(data.value.legend !== null){
+                    $("#gallery_description").val(data.value.legend);
+                }else{
+                    $("#gallery_description").val("");
+                }
+                $('#gallery_file').val('');
+                $("#gallery_id").val(data.value.id);
+                $('#galleryModal').modal('show');
+            }
+        });
+    });
+
+    /** Edit Professional Service */
+    $(document).on('submit', '#gallery_form', function(event) {
+        event.preventDefault();
+        var btn = $('#gallery_btn');
+        var url  = $('#gallery_ajax_url').val();
+
+        var data = new FormData(); 
+        var files = $('#gallery_file').prop('files')[0];
+
+        data.append('file', files);
+        data.append('id', $('#gallery_id').val());
+        data.append('legend', $('#gallery_description').val());
+        btn.text('Chargement...');
+        
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data, 
+            contentType: false,  
+            processData: false,
+            cache: false,
+            success: function(data) {
+                if(data.status === true){
+                    $('#gallery_' + data.value.id).fadeIn(1000, function(){
+                        $('#gallery_' + data.value.id).prop('style', 'background-image: url("/uploads/images/professional/' + data.value.image + '")');
+                    });
+                }else{
+                    alert("Un problème est survenu !");
+                }
+                setTimeout(function(){
+                    $('#galleryModal').modal('hide');
+                }, 250);
+    
+                $(".modal-backdrop").removeClass('show').hide();
+
+                btn.text('Enregistrer');
+            },
+            error: function(error) {
+                console.log(error);
+                alert("Quelque chose s'est mal passée");
+            }
+        });
     });
 
     $(document).on('submit', '#gallery-form', function(event) {
@@ -114,13 +183,6 @@ description: Our custom pambe JS
     $('#experienceModalEdit').on('show.bs.modal', function(){
         $('#experience_error').hide();
     })
-
-    $(document).ready(function() {
-        $('#experience_error').hide();
-        $('#qualification_error').hide();
-        $('#certification_error').hide();
-        $('#service_error').hide();
-    });
 
     /** Get Professional Experience */
     $(document).on('click', '#experience div.form a.edit', function(event) {
@@ -392,7 +454,7 @@ description: Our custom pambe JS
 
     $(document).ready(function() {
         $("#information_form_short_description").jqte({placeholder: "Entrez une brève description de vous..."});
-        $("#information_form_description").jqte({placeholder: "Entrez une description de vous..."});
+        $("#information_form_description").jqte({placeholder: "Entrez une description de vous..."}); 
     });
 
 })(jQuery);

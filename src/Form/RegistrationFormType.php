@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,17 +50,20 @@ class RegistrationFormType extends AbstractType
                         ])
                     ]
                 ])
-                ->add('password', PasswordType::class, [
+                ->add('plainPassword', RepeatedType::class, [
+                    'type' => PasswordType::class,
+                    'invalid_message' => 'The password fields must match.',
                     'required' => true,
-                    'label'  => 'Mot de passe',
-                    'attr' => ['autocomplete' => 'password'],
+                    'first_options'  => ['label' => 'user.password'],
+                    'second_options' => ['label' => 'user.passwordrepeat'],
+                    'mapped' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Le mot de passe ne doit pas être vide',
+                            'message' => 'user.passwordplease',
                         ]),
                         new Length([
-                            'min' => 8,
-                            'minMessage' => 'Votre mot de passe doit avoir au moins {{ limit }} caractères',
+                            'min' => 6,
+                            'minMessage' => 'Your password should be at least {{ limit }} characters',
                             'max' => 4096,
                         ]),
                     ],

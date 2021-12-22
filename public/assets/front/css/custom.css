@@ -103,7 +103,40 @@ description: Our custom pambe CSS
     margin-left: 0;
 }
 .gallery{
-    padding: 5px 0 5px 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    padding-bottom: 20%;
+    padding-left: 0;
+    position: relative;
+}
+.gallery .links{
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    background-color: #172844;
+    width: 100%;
+    padding: 5px;
+    opacity: 0;
+}
+.gallery:hover .links{
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+}
+.gallery .links a.edit{
+    color: #7b68ee;
+}
+.gallery .links a.edit:hover{
+    color: #9f8fff
+}
+.gallery .links a.delete{
+    color: #9e1919;
+}
+.gallery .links a.delete:hover{
+    color: #d21e1e;
 }
 .expdesc{
     background-clip: text;
@@ -211,7 +244,7 @@ description: Our custom pambe CSS
     color: #7e74bb !important
 }
 #qualification_btn_add, #experience_btn_add, #certification_btn_add, #service_btn_add,
-#qualification_btn_edit, #experience_btn_edit, #certification_btn_edit, #service_btn_edit{
+#qualification_btn_edit, #experience_btn_edit, #certification_btn_edit, #service_btn_edit, #gallery_btn{
     margin-left: 16px;
 }   
 .menu-locale{
@@ -220,6 +253,10 @@ description: Our custom pambe CSS
 .menu-locale .locale{
     font-size: 14px;
     line-height: 37px;
+    background: rgba(0, 0, 0, 0) !important;
+} 
+.menu-locale .locale:hover::before{
+    opacity: 0 !important
 } 
 .main-locale .main-menu ul li {
     padding-top: 0 !important;
@@ -240,6 +277,13 @@ description: Our custom pambe CSS
 }
 .menu-locale .dropdown-menu li a:hover{
     color: #7b68ee;
+}
+#information_form_profile{
+    text-align: center;
+}
+#information_form_profile label{ 
+    margin-left: 5px;
+    margin-right: 25px;
 }
 
 

@@ -145,7 +145,8 @@
                                 </div>
                                 <div class="submit-wrap pt-3">
                                     <div class="btn-box mt-3 ml-3">
-                                        <button type="submit" class="theme-btn gradient-btn border-0">Enregistrer</button>
+                                        {{ form_widget(coordonneeForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                                        {{ form_widget(coordonneeForm.saveAndContinue, {'label': 'global.save_and_Continue'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
                                     </div>
                                 </div>
                             {{ form_end(coordonneeForm) }}

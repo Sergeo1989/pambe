@@ -52,9 +52,17 @@
                     <label class="label-text">Mot de passe</label>
                     <div class="form-group">
                         <span class="la la-lock form-icon"></span>
-                        {{ form_widget(registration.password, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Mot de passe'}}) }}
+                        {{ form_widget(registration.plainPassword.first, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Mot de passe'}}) }}
                     </div>
-                    {{ form_errors(registration.password) }}
+                    {{ form_errors(registration.plainPassword.first) }}
+                </div>
+                <div class="input-box">
+                    <label class="label-text">Confirmation</label>
+                    <div class="form-group">
+                        <span class="la la-lock form-icon"></span>
+                        {{ form_widget(registration.plainPassword.second, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Confirmation de mot de passe'}}) }}
+                    </div>
+                    {{ form_errors(registration.plainPassword.second) }}
                 </div>
                 <div class="input-box py-4 user-action-meta">
                     <div class="custom-checkbox">

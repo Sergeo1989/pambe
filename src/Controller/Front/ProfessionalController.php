@@ -10,6 +10,7 @@ use App\Entity\Service;
 use App\Form\Professional\Edit\CoordonneeFormType;
 use App\Form\Professional\Edit\GalleryFormType;
 use App\Form\Professional\Edit\InformationFormType;
+use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
 use App\Repository\QualificationRepository;
 use App\Repository\ServiceRepository;
@@ -32,6 +33,7 @@ class ProfessionalController extends AbstractController
     private $likeRepo;
     private $qualificationRepo;
     private $serviceRepo;
+    private $proImgRepo;
     private $request;
     private $response;
     private $status = 200;
@@ -43,7 +45,8 @@ class ProfessionalController extends AbstractController
         ProfessionalService $professionalService,
         ProfessionalLikeRepository $likeRepo,
         QualificationRepository $qualificationRepo,
-        ServiceRepository $serviceRepo)
+        ServiceRepository $serviceRepo,
+        ProfessionalImageRepository $proImgRepo)
     {
         $this->context = $context;
         $this->translator = $translator;
@@ -52,6 +55,7 @@ class ProfessionalController extends AbstractController
         $this->likeRepo = $likeRepo;
         $this->qualificationRepo = $qualificationRepo;
         $this->serviceRepo = $serviceRepo;
+        $this->proImgRepo = $proImgRepo;
     }
 
     /**
@@ -152,7 +156,11 @@ class ProfessionalController extends AbstractController
             $this->context->save($professional);
 
             $this->addFlash('success', 'Contenu enregistré avec succès !');
-            return $this->redirectToRoute('app_professional_coordonnee');
+            
+            if($form->get('saveAndContinue')->isClicked())
+                return $this->redirectToRoute('app_professional_coordonnee');
+            if($form->get('save')->isClicked())
+                return $this->redirectToRoute('app_professional_information');
         }
          
         return $this->render('front/professional/edit/information.html.twig', [
@@ -176,7 +184,11 @@ class ProfessionalController extends AbstractController
             $message = $this->translator->trans('success.message');
 
             $this->addFlash('success', $message);
-            return $this->redirectToRoute('app_professional_service');
+            
+            if($form->get('saveAndContinue')->isClicked())
+                return $this->redirectToRoute('app_professional_service');
+            if($form->get('save')->isClicked())
+                return $this->redirectToRoute('app_professional_coordonnee');
         }
 
         return $this->render('front/professional/edit/coordonnee.html.twig', [
@@ -194,11 +206,12 @@ class ProfessionalController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
- 
+            $legend = $form->get("legend")->getData();
             $gallerie = $form->get("gallerie")->getData();
             foreach ($gallerie as $image) {
                 $proImage = new ProfessionalImage();
                 $proImage->setImageFile($image);
+                $proImage->setLegend($legend);
                 $professional->addGallery($proImage);
             }
 
@@ -213,15 +226,41 @@ class ProfessionalController extends AbstractController
         ]);
     }
 
-    public function deleteImage(ProfessionalImage $proImage, Request $request){
+    public function deleteImage(ProfessionalImage $proImage, Request $request)
+    {
         $data = json_decode($request->getContent(), true);
         
         if($this->isCsrfTokenValid('delete'.$proImage->getId(), $data['_token'])){
             $this->context->delete($proImage);
-            return new JsonResponse(["success" => 1]);
-        }else{
+            return new JsonResponse(["status" => true]);
+        }else
             return new JsonResponse(["error" => "Token invalid"], 400);
-        }
+        
+    }
+
+    public function getImage(ProfessionalImage $proImage, Request $request)
+    {
+        return new JsonResponse(["status" => true, "value" => $proImage]); 
+    }
+
+    public function editImage(Request $request)
+    {
+        if(!$this->context->getUser())
+            return new JsonResponse(["status" => false]); 
+
+        $gallery_id = $request->request->get('id');
+        $file = $request->files->get('file');
+        $legend = $request->get('legend');
+
+        $proImage = $this->proImgRepo->find($gallery_id);
+
+        if(isset($proImage)){
+            $proImage->setLegend($legend);
+            if($file) $proImage->setImageFile($file);
+            
+            return new JsonResponse(["status" => true, "value" => $this->context->save($proImage)]); 
+        }else
+            return new JsonResponse(["status" => false]); 
     }
 
     /**

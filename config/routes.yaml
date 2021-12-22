@@ -31,6 +31,10 @@ app_register:
     methods: POST|GET
     #requirements:
         #_locale: '%app_locale%'
+app_activation:
+    path: /activation/{token}
+    controller: App\Controller\Front\RegistrationController::activation
+    methods: GET
 app_account:
     path: /account
     controller: App\Controller\Front\AccountController::index
@@ -108,6 +112,16 @@ app_professional_gallery_image_delete:
     path: /professional/gallery/{id}/delete
     controller: App\Controller\Front\ProfessionalController::deleteImage
     methods: DELETE
+    requirements:
+        id: '\d+'
+app_professional_gallery_image_edit:
+    path: /professional/gallery/ajax/edit
+    controller: App\Controller\Front\ProfessionalController::editImage
+    methods: POST
+app_professional_gallery_image:
+    path: /professional/gallery/{id}/show
+    controller: App\Controller\Front\ProfessionalController::getImage
+    methods: GET
     requirements:
         id: '\d+'
 app_professional_service:

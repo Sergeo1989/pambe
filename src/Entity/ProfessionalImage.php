@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
-class ProfessionalImage implements \Serializable
+class ProfessionalImage implements \Serializable, \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -42,6 +42,11 @@ class ProfessionalImage implements \Serializable
      * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="galleries")
      */
     private $professional;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $legend;
 
     public function __toString()
     {
@@ -121,5 +126,26 @@ class ProfessionalImage implements \Serializable
     {
         $this->imageFile = base64_decode($this->imageFile);
 
+    }
+
+    public function getLegend(): ?string
+    {
+        return $this->legend;
+    }
+
+    public function setLegend(?string $legend): self
+    {
+        $this->legend = $legend;
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'        => $this->getId(),
+            'legend'    => $this->getLegend(),
+            'image'     => $this->getImage()
+        ];
     }
 }

@@ -1,0 +1,36 @@
+    <div class="modal fade modal-container message-form" id="galleryModal" tabindex="-1" role="dialog" aria-labelledby="galleryModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header align-items-center mh-bg-2">
+                    <h5 class="modal-title" id="galleryModalTitle">Gallerie</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="la la-times-circle"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div style="display:none;" id="service_error" class="alert alert-danger font-size-15 text-color" role="alert"></div>
+                    <form method="post" class="form-box row" id="gallery_form" enctype="multipart/form-data">
+                        <div class="input-box col-12">
+                            <div class="file-upload-wrap file-upload-wrap-2 profile">
+                                <input id="gallery_file" type="file">
+                            </div>
+                        </div><br/>
+                        <div class="input-box col-12">
+                            <label class="label-text">{{ 'global.legend'|trans }}</label>
+                            <div class="form-group">
+                                <span class="la la-pencil form-icon"></span>
+                                <textarea id="gallery_description" class="message-control form-control"></textarea>
+                            </div>
+                        </div>
+                        <input id="gallery_ajax_url" type="hidden" value="{{ path("app_professional_gallery_image_edit") }}">
+                        <input id="gallery_id" type="hidden" value="">
+                        <div class="btn-box">
+                            <button id="gallery_btn" type="submit" class="theme-btn gradient-btn w-100">
+                                {{ 'global.save'|trans }}<i class="la la-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
