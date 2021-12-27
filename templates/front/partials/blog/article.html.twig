@@ -4,7 +4,7 @@
     <div class="card-image">
         <a href="{{ path('app_blog_article', {'slug': article.slug}) }}" class="d-block">
             <img src="{{ image|imagine_filter('cover_small') }}" class="card__img" alt="{{ article.title }}">
-            <span class="badge">{{ article.dateAdd|format_datetime('full', 'none') }}</span>
+            <span class="badge">{{ article.dateAdd|format_date('medium', '', null, app.request.locale) }}</span>
         </a>
         <div class="post-share">
             <span class="la la-share-alt share-icon"></span>

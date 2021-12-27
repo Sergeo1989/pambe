@@ -1,7 +1,7 @@
 {% extends 'front/layout.html.twig' %}
 
-{% set profile = professional.profil ? vich_uploader_asset(professional.profil, 'imageFile') : asset('assets/front/images/photoshop.png') %}
-{% set cover = professional.cover ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
+{% set profile = professional.profil and professional.profil.image ? vich_uploader_asset(professional.profil, 'imageFile') : asset('assets/front/images/photoshop.png') %}
+{% set cover = professional.cover and professional.cover.image ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
 
 {% set facebook     = professional.socialUrl ? professional.socialUrl.facebook : null %}
 {% set twitter      = professional.socialUrl ? professional.socialUrl.twitter: null %}
@@ -146,13 +146,11 @@
                             <div class="d-flex flex-wrap align-items-center reviews">
                                 <div class="star-rating-wrap d-flex align-items-center">
                                     <div class="star-rating text-color-5 font-size-18">
-                                        <span><i class="la la-star"></i></span>
-                                        <span class="ml-n1"><i class="la la-star"></i></span>
-                                        <span class="ml-n1"><i class="la la-star"></i></span>
-                                        <span class="ml-n1"><i class="la la-star"></i></span>
-                                        <span class="ml-n1"><i class="la la-star"></i></span>
+                                        {% for i in 1..5 %}
+                                            <span class="{{ loop.first ? 'ml-n1' : '' }}"><i class="la la-star{{ loop.index > scoreavg(professional)|force_to_int ? '-o' : '' }}"></i></span>
+                                        {% endfor %}
                                     </div>
-                                    <p class="font-size-14 pl-2 font-weight-medium">0 avis</p>
+                                    <p class="font-size-14 pl-2 font-weight-medium">{{ professional.reviews|length }} avis</p>
                                 </div>
                                 <div class="timestamp font-weight-medium ml-3 pl-3 border-left border-left-color line-height-20">
                                     <span class="{{ professional.available ? "text-color-4" : "text-color-2" }} mr-2">{{ professional.available ? "disponible" : "absent" }}</span>
@@ -166,7 +164,7 @@
                                     {% else %}
                                         <i class="la la-bookmark mr-1"></i>
                                     {% endif %}
-                                    Favoris
+                                    Favoris 
                                 </a>
                                 <a href="#" class="btn-gray mr-1" data-toggle="modal" data-target="#shareModal"><i class="la la-external-link mr-1"></i>Partager</a>
                                 <a href="#" class="btn-gray" data-toggle="modal" data-target="#messageModal"><i class="la la-mail-forward mr-1"></i>Contacter</a>
@@ -223,16 +221,6 @@
                                                     </div>
                                                     <div class="mini-list-body">
                                                         <h4 class="mini-list-title"><a href="javascript:void(0)">{{ service.title|e }}</a></h4>
-                                                        <div class="star-rating-wrap d-flex align-items-center">
-                                                            <div class="star-rating text-color-5 font-size-16">
-                                                                <span><i class="la la-star"></i></span>
-                                                                <span class="ml-n1"><i class="la la-star"></i></span>
-                                                                <span class="ml-n1"><i class="la la-star"></i></span>
-                                                                <span class="ml-n1"><i class="la la-star"></i></span>
-                                                                <span class="ml-n1"><i class="la la-star"></i></span>
-                                                            </div>
-                                                            <p class="font-size-14 pl-2 font-weight-medium">0 review</p>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,13 +252,7 @@
                                                         </h5>
                                                     </div>
                                                     <div id="collapse{{ qualification.id }}" class="collapse {{ loop.first ? 'show' : ''}}" aria-labelledby="heading{{ qualification.id }}" data-parent="#accordion">
-                                                        <div class="card-body row">
-                                                            <div class="list col-lg-6"><i class="la la-certificate text-color-2 mr-2 font-size-18"></i> {{ qualification.title }}</div>
-                                                            <div class="list col-lg-6"><i class="la la-map-marker text-color-2 mr-2 font-size-18"></i> {{ qualification.place }}</div>
-                                                            <div class="list col-lg-6"><i class="la la-hourglass-start text-color-2 mr-2 font-size-18"></i> {{ qualification.startDate|date('d/m/Y') }}</div>
-                                                            <div class="list col-lg-6"><i class="la la-hourglass-end text-color-2 mr-2 font-size-18"></i> {{ qualification.endDate|date('d/m/Y') }}</div>
-                                                            <div class="list col-lg-12 expdesc">{{ qualification.description }}</div>
-                                                        </div>
+                                                        {% include "front/partials/professional/edit/qualification.html.twig" with {qualification: qualification} %}
                                                     </div>
                                                 </div>
                                             {% endif %}
@@ -298,13 +280,35 @@
                                                         </h5>
                                                     </div>
                                                     <div id="collapse{{ qualification.id }}" class="collapse {{ loop.first ? 'show' : ''}}" aria-labelledby="heading{{ qualification.id }}" data-parent="#accordion2">
-                                                        <div class="card-body row">
-                                                            <div class="list col-lg-6"><i class="la la-certificate text-color-2 mr-2 font-size-18"></i> {{ qualification.title }}</div>
-                                                            <div class="list col-lg-6"><i class="la la-map-marker text-color-2 mr-2 font-size-18"></i> {{ qualification.place }}</div>
-                                                            <div class="list col-lg-6"><i class="la la-hourglass-start text-color-2 mr-2 font-size-18"></i> {{ qualification.startDate|date('d/m/Y') }}</div>
-                                                            <div class="list col-lg-6"><i class="la la-hourglass-end text-color-2 mr-2 font-size-18"></i> {{ qualification.endDate|date('d/m/Y') }}</div>
-                                                            <div class="list col-lg-12 expdesc">{{ qualification.description }}</div>
-                                                        </div>
+                                                        {% include "front/partials/professional/edit/qualification.html.twig" with {qualification: qualification} %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {%- endfor %}
+                                    </div>
+                                </div>
+                                <div class="block-card-header qual">
+                                    <h2 class="widget-title">Certifications</h2>
+                                    <div class="stroke-shape"></div>
+                                </div>
+                                <div class="block-card-body">
+                                    <div class="accordion-item" id="accordion3">
+                                        {% set cert = 0 %}
+                                        {% for qualification in professional.qualifications -%}
+                                            {% if qualification.type is constant('App\\Entity\\Qualification::CERTIFICATE') %}
+                                                {% set cert = cert + 1 %}
+                                                <div class="card">
+                                                    <div class="card-header" id="heading{{ qualification.id }}">
+                                                        <h5>
+                                                            <button class="btn btn-link d-flex align-items-center justify-content-between" data-toggle="collapse" data-target="#collapse{{ qualification.id }}" aria-expanded="{{ loop.first ? "true" : "false" }}" aria-controls="collapse{{ qualification.id }}">
+                                                                Certification #{{ cert }}
+                                                                <i class="la la-minus"></i>
+                                                                <i class="la la-plus"></i>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapse{{ qualification.id }}" class="collapse {{ loop.first ? 'show' : ''}}" aria-labelledby="heading{{ qualification.id }}" data-parent="#accordion3">
+                                                        {% include "front/partials/professional/edit/qualification.html.twig" with {qualification: qualification} %}
                                                     </div>
                                                 </div>
                                             {% endif %}
@@ -341,7 +345,7 @@
                                 <div class="block-card-body">
                                 <div class="row">
                                     {% for gallery in professional.galleries %}
-                                        <div class="col-lg-6 responsive-column">
+                                        <div class="col-lg-6 responsive-column pro">
                                             <div class="gallery">
                                                 <a href="{{ vich_uploader_asset(gallery, 'imageFile') }}" class="d-inline-block" data-fancybox="gallery">
                                                     <img src="{{ vich_uploader_asset(gallery, 'imageFile')|imagine_filter('gallery') }}" class="lazy" alt="{{ gallery.image|e }}">
@@ -362,7 +366,7 @@
                                 <div class="review-content d-flex flex-wrap align-items-center">
                                     <div class="review-rating-summary">
                                         <span class="stats-average__count">
-                                        4.6
+                                        {{ scoreavg(professional) }}
                                         </span>
                                         <div class="star-rating-wrap">
                                             <p class="font-size-14 font-weight-medium">out of 5.0</p>
@@ -377,39 +381,12 @@
                                     </div>
                                     <div class="review-bars d-flex flex-row flex-wrap flex-grow-1 align-items-center">
                                         <div class="review-bars-item">
-                                            <span class="review-bars-name">Service</span>
+                                            <span class="review-bars-name">{{ 'global.reviews'|trans }}</span>
                                             <div class="review-bars-inner d-flex w-100 align-items-center">
-                                                <span class="review-bars-review" data-rating="4.6">
+                                                <span class="review-bars-review" data-rating="{{ scoreavg(professional) }}">
                                                     <span class="review-bars-review-inner"></span>
                                                 </span>
-                                                <span class="pill">4.6</span>
-                                            </div>
-                                        </div>
-                                        <div class="review-bars-item">
-                                            <span class="review-bars-name">Value for Money</span>
-                                            <div class="review-bars-inner d-flex w-100 align-items-center">
-                                                <span class="review-bars-review" data-rating="4.0">
-                                                    <span class="review-bars-review-inner"></span>
-                                                </span>
-                                                <span class="pill">4.0</span>
-                                            </div>
-                                        </div>
-                                        <div class="review-bars-item">
-                                            <span class="review-bars-name">Quality</span>
-                                            <div class="review-bars-inner d-flex w-100 align-items-center">
-                                                <span class="review-bars-review" data-rating="2.8">
-                                                    <span class="review-bars-review-inner"></span>
-                                                </span>
-                                                <span class="pill">2.8</span>
-                                            </div>
-                                        </div>
-                                        <div class="review-bars-item">
-                                            <span class="review-bars-name">Location</span>
-                                            <div class="review-bars-inner d-flex w-100 align-items-center">
-                                                <span class="review-bars-review" data-rating="3.9">
-                                                    <span class="review-bars-review-inner"></span>
-                                                </span>
-                                                <span class="pill">3.9</span>
+                                                <span class="pill">{{ scoreavg(professional) }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -418,162 +395,107 @@
                         </div>
                         <div class="block-card mb-3">
                             <div class="block-card-header">
-                                <h2 class="widget-title">Avis <span class="ml-1 text-color-2">(0)</span></h2>
+                                <h2 class="widget-title">Avis <span class="ml-1 text-color-2">({{ professional.reviews|length }})</span></h2>
                                 <div class="stroke-shape"></div>
                             </div>
                             <div class="block-card-body">
-                                <div class="comments-list">
-                                    <div class="comment">
-                                        <div class="user-thumb user-thumb-lg flex-shrink-0">
-                                            <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="author-img">
-                                        </div>
-                                        <div class="comment-body">
-                                            <div class="meta-data d-flex align-items-center justify-content-between">
-                                                <div>
-                                                    <h4 class="comment__title">Adam Smith</h4>
-                                                    <span class="comment__meta">San Francisco, CA</span>
-                                                </div>
-                                                <div class="star-rating-wrap text-center">
-                                                    <div class="star-rating text-color-5 font-size-18">
-                                                        <span><i class="la la-star"></i></span>
-                                                        <span class="ml-n1"><i class="la la-star"></i></span>
-                                                        <span class="ml-n1"><i class="la la-star"></i></span>
-                                                        <span class="ml-n1"><i class="la la-star"></i></span>
-                                                        <span class="ml-n1"><i class="la la-star"></i></span>
-                                                    </div>
-                                                    <p class="font-size-13 font-weight-medium">04/10/2020</p>
-                                                </div>
+                                <div class="comments-list" id="reviews">
+                                    {% for review in professional.reviews|reverse(true)|slice(0, 5) %}
+                                        <div class="comment">
+                                            <div class="user-thumb user-thumb-lg flex-shrink-0">
+                                                <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="{{ review.name }}">
                                             </div>
-                                            <p class="comment-desc">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                                Ut enim ad minim veniam, quis nostrud exercitation.
-                                            </p>
-                                            <div class="comment-action d-flex align-items-center justify-content-between">
-                                                <a class="btn-gray btn-gray-sm" href="#" data-toggle="modal" data-target="#replayModal">
-                                                    <i class="la la-reply mr-1"></i>Répondre
-                                                </a>
-                                                <p class="feedback-box">
-                                                    <button type="button" class="btn-gray btn-gray-sm mr-1">
-                                                        <i class="la la-thumbs-o-up mr-1"></i>Utile <span class="text-color font-weight-semi-bold">2</span>
-                                                    </button>
-                                                    <button type="button" class="btn-gray btn-gray-sm">
-                                                        <i class="la la-smile-o mr-1"></i>Amusant
-                                                    </button>
+                                            <div class="comment-body">
+                                                <div class="meta-data d-flex align-items-center justify-content-between">
+                                                    <div>
+                                                        <h4 class="comment__title">{{ review.name }}</h4>
+                                                        <span class="comment__meta">{{ review.email }}</span>
+                                                    </div>
+                                                    <div class="star-rating-wrap text-center">
+                                                        <div class="star-rating text-color-5 font-size-18">
+                                                            {% for i in 1..5 %}
+                                                                <span class="{{ loop.first ? 'ml-n1' : '' }}"><i class="la la-star{{ loop.index > review.score ? '-o' : '' }}"></i></span>
+                                                            {% endfor %}
+                                                        </div>
+                                                        <p class="font-size-13 font-weight-medium">{{ review.dateAdd|format_date }}</p>
+                                                    </div>
+                                                </div>
+                                                <p class="comment-desc">
+                                                    {{ review.description }}
                                                 </p>
                                             </div>
                                         </div>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                         <div class="block-card" id="review">
                             <div class="block-card-header">
-                                <h2 class="widget-title pb-1">Add a Review</h2>
-                                <p>Your email address will not be published. Required fields are marked *</p>
-                            </div><!-- end block-card-header -->
+                                <h2 class="widget-title pb-1">Ajouter votre avis</h2>
+                                <p>Votre adresse email ne sera pas publiée. Les champs requis sont indiqués *</p>
+                            </div>
                             <div class="block-card-body">
-                                <div class="add-rating-bars review-bars d-flex flex-row flex-wrap flex-grow-1 align-items-center justify-content-between">
-                                    <div class="review-bars-item mx-0 mt-0">
-                                        <span class="review-bars-name">Service</span>
-                                        <div class="review-bars-inner pt-1">
-                                            <form class="leave-rating">
-                                                <input type="radio" name="rating" id="rating-1" value="1">
-                                                <label for="rating-1" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-2" value="2">
-                                                <label for="rating-2" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-3" value="3">
-                                                <label for="rating-3" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-4" value="4">
-                                                <label for="rating-4" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-5" value="5">
-                                                <label for="rating-5" class="fa fa-star"></label>
-                                            </form>
-                                        </div>
-                                    </div><!-- end review-bars-item -->
-                                    <div class="review-bars-item mx-0 mt-0">
-                                        <span class="review-bars-name">Value for Money</span>
-                                        <div class="review-bars-inner pt-1">
-                                            <form class="leave-rating">
-                                                <input type="radio" name="rating" id="rating-6" value="1">
-                                                <label for="rating-6" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-7" value="2">
-                                                <label for="rating-7" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-8" value="3">
-                                                <label for="rating-8" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-9" value="4">
-                                                <label for="rating-9" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-10" value="5">
-                                                <label for="rating-10" class="fa fa-star"></label>
-                                            </form>
-                                        </div>
-                                    </div><!-- end review-bars-item -->
-                                    <div class="review-bars-item mx-0 mt-0">
-                                        <span class="review-bars-name">Quality</span>
-                                        <div class="review-bars-inner pt-1">
-                                            <form class="leave-rating">
-                                                <input type="radio" name="rating" id="rating-11" value="1">
-                                                <label for="rating-11" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-12" value="2">
-                                                <label for="rating-12" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-13" value="3">
-                                                <label for="rating-13" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-14" value="4">
-                                                <label for="rating-14" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-15" value="5">
-                                                <label for="rating-15" class="fa fa-star"></label>
-                                            </form>
-                                        </div>
-                                    </div><!-- end review-bars-item -->
-                                    <div class="review-bars-item mx-0 mt-0">
-                                        <span class="review-bars-name">Location</span>
-                                        <div class="review-bars-inner pt-1">
-                                            <form class="leave-rating">
-                                                <input type="radio" name="rating" id="rating-16" value="1">
-                                                <label for="rating-16" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-17" value="2">
-                                                <label for="rating-17" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-18" value="3">
-                                                <label for="rating-18" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-19" value="4">
-                                                <label for="rating-19" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-20" value="5">
-                                                <label for="rating-20" class="fa fa-star"></label>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <form method="post" class="form-box row pt-3">
-                                    <div class="col-lg-6">
-                                        <div class="input-box">
-                                            <label class="label-text">Name</label>
-                                            <div class="form-group">
-                                                <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="name" placeholder="Your Name">
+                                <form method="post" class="form-box pt-3">
+                                    <div class="add-rating-bars review-bars d-flex flex-row flex-wrap flex-grow-1 align-items-center justify-content-between">
+                                        <div class="review-bars-item mx-0 mt-0">
+                                            <div class="review-bars-inner pt-1">
+                                                <div class="leave-rating">
+                                                    <input type="radio" name="rating" id="rating-1" value="5">
+                                                    <label for="rating-1" class="fa fa-star"></label>
+                                                    <input type="radio" name="rating" id="rating-2" value="4">
+                                                    <label for="rating-2" class="fa fa-star"></label>
+                                                    <input type="radio" name="rating" id="rating-3" value="3">
+                                                    <label for="rating-3" class="fa fa-star"></label>
+                                                    <input type="radio" name="rating" id="rating-4" value="2">
+                                                    <label for="rating-4" class="fa fa-star"></label>
+                                                    <input type="radio" name="rating" id="rating-5" value="1">
+                                                    <label for="rating-5" class="fa fa-star"></label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-box">
-                                            <label class="label-text">Email</label>
-                                            <div class="form-group">
-                                                <span class="la la-envelope-o form-icon"></span>
-                                                <input class="form-control" type="email" name="email" placeholder="Email Address">
+                                    <div class="row">
+                                        <input name="professional_id" id="professional_id" type="hidden" value="{{ professional.id }}">
+                                        <div class="col-lg-6">
+                                            <div class="input-box">
+                                                <label class="label-text">{{ 'global.name'|trans }}</label>
+                                                <div class="form-group">
+                                                    <span class="la la-user form-icon"></span>
+                                                    <input id="review_name" class="form-control" type="text" name="name" placeholder="{{ 'global.your_name'|trans }}">
+                                                    {% if errors|length > 0 %}
+                                                        <span class="review-error">{{ errors.name }}</span>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="input-box">
-                                            <label class="label-text">Review</label>
-                                            <div class="form-group">
-                                                <span class="la la-pencil form-icon"></span>
-                                                <textarea class="message-control form-control" name="message" placeholder="Tell about your experience or leave a tip for others"></textarea>
+                                        <div class="col-lg-6">
+                                            <div class="input-box">
+                                                <label class="label-text">{{ 'global.email'|trans }}</label>
+                                                <div class="form-group">
+                                                    <span class="la la-envelope-o form-icon"></span>
+                                                    <input id="review_email" class="form-control" type="email" name="email" placeholder="{{ 'global.email_address'|trans }}">
+                                                    {% if errors|length > 0 %}
+                                                        <span class="review-error">{{ errors.email }}</span>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="btn-box pt-1">
-                                            <button class="theme-btn gradient-btn border-0">Submit Review<i class="la la-arrow-right ml-2"></i></button>
+                                        <div class="col-lg-12">
+                                            <div class="input-box">
+                                                <label class="label-text">{{ 'global.reviews'|trans }}</label>
+                                                <div class="form-group">
+                                                    <span class="la la-pencil form-icon"></span>
+                                                    <textarea id="review_description" class="message-control form-control" name="message" placeholder="{{ 'global.write_your_reviews'|trans }}"></textarea>
+                                                    {% if errors|length > 0 %}
+                                                        <span class="review-error">{{ errors.message }}</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="btn-box pt-1">
+                                                <button id="rating-btn" class="theme-btn gradient-btn border-0">{{ 'global.submit_review'|trans }}<i class="la la-arrow-right ml-2"></i></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -747,9 +669,9 @@
             </div>
         </div>
     </section>
-
-    {% include "front/modal/professional/share_link.html.twig" with {"url" : url} %}
-    {% include "front/modal/professional/message_pro.html.twig" %}
+ 
+    {% include "front/modal/professional/share_link.html.twig" with {url: url, professional: professional} %}
+    {% include "front/modal/professional/message_pro.html.twig" with {name: professional.user}%}
 
 {% endblock %}
 

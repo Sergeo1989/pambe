@@ -108,6 +108,11 @@ app_professional_gallery:
     controller: App\Controller\Front\ProfessionalController::gallery
     #requirements:
         #_locale: '%app_locale%'
+app_professional_option:
+    path: /professional/option/edit
+    controller: App\Controller\Front\ProfessionalController::option
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_gallery_image_delete:
     path: /professional/gallery/{id}/delete
     controller: App\Controller\Front\ProfessionalController::deleteImage

@@ -9,16 +9,81 @@ description: Our custom pambe JS
 (function ($) {
     "use strict";
 
+    /** Share professional page */
+    $(document).on('click', 'li a.share_twitter', function(event) {
+        event.preventDefault();
+        var shareUrl = $('#share_link').val();
+        var sharePro = $('#share_pro').val();
+        
+        var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(sharePro) + '&via=Pambe&url=' + encodeURIComponent(shareUrl);
+        
+        popupCenter(url, 'Partagez sur Twitter');
+    });
+
+    $(document).on('click', 'li a.share_facebook', function(event) {
+        event.preventDefault();
+        var shareUrl = $('#share_link').val();
+        
+        var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl);
+        
+        popupCenter(url, 'Partagez sur Facebook');
+    });
+
+    $(document).on('click', 'li a.share_instagram', function(event) {
+        event.preventDefault();
+        var shareUrl = $('#share_link').val();
+        
+        var url = 'https://www.instagram.com/sharer.php?u=' + encodeURIComponent(shareUrl);
+        
+        popupCenter(url, 'Partagez sur Instagram');
+    });
+
+    $(document).on('click', 'li a.share_linkedin', function(event) {
+        event.preventDefault();
+        var shareUrl = $('#share_link').val();
+        
+        var url = 'https://www.linkedin.com/shareArticle?url=' + encodeURIComponent(shareUrl);
+        
+        popupCenter(url, 'Partagez sur Linkedin');
+    });
+
+    /** For symfony dynamic forms */
+    $(document).on('change', '#coordonnee_form_country', function(event) {
+        var field = $(this);
+        var form = field.closest('form');
+        var data = {};
+        data[field.attr('name')] = field.val();
+        $.post(form.attr('action'), data).then(function(data){
+            var region = $('#coordonnee_form_region')
+            region.chosen("destroy");
+            region.replaceWith($(data).find('#coordonnee_form_region'));
+            $("#coordonnee_form_region").chosen({no_results_text: "Oops, Aucun résultat !"}); 
+        });
+    });
+
+    $(document).ready(function() {
+        $("#coordonnee_form_region").chosen({no_results_text: "Oops, Aucun résultat !"}); 
+    });
+
     /** Add or remove professional like */
     $(document).on('click', 'a.js-like', function(event) {
         event.preventDefault(); 
         var link = $(this);
         var url = link.attr("href");
-
-        $.ajax({
-
-        });
- 
+        
+        var getting = $.get(url, function(data){
+            if(data.code == 200){
+                $('.js-likes').html('<i class="la la-heart mr-1"></i>Favoris - ' + data.likes);
+                var icon = $('.js-like i');
+                if(icon.hasClass('la-heart'))
+                    icon.removeClass('la-heart').addClass('la-bookmark');
+                else
+                    icon.removeClass('la-bookmark').addClass('la-heart');
+            }
+        }, 'json');
+        getting.fail(function() {
+            alert('Vous deviez être connecté !');
+        })
     });
 
     /** Add professional profile */
@@ -641,4 +706,24 @@ function removeQualification(event, name, link)
         }
         link.text('Supprimer');
     });
+}
+
+function popupCenter(url, title, width, height)
+{
+    var popupWidth = width || 640;
+    var popupheight = height || 640;
+
+    var windowLeft = window.screenLeft || window.screenX;
+    var windowTop = window.screenTop || window.screenY;
+        
+    var windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    var popupLeft = windowLeft + windowWidth / 2 - popupWidth / 2;
+    var popupTop = windowTop + windowHeight / 2 - popupheight / 2;
+
+    var popup = window.open(url, title, 'scrollbars=yes, width=' + popupWidth + ', height=' + popupheight + ', top=' + popupTop + ', left=' + popupLeft);
+    popup.focus();
+
+    return true;
 }

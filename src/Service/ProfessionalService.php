@@ -91,4 +91,9 @@ class ProfessionalService
         $professional->setView($professional->getView() + 1);
         $this->context->save($professional);
     }
+
+    public function getProfessional(int $id): Professional
+    {
+        return $this->professionalRepo->find($id);
+    }
 }

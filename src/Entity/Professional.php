@@ -186,6 +186,11 @@ class Professional
      */
     private $videoType;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="professional")
+     */
+    private $reviews;
+
     public function __construct()
     {
         $this->category_professional_professionals = new ArrayCollection();
@@ -196,6 +201,7 @@ class Professional
         $this->services = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->professionalLikes = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -633,7 +639,7 @@ class Professional
     public function isLikedByUser(User $user): bool 
     {
         foreach ($this->likes as $like) 
-            if ($like->getUser === $user) return true;
+            if ($like->getUser() === $user) return true;
         return false;
     }
 
@@ -711,6 +717,36 @@ class Professional
     public function setVideoType(?int $videoType): self
     {
         $this->videoType = $videoType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Review[]
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): self
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews[] = $review;
+            $review->setProfessional($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): self
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getProfessional() === $this) {
+                $review->setProfessional(null);
+            }
+        }
 
         return $this;
     }

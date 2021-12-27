@@ -1,12 +1,12 @@
 {% extends 'front/layout.html.twig' %}
 
-{% block title %}{{ 'Accueil - '~ parent() }}{% endblock %}
+{% block title %}{{ 'global.home'|trans ~' - '~ parent() }}{% endblock %}
 
 {% block content %}
                 {% block hero_wrapper %}
                     <section class="hero-wrapper overflow-hidden">
                         {% block banner %}
-                            <div class="overlay"></div><!-- end overlay -->
+                            <div class="overlay"></div>
                             {{ render(url('app_banner')) }}
                         {% endblock %}
                         <div class="container">
@@ -17,7 +17,7 @@
                                             <h2 class="sec__title cd-headline slide">
                                                 Qui Recherchez-vous ?
                                                 <span class="cd-words-wrapper py-0">
-                                                {% for category in my_app.categoriesProPopular %}
+                                                {% for category in catspoppro() %}
                                                     <b class="{{ loop.first ? "is-visible" : "" }}">{{ category.name|e }}</b>
                                                 {% endfor %}
                                             </span>
@@ -26,7 +26,7 @@
                                                 Trouver des professionnels qualifiés pour vous rendre le meilleur service.
                                             </p>
                                         </div>
-                                    </div><!-- end hero-heading -->
+                                    </div>
                                     <div class="main-search-input">
                                         <div class="main-search-input-item">
                                             <form action="#" class="form-box">
@@ -35,21 +35,21 @@
                                                     <input class="form-control" type="search" placeholder="De quoi avez-vous besoin ?">
                                                 </div>
                                             </form>
-                                        </div><!-- end main-search-input-item -->
+                                        </div>
                                         <div class="main-search-input-item user-chosen-select-container">
                                             <select class="user-chosen-select">
                                                 <option value="0">Selectionner une categorie</option>
                                                 <option value="1">Shops</option>
                                             </select>
-                                        </div><!-- end main-search-input-item -->
+                                        </div>
                                         <div class="main-search-input-item user-chosen-select-container">
                                             <select class="user-chosen-select">
                                                 <option value="0">Selectionner un service</option>
                                                 <option value="1">Shops</option>
                                             </select>
-                                        </div><!-- end main-search-input-item -->
+                                        </div>
                                         <div class="main-search-input-item">
-                                            <button class="theme-btn gradient-btn border-0 w-100" type="submit"><i class="la la-search mr-2"></i>Rechercher</button>
+                                            <button class="theme-btn gradient-btn border-0 w-100" type="submit"><i class="la la-search mr-2"></i>{{ 'global.search'|trans }}</button>
                                         </div>
                                     </div>
                                     <div class="highlighted-categories">
@@ -57,9 +57,9 @@
                                             <img src="{{ asset('assets/front/images/arrow-shape.png') }}" alt="" class="mr-5 cat-arrow-icon">
                                             <h5 class="highlighted__title">Just looking around? Let us suggest you <br> something hot & happening!</h5>
                                         </div>
-                                        {% if my_app.categoriesProPopular|length > 0 %}
+                                        {% if catspoppro()|length > 0 %}
                                             <div class="highlight-lists d-flex justify-content-center mt-4">
-                                                {% for category in my_app.categoriesProPopular|slice(0, 6) %}
+                                                {% for category in catspoppro()|slice(0, 6) %}
                                                     <div class="hero-category-item">
                                                         <a href="{{ path("app_category_pro", {"slug" : category.slug}) }}" class="d-block hero-cat-link hover-y">
                                                             <span class="icon-element bg-1 mx-auto"><i class="la la-building-o"></i></span>
@@ -87,22 +87,22 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="section-heading text-center">
-                                        <h2 class="sec__title">Professionnels VIP</h2>
+                                        <h2 class="sec__title">{{ 'global.vip_professionals'|trans }}</h2>
                                         <p class="sec__desc">
                                             On aime, on adore travailler avec ceux qui savent ce qu'ils font.
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                            {% if my_app.professionalsVip|length > 0 %}
+                            {% if vippros()|length > 0 %}
                                 <div class="row padding-top-60px">
-                                    {% for professional in my_app.professionalsVip|slice(0, 8) %}
+                                    {% for professional in vippros()|slice(0, 8) %}
                                         {% embed "front/partials/professional/box.html.twig" with {'professional' : professional} %}{% endembed %}
                                     {% endfor %}
                                 </div>
                             {% endif %}
                             <div class="more-link-wrap text-right">
-                                <a href="{{ path("app_professional_vip") }}" class="btn-text font-weight-medium">Voir plus de professionnels prêts à vous aider <i class="la la-arrow-right icon"></i></a>
+                                <a href="{{ path("app_professional_vip") }}" class="btn-text font-weight-medium">{{ 'global.see_more_professionals_ready_to_help_you'|trans }} <i class="la la-arrow-right icon"></i></a>
                             </div>
                         </div>
                     </section>
@@ -114,19 +114,19 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="section-heading text-center">
-                                        <h2 class="sec__title">Catégories populaires</h2>
+                                        <h2 class="sec__title">{{ 'global.popular_categories'|trans }}</h2>
                                     </div>
                                 </div>
                             </div>
-                            {% if my_app.categoriesProPopular|length > 0 %}
+                            {% if catspoppro()|length > 0 %}
                                 <div class="row mt-5">
-                                {% for category in my_app.categoriesProPopular|slice(0, 8) %}
+                                {% for category in catspoppro()|slice(0, 8) %}
                                     {% include "front/partials/professional/category.html.twig" with {"category" : category} %}
                                 {% endfor %}
                                 </div>
                             {% endif %}
                             <div class="more-btn-box pt-3 text-center">
-                                <a href="{{ path("app_category_popular") }}" class="btn-gray hover-scale-2">parcourir toutes les catégories <i class="la la-arrow-right ml-2"></i></a>
+                                <a href="{{ path("app_category_popular") }}" class="btn-gray hover-scale-2">{{ 'global.browse_all_categories'|trans }} <i class="la la-arrow-right ml-2"></i></a>
                             </div>
                         </div>
                     </section>
@@ -138,19 +138,19 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="section-heading text-center">
-                                        <h2 class="sec__title">Nouveaux professionnels</h2>
+                                        <h2 class="sec__title">{{ 'global.new_professionals'|trans }}</h2>
                                     </div>
                                 </div>
                             </div>
-                            {% if my_app.professionalsNew|length > 0 %}
+                            {% if newpros()|length > 0 %}
                                 <div class="row padding-top-60px">
-                                    {% for professional in my_app.professionalsNew|slice(0, 8) %}
+                                    {% for professional in newpros()|slice(0, 8) %}
                                         {% embed "front/partials/professional/box.html.twig" with {'professional' : professional} %}{% endembed %}
                                     {% endfor %}
                                 </div>
                             {% endif %}
                             <div class="more-link-wrap text-right">
-                                <a href="{{ path("app_professional_new") }}" class="btn-text font-weight-medium">Voir plus de professionnels prêts à vous aider <i class="la la-arrow-right icon"></i></a>
+                                <a href="{{ path("app_professional_new") }}" class="btn-text font-weight-medium">{{ 'global.see_more_professionals_ready_to_help_you'|trans }} <i class="la la-arrow-right icon"></i></a>
                             </div>
                         </div>
                     </section>
@@ -180,7 +180,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="section-heading text-center">
-                                        <h2 class="sec__title">Derniers Conseils & Articles</h2>
+                                        <h2 class="sec__title">{{ 'global.latest_tips_&_articles'|trans }}</h2>
                                         <p class="sec__desc">
                                             Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, <br>
                                             a feugiat eros. Nunc ut lacinia tortors.
@@ -200,7 +200,7 @@
                                 </div>
                             {% endif %}
                             <div class="more-btn-box pt-5 text-center">
-                                <a href="{{ path("app_blog") }}" class="theme-btn gradient-btn"><i class="la la-list-alt mr-2"></i>Voir toutes les publications</a>
+                                <a href="{{ path("app_blog") }}" class="theme-btn gradient-btn"><i class="la la-list-alt mr-2"></i>{{ 'global.see_all_posts'|trans }}</a>
                             </div>
                         </div>
                     </section>

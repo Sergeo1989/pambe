@@ -6,6 +6,7 @@ use App\Entity\Professional;
 use App\Entity\ProfessionalImage;
 use App\Entity\ProfessionalLike;
 use App\Entity\Qualification;
+use App\Entity\Review;
 use App\Entity\Service;
 use App\Form\Professional\Edit\CoordonneeFormType;
 use App\Form\Professional\Edit\GalleryFormType;
@@ -26,6 +27,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfessionalController extends AbstractController
 {
+    private $errors = [];
     private $context;
     private $translator;
     private $paginator;
@@ -58,19 +60,44 @@ class ProfessionalController extends AbstractController
         $this->proImgRepo = $proImgRepo;
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function index(){
-
-    }
-
-    public function show(Professional $professional): Response
+    public function show(Professional $professional, Request $request): Response
     {
         $url = $this->generateUrl("app_professional_show", ["slug" => $professional->getSlug()]);
+
+        $professional_id = (int)$request->request->get('professional_id');
+        $rating = $request->request->get('rating') ?? 0;
+        $name = $request->request->get('name');
+        $email = $request->request->get('email');
+        $message = $request->request->get('message');
+
+        if ($request->request->count() > 0) {
+            if(empty($name))
+                $this->errors['name'] = 'Entrez un nom.';
+            if(empty($email))
+                $this->errors['email'] = 'Entrez votre adresse email.';
+            if(empty($message))
+                $this->errors['message'] = 'Entrez votre avis.';
+            if(count($this->errors) == 0){
+                $review = new Review();
+                $review->setName($name);
+                $review->setEmail($email);
+                $review->setDescription($message);
+                $review->setScore((int)$rating);
+                $review->setProfessional($this->professionalService->getProfessional($professional_id));
+
+                $this->context->save($review);
+                return $this->redirectToRoute("app_professional_show", ["slug" => $professional->getSlug()]);
+            }
+        }
+
         // A terminer: Empêcher le professionnel d'augmenter ses propre vues
         $this->professionalService->addView($professional);
-        return $this->render('front/professional/show.html.twig', compact('professional', 'url'));
+        
+        return $this->render('front/professional/show.html.twig', [
+            'professional' => $professional, 
+            'url' => $url, 
+            'errors' => $this->errors 
+        ]);
     }
 
     public function new(Request $request): Response
@@ -156,7 +183,7 @@ class ProfessionalController extends AbstractController
             $this->context->save($professional);
 
             $this->addFlash('success', 'Contenu enregistré avec succès !');
-            
+
             if($form->get('saveAndContinue')->isClicked())
                 return $this->redirectToRoute('app_professional_coordonnee');
             if($form->get('save')->isClicked())
@@ -285,6 +312,14 @@ class ProfessionalController extends AbstractController
     public function reference(Request $request)
     {
         return $this->render('front/professional/edit/reference.html.twig');
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function option(Request $request)
+    {
+        return $this->render('front/professional/edit/option.html.twig');
     }
 
     public function displayAjax(Request $request)

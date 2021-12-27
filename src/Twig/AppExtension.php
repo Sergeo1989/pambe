@@ -2,9 +2,11 @@
 
 namespace App\Twig;
 
+use App\Entity\Professional;
 use App\Service\BlogService;
 use App\Service\ProfessionalService;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
@@ -18,14 +20,22 @@ class AppExtension extends AbstractExtension
         $this->blogService = $blogService;
     }
 
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('force_to_int', fn ($value) => intval($value))
+        ];
+    }
+
     public function getFunctions()
     {
         return [
-            new TwigFunction('vippro', [$this, 'professionalsVip']),
-            new TwigFunction('newpro', [$this, 'professionalsNew']),
-            new TwigFunction('catpoppro', [$this, 'categoriesProPopular']),
-            new TwigFunction('catart', [$this, 'categoriesArt']),
-            new TwigFunction('keyart', [$this, 'keywordsArt'])
+            new TwigFunction('vippros', [$this, 'professionalsVip']),
+            new TwigFunction('newpros', [$this, 'professionalsNew']),
+            new TwigFunction('catspoppro', [$this, 'categoriesProPopular']),
+            new TwigFunction('catsart', [$this, 'categoriesArt']),
+            new TwigFunction('keyart', [$this, 'keywordsArt']),
+            new TwigFunction('scoreavg', [$this, 'getScoreAverage'])
         ];
     }
 
@@ -47,5 +57,18 @@ class AppExtension extends AbstractExtension
 
     public function keywordsArt(){
         return $this->blogService->getAllArticleKeyword();
+    }
+
+    public function getScoreAverage(Professional $professional)
+    {
+        $reviews = $professional->getReviews();
+        $sum = 0;
+        foreach ($reviews as $review) {
+            $sum += $review->getScore();
+        }
+        if(count($reviews) > 0)
+            return number_format($sum / count($reviews), 1, '.', ',');
+        else 
+            return '0.0';
     }
 }

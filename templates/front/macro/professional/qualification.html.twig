@@ -16,6 +16,15 @@
                             <div class="form-group">
                                 <span class="la la-certificate form-icon"></span>
                                 <input id="{{qualification}}_title_{{form}}" class="form-control" type="text" placeholder="{{ 'global.title'|trans }}">
+                                <em style="font-size: 12px;">
+                                    {% if qualification == 'qualification' %}
+                                        Exemple: Probatoire
+                                    {% elseif qualification == 'experience' %}
+                                        Exemple: Développeur web
+                                    {% elseif qualification == 'certification' %}
+                                        Exemple: Développeur web
+                                    {% endif %}
+                                </em>
                             </div>
                         </div>
                         <div class="input-box col-6">
@@ -23,6 +32,15 @@
                             <div class="form-group">
                                 <span class="la la-map-marker form-icon"></span>
                                 <input id="{{qualification}}_place_{{form}}" class="form-control" type="text" placeholder="{{ 'global.place'|trans }}">
+                                <em style="font-size: 12px;">
+                                    {% if qualification == 'qualification' %}
+                                        Exemple: Lycée de Dschang
+                                    {% elseif qualification == 'experience' %}
+                                        Exemple: Dschang
+                                    {% elseif qualification == 'certification' %}
+                                        Exemple: Douala
+                                    {% endif %}
+                                </em>
                             </div>
                         </div>
                         <div class="input-box col-6">

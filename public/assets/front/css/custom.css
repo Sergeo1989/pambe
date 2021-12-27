@@ -285,6 +285,37 @@ description: Our custom pambe CSS
     margin-left: 5px;
     margin-right: 25px;
 }
-
-
+@media only screen and (min-width: 992px) {
+    .onglet .col-lg-2{
+        -ms-flex: 0 0 14.28571428571429%;
+        flex: 0 0 14.28571428571429%;
+        max-width: 14.28571428571429%;
+    }
+}
+.onglet .col-md-2{
+    -ms-flex: 0 0 14.28571428571429%;
+    flex: 0 0 14.28571428571429%;
+    max-width: 14.28571428571429%;
+}
+#notification .sms, #notification .call, #notification .contact{
+    color: orange;
+}
+.notif-title{
+    font-size: 16px;
+    color: #333f57;
+    font-weight: 500;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    position: relative;
+}
+.review-bars-item {
+    width: calc(100% - 30px);
+}
+.pro .gallery{
+    padding-bottom: 15px;
+}
+.review-error{
+    color: #b51d1d;
+    font-size: 12px;
+}
  

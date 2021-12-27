@@ -11,7 +11,7 @@
       </trans-unit>
       <trans-unit id="6qHfwB." resname="global.edit">
         <source>global.edit</source>
-        <target>Editer</target>
+        <target>Modifier</target>
       </trans-unit>
       <trans-unit id="qtGYd7a" resname="global.delete">
         <source>global.delete</source>
@@ -48,6 +48,282 @@
       <trans-unit id="2x_lTMv" resname="global.login">
         <source>global.login</source>
         <target>Connexion</target>
+      </trans-unit>
+      <trans-unit id="B_SNfMF" resname="global.title">
+        <source>global.title</source>
+        <target>Titre</target>
+      </trans-unit>
+      <trans-unit id="MHaFG0z" resname="global.place">
+        <source>global.place</source>
+        <target>Lieu</target>
+      </trans-unit>
+      <trans-unit id="BHQbPME" resname="global.start_date">
+        <source>global.start_date</source>
+        <target>Date de début</target>
+      </trans-unit>
+      <trans-unit id="B4e7r6M" resname="global.end_date">
+        <source>global.end_date</source>
+        <target>Date de fin</target>
+      </trans-unit>
+      <trans-unit id="UqnAyL8" resname="global.description">
+        <source>global.description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="0E52bNC" resname="Enter_a_description">
+        <source>Enter_a_description</source>
+        <target>Entrer une description</target>
+      </trans-unit>
+      <trans-unit id="vvAgahe" resname="global.save">
+        <source>global.save</source>
+        <target>Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="aRgFiI6" resname="global.legend">
+        <source>global.legend</source>
+        <target>Légende</target>
+      </trans-unit>
+      <trans-unit id="_Wxar2x" resname="global.send_a_message">
+        <source>global.send_a_message</source>
+        <target>Envoyer un message</target>
+      </trans-unit>
+      <trans-unit id="D0nnTta" resname="global.or">
+        <source>global.or</source>
+        <target>OU</target>
+      </trans-unit>
+      <trans-unit id="O6E_MdU" resname="global.email_address">
+        <source>global.email_address</source>
+        <target>Adresse e-mail</target>
+      </trans-unit>
+      <trans-unit id="Wa5oD3t" resname="global.contact">
+        <source>global.contact</source>
+        <target>Contact</target>
+      </trans-unit>
+      <trans-unit id="Zs.9zF7" resname="global.certified">
+        <source>global.certified</source>
+        <target>Certifié</target>
+      </trans-unit>
+      <trans-unit id="031Uzlj" resname="global.gallery">
+        <source>global.gallery</source>
+        <target>Gallerie</target>
+      </trans-unit>
+      <trans-unit id="ZPfwLqD" resname="global.follow_us">
+        <source>global.follow_us</source>
+        <target>Suivez Nous</target>
+      </trans-unit>
+      <trans-unit id="l2qSV7V" resname="global.phone">
+        <source>global.phone</source>
+        <target>Téléphone</target>
+      </trans-unit>
+      <trans-unit id="Z1z867C" resname="global.website">
+        <source>global.website</source>
+        <target>Site web</target>
+      </trans-unit>
+      <trans-unit id="HQ7pe9u" resname="global.address">
+        <source>global.address</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="M0Q6gXF" resname="global.country">
+        <source>global.country</source>
+        <target>Pays</target>
+      </trans-unit>
+      <trans-unit id="tM.TcQ7" resname="global.region">
+        <source>global.region</source>
+        <target>Région</target>
+      </trans-unit>
+      <trans-unit id="uR6cHum" resname="global.city">
+        <source>global.city</source>
+        <target>Ville</target>
+      </trans-unit>
+      <trans-unit id="IPOFQ4c" resname="global.facebook_link">
+        <source>global.facebook_link</source>
+        <target>Lien facebook</target>
+      </trans-unit>
+      <trans-unit id="Nh07kVP" resname="global.twitter_link">
+        <source>global.twitter_link</source>
+        <target>Lien twitter</target>
+      </trans-unit>
+      <trans-unit id=".c1z16y" resname="global.instagram_link">
+        <source>global.instagram_link</source>
+        <target>Lien instagram</target>
+      </trans-unit>
+      <trans-unit id="ZS1Sdp4" resname="global.whatsapp_link">
+        <source>global.whatsapp_link</source>
+        <target>Lien whatsapp</target>
+      </trans-unit>
+      <trans-unit id="l0p58Qp" resname="global.pinterest_link">
+        <source>global.pinterest_link</source>
+        <target>Lien pinterest</target>
+      </trans-unit>
+      <trans-unit id="xi9fgnZ" resname="global.youtube_link">
+        <source>global.youtube_link</source>
+        <target>Lien youtube</target>
+      </trans-unit>
+      <trans-unit id="Vrv9PLp" resname="global.linkedin_link">
+        <source>global.linkedin_link</source>
+        <target>Lien linkedin</target>
+      </trans-unit>
+      <trans-unit id="AArtVX0" resname="global.save_and_continue">
+        <source>global.save_and_continue</source>
+        <target>Enregistrer et continuer</target>
+      </trans-unit>
+      <trans-unit id="EZsSdJm" resname="global.drop_file_here_or_click_to_upload">
+        <source>global.drop_file_here_or_click_to_upload</source>
+        <target>déposer un fichier ici ou cliquer pour le charger</target>
+      </trans-unit>
+      <trans-unit id="eHRXxA8" resname="global.images">
+        <source>global.images</source>
+        <target>Images</target>
+      </trans-unit>
+      <trans-unit id="Lt1h39V" resname="global.informations">
+        <source>global.informations</source>
+        <target>Informations</target>
+      </trans-unit>
+      <trans-unit id="G.mkqH7" resname="global.general_information">
+        <source>global.general_information</source>
+        <target>Informations générales</target>
+      </trans-unit>
+      <trans-unit id="8_4VsF_" resname="global.status">
+        <source>global.status</source>
+        <target>Statut</target>
+      </trans-unit>
+      <trans-unit id="tO4D70F" resname="global.choose_a_file">
+        <source>global.choose_a_file</source>
+        <target>Choisir un fichier</target>
+      </trans-unit>
+      <trans-unit id="Pq7DlSj" resname="global.your_email">
+        <source>global.your_email</source>
+        <target>Votre e-mail</target>
+      </trans-unit>
+      <trans-unit id="7uTLWZM" resname="global.lastname">
+        <source>global.lastname</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="GmX00fv" resname="global.firstname">
+        <source>global.firstname</source>
+        <target>Prénom</target>
+      </trans-unit>
+      <trans-unit id="Ce6m8wF" resname="global.speciality">
+        <source>global.speciality</source>
+        <target>Specialité</target>
+      </trans-unit>
+      <trans-unit id="SQlXRLD" resname="global.skills">
+        <source>global.skills</source>
+        <target>Compétences</target>
+      </trans-unit>
+      <trans-unit id="hBOFujt" resname="global.languages">
+        <source>global.languages</source>
+        <target>Langues</target>
+      </trans-unit>
+      <trans-unit id="rWURQgA" resname="global.short_description">
+        <source>global.short_description</source>
+        <target>Courte description</target>
+      </trans-unit>
+      <trans-unit id="62L709C" resname="global.long_description">
+        <source>global.long_description</source>
+        <target>Longue description</target>
+      </trans-unit>
+      <trans-unit id="LBFeNF6" resname="global.professional_experiences">
+        <source>global.professional_experiences</source>
+        <target>Expériences professionnelles</target>
+      </trans-unit>
+      <trans-unit id="32X9qIs" resname="global.experience">
+        <source>global.experience</source>
+        <target>Expérience</target>
+      </trans-unit>
+      <trans-unit id="oGhTKPc" resname="global.add">
+        <source>global.add</source>
+        <target>Ajouter</target>
+      </trans-unit>
+      <trans-unit id="eP4mwmE" resname="global.services">
+        <source>global.services</source>
+        <target>Services</target>
+      </trans-unit>
+      <trans-unit id=".whfWV_" resname="global.your_services">
+        <source>global.your_services</source>
+        <target>Vos services</target>
+      </trans-unit>
+      <trans-unit id="9TkewxF" resname="global.trainings">
+        <source>global.trainings</source>
+        <target>Formations</target>
+      </trans-unit>
+      <trans-unit id="ICQvXSH" resname="global.by">
+        <source>global.by</source>
+        <target>Par</target>
+      </trans-unit>
+      <trans-unit id="KwX5mFY" resname="global.comment">
+        <source>global.comment</source>
+        <target>Commentaire</target>
+      </trans-unit>
+      <trans-unit id="2vfFzYa" resname="global.share">
+        <source>global.share</source>
+        <target>Partage</target>
+      </trans-unit>
+      <trans-unit id="pKYS9YJ" resname="global.keywords">
+        <source>global.keywords</source>
+        <target>Mots Clés</target>
+      </trans-unit>
+      <trans-unit id="6d00aVl" resname="global.share_this_post">
+        <source>global.share_this_post</source>
+        <target>Partagez cette publication</target>
+      </trans-unit>
+      <trans-unit id="yEUfxz7" resname="global.home">
+        <source>global.home</source>
+        <target>Accueil</target>
+      </trans-unit>
+      <trans-unit id="Os2ELZS" resname="global.search">
+        <source>global.search</source>
+        <target>Rechercher</target>
+      </trans-unit>
+      <trans-unit id="uXJp3t0" resname="global.vip_professionals">
+        <source>global.vip_professionals</source>
+        <target>Professionnels VIP</target>
+      </trans-unit>
+      <trans-unit id="3eiCfwn" resname="global.see_more_professionals_ready_to_help_you">
+        <source>global.see_more_professionals_ready_to_help_you</source>
+        <target>Voir plus de professionnels prêts à vous aider</target>
+      </trans-unit>
+      <trans-unit id="64ufpS7" resname="global.popular_categories">
+        <source>global.popular_categories</source>
+        <target>Catégories populaires</target>
+      </trans-unit>
+      <trans-unit id="QRggVQa" resname="global.browse_all_categories">
+        <source>global.browse_all_categories</source>
+        <target>Parcourir toutes les catégories</target>
+      </trans-unit>
+      <trans-unit id="BloseoC" resname="global.new_professionals">
+        <source>global.new_professionals</source>
+        <target>Nouveaux Professionnels</target>
+      </trans-unit>
+      <trans-unit id="TcUkqF2" resname="global.latest_tips_&amp;_articles">
+        <source>global.latest_tips_&amp;_articles</source>
+        <target><![CDATA[Derniers conseils & articles]]></target>
+      </trans-unit>
+      <trans-unit id="EkQZ7JF" resname="global.see_all_posts">
+        <source>global.see_all_posts</source>
+        <target>Voir toutes les publications</target>
+      </trans-unit>
+      <trans-unit id="nwZxcZf" resname="global.reviews">
+        <source>global.reviews</source>
+        <target>Avis</target>
+      </trans-unit>
+      <trans-unit id="D3eITKU" resname="global.name">
+        <source>global.name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="gUr398Q" resname="global.your_name">
+        <source>global.your_name</source>
+        <target>Votre nom</target>
+      </trans-unit>
+      <trans-unit id="diGyRhI" resname="global.email">
+        <source>global.email</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="kAcWWiP" resname="global.write_your_reviews">
+        <source>global.write_your_reviews</source>
+        <target>Ecrivez votre avis</target>
+      </trans-unit>
+      <trans-unit id="yck76g1" resname="global.submit_review">
+        <source>global.submit_review</source>
+        <target>Envoyer</target>
       </trans-unit>
     </body>
   </file>

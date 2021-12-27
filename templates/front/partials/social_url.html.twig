@@ -8,7 +8,7 @@
 
 
     {% if social_url is not null %}
-        <span class="mr-2 text-white font-weight-semi-bold font-size-14">Suivez-Nous:</span>
+        <span class="mr-2 text-white font-weight-semi-bold font-size-14">{{ 'global.follow_us'|trans }}:</span>
         <ul class="social-profile social-profile-colored">
             {% if facebook %} <li><a href="{{ facebook }}" class="facebook-bg"><i class="lab la-facebook-f"></i></a></li>{% endif %}
             {% if twitter %}<li><a href="{{ twitter }}" class="twitter-bg"><i class="lab la-twitter"></i></a></li>{% endif %}

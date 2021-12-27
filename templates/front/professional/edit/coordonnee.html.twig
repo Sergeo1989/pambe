@@ -31,7 +31,7 @@
                             {{ form_start(coordonneeForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
                                 <div class="col-lg-6">
                                     <div class="input-box">
-                                        <label class="label-text">Téléphone</label>
+                                        <label class="label-text">{{ 'global.phone'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-phone form-icon"></span>
                                             {{ form_widget(coordonneeForm.user.phone, {'attr': {'class': 'form-control', 'placeholder': 'Entrer un numéro de téléphone'} }) }}
@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-box">
-                                        <label class="label-text">Site web</label>
+                                        <label class="label-text">{{ 'global.website'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-globe form-icon"></span>
                                             {{ form_widget(coordonneeForm.website, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrer votre site web'} }) }}
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="input-box">
-                                        <label class="label-text">Adresse</label>
+                                        <label class="label-text">{{ 'global.address'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-map-marker form-icon"></span>
                                             {{ form_widget(coordonneeForm.user.address, {'attr': {'class': 'form-control', 'placeholder': 'Entrer une adresse'} }) }}
@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="input-box">
-                                        <label class="label-text">Pays</label>
+                                        <label class="label-text">{{ 'global.country'|trans }}</label>
                                         <div class="form-group user-chosen-select-container">
                                             {{ form_widget(coordonneeForm.country, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Sélectionnez un pays'} }) }}
                                         </div>
@@ -66,15 +66,15 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="input-box">
-                                        <label class="label-text">Région</label>
+                                        <label class="label-text">{{ 'global.region'|trans }}</label>
                                         <div class="form-group user-chosen-select-container">
-                                            {{ form_widget(coordonneeForm.region, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Sélectionnez une région'} }) }}
+                                            {{ form_widget(coordonneeForm.region) }}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="input-box">
-                                        <label class="label-text">Ville</label>
+                                        <label class="label-text">{{ 'global.city'|trans }}</label>
                                         <div class="form-group user-chosen-select-container">
                                             {{ form_widget(coordonneeForm.city, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Sélectionnez une ville'} }) }}
                                         </div>
@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="input-box">
-                                        <label class="label-text">Lien Facebook</label>
+                                        <label class="label-text">{{ 'global.facebook_link'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-facebook-f form-icon"></span>
                                             {{ form_widget(coordonneeForm.socialUrl.facebook, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-box">
-                                        <label class="label-text">Lien Twitter</label>
+                                        <label class="label-text">{{ 'global.twitter_link'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-twitter form-icon"></span>
                                             {{ form_widget(coordonneeForm.socialUrl.twitter, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-box">
-                                        <label class="label-text">Lien Instagram</label>
+                                        <label class="label-text">{{ 'global.instagram_link'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-instagram form-icon"></span>
                                             {{ form_widget(coordonneeForm.socialUrl.instagram, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
@@ -109,7 +109,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-box">
-                                        <label class="label-text">Lien Whatsapp</label>
+                                        <label class="label-text">{{ 'global.whatsapp_link'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-whatsapp form-icon"></span>
                                             {{ form_widget(coordonneeForm.socialUrl.whatsapp, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-box">
-                                        <label class="label-text">Lien Pinterest</label>
+                                        <label class="label-text">{{ 'global.pinterest_link'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-pinterest form-icon"></span>
                                             {{ form_widget(coordonneeForm.socialUrl.pinterest, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
@@ -127,7 +127,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-box">
-                                        <label class="label-text">Lien Youtube</label>
+                                        <label class="label-text">{{ 'global.youtube_link'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-youtube form-icon"></span>
                                             {{ form_widget(coordonneeForm.socialUrl.youtube, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
@@ -136,7 +136,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-box">
-                                        <label class="label-text">Lien Linkedin</label>
+                                        <label class="label-text">{{ 'global.linkedin_link'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-linkedin form-icon"></span>
                                             {{ form_widget(coordonneeForm.socialUrl.linkedIn, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'https://'} }) }}
@@ -146,7 +146,7 @@
                                 <div class="submit-wrap pt-3">
                                     <div class="btn-box mt-3 ml-3">
                                         {{ form_widget(coordonneeForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
-                                        {{ form_widget(coordonneeForm.saveAndContinue, {'label': 'global.save_and_Continue'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                                        {{ form_widget(coordonneeForm.saveAndContinue, {'label': 'global.save_and_continue'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
                                     </div>
                                 </div>
                             {{ form_end(coordonneeForm) }}

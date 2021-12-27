@@ -19,19 +19,19 @@
                 <div class="col-lg-10 mx-auto">
                     {% embed "front/partials/professional/edit/breadcrumb.html.twig" %}
                         {% block breadcrumb_service %}
-                            <a class="active" href="javascript:void(0)">Services</a>
+                            <a class="active" href="javascript:void(0)">{{ 'global.services'|trans }}</a>
                         {% endblock %}
                     {% endembed %}
                     <div class="block-card mb-4">
                         <div class="block-card-header">
-                            <h2 class="widget-title">Services</h2>
+                            <h2 class="widget-title">{{ 'global.services'|trans }}</h2>
                             <div class="stroke-shape"></div>
                         </div>
                         <div class="block-card-body">
                             <div class="block-card mb-3">
                                 <div class="block-card-header">
-                                    <h2 class="widget-title">Vos Services</h2>
-                                    <a href="#" data-toggle="modal" data-target="#serviceModalAdd" class="theme-btn gradient-btn float-right add-experience">Ajouter</a>
+                                    <h2 class="widget-title">{{ 'global.your_services'|trans }}</h2>
+                                    <a href="#" data-toggle="modal" data-target="#serviceModalAdd" class="theme-btn gradient-btn float-right add-experience">{{ 'global.add'|trans }}</a>
                                     <div class="stroke-shape"></div>
                                 </div>
                                 <div class="block-card-body">
