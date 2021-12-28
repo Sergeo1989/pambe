@@ -325,6 +325,58 @@
         <source>global.submit_review</source>
         <target>Submit Review</target>
       </trans-unit>
+      <trans-unit id="IkGyiit" resname="global.blog">
+        <source>global.blog</source>
+        <target>Blog</target>
+      </trans-unit>
+      <trans-unit id="kEOXPKe" resname="global.add_a_comment">
+        <source>global.add_a_comment</source>
+        <target>Add a comment</target>
+      </trans-unit>
+      <trans-unit id="QBBdeJ4" resname="global.message">
+        <source>global.message</source>
+        <target>Message</target>
+      </trans-unit>
+      <trans-unit id="lDXJp6l" resname="global.show_more">
+        <source>global.show_more</source>
+        <target>Show more</target>
+      </trans-unit>
+      <trans-unit id="wuek2Ye" resname="global.show_less">
+        <source>global.show_less</source>
+        <target>Show less</target>
+      </trans-unit>
+      <trans-unit id="dkg1FOc" resname="global.popular">
+        <source>global.popular</source>
+        <target>Popular</target>
+      </trans-unit>
+      <trans-unit id="prG5mq2" resname="global.recent">
+        <source>global.recent</source>
+        <target>Recent</target>
+      </trans-unit>
+      <trans-unit id="4DcqyfJ" resname="global.your_comment_is_awaiting_moderation">
+        <source>global.your_comment_is_awaiting_moderation</source>
+        <target>__global.your_comment_is_awaiting_moderation</target>
+      </trans-unit>
+      <trans-unit id="TzEs0a5" resname="global.your_e-mail_address_will_not_be_published._required_fields_are_marked_with_an_*.">
+        <source>global.your_e-mail_address_will_not_be_published._required_fields_are_marked_with_an_*.</source>
+        <target>__global.your_e-mail_address_will_not_be_published._required_fields_are_marked_with_an_*.</target>
+      </trans-unit>
+      <trans-unit id="lJj0J5F" resname="global.write_your_comment_here">
+        <source>global.write_your_comment_here</source>
+        <target>__global.write_your_comment_here</target>
+      </trans-unit>
+      <trans-unit id="jRAV6sN" resname="global.save_my_name_and_email_address_in_this_browser_for_the_next_time_i_comment">
+        <source>global.save_my_name_and_email_address_in_this_browser_for_the_next_time_i_comment</source>
+        <target>__global.save_my_name_and_email_address_in_this_browser_for_the_next_time_i_comment</target>
+      </trans-unit>
+      <trans-unit id="LuTzcJw" resname="global.post_a_comment">
+        <source>global.post_a_comment</source>
+        <target>__global.post_a_comment</target>
+      </trans-unit>
+      <trans-unit id="0yyneRw" resname="global.filter_by_categories">
+        <source>global.filter_by_categories</source>
+        <target>__global.filter_by_categories</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

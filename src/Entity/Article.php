@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\Table(name="article", indexes={@ORM\Index(columns={"title", "content"}, flags={"fulltext"})})
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  *     fields={"title"},

@@ -7,23 +7,23 @@
                     <span aria-hidden="true" class="la la-times-circle"></span>
                 </button>
             </div>
+            {% set professional_url = absolute_url(path('app_professional_show', {'slug': professional.slug})) %}
             <div class="modal-body">
                 <div class="copy-to-clipboard mb-3">
                     <form action="#" class="form-box d-flex align-items-center">
                         <span class="text-success-message">Lien Copié!</span>
-                        <input id="share_pro" type="hidden" class="form-control copy-input pl-3" value="{{ professional.user }}">
-                        <input id="share_link" type="text" class="form-control copy-input pl-3" value="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset(url) }}">
+                        <input id="share_link" type="text" class="form-control copy-input pl-3" value="{{ professional_url }}">
                         <div class="btn-box pl-2">
                             <button type="button" class="theme-btn gradient-btn copy-text">Copier</button>
                         </div>
                     </form> 
-                </div><!-- end copy-to-clipboard -->
+                </div>
                 <h3 class="widget-title">Partagez sur</h3>
                 <ul class="social-profile social-profile-colored">
-                    <li><a href="#" class="share_facebook facebook-bg"><i class="la la-facebook-f"></i></a></li>
-                    <li><a href="#" class="share_twitter twitter-bg"><i class="la la-twitter"></i></a></li>
-                    <li><a href="#" class="share_instagram instagram-bg"><i class="la la-instagram"></i></a></li>
-                    <li><a href="#" class="share_linkedin linkedin-bg"><i class="la la-linkedin"></i></a></li>
+                    <li><a href="{{ professional_url }}" class="share_facebook facebook-bg"><i class="la la-facebook-f"></i></a></li>
+                    <li><a data-title="{{ professional.user }}" href="{{ professional_url }}" class="share_twitter twitter-bg"><i class="la la-twitter"></i></a></li>
+                    <li><a href="{{ professional_url }}" class="share_instagram instagram-bg"><i class="la la-instagram"></i></a></li>
+                    <li><a href="{{ professional_url }}" class="share_linkedin linkedin-bg"><i class="la la-linkedin"></i></a></li>
                 </ul>
             </div>
         </div>

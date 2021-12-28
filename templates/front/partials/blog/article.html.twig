@@ -7,11 +7,12 @@
             <span class="badge">{{ article.dateAdd|format_date('medium', '', null, app.request.locale) }}</span>
         </a>
         <div class="post-share">
+            {% set post_url = absolute_url(path('app_blog_article', {'slug': article.slug})) %}
             <span class="la la-share-alt share-icon"></span>
             <div class="post-share-social">
-                <a href="#" class="post-share-social-icon"><i class="lab la-facebook-f"></i></a>
-                <a href="#" class="post-share-social-icon"><i class="lab la-twitter"></i></a>
-                <a href="#" class="post-share-social-icon"><i class="lab la-instagram"></i></a>
+                <a href="{{ post_url }}" class="share_facebook post-share-social-icon"><i class="lab la-facebook-f"></i></a>
+                <a href="{{ post_url }}" data-title="{{ article.title }}" class="share_twitter post-share-social-icon"><i class="lab la-twitter"></i></a>
+                <a href="{{ post_url }}" class="share_instagram post-share-social-icon"><i class="lab la-instagram"></i></a>
             </div>
         </div>
     </div> 

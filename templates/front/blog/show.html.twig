@@ -24,6 +24,11 @@
 {% block blog_article %}
     <section class="blog-area section-padding">
         <div class="container">
+            {% for message in app.flashes("success") %}
+                <div class="alert alert-success font-size-15 text-color" role="alert">
+                    <span class="font-weight-semi-bold">{{ message }}</span>
+                </div>
+            {% endfor %}
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card-item single-card">
@@ -61,7 +66,7 @@
                                     </li>
                                     <li class="mr-3">
                                         <i class="la la-comment mr-1"></i>
-                                        <a href="javascript:void(0)" class="listing-cat-link">{{ article.comments|length }} {{ 'global.comment'|trans }}{{ article.comments|length  > 1 ? "s" : ""}}</a>
+                                        <a href="javascript:void(0)" class="listing-cat-link">{{ comments|length }} {{ 'global.comment'|trans }}{{ comments|length  > 1 ? "s" : ""}}</a>
                                     </li>
                                     <li>
                                         <i class="la la-share-alt mr-1"></i>
@@ -80,125 +85,53 @@
                             {% endif %}
                             <h3 class="widget-title">{{ 'global.share_this_post'|trans }}:</h3>
                             <ul class="social-profile social-profile-styled">
-                                <li><a href="{{ absolute_url(path('app_blog_article', {'slug': article.slug})) }}" class="facebook-bg" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="lab la-facebook-f"></i></a></li>
-                                <li><a href="{{ absolute_url(path('app_blog_article', {'slug': article.slug})) }}" class="twitter-bg" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="lab la-twitter"></i></a></li>
-                                <li><a href="{{ absolute_url(path('app_blog_article', {'slug': article.slug})) }}" class="instagram-bg" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="lab la-instagram"></i></a></li>
-                                <li><a href="{{ absolute_url(path('app_blog_article', {'slug': article.slug})) }}" class="youtube-bg" data-toggle="tooltip" data-placement="top" title="Youtube"><i class="la la-youtube"></i></a></li>
+                                {% set post_url = absolute_url(path('app_blog_article', {'slug': article.slug})) %}
+                                <li><a href="{{ post_url }}" class="share_facebook facebook-bg" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a data-title="{{ article.title }}" href="{{ post_url }}" class="share_twitter twitter-bg" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="{{ post_url }}" class="share_instagram instagram-bg" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="{{ post_url }}" class="share_linkedin linkedin-bg" data-toggle="tooltip" data-placement="top" title="Linkedin"><i class="la la-linkedin"></i></a></li>
                             </ul>
-                        </div>
-                    </div>
-                    <ul class="post-nav d-flex align-items-center justify-content-between margin-bottom-80px">
-                        <li class="prev-post">
-                            <a href="#">
-                                <i class="la la-angle-left"></i>
-                                <span class="d-block font-size-12 line-height-20">Article Suivant</span>
-                                <span class="text-truncate">What to Do if You Overspent During the Holidays</span>
-                            </a>
-                        </li>
-                        <li class="next-post text-right">
-                            <a href="#">
-                                <i class="la la-angle-right"></i>
-                                <span class="d-block font-size-12 line-height-20">Article Précédent</span>
-                                <span class="text-truncate ml-auto">The Best Coffee Shops In Sydney Neighborhoods</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="bg-gray p-4 radius-round margin-bottom-80px">
-                        <div class="hosted-by d-flex">
-                            <a href="javascript:void(0)" class="user-thumb user-thumb-lg flex-shrink-0 mr-3">
-                                <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="{{ article.admin.user.firstname }}">
-                            </a>
-                            <div>
-                                <h4 class="font-size-20"><a href="user-profile.html" class="text-color">{{ article.admin.user.lastname ~' '~ article.admin.user.firstname }}</a></h4>
-                                <a href="mailto:{{ article.admin.user.email|e }}" class="btn-text font-weight-regular">{{ article.admin.user.email }}</a>
-                                <p class="pt-2 pb-3">The functional aspect comes first in the work process because it’s the core of the object: What is its purpose? something else? Shape, texture</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row margin-bottom-50px">
-                        <div class="col-lg-12">
-                            <h3 class="widget-title font-size-24 pb-4">Publications Similaires</h3>
-                        </div>
-                        <div class="col-lg-6 responsive-column">
-                            <div class="card-item card-item-layout-2" >
-                                <div class="card-image">
-                                    <a href="blog-single.html" class="d-block">
-                                        <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/img11.jpg') }}" class="card__img lazy" alt="blog image">
-                                        <span class="badge">March 15, 2020</span>
-                                    </a>
-                                    <div class="post-share">
-                                        <span class="la la-share-alt share-icon"></span>
-                                        <div class="post-share-social">
-                                            <a href="#" class="post-share-social-icon"><i class="lab la-facebook-f"></i></a>
-                                            <a href="#" class="post-share-social-icon"><i class="lab la-twitter"></i></a>
-                                            <a href="#" class="post-share-social-icon"><i class="lab la-instagram"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <a href="#" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="Kamran Adi">
-                                        <img src="{{ asset('assets/front/images/avatar-img2.jpg') }}" alt="author-img">
-                                    </a>
-                                    <ul class="listing-meta d-flex justify-content-center align-items-center">
-                                        <li>
-                                            <a href="#" class="listing-cat-link">BusinessOwners</a>,
-                                            <a href="#" class="listing-cat-link">Restaurants</a>
-                                        </li>
-                                    </ul>
-                                    <h4 class="card-title pt-2">
-                                        <a href="blog-single.html">The joyless side of happy hour</a>
-                                    </h4>
-                                    <p class="card-sub mt-3">
-                                        Have you ever seen an elephant fly?   Early Wednesday morning, Walt Disney Studios Motion Pictures released
-                                    </p>
-                                    <ul class="listing-action d-flex justify-content-around align-items-center border-top border-top-color mt-4 pt-4">
-                                        <li class="pill"><i class="la la-share mr-1"></i>275</li>
-                                        <li class="pill"><i class="la la-eye mr-1"></i>319</li>
-                                        <li class="pill"><i class="la la-comment mr-1"></i>24</li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="block-card mb-4">
                         <div class="block-card-header">
-                            <h2 class="widget-title pb-0">{{ 'global.comment'|trans }}{{ article.comments|length > 1 ? 's' : '' }} <span class="ml-1 text-color-2">({{ article.comments|length }})</span></h2>
+                            <h2 class="widget-title pb-0">{{ 'global.comment'|trans }}{{ comments|length > 1 ? 's' : '' }} <span class="ml-1 text-color-2">({{ comments|length }})</span></h2>
                         </div>
                         <div class="block-card-body">
                             <div class="comments-list">
-                                <div class="comment">
-                                    <div class="user-thumb user-thumb-lg flex-shrink-0">
-                                        <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="author-img">
-                                    </div>
-                                    <div class="comment-body">
-                                        <div class="meta-data">
-                                            <h4 class="comment__title">Adam Smith</h4>
-                                            <span class="comment__meta">San Francisco, CA</span>
-                                            <span class="comment__meta">4/12/2020</span>
+                                {% for comment in comments %}
+                                    <div class="comment">
+                                        <div class="user-thumb user-thumb-lg flex-shrink-0">
+                                            <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="author-img">
                                         </div>
-                                        <p class="comment-desc">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                            Ut enim ad minim veniam, quis nostrud exercitation.
-                                        </p>
+                                        <div class="comment-body">
+                                            <div class="meta-data">
+                                                <h4 class="comment__title">{{ comment.name }}</h4>
+                                                <span class="comment__meta">{{ comment.dateAdd|format_date() }}</span>
+                                            </div>
+                                            <p class="comment-desc">
+                                                {{ comment.content }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
                     <div class="block-card">
                         <div class="block-card-header">
                             <h2 class="widget-title pb-0">{{ 'global.add_a_comment'|trans }}</h2>
-                            <p>Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont marqués d'un *.</p>
+                            <p>{{ 'global.your_e-mail_address_will_not_be_published._required_fields_are_marked_with_an_*.'|trans }}</p>
                         </div>
                         <div class="block-card-body">
-                            <form method="post" class="form-box row">
+                            {{ form_start(commentForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
                                 <div class="col-lg-6">
                                     <div class="input-box">
                                         <label class="label-text">{{ 'global.name'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-user form-icon"></span>
-                                            <input class="form-control form-control-styled" type="text" name="name" placeholder="Votre nom">
+                                            {{ form_widget(commentForm.name, {'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.your_name'|trans } }) }}
+                                            {{ form_errors(commentForm.name) }}
                                         </div>
                                     </div>
                                 </div>
@@ -207,7 +140,8 @@
                                         <label class="label-text">{{ 'global.email'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-envelope-o form-icon"></span>
-                                            <input class="form-control form-control-styled" type="email" name="email" placeholder="Adresse e-mail">
+                                            {{ form_widget(commentForm.email, {'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.email_address'|trans } }) }}
+                                            {{ form_errors(commentForm.email) }}
                                         </div>
                                     </div>
                                 </div>
@@ -216,22 +150,23 @@
                                         <label class="label-text">{{ 'global.message'|trans }}</label>
                                         <div class="form-group">
                                             <span class="la la-pencil form-icon"></span>
-                                            <textarea class="message-control form-control" name="message" placeholder="Ecrivez votre message ici"></textarea>
+                                            {{ form_widget(commentForm.content, {'attr': {'class': 'form-control message-control', 'placeholder': 'global.write_your_comment_here'|trans } }) }}
+                                            {{ form_errors(commentForm.content) }}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="custom-checkbox mb-4">
-                                        <input type="checkbox" id="agreeChb2">
-                                        <label for="agreeChb2" class="text-gray font-size-15">Enregistrez mon nom et mon adresse e-mail dans ce navigateur pour la prochaine fois que je commenterai.</label>
+                                        {{ form_widget(commentForm.agreeChb2) }}
+                                        <label for="comment_form_agreeChb2" class="text-gray font-size-15">{{ 'global.save_my_name_and_email_address_in_this_browser_for_the_next_time_i_comment'|trans }}.</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="btn-box pt-1">
-                                        <button class="theme-btn gradient-btn border-0">Poster un commentaire<i class="la la-arrow-right ml-2"></i></button>
+                                        <button type="submit" class="theme-btn gradient-btn border-0">{{ 'global.post_a_comment'|trans }}<i class="la la-arrow-right ml-2"></i></button>
                                     </div>
                                 </div>
-                            </form>
+                            {{ form_end(commentForm) }}
                         </div>
                     </div>
                 </div>
@@ -259,7 +194,7 @@
                             <div class="card-item card-item-layout-4 mb-0">
                                 <a href="#" class="card-image d-block">
                                     <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ asset('assets/front/images/img31.jpg') }}" class="card__img lazy" alt="">
-                                    <span class="badge">Commencez maintenat</span>
+                                    <span class="badge">Commencez maintenant</span>
                                     <div class="card-content">
                                         <h4 class="card-title pb-2 font-size-18 line-height-26">Want to learn how to code in 7 weeks?</h4>
                                         <span class="bg-white text-color py-1 px-2 rounded font-size-14 font-weight-medium">Check it out <i class="la la-angle-right ml-1"></i></span>
@@ -270,42 +205,40 @@
                         {% set categories = catsart() %}
                         {% if categories|length > 0 %}
                         <div class="sidebar-widget">
-                            <h3 class="widget-title">Filtrer par Categories</h3>
+                            <h3 class="widget-title">{{ 'global.filter_by_categories'|trans }}</h3>
                             <div class="stroke-shape mb-4"></div>
                             <div class="category-list">
                                 {% for category in categories|slice(0, 4) %}
-                                    <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="generic-img-card d-block hover-y overflow-hidden mb-3">
-                                        <img src="{{ asset('assets/front/images/img-loading.png')|imagine_filter('category_art_small') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category_art_small') }}" alt="{{ category.name }}" class="generic-img-card-img lazy">
-                                        <div class="generic-img-card-content d-flex align-items-center justify-content-between">
+                                    <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="d-block overflow-hidden mb-3">
+                                        <div class="d-flex align-items-center justify-content-between">
                                             <span class="badge">{{ category.name }}</span>
-                                            <span class="generic-img-card-counter">{{ category.articles|length }}</span>
+                                            <span class="badge-count">{{ category.articles|length }}</span>
                                         </div>
                                     </a>
                                 {% endfor %}
                                 <div class="collapse collapse-content" id="showMoreOptionCollapse2">
                                     {% for category in categories|slice(4, categories|length) %}
-                                        <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="generic-img-card d-block hover-y overflow-hidden mb-3">
-                                            <img src="{{ asset('assets/front/images/img-loading.png')|imagine_filter('category_art_small') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category_art_small') }}" alt="{{ category.name }}" class="generic-img-card-img lazy">
-                                            <div class="generic-img-card-content d-flex align-items-center justify-content-between">
+                                        <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="d-block overflow-hidden mb-3">
+                                            <div class="d-flex align-items-center justify-content-between">
                                                 <span class="badge">{{ category.name }}</span>
-                                                <span class="generic-img-card-counter">{{ category.articles|length }}</span>
+                                                <span class="badge-count">{{ category.articles|length }}</span>
                                             </div>
                                         </a>
                                     {% endfor %}
                                 </div>
                                 <a class="collapse-btn" data-toggle="collapse" href="#showMoreOptionCollapse2" role="button" aria-expanded="false" aria-controls="showMoreOptionCollapse2">
-                                    <span class="collapse-btn-hide">Afficher Plus <i class="la la-plus ml-1"></i></span>
-                                    <span class="collapse-btn-show">Afficher Moins <i class="la la-minus ml-1"></i></span>
+                                    <span class="collapse-btn-hide">{{ 'global.show_more'|trans }} <i class="la la-plus ml-1"></i></span>
+                                    <span class="collapse-btn-show">{{ 'global.show_less'|trans }} <i class="la la-minus ml-1"></i></span>
                                 </a>
                             </div>
                         </div>
                         {% endif %}
-                        {% if my_app.keywordsArt|length > 0 %}
+                        {% if keysart()|length > 0 %}
                         <div class="sidebar-widget">
-                            <h3 class="widget-title">Mots Clés</h3>
+                            <h3 class="widget-title">{{ 'global.keywords'|trans }}</h3>
                             <div class="stroke-shape mb-4"></div>
                             <ul class="tag-list">
-                                {% for keyword in my_app.keywordsArt %}
+                                {% for keyword in keysart() %}
                                     <li><a href="javascript:void(0)">{{ keyword.name }}</a></li>
                                 {% endfor %}
                             </ul>
@@ -316,132 +249,64 @@
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="popular-tab" data-toggle="tab" href="#popular" role="tab" aria-controls="popular" aria-selected="true">
-                                            Popular
+                                            {{ 'global.popular'|trans }}
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="recent-tab" data-toggle="tab" href="#recent" role="tab" aria-controls="recent" aria-selected="false">
-                                            Recent
+                                            {{ 'global.recent'|trans }}
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="popular" role="tabpanel" aria-labelledby="popular-tab">
-                                    <div class="mini-list-card">
-                                        <div class="mini-list-img">
-                                            <a href="blog-single.html" class="d-block">
-                                                <img src="images/single-listing-small-img1.jpg" alt="similar listing image">
-                                            </a>
-                                        </div><!-- end mini-list-img -->
-                                        <div class="mini-list-body">
-                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            <a href="#">Tips,</a>
-                                            <span>,</span>
-                                            <a href="#">Location</a>
-                                        </span>
-                                            <h4 class="mini-list-title"><a href="blog-single.html">Great Experience At MiFost Villa</a></h4>
+                                    {% for article in popart()|slice(0, 5) %}
+                                        {% set image = article.articleImages is defined and article.articleImages is not empty ? vich_uploader_asset(article.articleImages[0], 'imageFile') : asset('assets/front/images/img10.jpg')  %}
+                                        {% set categories = article.categoryArticles %}
+                                        <div class="mini-list-card">
+                                            <div class="mini-list-img">
+                                                <a href="{{ path('app_blog_article', {'slug': article.slug}) }}" class="d-block">
+                                                    <img src="{{ image }}" alt="{{ article.title }}">
+                                                </a>
+                                            </div>
+                                            <div class="mini-list-body">
                                             <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            July 9, 2020
-                                        </span>
-                                        </div><!-- end mini-list-body -->
-                                    </div><!-- end mini-list-card -->
-                                    <div class="mini-list-card">
-                                        <div class="mini-list-img">
-                                            <a href="blog-single.html" class="d-block">
-                                                <img src="images/single-listing-small-img2.jpg" alt="similar listing image">
-                                            </a>
-                                        </div><!-- end mini-list-img -->
-                                        <div class="mini-list-body">
-                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            <a href="#">Culture</a>
-                                            <span>,</span>
-                                            <a href="#">Coffee</a>
-                                            <span>,</span>
-                                            <a href="#">Shop</a>
-                                        </span>
-                                            <h4 class="mini-list-title"><a href="blog-single.html">Coffee On Street & Look Super Car</a></h4>
-                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            July 9, 2020
-                                        </span>
-                                        </div><!-- end mini-list-body-->
-                                    </div><!-- end mini-list-card -->
-                                    <div class="mini-list-card">
-                                        <div class="mini-list-img">
-                                            <a href="blog-single.html" class="d-block">
-                                                <img src="images/single-listing-small-img3.jpg" alt="similar listing image">
-                                            </a>
-                                        </div><!-- end mini-list-img -->
-                                        <div class="mini-list-body">
-                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            <a href="#">Culture</a>
-                                            <span>,</span>
-                                            <a href="#">Travel</a>
-                                        </span>
-                                            <h4 class="mini-list-title"><a href="blog-single.html">Discover Venice, Italy</a></h4>
-                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            July 9, 2020
-                                        </span>
-                                        </div><!-- end mini-list-body-->
-                                    </div><!-- end mini-list-card -->
+                                                {% for category in categories %}
+                                                    <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="listing-cat-link">{{ category.name }}</a>{{ loop.last ? "" : ","}}
+                                                {% endfor %}
+                                            </span>
+                                                <h4 class="mini-list-title"><a href="{{ path('app_blog_article', {'slug': article.slug}) }}">{{ article.title }}</a></h4>
+                                                <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                {{ article.dateAdd|format_date('medium', '', null, app.request.locale) }}
+                                            </span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="tab-pane fade" id="recent" role="tabpanel" aria-labelledby="recent-tab">
-                                    <div class="mini-list-card">
-                                        <div class="mini-list-img">
-                                            <a href="blog-single.html" class="d-block">
-                                                <img src="images/single-listing-small-img3.jpg" alt="similar listing image">
-                                            </a>
-                                        </div><!-- end mini-list-img -->
-                                        <div class="mini-list-body">
-                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            <a href="#">Culture</a>
-                                            <span>,</span>
-                                            <a href="#">Travel</a>
-                                        </span>
-                                            <h4 class="mini-list-title"><a href="blog-single.html">Discover Venice, Italy</a></h4>
+                                    {% for article in lastfiveart() %}
+                                        {% set image = article.articleImages is defined and article.articleImages is not empty ? vich_uploader_asset(article.articleImages[0], 'imageFile') : asset('assets/front/images/img10.jpg')  %}
+                                        {% set categories = article.categoryArticles %}
+                                        <div class="mini-list-card">
+                                            <div class="mini-list-img">
+                                                <a href="{{ path('app_blog_article', {'slug': article.slug}) }}" class="d-block">
+                                                    <img src="{{ image }}" alt="{{ article.title }}">
+                                                </a>
+                                            </div>
+                                            <div class="mini-list-body">
                                             <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            July 9, 2020
-                                        </span>
-                                        </div><!-- end mini-list-body-->
-                                    </div><!-- end mini-list-card -->
-                                    <div class="mini-list-card">
-                                        <div class="mini-list-img">
-                                            <a href="blog-single.html" class="d-block">
-                                                <img src="images/single-listing-small-img2.jpg" alt="similar listing image">
-                                            </a>
-                                        </div><!-- end mini-list-img -->
-                                        <div class="mini-list-body">
-                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            <a href="#">Culture</a>
-                                            <span>,</span>
-                                            <a href="#">Coffee</a>
-                                            <span>,</span>
-                                            <a href="#">Shop</a>
-                                        </span>
-                                            <h4 class="mini-list-title"><a href="blog-single.html">Coffee On Street & Look Super Car</a></h4>
-                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            July 9, 2020
-                                        </span>
+                                                {% for category in categories %}
+                                                    <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="listing-cat-link">{{ category.name }}</a>{{ loop.last ? "" : ","}}
+                                                {% endfor %}
+                                            </span>
+                                                <h4 class="mini-list-title"><a href="{{ path('app_blog_article', {'slug': article.slug}) }}">{{ article.title }}</a></h4>
+                                                <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
+                                                {{ article.dateAdd|format_date('medium', '', null, app.request.locale) }}
+                                            </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="mini-list-card">
-                                        <div class="mini-list-img">
-                                            <a href="blog-single.html" class="d-block">
-                                                <img src="images/single-listing-small-img1.jpg" alt="similar listing image">
-                                            </a>
-                                        </div>
-                                        <div class="mini-list-body">
-                                        <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            <a href="#">Tips,</a>
-                                            <span>,</span>
-                                            <a href="#">Location</a>
-                                        </span>
-                                            <h4 class="mini-list-title"><a href="blog-single.html">Great Experience At MiFost Villa</a></h4>
-                                            <span class="category-link after-none pl-0 font-size-14 font-weight-medium">
-                                            July 9, 2020
-                                        </span>
-                                        </div>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>

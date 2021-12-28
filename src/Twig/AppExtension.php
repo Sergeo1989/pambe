@@ -34,28 +34,35 @@ class AppExtension extends AbstractExtension
             new TwigFunction('newpros', [$this, 'professionalsNew']),
             new TwigFunction('catspoppro', [$this, 'categoriesProPopular']),
             new TwigFunction('catsart', [$this, 'categoriesArt']),
-            new TwigFunction('keyart', [$this, 'keywordsArt']),
-            new TwigFunction('scoreavg', [$this, 'getScoreAverage'])
+            new TwigFunction('keysart', [$this, 'keywordsArt']),
+            new TwigFunction('scoreavg', [$this, 'getScoreAverage']),
+            new TwigFunction('popart', [$this, 'getPopularArticle']),
+            new TwigFunction('lastfiveart', [$this, 'getLast5Article'])
         ];
     }
 
-    public function professionalsVip(){
+    public function professionalsVip()
+    {
         return $this->professionalService->getAllVipProfessional();
     }
 
-    public function professionalsNew(){
+    public function professionalsNew()
+    {
         return $this->professionalService->getAllNewProfessional();
     }
 
-    public function categoriesProPopular(){
+    public function categoriesProPopular()
+    {
         return $this->professionalService->getAllPopularProfessionalCategory();
     }
 
-    public function categoriesArt(){
+    public function categoriesArt()
+    {
         return $this->blogService->getAllArticleCategory();
     }
 
-    public function keywordsArt(){
+    public function keywordsArt()
+    {
         return $this->blogService->getAllArticleKeyword();
     }
 
@@ -70,5 +77,15 @@ class AppExtension extends AbstractExtension
             return number_format($sum / count($reviews), 1, '.', ',');
         else 
             return '0.0';
+    }
+
+    public function getPopularArticle()
+    {
+        return $this->blogService->getAllPopularArticle();
+    }
+
+    public function getLast5Article()
+    {
+        return $this->blogService->getLastFiveArticle();
     }
 }

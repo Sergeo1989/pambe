@@ -400,8 +400,8 @@
                             </div>
                             <div class="block-card-body">
                                 <div class="comments-list" id="reviews">
-                                    {% for review in professional.reviews|reverse(true)|slice(0, 5) %}
-                                        <div class="comment">
+                                    {% for review in professional.reviews|reverse(true) %}
+                                        <div class="comment comment-hidden">
                                             <div class="user-thumb user-thumb-lg flex-shrink-0">
                                                 <img src="{{ asset('assets/front/images/avatar-img.jpg') }}" alt="{{ review.name }}">
                                             </div>
@@ -427,6 +427,7 @@
                                         </div>
                                     {% endfor %}
                                 </div>
+                                <a href="#" id="load_more">load more</a>
                             </div>
                         </div>
                         <div class="block-card" id="review">
@@ -612,28 +613,26 @@
                                 <div class="stroke-shape mb-4"></div>
                                 <div class="category-list">
                                     {% for category in categories|slice(0, 4) %}
-                                        <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="generic-img-card d-block hover-y overflow-hidden mb-3">
-                                            <img src="{{ asset('assets/front/images/img-loading.png')|imagine_filter('category_art_small') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category_art_small') }}" alt="{{ category.name|e }}" class="generic-img-card-img lazy">
-                                            <div class="generic-img-card-content d-flex align-items-center justify-content-between">
+                                        <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="d-block overflow-hidden mb-3">
+                                            <div class="d-flex align-items-center justify-content-between">
                                                 <span class="badge">{{ category.name }}</span>
-                                                <span class="generic-img-card-counter">{{ category.allProfessionals|length }}</span>
+                                                <span class="badge-count">{{ category.allProfessionals|length }}</span>
                                             </div>
                                         </a>
                                    {% endfor %}
                                     <div class="collapse collapse-content" id="showMoreOptionCollapse2">
                                         {% for category in categories|slice(4, categories|length) %}
-                                            <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="generic-img-card d-block hover-y overflow-hidden mb-3">
-                                                <img src="{{ asset('assets/front/images/img-loading.png')|imagine_filter('category_art_small') }}" data-src="{{ vich_uploader_asset(category, 'iconFile')|imagine_filter('category_art_small') }}" alt="{{ category.name|e }}" class="generic-img-card-img lazy">
-                                                <div class="generic-img-card-content d-flex align-items-center justify-content-between">
+                                            <a href="{{ path("app_blog_category", {"slug" : category.slug}) }}" class="d-block overflow-hidden mb-3">
+                                                <div class="d-flex align-items-center justify-content-between">
                                                     <span class="badge">{{ category.name }}</span>
-                                                    <span class="generic-img-card-counter">{{ category.AllProfessionals|length }}</span>
+                                                    <span class="badge-count">{{ category.AllProfessionals|length }}</span>
                                                 </div>
                                             </a>
                                         {% endfor %}
                                     </div>
                                     <a class="collapse-btn" data-toggle="collapse" href="#showMoreOptionCollapse2" role="button" aria-expanded="false" aria-controls="showMoreOptionCollapse2">
-                                        <span class="collapse-btn-hide">Afficher Plus <i class="la la-plus ml-1"></i></span>
-                                        <span class="collapse-btn-show">Afficher Plus <i class="la la-minus ml-1"></i></span>
+                                        <span class="collapse-btn-hide">{{ 'global.show_more'|trans }} <i class="la la-plus ml-1"></i></span>
+                                        <span class="collapse-btn-show">{{ 'global.show_less'|trans }} <i class="la la-minus ml-1"></i></span>
                                     </a>
                                 </div>
                             </div>
@@ -670,7 +669,7 @@
         </div>
     </section>
  
-    {% include "front/modal/professional/share_link.html.twig" with {url: url, professional: professional} %}
+    {% include "front/modal/professional/share_link.html.twig" with {professional: professional} %}
     {% include "front/modal/professional/message_pro.html.twig" with {name: professional.user}%}
 
 {% endblock %}

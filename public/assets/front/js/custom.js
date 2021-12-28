@@ -9,29 +9,47 @@ description: Our custom pambe JS
 (function ($) {
     "use strict";
 
-    /** Share professional page */
-    $(document).on('click', 'li a.share_twitter', function(event) {
+    /** Load more reviews */
+    $(document).on('click', '#load_more', function(event) {
         event.preventDefault();
-        var shareUrl = $('#share_link').val();
-        var sharePro = $('#share_pro').val();
+        var link = $(this);
+
+        $(".comments-list .comment-hidden:hidden").slice(0, 2).attr('style', 'display: flex;').fadeIn("slow"); 
+        if($(".comments-list .comment-hidden:hidden").length == 0){
+            link.fadeOut("slow");
+        }
+    });
+
+    $(document).ready(function() {
+        $(".comments-list .comment-hidden").slice(0, 2).attr('style', 'display: flex;'); 
+    });
+
+    /** Share professional page */
+    $(document).on('click', 'li a.share_twitter, .post-share-social a.share_twitter', function(event) {
+        event.preventDefault();
+        var link = $(this);
+        var shareUrl = link.attr("href");
+        var title = link.data("title");
         
-        var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(sharePro) + '&via=Pambe&url=' + encodeURIComponent(shareUrl);
+        var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&via=Pambe&url=' + encodeURIComponent(shareUrl);
         
         popupCenter(url, 'Partagez sur Twitter');
     });
 
-    $(document).on('click', 'li a.share_facebook', function(event) {
+    $(document).on('click', 'li a.share_facebook, .post-share-social a.share_facebook', function(event) {
         event.preventDefault();
-        var shareUrl = $('#share_link').val();
+        var link = $(this);
+        var shareUrl = link.attr("href");
         
         var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl);
         
         popupCenter(url, 'Partagez sur Facebook');
     });
 
-    $(document).on('click', 'li a.share_instagram', function(event) {
+    $(document).on('click', 'li a.share_instagram, .post-share-social a.share_instagram', function(event) {
         event.preventDefault();
-        var shareUrl = $('#share_link').val();
+        var link = $(this);
+        var shareUrl = link.attr("href");
         
         var url = 'https://www.instagram.com/sharer.php?u=' + encodeURIComponent(shareUrl);
         
@@ -40,7 +58,8 @@ description: Our custom pambe JS
 
     $(document).on('click', 'li a.share_linkedin', function(event) {
         event.preventDefault();
-        var shareUrl = $('#share_link').val();
+        var link = $(this);
+        var shareUrl = link.attr("href");
         
         var url = 'https://www.linkedin.com/shareArticle?url=' + encodeURIComponent(shareUrl);
         
@@ -536,24 +555,24 @@ function getQualification(event, name, link)
     data['rand'] = new Date().getTime();
     var getting = $.get(url, data, function(data){
         if(data.status === true) {
-            var date_start = data.value.start_date.split('/');
-            var date_end = data.value.end_date.split('/');
+            var date_start = data.value.start_date.split('-');
+            var date_end = data.value.end_date.split('-');
             $('#' + name + '_id_edit').val(data.value.id);
             $('#' + name + '_title_edit').val(data.value.title);
             $('#' + name + '_place_edit').val(data.value.place);
             $('#' + name + '_start_date_edit').val(data.value.start_date);
             $('#' + name + '_end_date_edit').val(data.value.end_date);
             $('#' + name + '_description_edit').val(data.value.description);
-                /*$('#experience_start_date_edit').dateDropper('setDate', {
+                $('#' + name + '_start_date_edit').dateDropper('setDate', {
                     d: parseInt(date_start[0]),
                     m: parseInt(date_start[1]),
                     y: parseInt(date_start[2])
-                });/*
-                $('#experience_end_date.date-dropper-input').dateDropper('setDate', {
+                });
+                $('#' + name + '_end_date_edit').dateDropper('setDate', {
                     d: parseInt(date_end[0]),
                     m: parseInt(date_end[1]),
                     y: parseInt(date_end[2])
-                });*/
+                });
             $('#' + name + 'ModalEdit').modal('show');
         }else{
             alert("Une erreur s'est produite.")

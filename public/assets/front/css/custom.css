@@ -318,4 +318,27 @@ description: Our custom pambe CSS
     color: #b51d1d;
     font-size: 12px;
 }
+.badge, .badge-count{
+    font-size: 14px;
+    color: #7b68ee;
+}
+.badge:hover, .badge-count:hover{
+    color: #9f8fff;
+}
+.form-group ul li{
+    color: #b51d1d;
+    font-size: 12px;
+    list-style: none;
+}
+.form-group ul li:not(:last-child){
+    margin-bottom: 5px;
+}
+.form-group ul li:before{
+    content: "\2716";
+    color: #b51d1d;
+    margin-right: 5px;
+}
+.comments-list .comment-hidden{
+    display: none;
+}
  

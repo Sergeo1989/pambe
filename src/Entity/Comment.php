@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
@@ -28,7 +29,7 @@ class Comment
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $website;
 
@@ -156,5 +157,15 @@ class Comment
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->status = false;
+        $this->date_add = new \DateTime("now");
+        $this->date_upd = new \DateTime("now");
     }
 }

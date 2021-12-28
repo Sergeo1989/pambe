@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryArticleRepository;
 use App\Repository\CommentRepository;
@@ -34,7 +35,8 @@ class BlogService
      *
      * @return CategoryArticle[]
      */
-    public function getAllArticleCategory(){
+    public function getAllArticleCategory()
+    {
         return $this->categoryArtRepo->findBy(['status' => true]);
     }
 
@@ -43,7 +45,8 @@ class BlogService
      *
      * @return KeywordArticle[]
      */
-    public function getAllArticleKeyword(){
+    public function getAllArticleKeyword()
+    {
         return $this->keywordArtRepo->findBy(['status' => true]);
     }
 
@@ -52,9 +55,37 @@ class BlogService
      *
      * @return Article[]
      */
-    public function getAllArticle(){
+    public function getAllArticle()
+    {
         $articles = $this->articleRepo->findBy(['status' => true], ['date_add' => 'DESC']);
         
         return $this->context->sort($articles, 'position');
+    }
+
+    /**
+     * Cette fonction retourne les 5 derniers articles ayant un statut actif
+     *
+     * @return Article[]
+     */
+    public function getLastFiveArticle()
+    {
+        return $this->articleRepo->findBy(['status' => true], ['date_add' => 'DESC'], 5);
+    }
+
+    /**
+     * Cette fonction retourne tous les articles par popularité et ayant un statut actif
+     *
+     * @return Article[]
+     */
+    public function getAllPopularArticle()
+    {
+        $articles = $this->articleRepo->findBy(['status' => true], ['date_add' => 'DESC']);
+
+        return $this->context->sort($articles, 'view');
+    }
+
+    public function getAllComments(Article $article)
+    {
+        return $this->commentRepo->findBy(['article' => $article, 'status' => true], ['date_add' => 'DESC']);
     }
 }

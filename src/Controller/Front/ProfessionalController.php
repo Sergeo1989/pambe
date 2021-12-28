@@ -11,6 +11,7 @@ use App\Entity\Service;
 use App\Form\Professional\Edit\CoordonneeFormType;
 use App\Form\Professional\Edit\GalleryFormType;
 use App\Form\Professional\Edit\InformationFormType;
+use App\Form\ReviewFormType;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
 use App\Repository\QualificationRepository;
@@ -62,8 +63,6 @@ class ProfessionalController extends AbstractController
 
     public function show(Professional $professional, Request $request): Response
     {
-        $url = $this->generateUrl("app_professional_show", ["slug" => $professional->getSlug()]);
-
         $professional_id = (int)$request->request->get('professional_id');
         $rating = $request->request->get('rating') ?? 0;
         $name = $request->request->get('name');
@@ -95,7 +94,6 @@ class ProfessionalController extends AbstractController
         
         return $this->render('front/professional/show.html.twig', [
             'professional' => $professional, 
-            'url' => $url, 
             'errors' => $this->errors 
         ]);
     }
