@@ -45,10 +45,10 @@ class BlogController extends AbstractController
     public function show(Article $article, Request $request): Response
     {
         $comment = new Comment();
-        $form = $this->createForm(CommentFormType::class, $comment);
-        $form->handleRequest($request);
+        $commentForm = $this->createForm(CommentFormType::class, $comment);
+        $commentForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             
             $comment->setArticle($article);
             $this->context->save($comment);
@@ -61,7 +61,7 @@ class BlogController extends AbstractController
         }
 
         $comments = $this->blogService->getAllComments($article);
-        $commentForm = $form->createView();
+        $commentForm = $commentForm->createView();
         return $this->render('front/blog/show.html.twig', compact('article', 'comments', 'commentForm'));
     }
 
@@ -74,5 +74,19 @@ class BlogController extends AbstractController
             9
         );
         return $this->render('front/blog/category/index.html.twig', compact('category', 'articles'));
+    }
+
+    public function search(Request $request): Response
+    {
+        $search = $request->query->get('words');
+
+        $data = $this->blogService->search($search);
+
+        $articles = $this->paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            9
+        );
+        return $this->render('front/blog/search/index.html.twig', compact('articles'));
     }
 }

@@ -355,27 +355,27 @@
       </trans-unit>
       <trans-unit id="4DcqyfJ" resname="global.your_comment_is_awaiting_moderation">
         <source>global.your_comment_is_awaiting_moderation</source>
-        <target>__global.your_comment_is_awaiting_moderation</target>
+        <target>Votre commentaire est en attente de modération</target>
       </trans-unit>
       <trans-unit id="TzEs0a5" resname="global.your_e-mail_address_will_not_be_published._required_fields_are_marked_with_an_*.">
         <source>global.your_e-mail_address_will_not_be_published._required_fields_are_marked_with_an_*.</source>
-        <target>__global.your_e-mail_address_will_not_be_published._required_fields_are_marked_with_an_*.</target>
+        <target>Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont marqués d'un *.</target>
       </trans-unit>
       <trans-unit id="lJj0J5F" resname="global.write_your_comment_here">
         <source>global.write_your_comment_here</source>
-        <target>__global.write_your_comment_here</target>
+        <target>Ecrivez votre commentaire ici</target>
       </trans-unit>
       <trans-unit id="jRAV6sN" resname="global.save_my_name_and_email_address_in_this_browser_for_the_next_time_i_comment">
         <source>global.save_my_name_and_email_address_in_this_browser_for_the_next_time_i_comment</source>
-        <target>__global.save_my_name_and_email_address_in_this_browser_for_the_next_time_i_comment</target>
+        <target>Sauvegarder mon nom et e-mail dans ce navigateur pour la prochaine fois</target>
       </trans-unit>
       <trans-unit id="LuTzcJw" resname="global.post_a_comment">
         <source>global.post_a_comment</source>
-        <target>__global.post_a_comment</target>
+        <target>Publier un commentaire</target>
       </trans-unit>
       <trans-unit id="0yyneRw" resname="global.filter_by_categories">
         <source>global.filter_by_categories</source>
-        <target>__global.filter_by_categories</target>
+        <target>Filtrer par catégories</target>
       </trans-unit>
     </body>
   </file>

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\CategoryProfessional;
 use App\Entity\Professional;
 use App\Repository\CategoryProfessionalRepository;
 use App\Repository\ProfessionalRepository;
@@ -95,5 +96,30 @@ class ProfessionalService
     public function getProfessional(int $id): Professional
     {
         return $this->professionalRepo->find($id);
+    }
+
+    public function getCategoryPro(int $id)
+    {
+        return $this->categoryProRepo->find($id) ?? null;
+    }
+
+    public function searchByName($words = null, $category = null, $address = null)
+    {
+        return $this->professionalRepo->searchByName($words, $category, $address);
+    }
+
+    public function searchByService($words = null, $category = null, $address = null)
+    {
+        return $this->professionalRepo->searchByService($words, $category, $address);
+    }
+
+    public function searchByQualification($words = null, $category = null, $address = null)
+    {
+        return $this->professionalRepo->searchByQualification($words, $category, $address);
+    }
+
+    public function searchByDescription($words = null, $category = null, $address = null)
+    {
+        return $this->professionalRepo->searchByDescription($words, $category, $address);
     }
 }

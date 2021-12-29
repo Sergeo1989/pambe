@@ -175,10 +175,10 @@
                         <div class="sidebar-widget">
                             <h3 class="widget-title">{{ 'global.search'|trans }}</h3>
                             <div class="stroke-shape mb-4"></div>
-                            <form action="#" class="form-box">
+                            <form action="{{ path('app_blog_search') }}" method="get" class="form-box">
                                 <div class="form-group">
                                     <span class="la la-search form-icon"></span>
-                                    <input class="form-control form-control-styled" type="search" placeholder="Que cherchez-vous ?">
+                                    <input type="search" name="words" id="words" class="form-control form-control-styled" placeholder="Que cherchez-vous ?">
                                     <p class="font-size-13">Cliquez sur le bouton Rechercher</p>
                                 </div>
                                 <div class="form-group mb-0">
@@ -187,7 +187,7 @@
                                     </button>
                                 </div>
                             </form>
-                        </div>
+                        </div> 
                         <div class="sidebar-widget">
                             <h3 class="widget-title">Astuces</h3>
                             <div class="stroke-shape mb-4"></div>

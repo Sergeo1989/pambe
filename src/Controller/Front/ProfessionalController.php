@@ -11,7 +11,6 @@ use App\Entity\Service;
 use App\Form\Professional\Edit\CoordonneeFormType;
 use App\Form\Professional\Edit\GalleryFormType;
 use App\Form\Professional\Edit\InformationFormType;
-use App\Form\ReviewFormType;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
 use App\Repository\QualificationRepository;
@@ -59,6 +58,31 @@ class ProfessionalController extends AbstractController
         $this->qualificationRepo = $qualificationRepo;
         $this->serviceRepo = $serviceRepo;
         $this->proImgRepo = $proImgRepo;
+    }
+
+    public function search(Request $request)
+    {
+        $words = $request->query->get('words');
+        $category_id = $request->query->get('category');
+        $address = $request->query->get('address');
+
+        $category = $this->professionalService->getCategoryPro((int)$category_id);
+        
+        if(!empty($this->professionalService->searchByName($words, $category, $address)))
+            $data = $this->professionalService->searchByName($words, $category, $address);
+        elseif(!empty($this->professionalService->searchByService($words, $category, $address)))
+            $data = $this->professionalService->searchByService($words, $category, $address);
+        elseif(!empty($this->professionalService->searchByDescription($words, $category, $address)))
+            $data = $this->professionalService->searchByDescription($words, $category, $address);
+        else
+            $data = [];
+        $professionals = $this->paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            12
+        );
+
+        return $this->render('front/professional/search/index.html.twig', compact('professionals'));
     }
 
     public function show(Professional $professional, Request $request): Response
@@ -157,21 +181,31 @@ class ProfessionalController extends AbstractController
         ], 200);
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function information(Request $request)
-    { 
-        $professional = $this->context->getUser()->getProfessional();
+    public function create(Request $request)
+    {
+        $professional = new Professional();
+        $form = $this->createForm(InformationFormType::class, $professional);
+        $form->handleRequest($request);
 
-        if(is_null($professional))
-        {
-            $professional = new Professional();
+        if ($form->isSubmitted() && $form->isValid()) {
             $slug = $this->context->slug($this->context->getUser()->getEmail());
             $professional->setSlug($slug);
             $professional->setUser($this->context->getUser());
             $this->context->save($professional);
+
+            return $this->redirectToRoute('app_professional_information');
         }
+
+        return $this->render('front/professional/create.html.twig', [
+            'createForm' => $form->createView()
+        ]);
+    }
+
+    public function information(Request $request)
+    { 
+        $message = $this->translator->trans('global.you_are_not_a_professional.');
+        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
+        $professional = $this->context->getUser()->getProfessional();
 
         $form = $this->createForm(InformationFormType::class, $professional);
         $form->handleRequest($request);
@@ -180,7 +214,8 @@ class ProfessionalController extends AbstractController
 
             $this->context->save($professional);
 
-            $this->addFlash('success', 'Contenu enregistré avec succès !');
+            $message = $this->translator->trans('global.content_successfully_registered!');
+            $this->addFlash('success', $message);
 
             if($form->get('saveAndContinue')->isClicked())
                 return $this->redirectToRoute('app_professional_coordonnee');
@@ -193,11 +228,11 @@ class ProfessionalController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
     public function coordonnee(Request $request)
     {
+        $message = $this->translator->trans('global.you_are_not_a_professional.');
+        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
+
         $professional = $this->context->getUser()->getProfessional();
         $form = $this->createForm(CoordonneeFormType::class, $professional);
         $form->handleRequest($request);
@@ -206,8 +241,7 @@ class ProfessionalController extends AbstractController
             
             $this->context->save($professional);
 
-            $message = $this->translator->trans('success.message');
-
+            $message = $this->translator->trans('global.content_successfully_registered!');
             $this->addFlash('success', $message);
             
             if($form->get('saveAndContinue')->isClicked())
@@ -221,11 +255,11 @@ class ProfessionalController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
     public function gallery(Request $request)
     {
+        $message = $this->translator->trans('global.you_are_not_a_professional.');
+        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
+
         $professional = $this->context->getUser()->getProfessional();
         $form = $this->createForm(GalleryFormType::class, $professional);
         $form->handleRequest($request);
@@ -288,35 +322,35 @@ class ProfessionalController extends AbstractController
             return new JsonResponse(["status" => false]); 
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
     public function service(Request $request)
     {
+        $message = $this->translator->trans('global.you_are_not_a_professional.');
+        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
+
         return $this->render('front/professional/edit/service.html.twig');
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
     public function training(Request $request)
     {
+        $message = $this->translator->trans('global.you_are_not_a_professional.');
+        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
+
         return $this->render('front/professional/edit/training.html.twig');
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
     public function reference(Request $request)
     {
+        $message = $this->translator->trans('global.you_are_not_a_professional.');
+        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
+
         return $this->render('front/professional/edit/reference.html.twig');
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
     public function option(Request $request)
     {
+        $message = $this->translator->trans('global.you_are_not_a_professional.');
+        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
+
         return $this->render('front/professional/edit/option.html.twig');
     }
 

@@ -33,6 +33,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('vippros', [$this, 'professionalsVip']),
             new TwigFunction('newpros', [$this, 'professionalsNew']),
             new TwigFunction('catspoppro', [$this, 'categoriesProPopular']),
+            new TwigFunction('catspro', [$this, 'categoriesPro']),
             new TwigFunction('catsart', [$this, 'categoriesArt']),
             new TwigFunction('keysart', [$this, 'keywordsArt']),
             new TwigFunction('scoreavg', [$this, 'getScoreAverage']),
@@ -54,6 +55,11 @@ class AppExtension extends AbstractExtension
     public function categoriesProPopular()
     {
         return $this->professionalService->getAllPopularProfessionalCategory();
+    }
+
+    public function categoriesPro()
+    {
+        return $this->professionalService->getAllProfessionalCategory();
     }
 
     public function categoriesArt()

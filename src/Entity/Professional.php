@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProfessionalRepository::class)
+ * @ORM\Table(name="professional", indexes={@ORM\Index(columns={"description"}, flags={"fulltext"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class Professional

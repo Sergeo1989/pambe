@@ -27,31 +27,33 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="main-search-input">
-                                        <div class="main-search-input-item">
-                                            <form action="#" class="form-box">
+                                    <form action="{{ path('app_professional_search') }}" method="get">
+                                        <div class="main-search-input">
+                                            <div class="main-search-input-item form-box">
                                                 <div class="form-group mb-0">
                                                     <span class="la la-search form-icon"></span>
-                                                    <input class="form-control" type="search" placeholder="De quoi avez-vous besoin ?">
+                                                    <input name="words" class="form-control" type="search" placeholder="De quoi avez-vous besoin ?">
                                                 </div>
-                                            </form>
+                                            </div>
+                                            <div class="main-search-input-item user-chosen-select-container">
+                                                <select name="category" class="user-chosen-select">
+                                                    <option value="0">Selectionnez une categorie</option>
+                                                    {% for category in catspro() %}
+                                                        <option value="{{ category.id }}">{{ category.name|title }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="main-search-input-item form-box">
+                                                <div class="form-group mb-0">
+                                                    <span class="la la-map-marker form-icon"></span>
+                                                    <input name="address" class="form-control" type="search" placeholder="Entrez une adresse">
+                                                </div>
+                                            </div>
+                                            <div class="main-search-input-item">
+                                                <button class="theme-btn gradient-btn border-0 w-100" type="submit"><i class="la la-search mr-2"></i>{{ 'global.search'|trans }}</button>
+                                            </div>
                                         </div>
-                                        <div class="main-search-input-item user-chosen-select-container">
-                                            <select class="user-chosen-select">
-                                                <option value="0">Selectionner une categorie</option>
-                                                <option value="1">Shops</option>
-                                            </select>
-                                        </div>
-                                        <div class="main-search-input-item user-chosen-select-container">
-                                            <select class="user-chosen-select">
-                                                <option value="0">Selectionner un service</option>
-                                                <option value="1">Shops</option>
-                                            </select>
-                                        </div>
-                                        <div class="main-search-input-item">
-                                            <button class="theme-btn gradient-btn border-0 w-100" type="submit"><i class="la la-search mr-2"></i>{{ 'global.search'|trans }}</button>
-                                        </div>
-                                    </div>
+                                    </form>
                                     <div class="highlighted-categories">
                                         <div class="d-flex align-items-end justify-content-center highlight-search-desc py-5 text-center">
                                             <img src="{{ asset('assets/front/images/arrow-shape.png') }}" alt="" class="mr-5 cat-arrow-icon">

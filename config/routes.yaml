@@ -65,6 +65,11 @@ app_blog_article:
     controller: App\Controller\Front\BlogController::show
     #requirements:
         #_locale: '%app_locale%'
+app_blog_search:
+    path: /blog/article/search
+    controller: App\Controller\Front\BlogController::search
+    #requirements:
+        #_locale: '%app_locale%'
 app_blog_category:
     path: /blog/article/{slug}/category
     controller: App\Controller\Front\BlogController::category
@@ -83,6 +88,16 @@ app_professional_show:
 app_professional_new:
     path: /professional/new
     controller: App\Controller\Front\ProfessionalController::new
+    #requirements:
+        #_locale: '%app_locale%'
+app_professional_create:
+    path: /professional/create
+    controller: App\Controller\Front\ProfessionalController::create
+    #requirements:
+        #_locale: '%app_locale%'
+app_professional_search:
+    path: /professional/search
+    controller: App\Controller\Front\ProfessionalController::search
     #requirements:
         #_locale: '%app_locale%'
 app_professional_vip:

@@ -19,6 +19,89 @@ class ProfessionalRepository extends ServiceEntityRepository
         parent::__construct($registry, Professional::class);
     }
 
+    public function searchByName($words = null, $category = null, $address = null){
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.status = 1');
+        if($words != null || $address != null) $query->leftJoin('p.user', 'u');
+        if($words != null){
+            $query->andWhere('u.firstname LIKE :val1 OR u.lastname LIKE :val1')
+                ->setParameter('val1', '%'.$words.'%');
+        }
+        if($category != null){
+            $query->andWhere(':category MEMBER OF p.category_professionals')
+                ->setParameter('category', $category);
+        }
+        if($address != null){
+            $query->andWhere('u.address LIKE :val2')
+                ->setParameter('val2', '%'.$address.'%');
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function searchByService($words = null, $category = null, $address = null){
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.status = 1');
+        if($words != null){
+            $query->leftJoin('p.services', 's')
+                ->andWhere('s.title LIKE :val1')
+                ->setParameter('val1', '%'.$words.'%');
+        }
+        if($category != null){
+            $query->andWhere(':category MEMBER OF p.category_professionals')
+                ->setParameter('category', $category);
+        }
+        if($address != null){
+            $query->leftJoin('p.user', 'u')
+                ->andWhere('u.address LIKE :val2')
+                ->setParameter('val2', '%'.$address.'%');
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function searchByQualification($words = null, $category = null, $address = null){
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.status = 1');
+        if($words != null){
+            $query->leftJoin('p.qualifications', 'q')
+                ->andWhere('q.title LIKE :val1')
+                ->setParameter('val1', '%'.$words.'%');
+        }
+        if($category != null){
+            $query->andWhere(':category MEMBER OF p.category_professionals')
+                ->setParameter('category', $category);
+        }
+        if($address != null){
+            $query->leftJoin('p.user', 'u')
+                ->andWhere('u.address LIKE :val2')
+                ->setParameter('val2', '%'.$address.'%');
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function searchByDescription($words = null, $category = null, $address = null){
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.status = 1');
+        if($words != null){
+            $query->andWhere('p.description LIKE :val1')
+                ->setParameter('val1', '%'.$words.'%');
+        }
+        if($category != null){
+            $query->andWhere(':category MEMBER OF p.category_professionals')
+                ->setParameter('category', $category);
+        }
+        if($address != null){
+            $query->leftJoin('p.user', 'u')
+                ->andWhere('u.address LIKE :val2')
+                ->setParameter('val2', '%'.$address.'%');
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+
     // /**
     //  * @return Professional[] Returns an array of Professional objects
     //  */

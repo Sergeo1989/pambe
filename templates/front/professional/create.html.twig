@@ -1,0 +1,107 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'New Professional - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Professional</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Professional</li>
+        {% endblock %}
+    {% endembed %}
+    <section class="add-listing-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="block-card mb-4">
+                        <div class="block-card-header">
+                            <h2 class="widget-title">Complétez vos informations</h2>
+                            <div class="stroke-shape"></div>
+                        </div>
+                        <div class="block-card-body">
+                            {{ form_start(createForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.status'|trans }}</label>
+                                        <div class="form-group">
+                                            {{ form_widget(createForm.profile, {'attr': {'class': 'form-control'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.speciality'|trans }}</label>
+                                        <div class="form-group user-chosen-select-container">
+                                            {{ form_widget(createForm.skill, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez votre spécialité'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text d-flex align-items-center">{{ 'global.skills'|trans }}</label>
+                                        <div class="form-group user-chosen-select-container">
+                                            {{ form_widget(createForm.category_professionals, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez vos compétences'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text d-flex align-items-center">{{ 'global.languages'|trans }}</label>
+                                        <div class="form-group user-chosen-select-container">
+                                            {{ form_widget(createForm.languages, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez vos langues'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.short_description'|trans }}</label>
+                                        <div class="form-group">
+                                            {{ form_widget(createForm.short_description, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.long_description'|trans }}</label>
+                                        <div class="form-group">
+                                            {{ form_widget(createForm.description, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-wrap pt-3">
+                                    <div class="btn-box mt-3 ml-3">
+                                        {{ form_widget(createForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                                    </div>
+                                </div>
+                            {{ form_end(createForm, {render_rest: false}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+    {% embed "front/partials/stylesheets.html.twig" %}
+        {% block stylesheets_content %}
+            {{ parent() }}
+            <link rel="stylesheet" href="{{ asset('assets/front/css/jquery-te-1.4.0.css') }}">
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+{% block javascripts %}
+    {% embed "front/partials/javascripts.html.twig" %}
+        {% block javascripts_content %}
+            {{ parent() }}
+            <script src="{{ asset('assets/front/js/jquery-te-1.4.0.min.js') }}"></script>
+            <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYzby4yYDVaXPmtu4jZAGR258K6IYwjIY&libraries"></script>
+            <script src="{{ asset('assets/front/js/map-add.js') }}"></script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

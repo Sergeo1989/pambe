@@ -15,12 +15,12 @@
                                     </div>
                                     <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
                                         <p class="login-and-signup-wrap">
-                                            {% if app.user and app.user.professional is not null %}
+                                            {% if is_granted('edit', app.user) %}
                                                 <a href="{{ path('app_professional_information') }}" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
                                                     {{ 'global.professional_area'|trans }}
                                                 </a>
                                             {% else %}
-                                                <a href="{{ path('app_professional_information') }}" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
+                                                <a href="{{ path('app_professional_create') }}" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
                                                     <span class="mr-1 la la-user-plus"></span>{{ 'global.become_a_professional'|trans }}
                                                 </a>
                                             {% endif %}
@@ -65,15 +65,10 @@
                                             </div>
                                         {% endblock %}
                                         <div class="quick-search-form d-flex align-items-center">
-                                            <form action="#" class="w-100">
+                                            <form action="{{ path('app_professional_search') }}" method="get" class="w-100">
                                                 <div class="header-search position-relative">
                                                     <i class="la la-search form-icon"></i>
-                                                    <input type="search" placeholder="Rechercher">
-                                                    <div class="instant-results">
-                                                        <ul class="instant-results-list">
-                                                            <li><a href="#" class="d-flex align-items-center"><span class="icon-element bg-1 mr-2"><i class="la la-glass"></i></span>Food & Drinks</a></li>
-                                                        </ul> 
-                                                    </div>
+                                                    <input type="search" name="words" placeholder="Rechercher">
                                                 </div>
                                             </form>
                                         </div>

@@ -88,4 +88,9 @@ class BlogService
     {
         return $this->commentRepo->findBy(['article' => $article, 'status' => true], ['date_add' => 'DESC']);
     }
+
+    public function search($words = null)
+    {
+        return $this->articleRepo->search($words);
+    }
 }
