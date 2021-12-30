@@ -9,6 +9,34 @@ description: Our custom pambe JS
 (function ($) {
     "use strict";
 
+    /** Change professional availability */
+    $(document).on('click', '#available_link', function(event) {
+        event.preventDefault();
+        var link = $(this);
+        var url = link.data('url');
+        var professional_id = link.data('id');
+        var data = {};
+        data['action'] = 'change_availability';
+        data['id'] = professional_id;
+        data['ajax'] = 1;
+        data['rand'] = new Date().getTime();
+        link.text(link.text() + '...');
+        $.get(url, data, function(data){
+            if(data.status === true)
+                if(link.hasClass('available-btn')){
+                    link.removeClass('available-btn').addClass('absent-btn');
+                    link.text('absent');
+                }
+                else{
+                    link.removeClass('absent-btn').addClass('available-btn');
+                    link.text('available');
+                }
+            else
+                alert("Quelque chose s'est mal passée");
+        });
+
+    });
+
     /** Load more reviews */
     $(document).on('click', '#load_more', function(event) {
         event.preventDefault();

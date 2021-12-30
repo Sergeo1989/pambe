@@ -11,6 +11,7 @@ use App\Entity\Service;
 use App\Form\Professional\Edit\CoordonneeFormType;
 use App\Form\Professional\Edit\GalleryFormType;
 use App\Form\Professional\Edit\InformationFormType;
+use App\Form\ProfessionalFormType;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
 use App\Repository\QualificationRepository;
@@ -82,7 +83,7 @@ class ProfessionalController extends AbstractController
             12
         );
 
-        return $this->render('front/professional/search/index.html.twig', compact('professionals'));
+        return $this->render('front/professional/search/index.html.twig', compact('professionals', 'words'));
     }
 
     public function show(Professional $professional, Request $request): Response
@@ -181,12 +182,18 @@ class ProfessionalController extends AbstractController
         ], 200);
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function create(Request $request)
     {
-        $professional = new Professional();
-        $form = $this->createForm(InformationFormType::class, $professional);
-        $form->handleRequest($request);
+        if($this->isGranted('edit', $this->context->getUser()))
+            return $this->redirectToRoute('app_professional_information');
 
+        $professional = new Professional();
+        $form = $this->createForm(ProfessionalFormType::class, $professional);
+        $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $this->context->slug($this->context->getUser()->getEmail());
             $professional->setSlug($slug);
@@ -635,6 +642,24 @@ class ProfessionalController extends AbstractController
 
         if(isset($qualification)){
             $this->context->delete($qualification);
+            $this->response = [
+                'status' => true
+            ];
+        }
+        else
+            $this->response = [
+                'status' => false
+            ];
+    }
+
+    private function displayAjaxChangeAvailability()
+    {
+        $professional_id = (int)$this->request->get('id');
+        $professional = $this->professionalService->getProfessional($professional_id);
+
+        if(isset($professional)){
+            $professional->setAvailable(!$professional->getAvailable());
+            $this->context->save($professional);
             $this->response = [
                 'status' => true
             ];

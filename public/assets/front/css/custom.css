@@ -278,10 +278,10 @@ description: Our custom pambe CSS
 .menu-locale .dropdown-menu li a:hover{
     color: #7b68ee;
 }
-#information_form_profile{
+#information_form_profile, #professional_form_profile{
     text-align: center;
 }
-#information_form_profile label{ 
+#information_form_profile label, #professional_form_profile label{ 
     margin-left: 5px;
     margin-right: 25px;
 }
@@ -325,15 +325,15 @@ description: Our custom pambe CSS
 .badge:hover, .badge-count:hover{
     color: #9f8fff;
 }
-.form-group ul li{
+.error ul li{
     color: #b51d1d;
     font-size: 12px;
     list-style: none;
 }
-.form-group ul li:not(:last-child){
+.error ul li:not(:last-child){
     margin-bottom: 5px;
 }
-.form-group ul li:before{
+.error ul li:before{
     content: "\2716";
     color: #b51d1d;
     margin-right: 5px;
@@ -341,4 +341,20 @@ description: Our custom pambe CSS
 .comments-list .comment-hidden{
     display: none;
 }
- 
+.card-item .card-title {
+    overflow: hidden;
+}
+.list--items-2 li span {
+    width: 20px;
+}
+.available-btn {
+    color: #fff;
+    background-color: #7b68ee;
+}
+.absent-btn {
+    color: #fff;
+    background-color: #9e1919;
+}
+.absent-btn:hover, .available-btn:hover{
+    color: rgba(255, 255, 255, 0.7);
+}

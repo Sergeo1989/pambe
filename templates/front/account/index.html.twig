@@ -1,7 +1,305 @@
 {% extends 'front/layout.html.twig' %}
 
-{% block title %}{{ 'Account - '~ parent() }}{% endblock %}
+{% block title %}{{ 'global.my_account'|trans ~' - '~ parent() }}{% endblock %}
+
+{% block header %}
+    {% embed "front/partials/header.html.twig" %}
+        {% block header_content %}
+            <header class="header-area position-inherit top-auto bg-white">
+    <div class="header-top-bar bg-dark py-2 padding-right-30px padding-left-30px">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 d-flex align-items-center header-top-info">
+                                    {{ render(url('app_social_url')) }}
+                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+                                        <a href="{{ path("app_contact") }}">Contact</a>
+                                    </span>
+                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
+                                        <a href="{{ path("app_about") }}">À propos</a>
+                                    </span>
+                                </div>
+                                <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
+                                    <p class="login-and-signup-wrap">
+                                        {% if is_granted("ROLE_PROFESSIONNEL") %}
+                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
+                                               Espace professionnel
+                                            </a>
+                                        {% else %}
+                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
+                                                <span class="mr-1 la la-user-plus"></span>Devenir professionnel
+                                            </a>
+                                        {% endif %}
+                                    </p>
+                                    <div class="user-chosen-select-container">
+                                        <select class="user-chosen-select">
+                                            <option value="1" selected>English</option>
+                                            <option value="2">French</option>
+                                        </select>
+                                    </div>
+                                </div>
+            </div> {# Fin validation #}
+        </div><!-- end container-fluid -->
+    </div><!-- end header-top-bar -->
+    <div class="header-menu-wrapper padding-right-30px padding-left-30px">
+        <div class="container-fluid ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="menu-full-width">
+                        <div class="logo">
+                            <a href="index.html" class="sticky-logo-hide"><img src="images/logo-black.png" alt="logo"></a>
+                            <a href="index.html" class="sticky-logo-show"><img src="images/logo-white.png" alt="logo"></a>
+                            <div class="d-flex align-items-center">
+                                <a href="add-listing.html" class="btn-gray add-listing-btn-show font-size-24 mr-2 flex-shrink-0 text-color" data-toggle="tooltip" data-placement="left" title="Add Listing">
+                                    <i class="la la-plus"></i>
+                                </a>
+                                <div class="menu-toggle menu-toggle-black">
+                                    <span class="menu__bar"></span>
+                                    <span class="menu__bar"></span>
+                                    <span class="menu__bar"></span>
+                                </div><!-- end menu-toggle -->
+                            </div>
+                        </div><!-- end logo -->
+                        <div class="main-menu-content main-menu-content-2 border-left-color">
+                            <nav class="main-menu main-menu-2">
+                                <ul>
+                                    <li>
+                                        <a href="#">home <span class="la la-angle-down"></span></a>
+                                        <ul class="dropdown-menu-item">
+                                            <li><a href="index.html">home one</a></li>
+                                       
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">listings <span class="la la-angle-down"></span></a>
+                                        <ul class="dropdown-menu-item">
+                                            <li><a href="listing-grid.html">listing grid</a></li>
+                                       
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">pages <span class="la la-angle-down"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#">blog <span class="la la-angle-down"></span></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="nav-right-content ml-auto">
+                            <a href="add-listing.html" class="theme-btn gradient-btn add-listing-btn-hide">
+                                <i class="la la-plus mr-2"></i>Add Listing
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        {% endblock %} 
+    {% endembed %}
+{% endblock %}
 
 {% block content %}
-    
+    <section class="breadcrumb-area bg-gray user-bread-bg pt-3 pb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content d-flex flex-wrap align-items-end justify-content-between">
+                        <div class="d-flex align-items-end">
+                            <div class="user-thumb user-thumb-xl bread-thumb mr-3 flex-shrink-0">
+                                <img src="{{ asset('assets/front/images/avatar-img8.jpg') }}" alt="avatar">
+                            </div>
+                            <div class="section-heading pb-3">
+                                <h2 class="sec__title mb-0 font-size-28 line-height-30">
+                                    <span>{{ app.user }}</span>
+                                    {% if is_granted('edit', app.user) and app.user.professional.verified %}
+                                        <i class="la la-check-circle ml-1 font-size-24 text-success" data-toggle="tooltip" data-placement="top" title="{{ 'global.certified'|trans }}"></i>
+                                    {% endif %}
+                                </h2>
+                                <p class="sec__desc pt-1 font-size-16 line-height-22">{{ 'global.member_since'|trans }} {{ app.user.dateAdd|format_date() }}</p>
+                                <p class="sec__desc pt-1 font-size-16 line-height-22"><i class="la la-map-marker mr-1"></i>{{ app.user.address }}</p>
+                            </div>
+                        </div>
+                        {% if is_granted('edit', app.user) %}
+                            <div class="btn-box bread-btns d-flex align-items-center pb-3">
+                                <span class="btn-gray mr-2"><i class="la la-star-o mr-1"></i><span class="text-color font-weight-semi-bold mr-1">{{ app.user.professional.reviews|length }}</span>{{ 'global.reviews'|trans }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="user-detail-area padding-top-60px padding-bottom-100px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="user-listing-detail-wrap">
+                    {% if is_granted('edit', app.user) %}
+                        <div class="block-card mb-3">
+                            <div class="block-card-header">
+                                <h2 class="widget-title pb-0">{{ 'global.about'|trans }}</h2>
+                            </div>
+                            <div class="block-card-body">
+                                {{ app.user.professional.description|raw }}
+                            </div>
+                        </div>
+                        <div class="block-card mb-3">
+                            <div class="block-card-header">
+                                <h2 class="widget-title pb-0">{{ 'global.informations'|trans }}</h2>
+                            </div>
+                            <div class="block-card-body">
+                                {% for message in app.flashes("message") %}
+                                    <div class="alert alert-success font-size-15 text-color" role="alert">
+                                        <span class="font-weight-semi-bold">{{ message }}</span>
+                                    </div>
+                                {% endfor %}
+                                {{ form_start(userForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.your_email'|trans }}</label>
+                                            <div class="form-group error">
+                                                <span class="la la-envelope form-icon"></span>
+                                                {{ form_widget(userForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre adresse e-mail'} }) }}
+                                                {{ form_errors(userForm.email) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.lastname'|trans }}</label>
+                                            <div class="form-group error">
+                                                <span class="la la-user form-icon"></span>
+                                                {{ form_widget(userForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre nom'} }) }}
+                                                {{ form_errors(userForm.lastname) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.firstname'|trans }}</label>
+                                            <div class="form-group error">
+                                                <span class="la la-user form-icon"></span>
+                                                {{ form_widget(userForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre prénom'} }) }}
+                                                {{ form_errors(userForm.firstname) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.address'|trans }}</label>
+                                            <div class="form-group error">
+                                                <span class="la la-map form-icon"></span>
+                                                {{ form_widget(userForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre adresse'} }) }}
+                                                {{ form_errors(userForm.address) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.phone'|trans }}</label>
+                                            <div class="form-group error">
+                                                <span class="la la-phone form-icon"></span>
+                                                {{ form_widget(userForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre numéro de téléphone'} }) }}
+                                                {{ form_errors(userForm.phone) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="submit-wrap pt-3">
+                                        <div class="btn-box mt-3 ml-3">
+                                            {{ form_widget(userForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                                        </div>
+                                    </div>
+                                {{ form_end(userForm) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">{{ 'global.user_contact'|trans }}</h3>
+                        <div class="stroke-shape mb-4"></div>
+                        <ul class="list-items list--items list--items-2 list-items-style-2">
+                            {% if app.user.address %}
+                                <li><span class="text-color mr-1"><i class="la la-map-marker mr-2 text-color-2 font-size-18"></i> </span>{{ app.user.address }}</li>
+                            {% endif %}
+                            {% if app.user.phone %}
+                                <li><span class="text-color mr-1"><i class="la la-phone mr-2 text-color-2 font-size-18"></i> </span><a href="tel:{{ app.user.phone }}">{{ app.user.phone }}</a></li>
+                            {% endif %}
+                            <li><span class="text-color mr-1"><i class="la la-envelope mr-2 text-color-2 font-size-18"></i> </span><a href="mailto:{{ app.user.email }}">{{ app.user.email }}</a></li>
+                            {% if is_granted('edit', app.user) and app.user.professional.website %}
+                                <li><span class="text-color mr-1"><i class="la la-globe mr-2 text-color-2 font-size-18"></i> </span><a href="{{ app.user.professional.website }}">{{ app.user.professional.website }}</a></li>
+                            {% endif %}
+                            {% if is_granted('edit', app.user) and app.user.professional.languages|length > 0 %}
+                                <li><span class="text-color mr-1"><i class="la la-language mr-2 text-color-2 font-size-18"></i> </span>{{ app.user.professional.languages|map(l => "#{l.name}")|join(', ') }}</li>
+                            {% endif %}
+                        </ul>
+                        {% if is_granted('edit', app.user) and app.user.professional.socialUrl is not null %}
+                            <ul class="social-profile social-profile-colored border-top border-top-color py-4 mt-4">
+                                {% if app.user.professional.socialUrl.facebook %}<li><a href="{{ app.user.professional.socialUrl.facebook }}" class="facebook-bg"><i class="lab la-facebook-f"></i></a></li>{% endif %}
+                                {% if app.user.professional.socialUrl.twitter %}<li><a href="{{ app.user.professional.socialUrl.twitter }}" class="twitter-bg"><i class="lab la-twitter"></i></a></li>{% endif %}
+                                {% if app.user.professional.socialUrl.instagram %}<li><a href="{{ app.user.professional.socialUrl.instagram }}" class="instagram-bg"><i class="lab la-instagram"></i></a></li>{% endif %}
+                                {% if app.user.professional.socialUrl.youtube %}<li><a href="{{ app.user.professional.socialUrl.youtube }}" class="youtube-bg"><i class="lab la-youtube"></i></a></li>{% endif %}
+                                {% if app.user.professional.socialUrl.whatsapp %}<li><a href="{{ app.user.professional.socialUrl.whatsapp }}" class="whatsapp-bg"><i class="lab la-whatsapp"></i></a></li>{% endif %}
+                                {% if app.user.professional.socialUrl.pinterest %}<li><a href="{{ app.user.professional.socialUrl.pinterest }}" class="pinterest-bg"><i class="lab la-pinterest"></i></a></li>{% endif %}
+                                {% if app.user.professional.socialUrl.linkedin %}<li><a href="{{ app.user.professional.socialUrl.linkedin }}" class="linkedin-bg"><i class="lab la-linkedin"></i></a></li>{% endif %}
+                            </ul>
+                        {% endif %}
+                        {% if is_granted('edit', app.user) %}
+                        {% set professional = app.user.professional %}
+                            <a href="#" id="available_link" data-url="{{ path("app_professional_ajax") }}" data-id="{{ professional.id }}" class="btn-gray {{ professional.available ? "available-btn" : "absent-btn" }}">{{ professional.available ? "available"|trans : "absent"|trans }}</a>
+                        {% endif %}
+                    </div>
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">{{ 'global.change_your_password'|trans }}</h3>
+                        <div class="stroke-shape mb-4"></div>
+                        {% for message in app.flashes("success") %}
+                            <div class="alert alert-success font-size-15 text-color" role="alert">
+                                <span class="font-weight-semi-bold">{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes("error") %}
+                            <div class="alert alert-danger font-size-15 text-color" role="alert">
+                                <span class="font-weight-semi-bold">{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                        {{ form_start(passwordForm, {'method': 'post', 'attr': {'class': 'form-box'} }) }}
+                            <div class="input-box">
+                                <label class="label-text">{{ 'global.old_password'|trans }}</label>
+                                <div class="form-group">
+                                    <span class="la la-lock form-icon"></span>
+                                    {{ form_widget(passwordForm.oldPassword, {'attr': {'class': 'form-control', 'placeholder': 'global.old_password'|trans }}) }}
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label class="label-text">{{ 'global.new_password'|trans }}</label>
+                                <div class="form-group error">
+                                    <span class="la la-lock form-icon"></span>
+                                    {{ form_widget(passwordForm.newPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'global.new_password'|trans }}) }}
+                                    {{ form_errors(passwordForm.newPassword.first) }}
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label class="label-text">{{ 'global.confirmation'|trans }}</label>
+                                <div class="form-group">
+                                    <span class="la la-lock form-icon"></span>
+                                    {{ form_widget(passwordForm.newPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'global.confirmation'|trans }}) }}
+                                    {{ form_errors(passwordForm.newPassword.second) }}
+                                </div>
+                            </div>
+                            <div class="btn-box">
+                                <button type="submit" class="theme-btn gradient-btn w-100 border-0">
+                                   {{ 'global.save'|trans }} <i class="la la-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        {{ form_end(passwordForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

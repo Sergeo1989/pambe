@@ -377,6 +377,70 @@
         <source>global.filter_by_categories</source>
         <target>Filtrer par catégories</target>
       </trans-unit>
+      <trans-unit id="Z4N4SyO" resname="global.you_are_not_a_professional.">
+        <source>global.you_are_not_a_professional.</source>
+        <target>Vous n'est pas un professionnel.</target>
+      </trans-unit>
+      <trans-unit id="si5tfVp" resname="global.content_successfully_registered!">
+        <source>global.content_successfully_registered!</source>
+        <target>Contenu enregistré avec succès !</target>
+      </trans-unit>
+      <trans-unit id="eSELU8w" resname="global.my_account">
+        <source>global.my_account</source>
+        <target>Mon compte</target>
+      </trans-unit>
+      <trans-unit id="DPVNmWZ" resname="global.member_since">
+        <source>global.member_since</source>
+        <target>Membre depuis le</target>
+      </trans-unit>
+      <trans-unit id="k3Sh_aE" resname="global.user_contact">
+        <source>global.user_contact</source>
+        <target>Contact utilisateur</target>
+      </trans-unit>
+      <trans-unit id="3dmBirr" resname="available">
+        <source>available</source>
+        <target>disponible</target>
+      </trans-unit>
+      <trans-unit id="WtODBLU" resname="absent">
+        <source>absent</source>
+        <target>absent</target>
+      </trans-unit>
+      <trans-unit id="gIsSUv8" resname="global.change_your_password">
+        <source>global.change_your_password</source>
+        <target>Changez votre mot de passe</target>
+      </trans-unit>
+      <trans-unit id="EEDCCp8" resname="global.old_password">
+        <source>global.old_password</source>
+        <target>Ancien mot de passe</target>
+      </trans-unit>
+      <trans-unit id="mBozBLu" resname="global.new_password">
+        <source>global.new_password</source>
+        <target>Nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="ELqlBG_" resname="global.confirmation">
+        <source>global.confirmation</source>
+        <target>Confirmation</target>
+      </trans-unit>
+      <trans-unit id="ZPNZq6M" resname="global.password">
+        <source>global.password</source>
+        <target>Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="grBUuJd" resname="global.your_password_has_been_successfully_changed !">
+        <source>global.your_password_has_been_successfully_changed !</source>
+        <target>Votre mot de passe a été mis à jour avec succès !</target>
+      </trans-unit>
+      <trans-unit id="DqK1DZr" resname="global.enter_a_good_password !">
+        <source>global.enter_a_good_password !</source>
+        <target>Entrez un bon mot de passe !</target>
+      </trans-unit>
+      <trans-unit id="yeAyb3D" resname="global.your_information_has_been_correctly_modified!">
+        <source>global.your_information_has_been_correctly_modified!</source>
+        <target>Vos informations ont été correctement modifiées !</target>
+      </trans-unit>
+      <trans-unit id="ylEDN_i" resname="global.email_addresss">
+        <source>global.email_addresss</source>
+        <target>__global.email_addresss</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -23,7 +23,7 @@ class OtherChecker implements UserCheckerInterface
         if(!$user instanceof User)
             return;
 
-        if($user->getProfessional() && !$user->getProfessional()->getStatus())
+        if(!$user->getStatus())
             throw new CustomUserMessageAccountStatusException('Votre compte a été bloqué.');
     }
 }

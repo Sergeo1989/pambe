@@ -137,7 +137,7 @@
                     <div class="breadcrumb-content breadcrumb-content-2 d-flex flex-wrap align-items-end justify-content-between">
                         <div class="section-heading">
                             <ul class="list-items bread-list bread-list-2 bg-transparent rounded-0 p-0">
-                                <li><a href="{{ path("app_home") }}">Accueil</a></li>
+                                <li><a href="{{ path("app_home") }}">{{ 'global.home'|trans }}</a></li>
                                 {% if professional.categoryProfessionalDefault %}
                                     <li><a href="{{ path("app_category_pro", {"slug": professional.categoryProfessionalDefault.slug}) }}">{{ professional.categoryProfessionalDefault }}</a></li>
                                 {% endif %}
@@ -153,7 +153,7 @@
                                     <p class="font-size-14 pl-2 font-weight-medium">{{ professional.reviews|length }} avis</p>
                                 </div>
                                 <div class="timestamp font-weight-medium ml-3 pl-3 border-left border-left-color line-height-20">
-                                    <span class="{{ professional.available ? "text-color-4" : "text-color-2" }} mr-2">{{ professional.available ? "disponible" : "absent" }}</span>
+                                    <span class="{{ professional.available ? "text-color-4" : "text-color-2" }} mr-2">{{ professional.available ? "available"|trans : "absent"|trans }}</span>
                                 </div>
                             </div>
                             <div class="btn-box">
@@ -395,7 +395,7 @@
                         </div>
                         <div class="block-card mb-3">
                             <div class="block-card-header">
-                                <h2 class="widget-title">Avis <span class="ml-1 text-color-2">({{ professional.reviews|length }})</span></h2>
+                                <h2 class="widget-title">{{ 'global.reviews'|trans }} <span class="ml-1 text-color-2">({{ professional.reviews|length }})</span></h2>
                                 <div class="stroke-shape"></div>
                             </div>
                             <div class="block-card-body">

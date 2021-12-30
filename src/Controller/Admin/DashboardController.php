@@ -12,6 +12,8 @@ use App\Entity\Comment;
 use App\Entity\Country;
 use App\Entity\KeywordArticle;
 use App\Entity\Language;
+use App\Entity\Menu;
+use App\Entity\Page;
 use App\Entity\Professional;
 use App\Entity\Profile;
 use App\Entity\Region;
@@ -48,7 +50,7 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Pambe');
     }
 
-    public function configureCrud(): Crud
+   /* public function configureCrud(): Crud
     {
         return Crud::new()
                     ->overrideTemplates([
@@ -79,7 +81,7 @@ class DashboardController extends AbstractDashboardController
                         ->addJsFile('assets/js/pages/dashboard.js')
                         ->addJsFile('assets/js/main.js')
                         ;
-    }
+    }*/
 
     public function configureMenuItems(): iterable
     {
@@ -104,6 +106,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Bannières', 'bi bi-pin', Banner::class);
         yield MenuItem::linkToCrud('Statuts', 'bi bi-pin', Profile::class);
         yield MenuItem::linkToCrud('Administrateurs', 'bi bi-pin', Admin::class);
+        yield MenuItem::linkToCrud('Pages', 'bi bi-pin', Page::class);
+        yield MenuItem::linkToCrud('Menus', 'bi bi-pin', Menu::class);
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'bi bi-x-circle');
     }

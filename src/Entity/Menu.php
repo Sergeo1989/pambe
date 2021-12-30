@@ -12,9 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Menu
 {
-    public const NORMAL = 0;
-    public const CATEGORY = 1;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -28,16 +25,6 @@ class Menu
     private $title;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $type;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="menus")
      */
     private $menu;
@@ -48,13 +35,25 @@ class Menu
     private $menus;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity=CategoryProfessional::class, mappedBy="menu")
+     */
+    private $categories;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $route;
+
 
     public function __construct()
     {
         $this->menus = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -66,34 +65,10 @@ class Menu
     {
         return $this->title;
     }
-
+ 
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
 
         return $this;
     }
@@ -140,12 +115,42 @@ class Menu
         return $this;
     }
 
+    /**
+     * @return Collection|CategoryProfessional[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(CategoryProfessional $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setMenu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(CategoryProfessional $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getMenu() === $this) {
+                $category->setMenu(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getRoute(): ?string
     {
         return $this->route;
     }
 
-    public function setRoute(string $route): self
+    public function setRoute(?string $route): self
     {
         $this->route = $route;
 

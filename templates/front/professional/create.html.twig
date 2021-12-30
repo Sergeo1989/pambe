@@ -27,8 +27,9 @@
                                 <div class="col-lg-12">
                                     <div class="input-box">
                                         <label class="label-text">{{ 'global.status'|trans }}</label>
-                                        <div class="form-group">
+                                        <div class="form-group error">
                                             {{ form_widget(createForm.profile, {'attr': {'class': 'form-control'} }) }}
+                                            {{ form_errors(createForm.profile) }}
                                         </div>
                                     </div>
                                 </div>
@@ -59,16 +60,18 @@
                                 <div class="col-lg-12">
                                     <div class="input-box">
                                         <label class="label-text">{{ 'global.short_description'|trans }}</label>
-                                        <div class="form-group">
+                                        <div class="form-group error">
                                             {{ form_widget(createForm.short_description, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
+                                            {{ form_errors(createForm.short_description) }}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="input-box">
                                         <label class="label-text">{{ 'global.long_description'|trans }}</label>
-                                        <div class="form-group">
+                                        <div class="form-group error">
                                             {{ form_widget(createForm.description, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
+                                            {{ form_errors(createForm.description) }}
                                         </div>
                                     </div>
                                 </div>
@@ -77,7 +80,7 @@
                                         {{ form_widget(createForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
                                     </div>
                                 </div>
-                            {{ form_end(createForm, {render_rest: false}) }}
+                            {{ form_end(createForm) }}
                         </div>
                     </div>
                 </div>

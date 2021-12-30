@@ -17,69 +17,70 @@
         <div class="register">
             {{ form_start(registration, {'method': 'post', 'attr': {'class': 'form-box'} }) }}
                 <div class="input-box">
-                    <label class="label-text">E-mail</label>
-                    <div class="form-group">
+                    <label class="label-text">{{ 'global.email'|trans }}</label>
+                    <div class="form-group error">
                         <span class="la la-envelope form-icon"></span>
-                        {{ form_widget(registration.email, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Adresse e-mail'}}) }}
+                        {{ form_widget(registration.email, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.email_addresss'|trans }}) }}
+                        {{ form_errors(registration.email) }}
                     </div>
-                    {{ form_errors(registration.email) }}
                 </div>
                 <div class="input-box">
-                    <label class="label-text">Nom</label>
-                    <div class="form-group">
+                    <label class="label-text">{{ 'global.lastname'|trans }}</label>
+                    <div class="form-group error">
                         <span class="la la-user form-icon"></span>
-                        {{ form_widget(registration.lastname, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Nom'}}) }}
+                        {{ form_widget(registration.lastname, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.lastname'|trans }}) }}
+                        {{ form_errors(registration.lastname) }}
                     </div>
-                    {{ form_errors(registration.lastname) }}
                 </div>
                 <div class="input-box">
-                    <label class="label-text">Prénom</label>
-                    <div class="form-group">
+                    <label class="label-text">{{ 'global.firstname'|trans }}</label>
+                    <div class="form-group error">
                         <span class="la la-user form-icon"></span>
-                        {{ form_widget(registration.firstname, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Prénom'}}) }}
+                        {{ form_widget(registration.firstname, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.firstname'|trans }}) }}
+                        {{ form_errors(registration.firstname) }}
                     </div>
-                    {{ form_errors(registration.firstname) }}
                 </div>
                 <div class="input-box">
-                    <label class="label-text">Adresse</label>
-                    <div class="form-group">
+                    <label class="label-text">{{ 'global.address'|trans }}</label>
+                    <div class="form-group error">
                         <span class="la la-map form-icon"></span>
-                        {{ form_widget(registration.address, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Adresse'}}) }}
+                        {{ form_widget(registration.address, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.address'|trans }}) }}
+                        {{ form_errors(registration.address) }}
                     </div>
-                    {{ form_errors(registration.address) }}
                 </div>
                 <div class="input-box">
-                    <label class="label-text">Mot de passe</label>
-                    <div class="form-group">
+                    <label class="label-text">{{ 'global.password'|trans }}</label>
+                    <div class="form-group error">
                         <span class="la la-lock form-icon"></span>
-                        {{ form_widget(registration.plainPassword.first, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Mot de passe'}}) }}
+                        {{ form_widget(registration.plainPassword.first, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.password'|trans }}) }}
+                        {{ form_errors(registration.plainPassword.first) }}
                     </div>
-                    {{ form_errors(registration.plainPassword.first) }}
                 </div>
                 <div class="input-box">
-                    <label class="label-text">Confirmation</label>
-                    <div class="form-group">
+                    <label class="label-text">{{ 'global.confirmation'|trans }}</label>
+                    <div class="form-group error">
                         <span class="la la-lock form-icon"></span>
-                        {{ form_widget(registration.plainPassword.second, {'attr': {'class': 'form-control form-control-styled', 'placeholder':'Confirmation de mot de passe'}}) }}
+                        {{ form_widget(registration.plainPassword.second, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder':'Confirmation de mot de passe'}}) }}
+                        {{ form_errors(registration.plainPassword.second) }}
                     </div>
-                    {{ form_errors(registration.plainPassword.second) }}
                 </div>
                 <div class="input-box py-4 user-action-meta">
-                    <div class="custom-checkbox">
-                        {{ form_widget(registration.agreeTerms) }}
+                    <div class="custom-checkbox error">
+                        {{ form_widget(registration.agreeTerms, {'required': false}) }}
                         <label for="registration_form_agreeTerms" class="font-size-14">By signing up, you agree to our <a href="privacy-policy.html" class="text-color-2">Privacy Policy.</a></label>
+                        {{ form_errors(registration.agreeTerms) }}
                     </div>
                 </div>
                 <div class="btn-box">
                     <button type="submit" class="theme-btn gradient-btn w-100">
-                        <i class="la la-user-plus mr-1"></i> Enregistrer
+                        <i class="la la-user-plus mr-1"></i> {{ 'global.save'|trans }}
                     </button>
                     <p class="sub-text-box text-right pt-1 font-weight-medium font-size-14">
-                        Déjà sur Pambe? <a class="text-color-2" href="{{ path('app_login') }}">Connexion</a>
+                        Déjà sur {{ website_title }}? <a class="text-color-2" href="{{ path('app_login') }}">{{ 'global.login'|trans }}</a>
                         </p>
                 </div>
                 <div class="icon-element font-size-16 font-weight-semi-bold mt-5 mb-4 mx-auto">
-                                    OU
+                                    {{ 'global.or'|trans }}
                 </div>
                 <div class="text-center">
                     <p class="font-size-15 font-weight-medium">Connectez-vous avec un réseau social</p>

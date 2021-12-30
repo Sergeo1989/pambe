@@ -3,18 +3,18 @@
 namespace App\EventListener;
 
 use App\Entity\CategoryProfessional;
+use App\Service\ContextService;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class DatabaseActivitySubscriber implements EventSubscriberInterface
 {
-    private $slugger;
+    private $context;
 
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(ContextService $context)
     {
-        $this->slugger = $slugger;
+        $this->context = $context;
     }
 
     public function getSubscribedEvents(): array
@@ -37,6 +37,6 @@ class DatabaseActivitySubscriber implements EventSubscriberInterface
             return;
         }
 
-        $entity->setSlug($this->slugger->slug(strtolower($entity->getName())));
+        $entity->setSlug($this->context->slug($entity->getName()));
     }
 }
