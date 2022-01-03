@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class MenuCrudController extends AbstractCrudController
@@ -35,12 +36,14 @@ class MenuCrudController extends AbstractCrudController
             IdField::new('id')->onlyOnIndex(),
             TextField::new('title', 'Titre'),
             TextField::new('route'),
+            BooleanField::new('children', 'Enfant')->onlyOnIndex(),
             AssociationField::new('categories', 'Catégories', CategoryProfessional::class)->setFormTypeOptions([
                 'by_reference' => false,
             ]),
             AssociationField::new('menus', 'Menus', Menu::class)->setFormTypeOptions([
                 'by_reference' => false,
             ]),
+            IntegerField::new('position')
         ];
     }
 

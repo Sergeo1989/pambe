@@ -1,43 +1,45 @@
 <div class="main-menu-content menu">
     <nav class="main-menu">
         <ul>
-            {% for menu in main_menu.main_menu.design.menu %}
-                <li>
-                    {{ _self.render_menu_item(menu) }}
-                    {% if menu.children is defined %}
-                        <div class="dropdown-menu-item mega-menu">
-                            <ul class="row no-gutters">
-                                {% for menuSub in menu.children %}
-                                    <li class="{{ menuSub.cssClass ?? "" }} mega-menu-item">
-                                        {{ _self.render_submenu_item(menuSub) }}
-                                        {% if menuSub.children is defined %}
-                                            <ul>
-                                                {% for menuSubSub in menuSub.children %}
-                                                <li>{{ _self.render_submenu_item(menuSubSub) }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
-                                    </li> 
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
-                </li>
-            {% endfor %}
+            {% for menu in menus() %}
+                {% if menu.children == false %}
+                    <li>
+                        {{ _self.render_menu_item(menu) }}
+                        {% if menu.menus|length > 0 %}
+                            <div class="dropdown-menu-item mega-menu">
+                                <ul class="row no-gutters">
+                                    {% for menuSub in menu.menus %}
+                                        <li class="col-lg-6 mega-menu-item">
+                                            {{ _self.render_submenu_item(menuSub) }}
+                                            {% if menuSub.categories|length > 0 %}
+                                                <ul>
+                                                    {% for menuSubSub in menuSub.categories %}
+                                                    <li><a href="{{ path("app_category_pro", {"slug": menuSubSub.slug}) }}">{{ menuSubSub.name|e }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </li> 
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %} 
         </ul>
     </nav>
 </div>
 {% macro render_menu_item(menu) %}
-    <a href="{{ menu.route is defined ? path(menu.route) : "#" }}">{{ menu.label|e }} 
-        {% if menu.children is defined %}
+    <a href="{{ menu.route is not null ? path(menu.route) : "#" }}">{{ menu.title|e }} 
+        {% if menu.menus|length > 0 %}
             <span class="la la-angle-down"></span>
         {% endif %}
     </a>
 {% endmacro %}
 {% macro render_submenu_item(menu) %}
-    {% if menu.route is defined %}
-        <a href="{{ path(menu.route) }}">{{ menu.label|e }}</a>
+    {% if menu.route is not null %}
+        <a href="{{ path(menu.route) }}">{{ menu.title|e }}</a>
     {% else %}
-        <h6>{{ menu.label|e }}</h6>
+        <h6>{{ menu.title|e }}</h6>
     {% endif %}
 {% endmacro %}

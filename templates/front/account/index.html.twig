@@ -4,99 +4,10 @@
 
 {% block header %}
     {% embed "front/partials/header.html.twig" %}
-        {% block header_content %}
-            <header class="header-area position-inherit top-auto bg-white">
-    <div class="header-top-bar bg-dark py-2 padding-right-30px padding-left-30px">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6 d-flex align-items-center header-top-info">
-                                    {{ render(url('app_social_url')) }}
-                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
-                                        <a href="{{ path("app_contact") }}">Contact</a>
-                                    </span>
-                                    <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
-                                        <a href="{{ path("app_about") }}">À propos</a>
-                                    </span>
-                                </div>
-                                <div class="col-lg-6 d-flex align-items-center justify-content-end header-top-info font-size-14">
-                                    <p class="login-and-signup-wrap">
-                                        {% if is_granted("ROLE_PROFESSIONNEL") %}
-                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
-                                               Espace professionnel
-                                            </a>
-                                        {% else %}
-                                            <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="#">
-                                                <span class="mr-1 la la-user-plus"></span>Devenir professionnel
-                                            </a>
-                                        {% endif %}
-                                    </p>
-                                    <div class="user-chosen-select-container">
-                                        <select class="user-chosen-select">
-                                            <option value="1" selected>English</option>
-                                            <option value="2">French</option>
-                                        </select>
-                                    </div>
-                                </div>
-            </div> {# Fin validation #}
-        </div><!-- end container-fluid -->
-    </div><!-- end header-top-bar -->
-    <div class="header-menu-wrapper padding-right-30px padding-left-30px">
-        <div class="container-fluid ">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="menu-full-width">
-                        <div class="logo">
-                            <a href="index.html" class="sticky-logo-hide"><img src="images/logo-black.png" alt="logo"></a>
-                            <a href="index.html" class="sticky-logo-show"><img src="images/logo-white.png" alt="logo"></a>
-                            <div class="d-flex align-items-center">
-                                <a href="add-listing.html" class="btn-gray add-listing-btn-show font-size-24 mr-2 flex-shrink-0 text-color" data-toggle="tooltip" data-placement="left" title="Add Listing">
-                                    <i class="la la-plus"></i>
-                                </a>
-                                <div class="menu-toggle menu-toggle-black">
-                                    <span class="menu__bar"></span>
-                                    <span class="menu__bar"></span>
-                                    <span class="menu__bar"></span>
-                                </div><!-- end menu-toggle -->
-                            </div>
-                        </div><!-- end logo -->
-                        <div class="main-menu-content main-menu-content-2 border-left-color">
-                            <nav class="main-menu main-menu-2">
-                                <ul>
-                                    <li>
-                                        <a href="#">home <span class="la la-angle-down"></span></a>
-                                        <ul class="dropdown-menu-item">
-                                            <li><a href="index.html">home one</a></li>
-                                       
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#">listings <span class="la la-angle-down"></span></a>
-                                        <ul class="dropdown-menu-item">
-                                            <li><a href="listing-grid.html">listing grid</a></li>
-                                       
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#">pages <span class="la la-angle-down"></span></a>
-                                    </li>
-                                    <li>
-                                        <a href="#">blog <span class="la la-angle-down"></span></a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="nav-right-content ml-auto">
-                            <a href="add-listing.html" class="theme-btn gradient-btn add-listing-btn-hide">
-                                <i class="la la-plus mr-2"></i>Add Listing
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-        {% endblock %} 
+        {% block header_class %}header-area position-inherit top-auto bg-white{% endblock %} 
+        {% block header_top_bar_class %}header-top-bar bg-dark py-2 padding-right-30px padding-left-30px{% endblock %}
+        {% block header_bottom_bar_class %}header-top-bar bg-dark{% endblock %}
+        {% block header_menu_wrapper %}header-menu-wrapper padding-right-30px padding-left-30px additional-wrapper{% endblock %}
     {% endembed %}
 {% endblock %}
 
@@ -108,7 +19,7 @@
                     <div class="breadcrumb-content d-flex flex-wrap align-items-end justify-content-between">
                         <div class="d-flex align-items-end">
                             <div class="user-thumb user-thumb-xl bread-thumb mr-3 flex-shrink-0">
-                                <img src="{{ asset('assets/front/images/avatar-img8.jpg') }}" alt="avatar">
+                                <img src="{{ asset('assets/front/images/avatar-img8.jpg') }}" alt="{{ app.user }}">
                             </div>
                             <div class="section-heading pb-3">
                                 <h2 class="sec__title mb-0 font-size-28 line-height-30">

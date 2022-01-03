@@ -80,6 +80,11 @@ app_about:
     controller: App\Controller\Front\AboutController::index
     #requirements:
         #_locale: '%app_locale%'
+app_professional:
+    path: /professional
+    controller: App\Controller\Front\ProfessionalController::index
+    #requirements:
+        #_locale: '%app_locale%'
 app_professional_show:
     path: /professional/{slug}/show
     controller: App\Controller\Front\ProfessionalController::show

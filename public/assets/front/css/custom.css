@@ -358,3 +358,6 @@ description: Our custom pambe CSS
 .absent-btn:hover, .available-btn:hover{
     color: rgba(255, 255, 255, 0.7);
 }
+.additional-wrapper{
+    background-color: #333f57d0 !important;
+}

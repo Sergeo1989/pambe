@@ -1,7 +1,7 @@
             {% block header_content %}
                 <header class="{% block header_class %}header-area{% endblock %}">
                     {% block header_top_bar %}
-                        <div class="header-top-bar bg-dark-opacity py-2 padding-right-30px padding-left-30px">
+                        <div class="{% block header_top_bar_class %}header-top-bar bg-dark-opacity py-2 padding-right-30px padding-left-30px{% endblock %}">
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-lg-6 d-flex align-items-center header-top-info">
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                     {% endblock %}
-                    <div class="header-menu-wrapper padding-right-30px padding-left-30px">
+                    <div class="{% block header_menu_wrapper %}header-menu-wrapper padding-right-30px padding-left-30px{% endblock %}">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -68,7 +68,7 @@
                                             <form action="{{ path('app_professional_search') }}" method="get" class="w-100">
                                                 <div class="header-search position-relative">
                                                     <i class="la la-search form-icon"></i>
-                                                    <input type="search" name="words" placeholder="Rechercher">
+                                                    <input type="search" name="words" placeholder="{{ 'global.search'|trans }}">
                                                 </div>
                                             </form>
                                         </div>
@@ -90,7 +90,7 @@
                                             </nav>
                                         </div>
                                         <div class="nav-right-content">
-                                            <a href="#" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
+                                            <a href="{{ path('app_professional') }}" class="theme-btn gradient-btn shadow-none add-listing-btn-hide">
                                                 {{ 'global.find_a_professional'|trans }}
                                             </a>
                                         </div>
@@ -99,11 +99,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="header-top-bar bg-dark-opacity">
+                    <div class="{% block header_bottom_bar_class %}header-top-bar bg-dark-opacity{% endblock %}">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-lg-12 d-flex header-top-info font-size-14">
-                                    {#{ render(url('app_main_menu')) }#}
+                                    {% include "front/partials/main_menu.html.twig" %}
                                 </div>
                             </div>
                         </div>

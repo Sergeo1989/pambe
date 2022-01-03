@@ -61,6 +61,35 @@ class ProfessionalController extends AbstractController
         $this->proImgRepo = $proImgRepo;
     }
 
+    public function index(Request $request): Response
+    {
+        $data = $this->professionalService->getAllProfessional();
+
+        $sort = $request->query->get('sort');
+
+        if($sort === 'certified'){
+            $data = array_filter($data, function($professional){
+                if($professional->getVerified() == true)
+                    return $professional;
+            });
+        }elseif($sort === 'available'){
+            $data = array_filter($data, function($professional){
+                if($professional->getAvailable() == true)
+                    return $professional;
+            });
+        }
+
+        $data = $this->context->sort($data, 'position');
+
+        $professionals = $this->paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            12
+        );
+
+        return $this->render('front/professional/index.html.twig', compact('professionals'));
+    }
+
     public function search(Request $request)
     {
         $words = $request->query->get('words');

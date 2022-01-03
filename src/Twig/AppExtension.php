@@ -3,7 +3,9 @@
 namespace App\Twig;
 
 use App\Entity\Professional;
+use App\Repository\MenuRepository;
 use App\Service\BlogService;
+use App\Service\ContextService;
 use App\Service\ProfessionalService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -11,13 +13,17 @@ use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
+    private $context;
     private $professionalService;
     private $blogService;
+    private $menuRepo;
 
-    public function __construct(ProfessionalService $professionalService, BlogService $blogService)
+    public function __construct(ContextService $context, ProfessionalService $professionalService, BlogService $blogService, MenuRepository $menuRepo)
     {
+        $this->context = $context;
         $this->professionalService = $professionalService;
         $this->blogService = $blogService;
+        $this->menuRepo = $menuRepo;
     }
 
     public function getFilters(): array
@@ -30,6 +36,7 @@ class AppExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
+            new TwigFunction('menus', [$this, 'getMenus']),
             new TwigFunction('vippros', [$this, 'professionalsVip']),
             new TwigFunction('newpros', [$this, 'professionalsNew']),
             new TwigFunction('catspoppro', [$this, 'categoriesProPopular']),
@@ -93,5 +100,11 @@ class AppExtension extends AbstractExtension
     public function getLast5Article()
     {
         return $this->blogService->getLastFiveArticle();
+    }
+
+    public function getMenus()
+    {
+        $menus = $this->menuRepo->findAll();
+        return $this->context->sort($menus, 'position');
     }
 }

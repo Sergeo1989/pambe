@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Menu
 {
@@ -43,6 +44,16 @@ class Menu
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $route;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $children;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $position;
 
 
     public function __construct()
@@ -153,6 +164,38 @@ class Menu
     public function setRoute(?string $route): self
     {
         $this->route = $route;
+
+        return $this;
+    }
+
+    public function getChildren(): ?bool
+    {
+        return $this->children;
+    }
+
+    public function setChildren(?bool $children): self
+    {
+        $this->children = $children;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->children = false;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->position = $position;
 
         return $this;
     }

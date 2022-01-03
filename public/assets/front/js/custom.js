@@ -9,6 +9,11 @@ description: Our custom pambe JS
 (function ($) {
     "use strict";
 
+    /** Sort professional values */
+    $(document).on('change', '#sort_pro', function(event) {
+        this.form.submit();
+    });
+
     /** Change professional availability */
     $(document).on('click', '#available_link', function(event) {
         event.preventDefault();
