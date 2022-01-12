@@ -56,76 +56,76 @@
                                 {{ app.user.professional.description|raw }}
                             </div>
                         </div>
-                        <div class="block-card mb-3">
-                            <div class="block-card-header">
-                                <h2 class="widget-title pb-0">{{ 'global.informations'|trans }}</h2>
-                            </div>
-                            <div class="block-card-body">
-                                {% for message in app.flashes("message") %}
-                                    <div class="alert alert-success font-size-15 text-color" role="alert">
-                                        <span class="font-weight-semi-bold">{{ message }}</span>
-                                    </div>
-                                {% endfor %}
-                                {{ form_start(userForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
-                                    <div class="col-lg-12">
-                                        <div class="input-box">
-                                            <label class="label-text">{{ 'global.your_email'|trans }}</label>
-                                            <div class="form-group error">
-                                                <span class="la la-envelope form-icon"></span>
-                                                {{ form_widget(userForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre adresse e-mail'} }) }}
-                                                {{ form_errors(userForm.email) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-box">
-                                            <label class="label-text">{{ 'global.lastname'|trans }}</label>
-                                            <div class="form-group error">
-                                                <span class="la la-user form-icon"></span>
-                                                {{ form_widget(userForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre nom'} }) }}
-                                                {{ form_errors(userForm.lastname) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-box">
-                                            <label class="label-text">{{ 'global.firstname'|trans }}</label>
-                                            <div class="form-group error">
-                                                <span class="la la-user form-icon"></span>
-                                                {{ form_widget(userForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre prénom'} }) }}
-                                                {{ form_errors(userForm.firstname) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-box">
-                                            <label class="label-text">{{ 'global.address'|trans }}</label>
-                                            <div class="form-group error">
-                                                <span class="la la-map form-icon"></span>
-                                                {{ form_widget(userForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre adresse'} }) }}
-                                                {{ form_errors(userForm.address) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-box">
-                                            <label class="label-text">{{ 'global.phone'|trans }}</label>
-                                            <div class="form-group error">
-                                                <span class="la la-phone form-icon"></span>
-                                                {{ form_widget(userForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre numéro de téléphone'} }) }}
-                                                {{ form_errors(userForm.phone) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="submit-wrap pt-3">
-                                        <div class="btn-box mt-3 ml-3">
-                                            {{ form_widget(userForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
-                                        </div>
-                                    </div>
-                                {{ form_end(userForm) }}
-                            </div>
-                        </div>
                     {% endif %}
+                    <div class="block-card mb-3">
+                        <div class="block-card-header">
+                            <h2 class="widget-title pb-0">{{ 'global.informations'|trans }}</h2>
+                        </div>
+                        <div class="block-card-body">
+                            {% for message in app.flashes("message") %}
+                                <div class="alert alert-success font-size-15 text-color" role="alert">
+                                    <span class="font-weight-semi-bold">{{ message }}</span>
+                                </div>
+                            {% endfor %}
+                            {{ form_start(userForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.your_email'|trans }}</label>
+                                        <div class="form-group error">
+                                            <span class="la la-envelope form-icon"></span>
+                                            {{ form_widget(userForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre adresse e-mail'} }) }}
+                                            {{ form_errors(userForm.email) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.lastname'|trans }}</label>
+                                        <div class="form-group error">
+                                            <span class="la la-user form-icon"></span>
+                                            {{ form_widget(userForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre nom'} }) }}
+                                            {{ form_errors(userForm.lastname) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.firstname'|trans }}</label>
+                                        <div class="form-group error">
+                                            <span class="la la-user form-icon"></span>
+                                            {{ form_widget(userForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre prénom'} }) }}
+                                            {{ form_errors(userForm.firstname) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.address'|trans }}</label>
+                                        <div class="form-group error">
+                                            <span class="la la-map form-icon"></span>
+                                            {{ form_widget(userForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre adresse'} }) }}
+                                            {{ form_errors(userForm.address) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.phone'|trans }}</label>
+                                        <div class="form-group error">
+                                            <span class="la la-phone form-icon"></span>
+                                            {{ form_widget(userForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre numéro de téléphone'} }) }}
+                                            {{ form_errors(userForm.phone) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-wrap pt-3">
+                                    <div class="btn-box mt-3 ml-3">
+                                        {{ form_widget(userForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                                    </div>
+                                </div>
+                            {{ form_end(userForm) }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-4">

@@ -179,9 +179,9 @@ class CategoryProfessional
     }
 
     /**
-     * @return Collection|Professional[]
+     * @return Professional[]
      */
-    public function getAllProfessionals(): Collection
+    public function getAllProfessionals()
     {
         return $this->all_professionals;
     }

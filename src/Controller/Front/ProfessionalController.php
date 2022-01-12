@@ -65,20 +65,10 @@ class ProfessionalController extends AbstractController
     {
         $data = $this->professionalService->getAllProfessional();
 
-        $sort = $request->query->get('sort');
+        $value = $request->query->get('sort');
 
-        if($sort === 'certified'){
-            $data = array_filter($data, function($professional){
-                if($professional->getVerified() == true)
-                    return $professional;
-            });
-        }elseif($sort === 'available'){
-            $data = array_filter($data, function($professional){
-                if($professional->getAvailable() == true)
-                    return $professional;
-            });
-        }
-
+        $data = $this->professionalService->simpleSorting($value, $data);
+ 
         $data = $this->context->sort($data, 'position');
 
         $professionals = $this->paginator->paginate(
@@ -87,7 +77,7 @@ class ProfessionalController extends AbstractController
             12
         );
 
-        return $this->render('front/professional/index.html.twig', compact('professionals'));
+        return $this->render('front/professional/index.html.twig', compact('professionals', 'data'));
     }
 
     public function search(Request $request)
@@ -143,8 +133,8 @@ class ProfessionalController extends AbstractController
             }
         }
 
-        // A terminer: Empêcher le professionnel d'augmenter ses propre vues
-        $this->professionalService->addView($professional);
+        if($this->isGranted('edit', $professional) == false)
+            $this->professionalService->addView($professional);
         
         return $this->render('front/professional/show.html.twig', [
             'professional' => $professional, 
@@ -156,26 +146,34 @@ class ProfessionalController extends AbstractController
     {
         $data = $this->professionalService->getAllNewProfessional();
 
+        $value = $request->query->get('sort');
+
+        $data = $this->professionalService->simpleSorting($value, $data);
+
         $professionals = $this->paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
             12
         );
 
-        return $this->render('front/professional/new/index.html.twig', compact('professionals'));
+        return $this->render('front/professional/index.html.twig', compact('professionals', 'data'));
     }
     
     public function vip(Request $request): Response
     {
         $data = $this->professionalService->getAllVipProfessional();
 
+        $value = $request->query->get('sort');
+
+        $data = $this->professionalService->simpleSorting($value, $data);
+
         $professionals = $this->paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
             12
         );
 
-        return $this->render('front/professional/vip/index.html.twig', compact('professionals'));
+        return $this->render('front/professional/index.html.twig', compact('professionals', 'data'));
     }
 
     public function like(Professional $professional): Response
@@ -438,22 +436,26 @@ class ProfessionalController extends AbstractController
         $price = trim($this->request->get('price'));
         $unit = trim($this->request->get('unit'));
         $description = $this->request->get('description');
-        if(empty($file))
+
+        if(empty($file)){
+            $message = $this->translator->trans('global.enter_an_image.');
             $this->response = [
                 'status' => false,
-                'message' => 'Entrer une image.'
+                'message' => $message
             ];
-        elseif(empty($title))
+        }elseif(empty($title)){
+            $message = $this->translator->trans('global.enter_a_title.');
             $this->response = [
                 'status' => false,
-                'message' => 'Entrer un titre.'
+                'message' => $message
             ];
-        elseif(!is_numeric($price))
+        }elseif(!is_numeric($price)){
+            $message = $this->translator->trans('global.enter_a_number.');
             $this->response = [
                 'status' => false,
-                'message' => 'Entrer un nombre.'
+                'message' => $message
             ];
-        else{
+        }else{
             $service = new Service();
             $service->setTitle($title)
                     ->setPrice($price)
@@ -602,22 +604,25 @@ class ProfessionalController extends AbstractController
         $date_end = $this->request->get('end_date');
         $description = $this->request->get('description');
  
-        if(empty($title))
+        if(empty($title)){
+            $message = $this->translator->trans('global.enter_a_title.');
             $this->response = [
                 'status' => false,
-                'message' => 'Entrer un titre.'
+                'message' => $message
             ];
-        elseif(empty($place))
+        }elseif(empty($place)){
+            $message = $this->translator->trans('global.enter_a_place.');
             $this->response = [
                 'status' => false,
-                'message' => 'Entrer un lieu.'
+                'message' => $message
             ];
-        elseif(strtotime($date_start) > strtotime($date_end))
+        }elseif(strtotime($date_start) > strtotime($date_end)){
+            $message = $this->translator->trans('global.the_start_date_must_be_less_than_the_end_date.');
             $this->response = [
                 'status' => false,
-                'message' => 'La date de début doit être inférieur à la date de fin.'
+                'message' => $message
             ];
-        else{
+        }else{
             $qualification = new Qualification();
             $qualification->setTitle($title);
             $qualification->setPlace($place);
@@ -629,7 +634,8 @@ class ProfessionalController extends AbstractController
 
             $this->response = [
                 'status' => true,
-                'value' => $this->context->save($qualification)
+                'value' => $this->context->save($qualification),
+                'locale' => $this->request->getLocale()
             ];
         }
     }
@@ -654,7 +660,8 @@ class ProfessionalController extends AbstractController
 
             $this->response = [
                 'status' => true,
-                'value' => $this->context->save($qualification)
+                'value' => $this->context->save($qualification),
+                'locale' => $this->request->getLocale()
             ];
         }else{
             $this->response = [
@@ -675,10 +682,13 @@ class ProfessionalController extends AbstractController
                 'status' => true
             ];
         }
-        else
+        else{
+            $message = $this->translator->trans('global.an_error_has_occurred.');
             $this->response = [
-                'status' => false
+                'status' => false,
+                'message' => $message
             ];
+        }
     }
 
     private function displayAjaxChangeAvailability()
@@ -690,7 +700,8 @@ class ProfessionalController extends AbstractController
             $professional->setAvailable(!$professional->getAvailable());
             $this->context->save($professional);
             $this->response = [
-                'status' => true
+                'status' => true,
+                'locale' => $this->request->getLocale()
             ];
         }
         else

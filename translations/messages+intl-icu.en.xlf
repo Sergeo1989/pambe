@@ -441,6 +441,66 @@
         <source>global.your_information_has_been_correctly_modified!</source>
         <target>Your information has been correctly modified!</target>
       </trans-unit>
+      <trans-unit id="Dh9bfvI" resname="global.all_professionals">
+        <source>global.all_professionals</source>
+        <target>All professionals</target>
+      </trans-unit>
+      <trans-unit id="W5hCr5K" resname="global.advanced_search">
+        <source>global.advanced_search</source>
+        <target>Advanced search</target>
+      </trans-unit>
+      <trans-unit id="aahWdTe" resname="global.sort_by_default">
+        <source>global.sort_by_default</source>
+        <target>Sort by default</target>
+      </trans-unit>
+      <trans-unit id="kQfrbWF" resname="global.no_data_to_display_at_the_moment,_please_come_back_later">
+        <source>global.no_data_to_display_at_the_moment,_please_come_back_later</source>
+        <target>No data to display at the moment, please come back later</target>
+      </trans-unit>
+      <trans-unit id="fRS8U1B" resname="global.display_from">
+        <source>global.display_from</source>
+        <target>Display from</target>
+      </trans-unit>
+      <trans-unit id=".o2Z4wx" resname="global.to">
+        <source>global.to</source>
+        <target>to</target>
+      </trans-unit>
+      <trans-unit id="mHHmP1X" resname="global.on">
+        <source>global.on</source>
+        <target>on</target>
+      </trans-unit>
+      <trans-unit id="2gSlU2N" resname="global.entries">
+        <source>global.entries</source>
+        <target>entries</target>
+      </trans-unit>
+      <trans-unit id="3m1Z2II" resname="global.an_error_has_occurred.">
+        <source>global.an_error_has_occurred.</source>
+        <target>An error has occurred.</target>
+      </trans-unit>
+      <trans-unit id="8sw.3FA" resname="global.enter_an_image.">
+        <source>global.enter_an_image.</source>
+        <target>Enter an image.</target>
+      </trans-unit>
+      <trans-unit id="FobuDsD" resname="global.enter_a_title.">
+        <source>global.enter_a_title.</source>
+        <target>Enter a title.</target>
+      </trans-unit>
+      <trans-unit id="yulJgPu" resname="global.enter_a_number.">
+        <source>global.enter_a_number.</source>
+        <target>Enter a number.</target>
+      </trans-unit>
+      <trans-unit id="grg7GL9" resname="global.enter_a_place.">
+        <source>global.enter_a_place.</source>
+        <target>Enter a place.</target>
+      </trans-unit>
+      <trans-unit id="W.bftsB" resname="global.the_start_date_must_be_less_than_the_end_date.">
+        <source>global.the_start_date_must_be_less_than_the_end_date.</source>
+        <target>The start date must be less than the end date.</target>
+      </trans-unit>
+      <trans-unit id="cTIjOuh" resname="global.load_more">
+        <source>global.load_more</source>
+        <target>Load more</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

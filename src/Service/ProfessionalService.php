@@ -122,4 +122,20 @@ class ProfessionalService
     {
         return $this->professionalRepo->searchByDescription($words, $category, $address);
     }
+
+    public function simpleSorting($sort, $data)
+    {
+        if($sort === 'certified'){
+            $data = array_filter($data, function($professional){
+                if($professional->getVerified() == true)
+                    return $professional;
+            });
+        }elseif($sort === 'available'){
+            $data = array_filter($data, function($professional){
+                if($professional->getAvailable() == true)
+                    return $professional;
+            });
+        }
+        return $data;
+    }
 }

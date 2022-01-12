@@ -439,7 +439,67 @@
       </trans-unit>
       <trans-unit id="ylEDN_i" resname="global.email_addresss">
         <source>global.email_addresss</source>
-        <target>__global.email_addresss</target>
+        <target>Adresse e-mail</target>
+      </trans-unit>
+      <trans-unit id="Dh9bfvI" resname="global.all_professionals">
+        <source>global.all_professionals</source>
+        <target>Tous les professionnels</target>
+      </trans-unit>
+      <trans-unit id="W5hCr5K" resname="global.advanced_search">
+        <source>global.advanced_search</source>
+        <target>Recherche détaillée</target>
+      </trans-unit>
+      <trans-unit id="aahWdTe" resname="global.sort_by_default">
+        <source>global.sort_by_default</source>
+        <target>Trier par défaut</target>
+      </trans-unit>
+      <trans-unit id="kQfrbWF" resname="global.no_data_to_display_at_the_moment,_please_come_back_later">
+        <source>global.no_data_to_display_at_the_moment,_please_come_back_later</source>
+        <target>pas de données à afficher pour le moment, veuillez revenir plus tard.</target>
+      </trans-unit>
+      <trans-unit id="fRS8U1B" resname="global.display_from">
+        <source>global.display_from</source>
+        <target>Affichage de</target>
+      </trans-unit>
+      <trans-unit id=".o2Z4wx" resname="global.to">
+        <source>global.to</source>
+        <target>à</target>
+      </trans-unit>
+      <trans-unit id="mHHmP1X" resname="global.on">
+        <source>global.on</source>
+        <target>sur</target>
+      </trans-unit>
+      <trans-unit id="2gSlU2N" resname="global.entries">
+        <source>global.entries</source>
+        <target>entrées</target>
+      </trans-unit>
+      <trans-unit id="3m1Z2II" resname="global.an_error_has_occurred.">
+        <source>global.an_error_has_occurred.</source>
+        <target>Une erreur s'est produite.</target>
+      </trans-unit>
+      <trans-unit id="8sw.3FA" resname="global.enter_an_image.">
+        <source>global.enter_an_image.</source>
+        <target>Entrez une image.</target>
+      </trans-unit>
+      <trans-unit id="FobuDsD" resname="global.enter_a_title.">
+        <source>global.enter_a_title.</source>
+        <target>Entrez un titre.</target>
+      </trans-unit>
+      <trans-unit id="yulJgPu" resname="global.enter_a_number.">
+        <source>global.enter_a_number.</source>
+        <target>Entrez un nombre.</target>
+      </trans-unit>
+      <trans-unit id="grg7GL9" resname="global.enter_a_place.">
+        <source>global.enter_a_place.</source>
+        <target>Entrez un lieu.</target>
+      </trans-unit>
+      <trans-unit id="W.bftsB" resname="global.the_start_date_must_be_less_than_the_end_date.">
+        <source>global.the_start_date_must_be_less_than_the_end_date.</source>
+        <target>La date de début doit être inférieur à la date de fin.</target>
+      </trans-unit>
+      <trans-unit id="cTIjOuh" resname="global.load_more">
+        <source>global.load_more</source>
+        <target>Charger plus</target>
       </trans-unit>
     </body>
   </file>

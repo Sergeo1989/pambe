@@ -21,8 +21,12 @@ class CategoryProController extends AbstractController
     }
 
     public function show(CategoryProfessional $category, Request $request): Response
-    {
-        $data = $category->getAllProfessionals();
+    { 
+        $data = $category->getAllProfessionals()->getValues();
+
+        $value = $request->query->get('sort');
+
+        $data = $this->professionalService->simpleSorting($value, $data);
 
         $professionals = $this->paginator->paginate(
             $data,
@@ -30,7 +34,7 @@ class CategoryProController extends AbstractController
             12
         );
 
-        return $this->render('front/professional/category/show.html.twig', compact('category', 'professionals'));
+        return $this->render('front/professional/index.html.twig', compact('category', 'professionals', 'data'));
     }
 
     public function popular(Request $request): Response

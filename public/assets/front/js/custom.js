@@ -8,7 +8,7 @@ description: Our custom pambe JS
  
 (function ($) {
     "use strict";
-
+ 
     /** Sort professional values */
     $(document).on('change', '#sort_pro', function(event) {
         this.form.submit();
@@ -34,7 +34,7 @@ description: Our custom pambe JS
                 }
                 else{
                     link.removeClass('absent-btn').addClass('available-btn');
-                    link.text('available');
+                    link.text(data.locale === 'fr' ? 'disponible' : 'available');
                 }
             else
                 alert("Quelque chose s'est mal passée");
@@ -229,7 +229,7 @@ description: Our custom pambe JS
         });
     });
 
-    /** Edit Professional Service */
+    /** Edit Professional Gallery */
     $(document).on('submit', '#gallery_form', function(event) {
         event.preventDefault();
         var btn = $('#gallery_btn');
@@ -241,7 +241,8 @@ description: Our custom pambe JS
         data.append('file', files);
         data.append('id', $('#gallery_id').val());
         data.append('legend', $('#gallery_description').val());
-        btn.text('Chargement...');
+        var text = btn.text();
+        btn.text(text + '...');
         
         $.ajax({
             type: 'POST',
@@ -264,7 +265,7 @@ description: Our custom pambe JS
     
                 $(".modal-backdrop").removeClass('show').hide();
 
-                btn.text('Enregistrer');
+                btn.text(text);
             },
             error: function(error) {
                 console.log(error);
@@ -378,6 +379,8 @@ description: Our custom pambe JS
         data['id'] = service_id;
         data['ajax'] = 1;
         data['rand'] = new Date().getTime();
+        var text = link.text();
+        link.text(text + '...');
         var getting = $.get(url, data, function(data){
             if(data.status === true) {
                 $('#service_id_edit').val(data.value.id);
@@ -393,7 +396,7 @@ description: Our custom pambe JS
                 alert("Une erreur s'est produite.")
             }
         }, 'json');
-        getting.always(function(data) {});
+        getting.always(function(data) { link.text(text); });
     });
 
     /** Add Professional Service */
@@ -413,7 +416,8 @@ description: Our custom pambe JS
         data.append('price', $('#service_price_add').val());
         data.append('unit', $('#service_unit_add').val());
         data.append('description', $('#service_description_add').val());
-        btn.text('Chargement...');
+        var text = btn.text();
+        btn.text(text + '...');
         
         $.ajax({
             type: 'POST',
@@ -460,10 +464,10 @@ description: Our custom pambe JS
                 btn.text('Enregistrer');
             },
             complete: function() {
-                btn.text('Enregistrer');
+                btn.text(text);
             },
             error: function(error){
-                btn.text('Enregistrer');
+                btn.text(text);
                 console.log(error);
                 alert('veuillez ré-essayer plutard !');
             }
@@ -488,8 +492,8 @@ description: Our custom pambe JS
         data.append('price', $('#service_price_edit').val());
         data.append('unit', $('#service_unit_edit').val());
         data.append('description', $('#service_description_edit').val());
-        btn.text('Chargement...');
-        console.log(data);
+        var text = btn.text();
+        btn.text(text + '...');
         $.ajax({
             type: 'POST',
             url: url,
@@ -531,13 +535,13 @@ description: Our custom pambe JS
                 } else {
                     alert("Quelque s'est mal passée !");
                 }
-                btn.text('Enregistrer');
+                btn.text(text);
             },
             complete: function() {
-                btn.text('Enregistrer');
+                btn.text(text);
             },
             error: function(error){
-                btn.text('Enregistrer');
+                btn.text(text);
                 console.log(error);
                 alert('veuillez ré-essayer plutard !');
             }
@@ -555,7 +559,8 @@ description: Our custom pambe JS
         data['id'] = service_id;
         data['ajax'] = 1;
         data['rand'] = new Date().getTime();
-        link.text('Supprimer...');
+        var text = link.text();
+        link.text(text + '...');
         var posting = $.post(url, data);
         posting.always(function(data) {
             if(data.status === true) {
@@ -565,13 +570,15 @@ description: Our custom pambe JS
             }else{
                 alert("Une erreur s'est produite.")
             }
-            link.text('Supprimer');
+            link.text(text);
         });
     });
 
     $(document).ready(function() {
         $("#information_form_short_description").jqte({placeholder: "Entrez une brève description de vous..."});
         $("#information_form_description").jqte({placeholder: "Entrez une description de vous..."}); 
+        $("#professional_form_short_description").jqte({placeholder: "Entrez une brève description de vous..."}); 
+        $("#professional_form_description").jqte({placeholder: "Entrez une description de vous..."}); 
     });
 
 })(jQuery);
@@ -586,6 +593,8 @@ function getQualification(event, name, link)
     data['id'] = qualification_id;
     data['ajax'] = 1;
     data['rand'] = new Date().getTime();
+    var text = link.text();
+    link.text(text + '...');
     var getting = $.get(url, data, function(data){
         if(data.status === true) {
             var date_start = data.value.start_date.split('-');
@@ -611,7 +620,7 @@ function getQualification(event, name, link)
             alert("Une erreur s'est produite.")
         }
     }, 'json');
-    getting.always(function(data) {});
+    getting.always(function(data) { link.text(text); });
 }
 
 function addQualification(event, name)
@@ -628,7 +637,8 @@ function addQualification(event, name)
     data['start_date'] = $('#' + name + '_start_date_add').val();
     data['end_date'] = $('#' + name + '_end_date_add').val();
     data['description'] = $('#' + name + '_description_add').val();
-    btn.text('chargement...');
+    var text = btn.text();
+    btn.text(text + '...');
     $.ajax({
         type: 'POST',
         url: url,
@@ -645,7 +655,7 @@ function addQualification(event, name)
                             +'<div class="list col-lg-6"><i class="la la-hourglass-end text-color-2 mr-2 font-size-18"></i>' + data.value.end_date + '</div>'
                             +'<div class="list col-lg-12 expdesc">' + data.value.description + '</div>'
                             +'<div class="list col-lg-12 form">'
-                                +'<a class="edit" data-id="' + data.value.id + '" href="#">Editer</a> | <a class="delete" data-id="' + data.value.id + '" href="#">Supprimer</a>'
+                                +'<a class="edit" data-id="' + data.value.id + '" href="#">' + (data.locale === 'fr' ? 'Modifier' : 'Edit') + '</a> | <a class="delete" data-id="' + data.value.id + '" href="#">' + (data.locale === 'fr' ? 'Supprimer' : 'Delete') + '</a>'
                             +'</div>'
                         +'</div>'
                     +'</div>'
@@ -662,13 +672,13 @@ function addQualification(event, name)
             } else {
                 $('#' + name + '_error').html('<span class="font-weight-semi-bold" style="color: #714141;">'+ data.message +'</span>').show().fadeIn(500).delay(5000);
             }
-            btn.text('Enregistrer');
+            btn.text(text);
         },
         complete: function() {
-            btn.text('Enregistrer');
+            btn.text(text);
         },
         error: function(error){
-            btn.text('Enregistrer');
+            btn.text(text);
             console.log(error);
             alert('veuillez ré-essayer plutard !');
         }
@@ -690,7 +700,8 @@ function editQualification(event, name)
     data['start_date'] = $('#' + name + '_start_date_edit').val();
     data['end_date'] = $('#' + name + '_end_date_edit').val();
     data['description'] = $('#' + name + '_description_edit').val();
-    btn.text('chargement...');
+    var text = btn.text();
+    btn.text(text + '...');
     $.ajax({
         type: 'POST',
         url: url,
@@ -705,7 +716,7 @@ function editQualification(event, name)
                                 +'<div class="list col-lg-6"><i class="la la-hourglass-end text-color-2 mr-2 font-size-18"></i>' + data.value.end_date + '</div>'
                                 +'<div class="list col-lg-12 expdesc">' + data.value.description + '</div>'
                                 +'<div class="list col-lg-12 form">'
-                                    +'<a class="edit" data-id="' + data.value.id + '" href="#">Editer</a> | <a class="delete" data-id="' + data.value.id + '" href="#">Supprimer</a>'
+                                    +'<a class="edit" data-id="' + data.value.id + '" href="#">' + (data.locale === 'fr' ? 'Modifier' : 'Edit') + '</a> | <a class="delete" data-id="' + data.value.id + '" href="#">' + (data.locale === 'fr' ? 'Supprimer' : 'Delete') + '</a>'
                                 +'</div>'
                             +'</div>';
 
@@ -723,13 +734,13 @@ function editQualification(event, name)
             } else {
                 alert("Quelque chose s'est mal passée !");
             }
-            btn.text('Enregistrer');
+            btn.text(text);
         },
         complete: function() {
-            btn.text('Enregistrer');
+            btn.text(text);
         },
         error: function(error){
-            btn.text('Enregistrer');
+            btn.text(text);
             console.log(error);
             alert('Veuillez ré-essayer plutard !');
         }
@@ -746,7 +757,8 @@ function removeQualification(event, name, link)
     data['id'] = qualification_id;
     data['ajax'] = 1;
     data['rand'] = new Date().getTime();
-    link.text('Supprimer...');
+    var text = link.text();
+    link.text(text + '...');
     var posting = $.post(url, data);
     posting.always(function(data) {
         if(data.status === true) {
@@ -754,9 +766,9 @@ function removeQualification(event, name, link)
                 $('#' + name + '_' + qualification_id).remove();
             });
         }else{
-            alert("Une erreur s'est produite.")
+            alert(data.message);
         }
-        link.text('Supprimer');
+        link.text(text);
     });
 }
 

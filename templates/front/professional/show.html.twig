@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="btn-box">
-                                <a href="#review" class="btn-gray mr-1"><i class="la la-star mr-1"></i>Écrire un avis</a>
+                                <a href="#{{ is_granted('edit', professional) == false ? 'review' : 'see_review' }}" class="btn-gray mr-1"><i class="la la-star mr-1"></i>{{ is_granted('edit', professional) == false ? 'Écrire un avis' : 'Mes avis' }}</a>
                                 <a href="{{ path("app_professional_like", {"slug" : professional.slug}) }}" class="js-like btn-gray mr-1">
                                     {% if app.user and professional.isLikedByUser(app.user) %}
                                         <i class="la la-heart mr-1"></i>
@@ -78,7 +78,9 @@
                                     Favoris 
                                 </a>
                                 <a href="#" class="btn-gray mr-1" data-toggle="modal" data-target="#shareModal"><i class="la la-external-link mr-1"></i>Partager</a>
-                                <a href="#" class="btn-gray" data-toggle="modal" data-target="#messageModal"><i class="la la-mail-forward mr-1"></i>Contacter</a>
+                                {% if is_granted('edit', professional) == false %}
+                                    <a href="#" class="btn-gray" data-toggle="modal" data-target="#messageModal"><i class="la la-mail-forward mr-1"></i>Contacter</a>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="btn-box d-flex align-items-center">
@@ -304,7 +306,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="block-card mb-3">
+                        <div class="block-card mb-3" id="see_review">
                             <div class="block-card-header">
                                 <h2 class="widget-title">{{ 'global.reviews'|trans }} <span class="ml-1 text-color-2">({{ professional.reviews|length }})</span></h2>
                                 <div class="stroke-shape"></div>
@@ -338,81 +340,83 @@
                                         </div>
                                     {% endfor %}
                                 </div>
-                                <a href="#" id="load_more">load more</a>
+                                <a href="#" id="load_more">{{ 'global.load_more'|trans }}</a>
                             </div>
                         </div>
-                        <div class="block-card" id="review">
-                            <div class="block-card-header">
-                                <h2 class="widget-title pb-1">Ajouter votre avis</h2>
-                                <p>Votre adresse email ne sera pas publiée. Les champs requis sont indiqués *</p>
+                        {% if is_granted('edit', professional) == false %}
+                            <div class="block-card" id="review">
+                                <div class="block-card-header">
+                                    <h2 class="widget-title pb-1">Ajouter votre avis</h2>
+                                    <p>Votre adresse email ne sera pas publiée. Les champs requis sont indiqués *</p>
+                                </div>
+                                <div class="block-card-body">
+                                    <form method="post" class="form-box pt-3">
+                                        <div class="add-rating-bars review-bars d-flex flex-row flex-wrap flex-grow-1 align-items-center justify-content-between">
+                                            <div class="review-bars-item mx-0 mt-0">
+                                                <div class="review-bars-inner pt-1">
+                                                    <div class="leave-rating">
+                                                        <input type="radio" name="rating" id="rating-1" value="5">
+                                                        <label for="rating-1" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-2" value="4">
+                                                        <label for="rating-2" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-3" value="3">
+                                                        <label for="rating-3" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-4" value="2">
+                                                        <label for="rating-4" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-5" value="1">
+                                                        <label for="rating-5" class="fa fa-star"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <input name="professional_id" id="professional_id" type="hidden" value="{{ professional.id }}">
+                                            <div class="col-lg-6">
+                                                <div class="input-box">
+                                                    <label class="label-text">{{ 'global.name'|trans }}</label>
+                                                    <div class="form-group">
+                                                        <span class="la la-user form-icon"></span>
+                                                        <input id="review_name" class="form-control" type="text" name="name" placeholder="{{ 'global.your_name'|trans }}">
+                                                        {% if errors|length > 0 %}
+                                                            <span class="review-error">{{ errors.name }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="input-box">
+                                                    <label class="label-text">{{ 'global.email'|trans }}</label>
+                                                    <div class="form-group">
+                                                        <span class="la la-envelope-o form-icon"></span>
+                                                        <input id="review_email" class="form-control" type="email" name="email" placeholder="{{ 'global.email_address'|trans }}">
+                                                        {% if errors|length > 0 %}
+                                                            <span class="review-error">{{ errors.email }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="input-box">
+                                                    <label class="label-text">{{ 'global.reviews'|trans }}</label>
+                                                    <div class="form-group">
+                                                        <span class="la la-pencil form-icon"></span>
+                                                        <textarea id="review_description" class="message-control form-control" name="message" placeholder="{{ 'global.write_your_reviews'|trans }}"></textarea>
+                                                        {% if errors|length > 0 %}
+                                                            <span class="review-error">{{ errors.message }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="btn-box pt-1">
+                                                    <button id="rating-btn" class="theme-btn gradient-btn border-0">{{ 'global.submit_review'|trans }}<i class="la la-arrow-right ml-2"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="block-card-body">
-                                <form method="post" class="form-box pt-3">
-                                    <div class="add-rating-bars review-bars d-flex flex-row flex-wrap flex-grow-1 align-items-center justify-content-between">
-                                        <div class="review-bars-item mx-0 mt-0">
-                                            <div class="review-bars-inner pt-1">
-                                                <div class="leave-rating">
-                                                    <input type="radio" name="rating" id="rating-1" value="5">
-                                                    <label for="rating-1" class="fa fa-star"></label>
-                                                    <input type="radio" name="rating" id="rating-2" value="4">
-                                                    <label for="rating-2" class="fa fa-star"></label>
-                                                    <input type="radio" name="rating" id="rating-3" value="3">
-                                                    <label for="rating-3" class="fa fa-star"></label>
-                                                    <input type="radio" name="rating" id="rating-4" value="2">
-                                                    <label for="rating-4" class="fa fa-star"></label>
-                                                    <input type="radio" name="rating" id="rating-5" value="1">
-                                                    <label for="rating-5" class="fa fa-star"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <input name="professional_id" id="professional_id" type="hidden" value="{{ professional.id }}">
-                                        <div class="col-lg-6">
-                                            <div class="input-box">
-                                                <label class="label-text">{{ 'global.name'|trans }}</label>
-                                                <div class="form-group">
-                                                    <span class="la la-user form-icon"></span>
-                                                    <input id="review_name" class="form-control" type="text" name="name" placeholder="{{ 'global.your_name'|trans }}">
-                                                    {% if errors|length > 0 %}
-                                                        <span class="review-error">{{ errors.name }}</span>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="input-box">
-                                                <label class="label-text">{{ 'global.email'|trans }}</label>
-                                                <div class="form-group">
-                                                    <span class="la la-envelope-o form-icon"></span>
-                                                    <input id="review_email" class="form-control" type="email" name="email" placeholder="{{ 'global.email_address'|trans }}">
-                                                    {% if errors|length > 0 %}
-                                                        <span class="review-error">{{ errors.email }}</span>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="input-box">
-                                                <label class="label-text">{{ 'global.reviews'|trans }}</label>
-                                                <div class="form-group">
-                                                    <span class="la la-pencil form-icon"></span>
-                                                    <textarea id="review_description" class="message-control form-control" name="message" placeholder="{{ 'global.write_your_reviews'|trans }}"></textarea>
-                                                    {% if errors|length > 0 %}
-                                                        <span class="review-error">{{ errors.message }}</span>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="btn-box pt-1">
-                                                <button id="rating-btn" class="theme-btn gradient-btn border-0">{{ 'global.submit_review'|trans }}<i class="la la-arrow-right ml-2"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -455,7 +459,9 @@
                                 </svg>
                                 <h3 class="widget-title pb-0 line-height-26">“La chance aide parfois, le travail toujours.”</h3>
                             </div>
-                            <a href="#" class="theme-btn gradient-btn w-100">Contactez-Moi</a>
+                            {% if is_granted('edit', professional) == false %}
+                                <a href="#" class="theme-btn gradient-btn w-100">Contactez-Moi</a>
+                            {% endif %}
                         </div>
                         <div class="sidebar-widget">
                             <h3 class="widget-title">Informations générales </h3>
