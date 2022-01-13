@@ -17,18 +17,27 @@
     <section class="overflow-hidden">
         <div class="login">
             <form method="post" id="login-form" class="form-box">
+                {% for message in app.flashes('message') %}
+                    <div class="alert alert-success">{{ message}}</div>
+                {% endfor %}
+                {% for message in app.flashes('warning') %}
+                    <div class="alert alert-warning">{{ message}}</div>
+                {% endfor %}
+                {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger">{{ message}}</div>
+                {% endfor %}
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
                 <div class="input-box">
-                    <label for="email" class="label-text">E-mail</label>
+                    <label for="email" class="label-text">{{ 'global.email'|trans }}</label>
                     <div class="form-group">
                         <span class="la la-user form-icon"></span>
                         <input class="form-control form-control-styled" value="{{ last_username }}" type="email" id="email" name="email" placeholder="Entrer votre adresse e-mail" autocomplete="email" required autofocus>
                     </div>
                 </div>
                 <div class="input-box">
-                    <label for="password" class="label-text">Mot de passe</label>
+                    <label for="password" class="label-text">{{ 'global.password'|trans }}</label>
                     <div class="form-group">
                         <span class="la la-lock form-icon"></span>
                         <input class="form-control form-control-styled" type="password" id="password" name="password" placeholder="Entrer votre mot de passe" autocomplete="current-password" required>
@@ -40,7 +49,7 @@
                         <input type="checkbox" id="keepMeSignedChb" name="_remember_me">
                         <label for="keepMeSignedChb" class="font-size-14">Se souvenir de moi</label>
                     </div>
-                    <a href="javascript:void(0)" class="margin-bottom-10px lost-pass-btn font-size-14">Mot de passe oublié ?</a>
+                    <a href="{{ path('app_forgotten_password') }}" class="margin-bottom-10px font-size-14">{{ 'global.forgotten_password'|trans }} ?</a>
                 </div>
                 <div class="btn-box">
                     <button type="submit" class="theme-btn gradient-btn w-100">
@@ -51,7 +60,7 @@
                     </p>
                 </div>
                 <div class="icon-element font-size-16 font-weight-semi-bold mt-5 mb-4 mx-auto">
-                                    OU
+                                    {{ 'global.or'|trans }}
                 </div>
                 <div class="text-center">
                     <p class="font-size-15 font-weight-medium">Connectez-vous avec votre réseau social</p>

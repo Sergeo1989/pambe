@@ -7,9 +7,9 @@
             <div class="card-image">
                 <a href="{{ path("app_professional_show", {"slug" : professional.slug}) }}" class="d-block">
                     <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ cover|imagine_filter('cover_small') }}" class="card__img lazy" alt="{{ professional.user.lastname|e }}">
-                    <span class="badge {{ professional.available ?: "bg-10" }}">{{ professional.available ? "disponible" : "absent" }}</span>
+                    <span class="badge {{ professional.available ?: "bg-10" }}">{{ professional.available ? "disponible"|trans : "absent"|trans }}</span>
                 </a>
-                <span class="bookmark-btn" data-toggle="tooltip" data-placement="top" title="Enregistrer">
+                <span class="bookmark-btn" data-toggle="tooltip" data-placement="top" title="{{ 'global.save'|trans }}">
                     <i class="la la-bookmark"></i>
                 </span>
             </div>
@@ -27,12 +27,12 @@
                 <ul class="listing-meta d-flex align-items-center">
                     <li class="d-flex align-items-center">
                         <span class="rate flex-shrink-0">{{ scoreavg(professional) }}</span>
-                        <span class="rate-text">{{ professional.reviews|length }} avis</span>
+                        <span class="rate-text">{{ professional.reviews|length }} {{ 'global.reviews'|trans|lower }}</span>
                     </li>
                 </ul>
                 <ul class="info-list padding-top-20px">
                     <li><span class="la la-calendar-check-o icon"></span>
-                        Créé le {{ professional.dateAdd|format_date('medium', '', null, app.request.locale) }}
+                        {{ 'global.created_on'|trans }} {{ professional.dateAdd|format_date('medium', '', null, app.request.locale) }}
                     </li>
                 </ul>
             </div>

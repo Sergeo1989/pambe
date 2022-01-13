@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class GalleryFormType extends AbstractType
 {
@@ -21,17 +22,28 @@ class GalleryFormType extends AbstractType
                 'multiple' => false,
                 'choices'  => [
                     'Youtube' => Professional::YOUTUBE,
-                    'Viméo' => Professional::VIMEO,
-                ],
+                    'Viméo' => Professional::VIMEO
+                ]
             ])
             ->add('videoUrl', TextType::class, [
-                'required' => true
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le contenu ne doit pas être vide.'
+                    ])
+                ]
             ])
-            ->add('legend', TextareaType::class, ['mapped' => false,])
-            ->add('gallerie', FileType::class, [
+            ->add('legend', TextareaType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'La légende ne doit pas être vide.'
+                    ])
+                ]
+            ]) 
+            ->add('gallery', FileType::class, [
                 'multiple' => true,
                 'required' => false,
-                'mapped' => false,
+                'mapped' => false
             ])
         ;
     }
@@ -39,7 +51,7 @@ class GalleryFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Professional::class,
+            'data_class' => Professional::class
         ]);
     }
 }

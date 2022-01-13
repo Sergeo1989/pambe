@@ -184,3 +184,9 @@ app_category_popular:
 app_change_locale:
     path: /application/{locale}/edit
     controller: App\Controller\Front\HomeController::changeLocale
+app_forgotten_password:
+    path: /forgotten-pass
+    controller: App\Controller\Front\SecurityController::forgottenPass
+app_reset_password:
+    path: /{token}/reset-pass
+    controller: App\Controller\Front\SecurityController::resetPass

@@ -29,24 +29,30 @@
                         </div>
                         <div class="block-card-body">
                             {{ form_start(galleryForm, {'method': 'post', 'attr': {'id': 'gallery-form', 'class': 'form-box row'} }) }}
-                                <div class="col-lg-12 custom-checkbox">
-                                    {{ form_widget(galleryForm.videoType) }}
-                                </div>
                                 <div class="col-lg-12">
                                     <div class="input-box">
-                                        <label class="label-text">Lien</label>
                                         <div class="form-group">
+                                            {{ form_widget(galleryForm.videoType, {'attr': {'class': 'form-control'} }) }}
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-lg-12">
+                                    <div class="input-box">
+                                        <label class="label-text">{{ 'global.link'|trans }}</label>
+                                        <div class="form-group error">
                                             <span class="la la-link form-icon"></span>
                                             {{ form_widget(galleryForm.videoUrl, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrer votre lien'} }) }}
+                                            {{ form_errors(galleryForm.videoUrl) }}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="input-box">
-                                        <label class="label-text">Légende</label>
-                                        <div class="form-group">
+                                        <label class="label-text">{{ 'global.legend'|trans }}</label>
+                                        <div class="form-group error">
                                             <span class="la la-pencil form-icon"></span>
-                                            {{ form_widget(galleryForm.legend, {'required': true, 'attr': {'class': 'message-control form-control'} }) }}
+                                            {{ form_widget(galleryForm.legend, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
+                                            {{ form_errors(galleryForm.legend) }}
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +60,7 @@
                                     <div class="input-box">
                                         <label class="label-text">{{ 'global.gallery'|trans }}</label>
                                         <div class="file-upload-wrap">
-                                            {{ form_widget(galleryForm.gallerie, {'attr': {'class': 'file-upload-input with-preview', 'maxlength': '1'} }) }}
+                                            {{ form_widget(galleryForm.gallery, {'attr': {'class': 'file-upload-input with-preview', 'maxlength': '1'} }) }}
                                             <span class="file-upload-text"><i class="la la-upload mr-2"></i>{{ 'global.drop_file_here_or_click_to_upload'|trans }}</span>
                                         </div>
                                     </div>                                    

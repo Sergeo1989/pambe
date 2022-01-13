@@ -403,7 +403,7 @@
       </trans-unit>
       <trans-unit id="WtODBLU" resname="absent">
         <source>absent</source>
-        <target>absent</target>
+        <target>unavailable</target>
       </trans-unit>
       <trans-unit id="gIsSUv8" resname="global.change_your_password">
         <source>global.change_your_password</source>
@@ -500,6 +500,86 @@
       <trans-unit id="cTIjOuh" resname="global.load_more">
         <source>global.load_more</source>
         <target>Load more</target>
+      </trans-unit>
+      <trans-unit id="vvJBFQR" resname="disponible">
+        <source>disponible</source>
+        <target>available</target>
+      </trans-unit>
+      <trans-unit id="faj3QVz" resname="global.created_on">
+        <source>global.created_on</source>
+        <target>Created on</target>
+      </trans-unit>
+      <trans-unit id="9ugL1GY" resname="global.professional">
+        <source>global.professional</source>
+        <target>Professional</target>
+      </trans-unit>
+      <trans-unit id="JXguFCo" resname="global.complete_your_information">
+        <source>global.complete_your_information</source>
+        <target>Complete your information</target>
+      </trans-unit>
+      <trans-unit id="bSNJ_4D" resname="global.search_result_for">
+        <source>global.search_result_for</source>
+        <target>Search result for</target>
+      </trans-unit>
+      <trans-unit id="U6W_MIR" resname="global.there_are_no_professionals_matching_your_search">
+        <source>global.there_are_no_professionals_matching_your_search</source>
+        <target>There are no professionals matching your search</target>
+      </trans-unit>
+      <trans-unit id="haeg_vq" resname="global.account_activation">
+        <source>global.account_activation</source>
+        <target>Account activation</target>
+      </trans-unit>
+      <trans-unit id="3DvIJee" resname="global.you_have_activated_your_account">
+        <source>global.you_have_activated_your_account</source>
+        <target>You have activated your account</target>
+      </trans-unit>
+      <trans-unit id="DU.HcMU" resname="global.this_address_does_not_exist.">
+        <source>global.this_address_does_not_exist.</source>
+        <target>This address does not exist.</target>
+      </trans-unit>
+      <trans-unit id="eDdXAZT" resname="global.an_error_occurred:">
+        <source>global.an_error_occurred:</source>
+        <target>An error occurred:</target>
+      </trans-unit>
+      <trans-unit id="6CwYhjm" resname="global.forgotten_password">
+        <source>global.forgotten_password</source>
+        <target>Forgotten password</target>
+      </trans-unit>
+      <trans-unit id="zaYGYqJ" resname="global.a_password_reset_email_has_been_sent_to_you.">
+        <source>global.a_password_reset_email_has_been_sent_to_you.</source>
+        <target>A password reset email has been sent to you.</target>
+      </trans-unit>
+      <trans-unit id="02Z.mWw" resname="global.send">
+        <source>global.send</source>
+        <target>Send</target>
+      </trans-unit>
+      <trans-unit id="DVw9aXm" resname="global.unknown_token">
+        <source>global.unknown_token</source>
+        <target>Unknown token</target>
+      </trans-unit>
+      <trans-unit id="WLFBhdQ" resname="global.password_successfully_changed">
+        <source>global.password_successfully_changed</source>
+        <target>Password successfully changed</target>
+      </trans-unit>
+      <trans-unit id="LGk313Y" resname="global.enter_a_new_password">
+        <source>global.enter_a_new_password</source>
+        <target>Enter a new password</target>
+      </trans-unit>
+      <trans-unit id="PkAfQcB" resname="global.link">
+        <source>global.link</source>
+        <target>Link</target>
+      </trans-unit>
+      <trans-unit id="viEDDoe" resname="global.professionals">
+        <source>global.professionals</source>
+        <target>Professionals</target>
+      </trans-unit>
+      <trans-unit id="LzmeyqR" resname="global.happy_clients">
+        <source>global.happy_clients</source>
+        <target>Happy Clients</target>
+      </trans-unit>
+      <trans-unit id="BDOuKve" resname="global.careers">
+        <source>global.careers</source>
+        <target>Careers</target>
       </trans-unit>
     </body>
   </file>

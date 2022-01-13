@@ -30,7 +30,7 @@ description: Our custom pambe JS
             if(data.status === true)
                 if(link.hasClass('available-btn')){
                     link.removeClass('available-btn').addClass('absent-btn');
-                    link.text('absent');
+                    link.text(data.locale === 'fr' ? 'indisponible' : 'unavailable');
                 }
                 else{
                     link.removeClass('absent-btn').addClass('available-btn');
@@ -166,7 +166,7 @@ description: Our custom pambe JS
 
     /** Add professional Gallery */
     $(document).ready(function() {
-        $('#gallery_form_gallerie').MultiFile({ 
+        $('#gallery_form_gallery').MultiFile({ 
             accept: 'gif|jpg|png|jpeg',
             onFileSelect: function(element, value, master_element) {
                 console.log(master_element);

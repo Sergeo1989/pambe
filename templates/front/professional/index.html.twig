@@ -4,6 +4,8 @@
     {% set title = 'global.vip_professionals'|trans %}
 {% elseif app.request.get('_route') == 'app_professional_new' %}
     {% set title = 'global.new_professionals'|trans %}
+{% elseif app.request.get('_route') == 'app_professional_search' %}
+    {% set title = words is not defined ?: 'global.search_result_for'|trans ~' "'~ words ~'"' %}
 {% else %}
     {% set title = category is defined ? category.name : 'global.all_professionals'|trans %}
 {% endif %}
@@ -62,7 +64,7 @@
             {% else %}
                 <div class="row">
                     <div class="col-lg-12 pt-3 text-center">
-                        {{ 'global.no_data_to_display_at_the_moment,_please_come_back_later'|trans }}.
+                        {{ app.request.get('_route') == 'app_professional_search' ? 'global.there_are_no_professionals_matching_your_search'|trans : 'global.no_data_to_display_at_the_moment,_please_come_back_later'|trans }}.
                     </div>
                 </div>
             {% endif %}

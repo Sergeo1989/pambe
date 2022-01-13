@@ -11,13 +11,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
+    private $translator;
     private $emailsender;
 
-    public function __construct($emailSender)
+    public function __construct(TranslatorInterface $translator, $emailSender)
     {
+        $this->translator = $translator;
         $this->emailsender = $emailSender;
     }
 
@@ -37,10 +40,11 @@ class RegistrationController extends AbstractController
             $token = md5(uniqid());
             $user->setActivationToken($token);
 
-            $context->save($user);
+            $user = $context->save($user);
 
+            $subject = $this->translator->trans('global.account_activation');
             $mailer->send(
-                'Activation de compte', 
+                $subject, 
                 $this->emailsender, 
                 $user->getEmail(), 
                 'front/email/activation.html.twig', 
@@ -65,7 +69,8 @@ class RegistrationController extends AbstractController
         $user->setActivationToken(null);
         $context->save($user);
 
-        $this->addFlash("message", "Vous avez bien activé votre compte");
+        $message = $this->translator->trans('global.you_have_activated_your_account');
+        $this->addFlash("message", $message);
 
         return $this->redirectToRoute('app_home');
     }

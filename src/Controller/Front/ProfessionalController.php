@@ -85,6 +85,7 @@ class ProfessionalController extends AbstractController
         $words = $request->query->get('words');
         $category_id = $request->query->get('category');
         $address = $request->query->get('address');
+        $value = $request->query->get('sort');
 
         $category = $this->professionalService->getCategoryPro((int)$category_id);
         
@@ -96,13 +97,15 @@ class ProfessionalController extends AbstractController
             $data = $this->professionalService->searchByDescription($words, $category, $address);
         else
             $data = [];
+
+        $data = $this->professionalService->simpleSorting($value, $data);
         $professionals = $this->paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
             12
         );
 
-        return $this->render('front/professional/search/index.html.twig', compact('professionals', 'words'));
+        return $this->render('front/professional/index.html.twig', compact('professionals', 'words', 'data'));
     }
 
     public function show(Professional $professional, Request $request): Response
@@ -235,6 +238,9 @@ class ProfessionalController extends AbstractController
         ]);
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function information(Request $request)
     { 
         $message = $this->translator->trans('global.you_are_not_a_professional.');
@@ -262,6 +268,9 @@ class ProfessionalController extends AbstractController
         ]);
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function coordonnee(Request $request)
     {
         $message = $this->translator->trans('global.you_are_not_a_professional.');
@@ -289,6 +298,9 @@ class ProfessionalController extends AbstractController
         ]);
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function gallery(Request $request)
     {
         $message = $this->translator->trans('global.you_are_not_a_professional.');
@@ -300,8 +312,9 @@ class ProfessionalController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $legend = $form->get("legend")->getData();
-            $gallerie = $form->get("gallerie")->getData();
-            foreach ($gallerie as $image) {
+            $gallery = $form->get("gallery")->getData();
+
+            foreach ($gallery as $image) {
                 $proImage = new ProfessionalImage();
                 $proImage->setImageFile($image);
                 $proImage->setLegend($legend);
@@ -356,6 +369,9 @@ class ProfessionalController extends AbstractController
             return new JsonResponse(["status" => false]); 
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function service(Request $request)
     {
         $message = $this->translator->trans('global.you_are_not_a_professional.');
@@ -364,6 +380,9 @@ class ProfessionalController extends AbstractController
         return $this->render('front/professional/edit/service.html.twig');
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function training(Request $request)
     {
         $message = $this->translator->trans('global.you_are_not_a_professional.');
@@ -372,6 +391,9 @@ class ProfessionalController extends AbstractController
         return $this->render('front/professional/edit/training.html.twig');
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function reference(Request $request)
     {
         $message = $this->translator->trans('global.you_are_not_a_professional.');
@@ -380,6 +402,9 @@ class ProfessionalController extends AbstractController
         return $this->render('front/professional/edit/reference.html.twig');
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function option(Request $request)
     {
         $message = $this->translator->trans('global.you_are_not_a_professional.');

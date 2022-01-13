@@ -278,12 +278,16 @@ description: Our custom pambe CSS
 .menu-locale .dropdown-menu li a:hover{
     color: #7b68ee;
 }
-#information_form_profile, #professional_form_profile{
+#information_form_profile, #professional_form_profile, #gallery_form_videoType{
     text-align: center;
 }
 #information_form_profile label, #professional_form_profile label{ 
     margin-left: 5px;
     margin-right: 25px;
+}
+#gallery_form_videoType label{ 
+    margin-left: 5px;
+    margin-right: 10%;
 }
 @media only screen and (min-width: 992px) {
     .onglet .col-lg-2{
@@ -360,4 +364,7 @@ description: Our custom pambe CSS
 }
 .additional-wrapper{
     background-color: #333f57d0 !important;
+}
+.cat-content .badge:hover{
+    color: #fff;
 }

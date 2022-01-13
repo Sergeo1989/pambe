@@ -94,9 +94,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $activation_token;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reset_token;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Need::class, mappedBy="user")
+     */
+    private $needs;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
+        $this->needs = new ArrayCollection();
     }
 
     public function __toString(){
@@ -375,6 +386,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActivationToken(?string $activation_token): self
     {
         $this->activation_token = $activation_token;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->reset_token;
+    }
+
+    public function setResetToken(?string $reset_token): self
+    {
+        $this->reset_token = $reset_token;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Need[]
+     */
+    public function getNeeds(): Collection
+    {
+        return $this->needs;
+    }
+
+    public function addNeed(Need $need): self
+    {
+        if (!$this->needs->contains($need)) {
+            $this->needs[] = $need;
+            $need->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNeed(Need $need): self
+    {
+        if ($this->needs->removeElement($need)) {
+            // set the owning side to null (unless already changed)
+            if ($need->getUser() === $this) {
+                $need->setUser(null);
+            }
+        }
 
         return $this;
     }

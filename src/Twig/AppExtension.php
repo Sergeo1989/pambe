@@ -4,6 +4,7 @@ namespace App\Twig;
 
 use App\Entity\Professional;
 use App\Repository\MenuRepository;
+use App\Repository\UserRepository;
 use App\Service\BlogService;
 use App\Service\ContextService;
 use App\Service\ProfessionalService;
@@ -14,13 +15,15 @@ use Twig\TwigFunction;
 class AppExtension extends AbstractExtension
 {
     private $context;
+    private $userRepo;
     private $professionalService;
     private $blogService;
     private $menuRepo;
 
-    public function __construct(ContextService $context, ProfessionalService $professionalService, BlogService $blogService, MenuRepository $menuRepo)
+    public function __construct(ContextService $context, UserRepository $userRepo, ProfessionalService $professionalService, BlogService $blogService, MenuRepository $menuRepo)
     {
         $this->context = $context;
+        $this->userRepo = $userRepo;
         $this->professionalService = $professionalService;
         $this->blogService = $blogService;
         $this->menuRepo = $menuRepo;
@@ -37,6 +40,8 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFunction('menus', [$this, 'getMenus']),
+            new TwigFunction('users', [$this, 'users']),
+            new TwigFunction('pros', [$this, 'professionals']),
             new TwigFunction('vippros', [$this, 'professionalsVip']),
             new TwigFunction('newpros', [$this, 'professionalsNew']),
             new TwigFunction('catspoppro', [$this, 'categoriesProPopular']),
@@ -47,6 +52,16 @@ class AppExtension extends AbstractExtension
             new TwigFunction('popart', [$this, 'getPopularArticle']),
             new TwigFunction('lastfiveart', [$this, 'getLast5Article'])
         ];
+    }
+
+    public function users()
+    {
+        return $this->userRepo->findBy(['status' => true]);
+    }
+
+    public function professionals()
+    {
+        return $this->professionalService->getAllProfessional();
     }
 
     public function professionalsVip()

@@ -81,7 +81,7 @@ class ProfessionalService
         $professionals_new = array_filter($this->getAllProfessional(), function($professional){
             $date_add = $professional->getDateAdd();
             $date_now = new \DateTime("now");
-            if($date_now->diff($date_add)->format("%a") <= 20)
+            if($date_now->diff($date_add)->format("%a") <= 30)
                 return $professional;
         });
 
