@@ -190,3 +190,11 @@ app_forgotten_password:
 app_reset_password:
     path: /{token}/reset-pass
     controller: App\Controller\Front\SecurityController::resetPass
+app_professional_need:
+    path: professional/need
+    controller: App\Controller\Front\NeedController::create
+app_professional_need_show:
+    path: professional/{id}/need
+    controller: App\Controller\Front\NeedController::show
+    requirements:
+        id: '\d+'

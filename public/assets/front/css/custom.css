@@ -365,6 +365,19 @@ description: Our custom pambe CSS
 .additional-wrapper{
     background-color: #333f57d0 !important;
 }
-.cat-content .badge:hover{
+.category-item:hover .cat-content .badge{
     color: #fff;
+}
+.need.file-upload-wrap .MultiFile-list .MultiFile-title{
+    position: initial;
+}
+.main-menu ul li .need.dropdown-menu-item{
+    width: 420px;
+}
+.hero-wrapper{
+    padding-top: 240px;
+}
+.highlighted-categories {
+    margin-top: 30px;
+    z-index: 1;
 }

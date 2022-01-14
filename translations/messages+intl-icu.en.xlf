@@ -581,6 +581,34 @@
         <source>global.careers</source>
         <target>Careers</target>
       </trans-unit>
+      <trans-unit id="Qxma6IS" resname="global.submit_a_need">
+        <source>global.submit_a_need</source>
+        <target>Submit a need</target>
+      </trans-unit>
+      <trans-unit id="To4miAx" resname="global.five_star_ratings">
+        <source>global.five_star_ratings</source>
+        <target>Five Star Ratings</target>
+      </trans-unit>
+      <trans-unit id="QujqhEr" resname="global.your_need_has_been_successfully_registered.">
+        <source>global.your_need_has_been_successfully_registered.</source>
+        <target>Your need has been successfully registered.</target>
+      </trans-unit>
+      <trans-unit id="WB240w8" resname="global.your_proposal_is_awaiting_moderation.">
+        <source>global.your_proposal_is_awaiting_moderation.</source>
+        <target>Your proposal is awaiting moderation.</target>
+      </trans-unit>
+      <trans-unit id="jwaU6Aq" resname="global.price">
+        <source>global.price</source>
+        <target>Price</target>
+      </trans-unit>
+      <trans-unit id=".SsVPhU" resname="global.enter_a_price">
+        <source>global.enter_a_price</source>
+        <target>Enter a price</target>
+      </trans-unit>
+      <trans-unit id="TZ32U6Z" resname="global.note">
+        <source>global.note</source>
+        <target>Note</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

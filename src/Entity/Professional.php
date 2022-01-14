@@ -192,6 +192,11 @@ class Professional
      */
     private $reviews;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Proposal::class, mappedBy="professional")
+     */
+    private $proposals;
+
     public function __construct()
     {
         $this->category_professional_professionals = new ArrayCollection();
@@ -203,6 +208,7 @@ class Professional
         $this->likes = new ArrayCollection();
         $this->professionalLikes = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->proposals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -746,6 +752,36 @@ class Professional
             // set the owning side to null (unless already changed)
             if ($review->getProfessional() === $this) {
                 $review->setProfessional(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Proposal[]
+     */
+    public function getProposals(): Collection
+    {
+        return $this->proposals;
+    }
+
+    public function addProposal(Proposal $proposal): self
+    {
+        if (!$this->proposals->contains($proposal)) {
+            $this->proposals[] = $proposal;
+            $proposal->setProfessional($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProposal(Proposal $proposal): self
+    {
+        if ($this->proposals->removeElement($proposal)) {
+            // set the owning side to null (unless already changed)
+            if ($proposal->getProfessional() === $this) {
+                $proposal->setProfessional(null);
             }
         }
 

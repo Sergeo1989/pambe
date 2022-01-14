@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\CategoryProfessional;
 use App\Entity\Professional;
 use App\Repository\CategoryProfessionalRepository;
+use App\Repository\NeedRepository;
 use App\Repository\ProfessionalRepository;
 
 class ProfessionalService
@@ -12,15 +13,18 @@ class ProfessionalService
     private $context;
     private $categoryProRepo;
     private $professionalRepo;
+    private $needRepo;
 
     public function __construct(
         ContextService $context, 
         CategoryProfessionalRepository $categoryProRepo,
-        ProfessionalRepository $professionalRepo)
+        ProfessionalRepository $professionalRepo,
+        NeedRepository $needRepo)
     {
         $this->context = $context;
         $this->categoryProRepo = $categoryProRepo;
         $this->professionalRepo = $professionalRepo;
+        $this->needRepo = $needRepo;
     }
 
     /**
@@ -86,6 +90,11 @@ class ProfessionalService
         });
 
         return $this->context->sort($professionals_new, 'position');
+    }
+
+    public function getAllNeed()
+    {
+        return $this->needRepo->findBy(['status' => true]);
     }
 
     public function addView(Professional $professional): void{

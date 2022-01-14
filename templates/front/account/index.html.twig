@@ -57,6 +57,42 @@
                             </div>
                         </div>
                     {% endif %}
+                    {% if app.user.needs|length > 0 %}
+                        <div class="block-card mb-3">
+                            {% for need in app.user.needs -%}
+                                {% set cpt = 0 %}
+                                <div class="block-card-header">
+                                    <h2 class="widget-title">{{ need.title }} <span class="float-right">({{ need.proposals|length }} proposition{{ need.proposals|length > 1 ? 's' : ''}})</span></h2>
+                                </div>
+                                <div class="block-card-body">
+                                    <div class="accordion-item" id="accordion{{ need.id }}">
+                                        {% for proposal in need.proposals %}
+                                            {% set cpt = cpt + 1 %}
+                                            <div class="card">
+                                                <div class="card-header" id="heading{{ proposal.id }}">
+                                                    <h5>
+                                                        <button class="btn btn-link d-flex align-items-center justify-content-between" data-toggle="collapse" data-target="#collapse{{ proposal.id }}" aria-expanded="{{ loop.first ? "true" : "false" }}" aria-controls="collapse{{ proposal.id }}">
+                                                            Proposition #{{ cpt }}
+                                                            <i class="la la-minus"></i>
+                                                            <i class="la la-plus"></i>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapse{{ proposal.id }}" class="collapse {{ loop.first ? 'show' : ''}}" aria-labelledby="heading{{ proposal.id }}" data-parent="#accordion{{ need.id }}">
+                                                    <div class="card-body row">
+                                                        <div class="list col-lg-12"><i class="la la-user text-color-2 mr-2 font-size-18"></i> Editer par : {{ proposal.professional.user }}</div>
+                                                        <div class="list col-lg-12"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Dépuis le : {{ proposal.dateAdd|format_date() }}</div>
+                                                        <div class="list col-lg-12"><i class="la la-money text-color-2 mr-2 font-size-18"></i> Prix estimatif : {{ proposal.price }} FCFA</div>
+                                                        <div class="list col-lg-12 expdesc">{{ proposal.note }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {%- endfor %}
+                        </div>
+                    {% endif %}
                     <div class="block-card mb-3">
                         <div class="block-card-header">
                             <h2 class="widget-title pb-0">{{ 'global.informations'|trans }}</h2>

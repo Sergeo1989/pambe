@@ -55,10 +55,6 @@
                                         </div>
                                     </form>
                                     <div class="highlighted-categories">
-                                        <div class="d-flex align-items-end justify-content-center highlight-search-desc py-5 text-center">
-                                            <img src="{{ asset('assets/front/images/arrow-shape.png') }}" alt="" class="mr-5 cat-arrow-icon">
-                                            <h5 class="highlighted__title">Just looking around? Let us suggest you <br> something hot & happening!</h5>
-                                        </div>
                                         {% if catspoppro()|length > 0 %}
                                             <div class="highlight-lists d-flex justify-content-center mt-4">
                                                 {% for category in catspoppro()|slice(0, 6) %}
@@ -129,6 +125,39 @@
                             {% endif %}
                             <div class="more-btn-box pt-3 text-center">
                                 <a href="{{ path("app_category_popular") }}" class="btn-gray hover-scale-2">{{ 'global.browse_all_categories'|trans }} <i class="la la-arrow-right ml-2"></i></a>
+                            </div>
+                        </div>
+                    </section>
+                {% endblock %}
+
+                {% block need_area %}
+                    <section class="card-area section-padding vip">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-heading text-center">
+                                        <h2 class="sec__title">Les besoins les plus récents</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if needs()|length > 0 %}
+                                <div class="row mt-5">
+                                {% for need in needs()|reverse(true)|slice(0, 9) %}
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="card-item">
+                                            <div class="card-content">
+                                                <a href="javascript:void(0)" class="pill font-size-14 font-weight-semi-bold radius-round">{{ website_title }}</a>
+                                                <h4 class="card-title pt-3"><a href="{{ path('app_professional_need_show', {id: need.id}) }}">{{ need.title|u.truncate(35, '...', true) }}</a></h4>
+                                                <p class="card-sub pb-3">{{ 'global.created_on'|trans }} {{ need.dateAdd|format_date() }}</p>
+                                                <a href="{{ path('app_professional_need_show', {id: need.id}) }}" class="btn-text">Voir plus<i class="la la-arrow-right icon"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="more-btn-box pt-3 text-center">
+                                <a href="{{ path("app_category_popular") }}" class="btn-gray hover-scale-2">Parcourir tous les besoins <i class="la la-arrow-right ml-2"></i></a>
                             </div>
                         </div>
                     </section>

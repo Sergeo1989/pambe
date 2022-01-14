@@ -40,7 +40,9 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFunction('menus', [$this, 'getMenus']),
+            new TwigFunction('needs', [$this, 'getNeeds']),
             new TwigFunction('users', [$this, 'users']),
+            new TwigFunction('toprated', [$this, 'topsRatedProfessionals']),
             new TwigFunction('pros', [$this, 'professionals']),
             new TwigFunction('vippros', [$this, 'professionalsVip']),
             new TwigFunction('newpros', [$this, 'professionalsNew']),
@@ -57,6 +59,11 @@ class AppExtension extends AbstractExtension
     public function users()
     {
         return $this->userRepo->findBy(['status' => true]);
+    }
+
+    public function getNeeds()
+    {
+        return $this->professionalService->getAllNeed();
     }
 
     public function professionals()
@@ -98,13 +105,22 @@ class AppExtension extends AbstractExtension
     {
         $reviews = $professional->getReviews();
         $sum = 0;
-        foreach ($reviews as $review) {
+        foreach ($reviews as $review) 
             $sum += $review->getScore();
-        }
+        
         if(count($reviews) > 0)
             return number_format($sum / count($reviews), 1, '.', ',');
         else 
             return '0.0';
+    }
+
+    public function topsRatedProfessionals()
+    {
+        $cpt = 0;
+        foreach ($this->professionalService->getAllProfessional() as $professional) 
+            if(floatval($this->getScoreAverage($professional)) >= 0.0) $cpt += 1;
+        
+        return $cpt;
     }
 
     public function getPopularArticle()

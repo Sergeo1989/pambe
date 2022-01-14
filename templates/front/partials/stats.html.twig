@@ -8,9 +8,9 @@
                                             Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, <br>
                                             a feugiat eros. Nunc ut lacinia tortors.
                                         </p>
-                                    </div><!-- end section-heading -->
-                                </div><!-- end col-lg-12 -->
-                            </div><!-- end row -->
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row padding-top-60px">
                                 <div class="col-lg-3 responsive-column">
                                     <div class="counter-item d-flex align-items-center">
@@ -129,10 +129,11 @@
                                         </div>
                                         <div class="counter-content pl-3">
                                             <h3 class="counter__number text-color-6 mb-2">
-                                                <span class="counter">18,200</span>
+                                                {% set toprated = toprated() %}
+                                                <span class="counter">{{ app.request.locale == 'fr' ? toprated|number_format(0, ',', '.') : toprated|number_format(0, '.', ',') }}</span>
                                                 <span class="count-symbol">+</span>
                                             </h3>
-                                            <p class="counter__title">Five Star Ratings</p>
+                                            <p class="counter__title">{{ 'global.five_star_ratings'|trans }}</p>
                                         </div>
                                     </div>
                                 </div>

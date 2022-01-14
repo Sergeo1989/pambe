@@ -140,6 +140,19 @@ description: Our custom pambe JS
 
     /** Add professional profile */
     $(document).ready(function() {
+        $('#need_form_documentFile_file').MultiFile({ 
+            accept: 'gif|jpg|png|jpeg|pdf|doc|docx',
+            onFileSelect: function(element, value, master_element) {
+                console.log(master_element);
+            },
+            onFileDuplicate: function(element, value, master_element) {
+                alert("Ce fichier a déjà été sélectionnée !");
+            },
+        });
+    });
+
+    /** Add professional profile */
+    $(document).ready(function() {
         $('#information_form_profil_imageFile_file').MultiFile({ 
             accept: 'gif|jpg|png|jpeg',
             onFileSelect: function(element, value, master_element) {

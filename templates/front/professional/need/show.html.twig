@@ -1,0 +1,89 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Modification - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Modification</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Modification</li>
+        {% endblock %}
+    {% endembed %}
+    <section class="add-listing-area section-padding">
+        <div class="container">
+            <div class="row"> 
+                <div class="col-lg-10 mx-auto">
+                    {% for message in app.flashes('message') %}
+                        <div class="alert alert-success">{{ message}}</div>
+                    {% endfor %}
+                    <div class="block-card mb-3">
+                        <div class="block-card-header">
+                            <h2 class="widget-title">{{ need.title }}</h2>
+                            <div class="stroke-shape"></div>
+                        </div>
+                        <div class="block-card-body">
+                            <p><i class="la la-user text-color-2 mr-2 font-size-18"></i> Editer par : {{ need.user }}</p><br/>
+                            <p><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Créé le : {{ need.dateAdd|format_date() }}</p><br/>
+                            {{ need.description }}
+                            {% if need.document is not null %}
+                                <p><br/>
+                                    <a class="theme-btn gradient-btn" target="_blank" href="{{ vich_uploader_asset(need, 'documentFile') }}">
+                                        Download help file
+                                    </a>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if is_granted('edit', app.user) and is_granted('edit', need) == false and need.isAlreadyProposed(app.user.professional) == false %}
+                        <div class="block-card mb-4">
+                            <div class="block-card-header">
+                                <h2 class="widget-title">Entrez une proposition</h2>
+                                <div class="stroke-shape"></div>
+                            </div>
+                            <div class="block-card-body">
+                                {{ form_start(proposalForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.price'|trans }}</label>
+                                            <div class="form-group error">
+                                                {{ form_widget(proposalForm.price, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_price'|trans} }) }}
+                                                {{ form_errors(proposalForm.price) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.note'|trans }}</label>
+                                            <div class="form-group error">
+                                                {{ form_widget(proposalForm.note, {'required': false, 'attr': {'class': 'message-control form-control', 'placeholder': 'Entrez une note'} }) }}
+                                                {{ form_errors(proposalForm.note) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="submit-wrap pt-3">
+                                        <div class="btn-box mt-3 ml-3">
+                                            {{ form_widget(proposalForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                                        </div>
+                                    </div>
+                                {{ form_end(proposalForm) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {% embed "front/partials/javascripts.html.twig" %}
+        {% block javascripts_content %}
+            {{ parent() }}
+            <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
