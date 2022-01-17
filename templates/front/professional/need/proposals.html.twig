@@ -1,0 +1,75 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Propositions - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Propositions</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Propositions</li>
+        {% endblock %}
+    {% endembed %}
+    <section class="add-listing-area section-padding">
+        <div class="container">
+            <div class="row"> 
+                <div class="col-lg-10 mx-auto">
+                    <div class="block-card mb-3">
+                        {% set cpt = 0 %}
+                        <div class="block-card-header">
+                            <h2 class="widget-title">{{ need.title }}</h2>
+                        </div>
+                        <div class="block-card-body">
+                            <div class="accordion-item" id="accordion">
+                                {% for proposal in need.proposals %}
+                                    {% if proposal.nature is not constant('App\\Entity\\Proposal::REFUSED') %}
+                                        {% set cpt = cpt + 1 %}
+                                        <div class="card">
+                                            <div class="card-header" id="heading{{ proposal.id }}">
+                                                <h5>
+                                                    <button class="btn btn-link d-flex align-items-center justify-content-between" data-toggle="collapse" data-target="#collapse{{ proposal.id }}" aria-expanded="{{ loop.first ? "true" : "false" }}" aria-controls="collapse{{ proposal.id }}">
+                                                        Proposition #{{ cpt }}
+                                                        <i class="la la-minus"></i>
+                                                        <i class="la la-plus"></i>
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div id="collapse{{ proposal.id }}" class="collapse {{ loop.first ? 'show' : ''}}" aria-labelledby="heading{{ proposal.id }}" data-parent="#accordion">
+                                                <div class="card-body row">
+                                                    <div class="list col-lg-12"><i class="la la-user text-color-2 mr-2 font-size-18"></i> Editer par : {{ proposal.professional.user }}</div>
+                                                    <div class="list col-lg-12"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Dépuis le : {{ proposal.dateAdd|format_date() }}</div>
+                                                    <div class="list col-lg-12"><i class="la la-money text-color-2 mr-2 font-size-18"></i> Prix estimatif : {{ proposal.price }} FCFA</div>
+                                                    <div class="list col-lg-12"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Délai : {{ proposal.delay }} jours</div>
+                                                    <div class="list col-lg-12 expdesc">{{ proposal.note }}</div>
+                                                    <div class="list col-lg-12 control">
+                                                        {% if proposal.nature is not constant('App\\Entity\\Proposal::ACCEPTED') %}
+                                                            <a class="btn btn-success" onclick="return confirm('Etes-vous sûr ?')" href="{{ path('app_professional_proposal_nature', {proposal: proposal.id, need: need.id, nature: 'accepted'}) }}">Accepter</a>
+                                                            <a class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')" href="{{ path('app_professional_proposal_nature', {proposal: proposal.id, need: need.id, nature: 'refused'}) }}">Refuser</a>
+                                                        {% endif %}
+                                                        <a class="btn btn-info" target="_blank" href="{{ path('app_professional_show', {slug: proposal.professional.slug}) }}">Voir le profil</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {% embed "front/partials/javascripts.html.twig" %}
+        {% block javascripts_content %}
+            {{ parent() }}
+            <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

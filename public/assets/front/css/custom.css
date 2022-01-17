@@ -381,3 +381,7 @@ description: Our custom pambe CSS
     margin-top: 30px;
     z-index: 1;
 }
+.card-body .control{
+    margin-top: 15px;
+    text-align: center;
+}

@@ -1,16 +1,16 @@
 {% extends 'front/layout.html.twig' %}
 
-{% block title %}{{ 'Modification - '~ parent() }}{% endblock %}
+{% block title %}{{ need.title ~' - '~ parent() }}{% endblock %}
 
 {% block content %}
     {% embed "front/partials/breadcrumb.html.twig" %}
         {% block breadcrumb_heading %}
             <div class="section-heading">
-                <h2 class="sec__title text-white font-size-40 mb-0">Modification</h2>
+                <h2 class="sec__title text-white font-size-40 mb-0">{{ need.title }}</h2>
             </div>
         {% endblock %}
         {% block breadcrumb_links %}
-            <li>Modification</li>
+            <li>{{ need.title }}</li>
         {% endblock %}
     {% endembed %}
     <section class="add-listing-area section-padding">
@@ -22,13 +22,17 @@
                     {% endfor %}
                     <div class="block-card mb-3">
                         <div class="block-card-header">
-                            <h2 class="widget-title">{{ need.title }}</h2>
-                            <div class="stroke-shape"></div>
+                            <h2 class="widget-title"> <span class="float-right">Catégorie : {{ need.category ? need.category.name|title : 'inconnue' }}</span></h2>
                         </div>
                         <div class="block-card-body">
-                            <p><i class="la la-user text-color-2 mr-2 font-size-18"></i> Editer par : {{ need.user }}</p><br/>
-                            <p><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Créé le : {{ need.dateAdd|format_date() }}</p><br/>
-                            {{ need.description }}
+                            <div class="card-body row">
+                                <div class="list col-lg-8"><i class="la la-user text-color-2 mr-2 font-size-18"></i>Auteur : {{ need.user }}</div>
+                                <div class="list col-lg-4"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Publié le : {{ need.dateAdd|format_date() }}</div>
+                                <div class="list col-lg-8"><i class="la la-money text-color-2 mr-2 font-size-18"></i>Budget : {{ need.budget ?? 'inconnu' }} {{ need.budget is null ?: 'FCFA' }}</div>
+                                <div class="list col-lg-4"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Délai : {{ need.delay }} jours</div>
+                                <div class="list col-lg-12 expdesc">{{ need.description }}</div>
+                                <div class="list badge col-lg-12"><a href="javascript:void(0)">Propositions <span>({{ need.proposals|length }})</span></a></div>
+                            </div>
                             {% if need.document is not null %}
                                 <p><br/>
                                     <a class="theme-btn gradient-btn" target="_blank" href="{{ vich_uploader_asset(need, 'documentFile') }}">
@@ -48,9 +52,9 @@
                                 {{ form_start(proposalForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
                                     <div class="col-lg-12">
                                         <div class="input-box">
-                                            <label class="label-text">{{ 'global.price'|trans }}</label>
+                                            <label class="label-text">Tarif</label>
                                             <div class="form-group error">
-                                                {{ form_widget(proposalForm.price, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_price'|trans} }) }}
+                                                {{ form_widget(proposalForm.price, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_price'|trans ~ ' (FCFA)'} }) }}
                                                 {{ form_errors(proposalForm.price) }}
                                             </div>
                                         </div>
@@ -61,6 +65,15 @@
                                             <div class="form-group error">
                                                 {{ form_widget(proposalForm.note, {'required': false, 'attr': {'class': 'message-control form-control', 'placeholder': 'Entrez une note'} }) }}
                                                 {{ form_errors(proposalForm.note) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">Délai</label>
+                                            <div class="form-group error">
+                                                {{ form_widget(proposalForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un délai'} }) }}
+                                                {{ form_errors(proposalForm.delay) }}
                                             </div>
                                         </div>
                                     </div>

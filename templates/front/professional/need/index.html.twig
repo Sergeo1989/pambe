@@ -1,78 +1,42 @@
-{% extends 'front/layout.html.twig' %}
+{% extends 'front/professional/layout.html.twig' %}
 
-{% block title %}{{ 'Modification - '~ parent() }}{% endblock %}
+{% block title %}{{ 'Besoins - '~ parent() }}{% endblock %} 
 
-{% block content %}
+{% block pro_breadcrumb %}
     {% embed "front/partials/breadcrumb.html.twig" %}
         {% block breadcrumb_heading %}
             <div class="section-heading">
-                <h2 class="sec__title text-white font-size-40 mb-0">Modification</h2>
+                <h2 class="sec__title text-white font-size-40 mb-0">Besoins</h2>
             </div>
         {% endblock %}
         {% block breadcrumb_links %}
-            <li>Modification</li>
+            <li>Besoins</li>
         {% endblock %}
     {% endembed %}
-    <section class="add-listing-area section-padding">
-        <div class="container">
-            <div class="row"> 
-                <div class="col-lg-10 mx-auto">
-                    {% for message in app.flashes('message') %}
-                        <div class="alert alert-success">{{ message}}</div>
-                    {% endfor %}
-                    <div class="block-card mb-4">
-                        <div class="block-card-header">
-                            <h2 class="widget-title">Enregistrez un besoin</h2>
-                            <div class="stroke-shape"></div>
-                        </div>
-                        <div class="block-card-body">
-                            {{ form_start(needForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">{{ 'global.title'|trans }}</label>
-                                        <div class="form-group error">
-                                            {{ form_widget(needForm.title, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_title.'|trans ~'..'} }) }}
-                                            {{ form_errors(needForm.title) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">{{ 'global.description'|trans }}</label>
-                                        <div class="form-group error">
-                                            {{ form_widget(needForm.description, {'required': false, 'attr': {'class': 'message-control form-control', 'placeholder': 'Entrez une description de votre besoin'} }) }}
-                                            {{ form_errors(needForm.description) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">Fichier(optionnel)</label>
-                                        <div class="file-upload-wrap file-upload-wrap-2 profile need">
-                                            {{ form_widget(needForm.documentFile, {'multiple': true, 'attr': {'class': 'file-upload-input', 'maxlength': '1'} }) }}
-                                            <span class="file-upload-text"><i class="la la-photo mr-2"></i>{{ 'global.choose_a_file'|trans }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="submit-wrap pt-3">
-                                    <div class="btn-box mt-3 ml-3">
-                                        {{ form_widget(needForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
-                                    </div>
-                                </div>
-                            {{ form_end(needForm) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 {% endblock %}
 
-{% block javascripts %}
-    {% embed "front/partials/javascripts.html.twig" %}
-        {% block javascripts_content %}
-            {{ parent() }}
-            <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
-        {% endblock %}
-    {% endembed %}
+{% block pro_content %}
+    <section class="category-area section--padding">
+        <div class="container">
+            {% if needs|length > 0 %}
+                <div class="row">
+                    {% for need in needs %}
+                        {% include "front/partials/professional/need.html.twig" with {need: need} %}
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 pt-3 text-center">
+                        {% do needs.setPageRange(4) %}
+                        {{ knp_pagination_render(needs, 'front/partials/pagination.html.twig') }}   
+                    </div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-lg-12 pt-3 text-center">
+                        Aucune donnée à afficher pour le moment, merci de bien vouloir revenir plutard.  
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
 {% endblock %}

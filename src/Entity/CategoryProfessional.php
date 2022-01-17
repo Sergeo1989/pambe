@@ -106,12 +106,18 @@ class CategoryProfessional
      */
     private $menu;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Need::class, mappedBy="category")
+     */
+    private $needs;
+
 
     public function __construct()
     {
         $this->categoryProfessionalProfessionals = new ArrayCollection();
         $this->professionals = new ArrayCollection();
         $this->all_professionals = new ArrayCollection();
+        $this->needs = new ArrayCollection();
     }
 
     public function __toString()
@@ -323,6 +329,36 @@ class CategoryProfessional
     public function setMenu(?Menu $menu): self
     {
         $this->menu = $menu;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Need[]
+     */
+    public function getNeeds(): Collection
+    {
+        return $this->needs;
+    }
+
+    public function addNeed(Need $need): self
+    {
+        if (!$this->needs->contains($need)) {
+            $this->needs[] = $need;
+            $need->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNeed(Need $need): self
+    {
+        if ($this->needs->removeElement($need)) {
+            // set the owning side to null (unless already changed)
+            if ($need->getCategory() === $this) {
+                $need->setCategory(null);
+            }
+        }
 
         return $this;
     }

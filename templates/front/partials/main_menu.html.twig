@@ -28,12 +28,7 @@
             {% endfor %}  
             {% if is_granted('edit', app.user) and needs()|length > 0 %}
                 <li>
-                    <a href="#">Besoins <span class="la la-angle-down"></span></a>
-                    <ul class="dropdown-menu-item need">
-                    {% for need in needs() %}
-                        <li><a title="{{ need.title }}" href="{{ is_granted('edit', need) ? '#' : path('app_professional_need_show', {id: need.id}) }}">{{ need.title|u.truncate(30, '...', true) }} <span class="ribbon">Soumettez une proposition</span></a></li>
-                    {% endfor %}
-                    </ul>
+                    <a href="{{ path('app_professional_need') }}">Besoins</span></a>
                 </li>
             {% endif %}
         </ul>

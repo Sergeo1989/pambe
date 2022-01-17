@@ -1,0 +1,11 @@
+<div class="col-lg-4 responsive-column">
+    <div class="card-item">
+        <div class="card-content">
+            <a href="javascript:void(0)" class="pill font-size-14 font-weight-semi-bold radius-round">{{ need.category ? need.category.name|title : 'inconnue' }}</a>
+            <h4 class="card-title pt-3"><a href="{{ path('app_professional_need_show', {id: need.id}) }}">{{ need.title|u.truncate(35, '...', true) }}</a></h4>
+            <p class="card-sub pb-0">Budget : {{ need.budget ?? 'inconnu' }} {{ need.budget is null ?: 'FCFA' }}</p>
+            <p class="card-sub pb-3">Publié le {{ need.dateAdd|format_date() }}</p>
+            <a href="{{ path('app_professional_need_show', {id: need.id}) }}" class="btn-text">Voir plus<i class="la la-arrow-right icon"></i></a>
+        </div>
+    </div>
+</div>

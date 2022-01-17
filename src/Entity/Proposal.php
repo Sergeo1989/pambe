@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Proposal
 {
+    public const ACCEPTED = 1;
+    public const REFUSED = 0;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -52,6 +55,16 @@ class Proposal
      * @ORM\ManyToOne(targetEntity=Need::class, inversedBy="proposals")
      */
     private $need;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $delay;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nature;
 
     public function getId(): ?int
     {
@@ -150,5 +163,29 @@ class Proposal
         $this->status = true;
         $this->date_add = new \DateTime("now");
         $this->date_upd = new \DateTime("now");
+    }
+
+    public function getDelay(): ?int
+    {
+        return $this->delay;
+    }
+
+    public function setDelay(?int $delay): self
+    {
+        $this->delay = $delay;
+
+        return $this;
+    }
+
+    public function getNature(): ?int
+    {
+        return $this->nature;
+    }
+
+    public function setNature(?int $nature): self
+    {
+        $this->nature = $nature;
+
+        return $this;
     }
 }

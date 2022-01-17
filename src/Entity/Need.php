@@ -70,6 +70,21 @@ class Need
      */
     private $proposals;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $delay;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $budget;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=CategoryProfessional::class, inversedBy="needs")
+     */
+    private $category;
+
     public function __construct()
     {
         $this->proposals = new ArrayCollection();
@@ -223,5 +238,41 @@ class Need
         foreach ($this->proposals as $proposal) 
             if ($proposal->getProfessional() === $professional) return true;
         return false;
+    }
+
+    public function getDelay(): ?int
+    {
+        return $this->delay;
+    }
+
+    public function setDelay(?int $delay): self
+    {
+        $this->delay = $delay;
+
+        return $this;
+    }
+
+    public function getBudget(): ?float
+    {
+        return $this->budget;
+    }
+
+    public function setBudget(?float $budget): self
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    public function getCategory(): ?CategoryProfessional
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?CategoryProfessional $category): self
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }
