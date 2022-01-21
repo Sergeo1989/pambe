@@ -26,12 +26,12 @@
                         </div>
                         <div class="block-card-body">
                             <div class="card-body row">
-                                <div class="list col-lg-8"><i class="la la-user text-color-2 mr-2 font-size-18"></i>Auteur : {{ need.user }}</div>
+                                <div class="list col-lg-8"><i class="la la-tag text-color-2 mr-2 font-size-18"></i>ID : #{{ need.id|strpad(5, '0') }}</div>
                                 <div class="list col-lg-4"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Publié le : {{ need.dateAdd|format_date() }}</div>
                                 <div class="list col-lg-8"><i class="la la-money text-color-2 mr-2 font-size-18"></i>Budget : {{ need.budget ?? 'inconnu' }} {{ need.budget is null ?: 'FCFA' }}</div>
                                 <div class="list col-lg-4"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Délai : {{ need.delay }} jours</div>
                                 <div class="list col-lg-12 expdesc">{{ need.description }}</div>
-                                <div class="list badge col-lg-12"><a href="javascript:void(0)">Propositions <span>({{ need.proposals|length }})</span></a></div>
+                                <div class="list badge col-lg-12"><a href="javascript:void(0)">Propositions <span>({{ need.proposals|filter((proposal) => proposal.nature != constant('App\\Entity\\Proposal::REFUSED'))|length }})</span></a></div>
                             </div>
                             {% if need.document is not null %}
                                 <p><br/>

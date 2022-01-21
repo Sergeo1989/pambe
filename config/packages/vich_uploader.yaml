@@ -8,6 +8,12 @@ vich_uploader:
             namer: Vich\UploaderBundle\Naming\UniqidNamer
             delete_on_update: true
             delete_on_remove: true
+        user_profile:
+            uri_prefix: '%app.path.user_profile%'
+            upload_destination: '%kernel.project_dir%/public%app.path.user_profile%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            delete_on_update: true
+            delete_on_remove: true
         professional_images:
             uri_prefix: '%app.path.professional_images%'
             upload_destination: '%kernel.project_dir%/public%app.path.professional_images%'

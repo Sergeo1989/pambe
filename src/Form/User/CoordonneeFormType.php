@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Form\Professional\Edit;
+namespace App\Form\User;
 
 use App\Entity\Country;
-use App\Entity\Professional;
 use App\Entity\Region;
-use App\Form\Professional\Coordonnee\UserFormType;
-use App\Form\SocialFormType;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -21,17 +19,17 @@ class CoordonneeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('user', UserFormType::class)
-                ->add('website', TextType::class)
-                ->add('country', EntityType::class, [
-                    'class' => Country::class,
-                    'required' => false
-                ])
-                ->add('city')
-                ->add('socialUrl', SocialFormType::class)
-                ->add('save', SubmitType::class)
-                ->add('saveAndContinue', SubmitType::class)
-        ;
+        $builder
+            ->add('address', TextType::class)
+            ->add('phone', TextType::class) 
+            ->add('website', TextType::class)
+            ->add('country', EntityType::class, [
+                'class' => Country::class,
+                'required' => false
+            ])
+            ->add('city')
+            ->add('save', SubmitType::class); 
+
         $builder->addEventListener(
             FormEvents::POST_SET_DATA, function(FormEvent $event)
             {
@@ -72,7 +70,7 @@ class CoordonneeFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Professional::class,
+            'data_class' => User::class
         ]);
     }
 }

@@ -1,0 +1,53 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Formations - '~ parent() }}{% endblock %}
+
+{% import "front/macro/professional/qualification.html.twig" as modal %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Formations</h2>
+            </div>
+            <div class="block-card-body">
+                <div class="block-card mb-3">
+                    <div class="block-card-header">
+                        <h2 class="widget-title">Qualifications</h2>
+                        <a href="#" data-toggle="modal" data-target="#qualificationModalAdd" class="theme-btn gradient-btn float-right add-qualification">Ajouter</a>
+                        <div class="stroke-shape"></div>
+                    </div>
+                    <div id="qualification" class="block-card-body">
+                        {% for qualification in app.user.professional.qualifications|reverse(true) %}
+                            {% if qualification.type is constant('App\\Entity\\Qualification::QUALIFICATION') %}
+                                <div id="qualification_{{ qualification.id }}" class="card">
+                                    {% include "front/partials/professional/edit/qualification.html.twig" with {qualification: qualification} %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>     
+                </div>
+                <div class="block-card mb-3">
+                    <div class="block-card-header">
+                        <h2 class="widget-title">Certifications</h2>
+                        <a href="#" data-toggle="modal" data-target="#certificationModalAdd" class="theme-btn gradient-btn float-right add-certification">{{ 'global.add'|trans }}</a>
+                        <div class="stroke-shape"></div>
+                    </div>
+                    <div id="certification" class="block-card-body">
+                        {% for qualification in app.user.professional.qualifications|reverse(true) %}
+                            {% if qualification.type is constant('App\\Entity\\Qualification::CERTIFICATE') %}
+                                <div id="certification_{{ qualification.id }}" class="card">
+                                    {% include "front/partials/professional/edit/qualification.html.twig" with {qualification: qualification} %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ modal.render_modal('add','qualification', 'Qualifications') }}
+    {{ modal.render_modal('add', 'certification', 'Certifications') }}
+    {{ modal.render_modal('edit','qualification', 'Qualifications') }}
+    {{ modal.render_modal('edit', 'certification', 'Certifications') }}
+{% endblock %}

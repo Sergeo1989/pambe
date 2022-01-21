@@ -142,7 +142,7 @@
                             </div>
                             {% if needs()|length > 0 %}
                                 <div class="row mt-5">
-                                {% for need in needs()|reverse(true)|slice(0, 9) %}
+                                {% for need in needs()|slice(0, 9) %}
                                     {% include "front/partials/professional/need.html.twig" with {need: need} %}
                                 {% endfor %}
                                 </div>

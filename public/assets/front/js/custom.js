@@ -117,6 +117,11 @@ description: Our custom pambe JS
         $("#coordonnee_form_region").chosen({no_results_text: "Oops, Aucun résultat !"}); 
     });
 
+    $(document).ready(function() {
+        $("#user_form_region").chosen({no_results_text: "Oops, Aucun résultat !"}); 
+    });
+
+
     /** Add or remove professional like */
     $(document).on('click', 'a.js-like', function(event) {
         event.preventDefault(); 
@@ -154,6 +159,19 @@ description: Our custom pambe JS
     /** Add professional profile */
     $(document).ready(function() {
         $('#information_form_profil_imageFile_file').MultiFile({ 
+            accept: 'gif|jpg|png|jpeg',
+            onFileSelect: function(element, value, master_element) {
+                console.log(master_element);
+            },
+            onFileDuplicate: function(element, value, master_element) {
+                alert("Cette image a déjà été sélectionnée !");
+            },
+        });
+    });
+
+    /** Add user profile */
+    $(document).ready(function() {
+        $('#user_form_profile_imageFile_file').MultiFile({ 
             accept: 'gif|jpg|png|jpeg',
             onFileSelect: function(element, value, master_element) {
                 console.log(master_element);

@@ -1,0 +1,54 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Propositions - '~ parent() }}{% endblock %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Liste de mes propositions</h2>
+            </div>
+            <div class="block-card-body">
+               {% for message in app.flashes("message") %}
+                    <div class="alert alert-success font-size-15 text-color" role="alert">
+                        <span class="font-weight-semi-bold">{{ message }}</span>
+                    </div>
+                {% endfor %}
+                <div class="my-table table-responsive">
+                    <table class="table align-items-center table-flush mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>besoin</th>
+                                <th>tarif</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for proposal in proposals %}
+                            <tr>
+                                <td>#{{ proposal.id|strpad(5, '0') }}</td>
+                                <td class="text-color">{{ proposal.need.title }}</td>
+                                <td class="text-danger">{{ proposal.price ?? 'inconnu' }} {{ proposal.price is null ?: '<sup>FCFA</sup>' }}</td>
+                                {% if proposal.nature is constant('App\\Entity\\Proposal::PENDING') %}
+                                    <td class="text-primary">En attente</td>
+                                {% elseif proposal.nature is constant('App\\Entity\\Proposal::ACCEPTED') %}
+                                    <td class="text-success">Accepté</td>
+                                {% elseif proposal.nature is constant('App\\Entity\\Proposal::REFUSED') %}
+                                    <td class="text-danger">Refusé</td>
+                                {% endif %}
+                                <td>
+                                    <a title="Visualiser" href="{{ path('app_account_professional_proposal_show', {id: proposal.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
+                                    <a title="Modifier" href="{{ path('app_account_professional_proposal_edit', {id: proposal.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
+                                    <a title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette proposaition ?')" href="{{ path('app_account_professional_proposal_delete', {id: proposal.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

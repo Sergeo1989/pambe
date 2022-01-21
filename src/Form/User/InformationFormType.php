@@ -3,6 +3,7 @@
 namespace App\Form\User;
 
 use App\Entity\User;
+use App\Form\ProfessionalImageFormType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,12 +14,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserFormType extends AbstractType
+class InformationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('profile', ProfessionalImageFormType::class)
             ->add('email', EmailType::class, [
+                'required' => false,
                 'constraints' => [
                     new Email([
                         'message' => 'L\'e-mail {{ value }} n\'est pas valide.',
@@ -41,22 +44,6 @@ class UserFormType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Le nom ne doit pas être vide.',
-                    ])
-                ]
-            ])
-            ->add('address', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'L\'adresse ne doit pas être vide.',
-                    ])
-                ]
-            ])
-            ->add('phone', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Le téléphone ne doit pas être vide.',
                     ])
                 ]
             ])

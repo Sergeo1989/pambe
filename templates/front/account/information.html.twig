@@ -1,0 +1,85 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Informations supplémentaires - '~ parent() }}{% endblock %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Informations supplémentaires</h2>
+            </div>
+            <div class="block-card-body">
+                {% for message in app.flashes("success") %}
+                    <div class="alert alert-success alert-dismissible font-size-15 text-color" role="alert">
+                        <span class="font-weight-semi-bold">{{ message }}</span>
+                    </div>
+                {% endfor %}
+                {{ form_start(informationForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                    <div class="col-lg-12">
+                        <div class="input-box">
+                            <label class="label-text">{{ 'global.status'|trans }}</label>
+                            <div class="form-group">
+                                {{ form_widget(informationForm.profile, {'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-lg-12">
+                        <div class="input-box">
+                            <label class="label-text">{{ 'global.speciality'|trans }}</label>
+                            <div class="form-group user-chosen-select-container">
+                                {{ form_widget(informationForm.skill, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez votre spécialité'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="input-box">
+                            <label class="label-text d-flex align-items-center">{{ 'global.skills'|trans }}</label>
+                            <div class="form-group user-chosen-select-container">
+                                {{ form_widget(informationForm.category_professionals, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez vos compétences'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="input-box">
+                            <label class="label-text d-flex align-items-center">{{ 'global.languages'|trans }}</label>
+                            <div class="form-group user-chosen-select-container">
+                                {{ form_widget(informationForm.languages, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez vos langues'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="input-box">
+                            <label class="label-text">{{ 'global.short_description'|trans }}</label>
+                            <div class="form-group">
+                                {{ form_widget(informationForm.short_description, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="input-box">
+                            <label class="label-text">{{ 'global.long_description'|trans }}</label>
+                            <div class="form-group">
+                                {{ form_widget(informationForm.description, {'required': false, 'attr': {'class': 'message-control form-control'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="input-box">
+                            <label class="label-text">Enregistrez une couverture</label>
+                            <div class="file-upload-wrap file-upload-wrap-2 cover">
+                                {{ form_widget(informationForm.cover.imageFile, {'multiple': true, 'attr': {'class': 'file-upload-input with-preview', 'maxlength': '1'} }) }}
+                                <span class="file-upload-text"><i class="la la-photo mr-2"></i>{{ 'global.choose_a_file'|trans }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-wrap pt-3">
+                        <div class="btn-box mt-3 ml-3">
+                            {{ form_widget(informationForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                            {{ form_widget(informationForm.saveAndContinue, {'label': 'global.save_and_continue'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                        </div>
+                    </div>
+                {{ form_end(informationForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

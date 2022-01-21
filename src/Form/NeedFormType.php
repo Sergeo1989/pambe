@@ -65,9 +65,12 @@ class NeedFormType extends AbstractType
                 ->add('documentFile', VichFileType::class, [
                     'required' => false,
                     'allow_delete' => true,
-                    'delete_label' => 'Supprimer l\'image',
+                    'delete_label' => 'Supprimer le fichier ?',
                     'download_uri' => true,
-                    'download_label' => true,
+                    'download_label' => function (Need $need) {
+                        return 'Télécharger : ' . $need->getTitle();
+                    }
+                ,
                     'asset_helper' => true,
                 ])
                 ->add('save', SubmitType::class);

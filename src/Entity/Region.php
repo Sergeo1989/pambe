@@ -39,10 +39,16 @@ class Region
      */
     private $professionals;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="region")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->cities = new ArrayCollection();
         $this->professionals = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function __toString()
@@ -133,6 +139,36 @@ class Region
             // set the owning side to null (unless already changed)
             if ($professional->getRegion() === $this) {
                 $professional->setRegion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setRegion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getRegion() === $this) {
+                $user->setRegion(null);
             }
         }
 

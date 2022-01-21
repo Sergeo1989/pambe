@@ -16,6 +16,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Need
 {
+    public const DISABLED = 0;
+    public const PENDING = 1;
+    public const CONFIRMED = 2;
+    public const REJECTED = 3;
+    public const PUBLISHED = 4;
+    public const EXPIRED = 5;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -85,9 +92,19 @@ class Need
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nature;
+
     public function __construct()
     {
         $this->proposals = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -187,7 +204,16 @@ class Need
     public function onPrePersist()
     {
         $this->status = true;
+        $this->nature = self::PENDING;
         $this->date_add = new \DateTime("now");
+        $this->date_upd = new \DateTime("now");
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
         $this->date_upd = new \DateTime("now");
     }
 
@@ -272,6 +298,18 @@ class Need
     public function setCategory(?CategoryProfessional $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getNature(): ?int
+    {
+        return $this->nature;
+    }
+
+    public function setNature(?int $nature): self
+    {
+        $this->nature = $nature;
 
         return $this;
     }

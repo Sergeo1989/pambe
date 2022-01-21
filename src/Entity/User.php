@@ -104,6 +104,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $needs;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ProfessionalImage::class, cascade={"persist", "remove"})
+     */
+    private $profile;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="users")
+     */
+    private $country;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="users")
+     */
+    private $region;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="users")
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $website;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -428,6 +453,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $need->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProfile(): ?ProfessionalImage
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?ProfessionalImage $profile): self
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\CategoryProfessional;
+use App\Entity\Need;
 use App\Entity\Professional;
 use App\Repository\CategoryProfessionalRepository;
 use App\Repository\NeedRepository;
@@ -94,7 +95,7 @@ class ProfessionalService
 
     public function getAllNeed()
     {
-        return $this->needRepo->findBy(['status' => true]);
+        return $this->needRepo->findBy(['status' => true, 'nature' => Need::PUBLISHED], ['date_add' => 'DESC']);
     }
 
     public function addView(Professional $professional): void{

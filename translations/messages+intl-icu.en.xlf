@@ -609,6 +609,18 @@
         <source>global.note</source>
         <target>Note</target>
       </trans-unit>
+      <trans-unit id="nKuBQhs" resname="global.validation_of_proposal">
+        <source>global.validation_of_proposal</source>
+        <target>Validation of proposal</target>
+      </trans-unit>
+      <trans-unit id="Gu6E4Ll" resname="global.unknown">
+        <source>global.unknown</source>
+        <target>unknown</target>
+      </trans-unit>
+      <trans-unit id="hyfDwOH" resname="global.see_profile">
+        <source>global.see_profile</source>
+        <target>See profile</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

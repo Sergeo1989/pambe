@@ -1,0 +1,22 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Proposition - '~ parent() }}{% endblock %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Proposition #{{ proposal.id|strpad(5, '0') }}</h2>
+            </div>
+            <div class="block-card-body">
+                <div class="card-body row">
+                    <div class="list col-lg-6"><i class="la la-tag text-color-2 mr-2 font-size-18"></i>ID : #{{ proposal.id|strpad(5, '0') }}</div>
+                    <div class="list col-lg-6"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Publié le : {{ proposal.dateAdd|format_date() }}</div>
+                    <div class="list col-lg-6"><i class="la la-money text-color-2 mr-2 font-size-18"></i>Tarif : {{ proposal.price ?? 'inconnu' }} {{ proposal.price is null ?: 'FCFA' }}</div>
+                    <div class="list col-lg-6"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Délai : {{ proposal.delay }} jours</div>
+                    <div class="list col-lg-12 expdesc">{{ proposal.note }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

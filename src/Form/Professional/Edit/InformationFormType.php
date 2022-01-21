@@ -4,7 +4,6 @@ namespace App\Form\Professional\Edit;
 
 use App\Entity\Professional;
 use App\Entity\Profile;
-use App\Form\Professional\Information\UserFormType;
 use App\Form\ProfessionalImageFormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,9 +21,7 @@ class InformationFormType extends AbstractType
                     'expanded' => true,
                     'multiple' => false
                 ])
-                ->add('profil', ProfessionalImageFormType::class)
                 ->add('cover', ProfessionalImageFormType::class)
-                ->add('user', UserFormType::class)
                 ->add('skill')
                 ->add('category_professionals')
                 ->add('languages')

@@ -1,0 +1,53 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Services - '~ parent() }}{% endblock %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Services</h2>
+            </div>
+            <div class="block-card-body">
+                <div class="block-card mb-3">
+                    <div class="block-card-header">
+                        <h2 class="widget-title">{{ 'global.your_services'|trans }}</h2>
+                        <a href="#" data-toggle="modal" data-target="#serviceModalAdd" class="theme-btn gradient-btn float-right add-experience">{{ 'global.add'|trans }}</a>
+                        <div class="stroke-shape"></div>
+                    </div>
+                    <div class="block-card-body">
+                        <div id="service" class="row">
+                            {% for service in app.user.professional.services|reverse(true) -%}
+                                {% set image = service.thumbnail is not null ? vich_uploader_asset(service, 'thumbnailFile') : asset('assets/front/images/img1.jpg') %}
+                                <div class="col-lg-4 responsive-column service_{{ service.id }}">
+                                    <div class="mini-list-card">
+                                        <div class="mini-list-img">
+                                            <a href="{{ vich_uploader_asset(service, 'thumbnailFile')|default('#') }}" class="d-block" data-fancybox="gallery">
+                                                <img src="{{ image }}" alt="{{ service.title|e }}">
+                                            </a>
+                                        </div>
+                                        <div class="mini-list-body">
+                                            <h4 class="mini-list-title"><a href="javascript:void(0)">{{ service.title|e }}</a></h4>
+                                            <div class="d-flex align-items-center">
+                                                <div class="font-size-12">
+                                                    <a class="link-edit" data-id="{{ service.id }}" href="#">{{ 'global.edit'|trans }}</a>
+                                                </div>
+                                            </div>
+                                            <div class="star-rating-wrap d-flex align-items-center">
+                                                <div class="font-size-12">
+                                                    <a class="link-remove" data-id="{{ service.id }}" href="#">{{ 'global.delete'|trans }}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {%- endfor %}
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+{% include "front/modal/professional/service_form.html.twig" with {form: 'add'} %}
+{% include "front/modal/professional/service_form.html.twig" with {form: 'edit'} %}
+{% endblock %}

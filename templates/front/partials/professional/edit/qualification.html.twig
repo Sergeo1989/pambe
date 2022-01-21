@@ -4,7 +4,7 @@
     <div class="list col-lg-6"><i class="la la-hourglass-start text-color-2 mr-2 font-size-18"></i>{{ qualification.startDate|date('d-m-Y') }}</div>
     <div class="list col-lg-6"><i class="la la-hourglass-end text-color-2 mr-2 font-size-18"></i>{{ qualification.endDate|date('d-m-Y') }}</div>
     <div class="list col-lg-12 expdesc">{{ qualification.description }}</div>
-    {% if is_granted('edit', qualification) and (app.request.get('_route') == 'app_professional_training' or app.request.get('_route') == 'app_professional_reference') %}
+    {% if is_granted('edit', qualification) and (app.request.get('_route') == 'app_account_professional_training' or app.request.get('_route') == 'app_account_professional_reference') %}
         <div class="list col-lg-12 form">
             <a class="edit" data-id="{{ qualification.id }}" href="#">{{ 'global.edit'|trans }}</a> | <a class="delete" data-id="{{ qualification.id }}" href="#">{{ 'global.delete'|trans }}</a>
         </div>

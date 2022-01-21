@@ -1,0 +1,35 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Références - '~ parent() }}{% endblock %}
+
+{% import "front/macro/professional/qualification.html.twig" as modal %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Références</h2>
+            </div>
+            <div class="block-card-body">
+                <div class="block-card mb-3">
+                                <div class="block-card-header">
+                                    <h2 class="widget-title">{{ 'global.experience'|trans }}</h2>
+                                    <a href="#" data-toggle="modal" data-target="#experienceModalAdd" class="theme-btn gradient-btn float-right add-experience">{{ 'global.add'|trans }}</a>
+                                    <div class="stroke-shape"></div>
+                                </div>
+                                <div id="experience" class="block-card-body">
+                                {% for qualification in app.user.professional.qualifications|reverse(true) %}
+                                    {% if qualification.type is constant('App\\Entity\\Qualification::EXPERIENCE') %}
+                                        <div id="experience_{{ qualification.id }}" class="card">
+                                            {% include "front/partials/professional/edit/qualification.html.twig" with {qualification: qualification} %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                </div>     
+                            </div>
+            </div>
+        </div>
+    </div>
+    {{ modal.render_modal('add','experience', 'Expériences') }}
+    {{ modal.render_modal('edit','experience', 'Expériences') }}
+{% endblock %}

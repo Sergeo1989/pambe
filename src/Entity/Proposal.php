@@ -11,8 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Proposal
 {
-    public const ACCEPTED = 1;
-    public const REFUSED = 0;
+    public const PENDING = 0;
+    public const ACCEPTED = 2;
+    public const REFUSED = 1;
 
     /**
      * @ORM\Id
@@ -161,6 +162,7 @@ class Proposal
     public function onPrePersist()
     {
         $this->status = true;
+        $this->nature = self::PENDING;
         $this->date_add = new \DateTime("now");
         $this->date_upd = new \DateTime("now");
     }

@@ -8,9 +8,6 @@ use App\Entity\ProfessionalLike;
 use App\Entity\Qualification;
 use App\Entity\Review;
 use App\Entity\Service;
-use App\Form\Professional\Edit\CoordonneeFormType;
-use App\Form\Professional\Edit\GalleryFormType;
-use App\Form\Professional\Edit\InformationFormType;
 use App\Form\ProfessionalFormType;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
@@ -238,100 +235,6 @@ class ProfessionalController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function information(Request $request)
-    { 
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
-        $professional = $this->context->getUser()->getProfessional();
-
-        $form = $this->createForm(InformationFormType::class, $professional);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->context->save($professional);
-
-            $message = $this->translator->trans('global.content_successfully_registered!');
-            $this->addFlash('success', $message);
-
-            if($form->get('saveAndContinue')->isClicked())
-                return $this->redirectToRoute('app_professional_coordonnee');
-            if($form->get('save')->isClicked())
-                return $this->redirectToRoute('app_professional_information');
-        }
-         
-        return $this->render('front/professional/edit/information.html.twig', [
-            'informationForm' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function coordonnee(Request $request)
-    {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
-
-        $professional = $this->context->getUser()->getProfessional();
-        $form = $this->createForm(CoordonneeFormType::class, $professional);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-            $this->context->save($professional);
-
-            $message = $this->translator->trans('global.content_successfully_registered!');
-            $this->addFlash('success', $message);
-            
-            if($form->get('saveAndContinue')->isClicked())
-                return $this->redirectToRoute('app_professional_service');
-            if($form->get('save')->isClicked())
-                return $this->redirectToRoute('app_professional_coordonnee');
-        }
-
-        return $this->render('front/professional/edit/coordonnee.html.twig', [
-            'coordonneeForm' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function gallery(Request $request)
-    {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
-
-        $professional = $this->context->getUser()->getProfessional();
-        $form = $this->createForm(GalleryFormType::class, $professional);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $legend = $form->get("legend")->getData();
-            $gallery = $form->get("gallery")->getData();
-
-            foreach ($gallery as $image) {
-                $proImage = new ProfessionalImage();
-                $proImage->setImageFile($image);
-                $proImage->setLegend($legend);
-                $professional->addGallery($proImage);
-            }
-
-            $this->context->save($professional);
-
-            $this->addFlash('success', 'Contenu enregistré avec succès !');
-            return $this->redirectToRoute('app_professional_gallery');
-        }
-
-        return $this->render('front/professional/edit/gallery.html.twig', [
-            'galleryForm' => $form->createView(),
-        ]);
-    }
-
     public function deleteImage(ProfessionalImage $proImage, Request $request)
     {
         $data = json_decode($request->getContent(), true);
@@ -367,50 +270,6 @@ class ProfessionalController extends AbstractController
             return new JsonResponse(["status" => true, "value" => $this->context->save($proImage)]); 
         }else
             return new JsonResponse(["status" => false]); 
-    }
-
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function service(Request $request)
-    {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
-
-        return $this->render('front/professional/edit/service.html.twig');
-    }
-
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function training(Request $request)
-    {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
-
-        return $this->render('front/professional/edit/training.html.twig');
-    }
-
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function reference(Request $request)
-    {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
-
-        return $this->render('front/professional/edit/reference.html.twig');
-    }
-
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function option(Request $request)
-    {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $this->context->getUser(), $message);
-
-        return $this->render('front/professional/edit/option.html.twig');
     }
 
     public function displayAjax(Request $request)

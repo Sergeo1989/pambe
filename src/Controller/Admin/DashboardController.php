@@ -25,9 +25,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -50,7 +52,7 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Pambe');
     }
 
-   /* public function configureCrud(): Crud
+    public function configureCrud(): Crud
     {
         return Crud::new()
                     ->overrideTemplates([
@@ -81,8 +83,8 @@ class DashboardController extends AbstractDashboardController
                         ->addJsFile('assets/js/pages/dashboard.js')
                         ->addJsFile('assets/js/main.js')
                         ;
-    }*/
-
+    }
+    
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Tableau de bord', 'bi bi-grid-fill');

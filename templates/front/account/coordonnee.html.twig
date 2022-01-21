@@ -1,0 +1,78 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'global.coordonnee'|trans ~' - '~ parent() }}{% endblock %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Coordonnées</h2>
+            </div>
+            <div class="block-card-body">
+                {% for message in app.flashes("message") %}
+                    <div class="alert alert-success alert-dismissible font-size-15 text-color" role="alert">
+                        <span class="font-weight-semi-bold">{{ message }}</span>
+                    </div>
+                {% endfor %}
+                {{ form_start(userForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                <div class="col-lg-6">
+                    <div class="input-box">
+                        <label class="label-text">{{ 'global.address'|trans }}</label>
+                        <div class="form-group">
+                            <span class="la la-map-marker form-icon"></span>
+                            {{ form_widget(userForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Entrer une adresse'} }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="input-box">
+                        <label class="label-text">{{ 'global.website'|trans }}</label>
+                        <div class="form-group">
+                            <span class="la la-globe form-icon"></span>
+                            {{ form_widget(userForm.website, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrer votre site web'} }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="input-box">
+                        <label class="label-text">{{ 'global.country'|trans }}</label>
+                        <div class="form-group user-chosen-select-container">
+                            {{ form_widget(userForm.country, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Sélectionnez un pays'} }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="input-box">
+                        <label class="label-text">{{ 'global.region'|trans }}</label>
+                        <div class="form-group user-chosen-select-container">
+                            {{ form_widget(userForm.region) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="input-box">
+                        <label class="label-text">{{ 'global.city'|trans }}</label>
+                        <div class="form-group user-chosen-select-container">
+                            {{ form_widget(userForm.city, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Sélectionnez une ville'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="input-box">
+                            <label class="label-text">{{ 'global.phone'|trans }}</label>
+                            <div class="form-group">
+                                <span class="la la-phone form-icon"></span>
+                                {{ form_widget(userForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Entrer un numéro de téléphone'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-wrap pt-3">
+                        <div class="btn-box mt-3 ml-3">
+                            {{ form_widget(userForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                        </div>
+                    </div>
+                {{ form_end(userForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

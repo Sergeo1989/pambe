@@ -1,0 +1,58 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Options - '~ parent() }}{% endblock %}
+
+{% import "front/macro/professional/qualification.html.twig" as modal %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Options</h2>
+            </div>
+            <div class="block-card-body">
+                <div class="block-card mb-3">
+                    <div class="block-card-header">
+                        <h2 class="widget-title">Contact et notification</h2>
+                        <div class="stroke-shape"></div>
+                    </div>
+                    <div id="notification" class="block-card-body row">
+                        <h3 class="notif-title">Les Informations ci-dessous définissent les moyens par lesquels vous pourriez être contacté. </h3>
+                        <div class="col-lg-12 custom-checkbox">
+                            <input type="checkbox" id="email" checked>
+                            <label for="email">Notification par email <sub><em style="color: cornflowerblue;">gratuite</em></sub></label>
+                        </div>
+                        <div class="col-lg-12 custom-checkbox">
+                            <input type="checkbox" id="sms">
+                            <label for="sms">Notification par sms <sub><em class="sms">payante</em></sub></label>
+                        </div>
+                        <div class="col-lg-12 custom-checkbox">
+                            <input type="checkbox" id="call">
+                            <label for="call">Notification par appel <sub><em class="call">payante</em></sub></label>
+                        </div>
+                        <div class="col-lg-12 custom-checkbox">
+                            <input type="checkbox" id="contact">
+                            <label for="contact">Afficher mes contacts <sub><em class="contact">payant</em></sub></label>
+                        </div>
+                    </div>     
+                </div>
+                <div class="block-card mb-3">
+                    <div class="block-card-header">
+                        <h2 class="widget-title">Options de page</h2>
+                        <div class="stroke-shape"></div>
+                    </div>
+                    <div class="block-card-body">
+                        <div class="col-lg-12 custom-checkbox">
+                            <input type="checkbox" id="certified" checked>
+                            <label for="certified">Page certifiée</label>
+                        </div>
+                        <div class="col-lg-12 custom-checkbox">
+                            <input type="checkbox" id="custom_link">
+                            <label for="custom_link">Liens personnalisés</label>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

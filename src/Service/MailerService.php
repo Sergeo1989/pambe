@@ -24,7 +24,8 @@ class MailerService
                 ->to($to)
                 ->subject($subject)
                 ->html(
-                    $this->twig->render($template, $params)
+                    $this->twig->render($template, $params),
+                    'text/html'
                 );
 
         $this->mailer->send($email);

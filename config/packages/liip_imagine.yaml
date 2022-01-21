@@ -9,6 +9,11 @@ liip_imagine:
             filters:
                 auto_rotate: ~
                 thumbnail: { size: [128, 128], mode: outbound }
+        account_profile:
+            quality: 75
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [200, 200], mode: outbound }
         cover_small:
             quality: 75
             filters:

@@ -2,7 +2,9 @@
 
 namespace App\Twig;
 
+use App\Entity\Need;
 use App\Entity\Professional;
+use App\Entity\Proposal;
 use App\Repository\MenuRepository;
 use App\Repository\UserRepository;
 use App\Service\BlogService;
@@ -32,6 +34,7 @@ class AppExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
+            new TwigFilter('strpad', [$this, 'strpad'], ['is_safe' => ['html']]),
             new TwigFilter('force_to_int', fn ($value) => intval($value))
         ];
     }
@@ -137,5 +140,22 @@ class AppExtension extends AbstractExtension
     {
         $menus = $this->menuRepo->findAll();
         return $this->context->sort($menus, 'position');
+    }
+
+    public function strpad($input, $padlength, $padstring=' ', $padtype = 'left' )
+    {
+        if (is_string($padtype)) {
+            switch (true) {
+                case stristr($padtype,'left'):
+                    $padtype = STR_PAD_LEFT;
+                    break;
+                case stristr($padtype,'both'):
+                    $padtype = STR_PAD_BOTH;
+                    break;
+                default:
+                    $padtype = STR_PAD_RIGHT;
+            }
+        }
+        return str_pad($input, $padlength, $padstring, $padtype);
     }
 }

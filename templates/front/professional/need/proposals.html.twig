@@ -41,15 +41,15 @@
                                                 <div class="card-body row">
                                                     <div class="list col-lg-12"><i class="la la-user text-color-2 mr-2 font-size-18"></i> Editer par : {{ proposal.professional.user }}</div>
                                                     <div class="list col-lg-12"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Dépuis le : {{ proposal.dateAdd|format_date() }}</div>
-                                                    <div class="list col-lg-12"><i class="la la-money text-color-2 mr-2 font-size-18"></i> Prix estimatif : {{ proposal.price }} FCFA</div>
+                                                    <div class="list col-lg-12"><i class="la la-money text-color-2 mr-2 font-size-18"></i> Tarif : {{ proposal.price }} FCFA</div>
                                                     <div class="list col-lg-12"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Délai : {{ proposal.delay }} jours</div>
                                                     <div class="list col-lg-12 expdesc">{{ proposal.note }}</div>
                                                     <div class="list col-lg-12 control">
                                                         {% if proposal.nature is not constant('App\\Entity\\Proposal::ACCEPTED') %}
-                                                            <a class="btn btn-success" onclick="return confirm('Etes-vous sûr ?')" href="{{ path('app_professional_proposal_nature', {proposal: proposal.id, need: need.id, nature: 'accepted'}) }}">Accepter</a>
-                                                            <a class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')" href="{{ path('app_professional_proposal_nature', {proposal: proposal.id, need: need.id, nature: 'refused'}) }}">Refuser</a>
+                                                            <a class="btn btn-success" onclick="return confirm('Etes-vous sûr de choisir cette proposition ?')" href="{{ path('app_professional_proposal_nature', {proposal: proposal.id, need: need.id, nature: 'accepted'}) }}">Accepter</a>
+                                                            <a class="btn btn-danger" onclick="return confirm('Etes-vous sûr de refuser cette proposition ?')" href="{{ path('app_professional_proposal_nature', {proposal: proposal.id, need: need.id, nature: 'refused'}) }}">Refuser</a>
                                                         {% endif %}
-                                                        <a class="btn btn-info" target="_blank" href="{{ path('app_professional_show', {slug: proposal.professional.slug}) }}">Voir le profil</a>
+                                                        <a class="btn btn-info" target="_blank" href="{{ path('app_professional_show', {slug: proposal.professional.slug}) }}">{{ 'global.see_profile'|trans }}</a>
                                                     </div>
                                                 </div>
                                             </div>

@@ -9,6 +9,7 @@ use App\Form\ProposalFormType;
 use App\Repository\NeedRepository;
 use App\Service\ContextService;
 use App\Service\MailerService;
+use App\Service\ProfessionalService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,14 +19,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NeedController extends AbstractController
 {
+    private $professionalService;
     private $context;
     private $paginator;
     private $translator;
     private $needRepo;
     private $emailSender;
 
-    public function __construct(ContextService $context, PaginatorInterface $paginator, TranslatorInterface $translator, NeedRepository $needRepo, $emailSender)
+    public function __construct(ProfessionalService $professionalService, ContextService $context, PaginatorInterface $paginator, TranslatorInterface $translator, NeedRepository $needRepo, $emailSender)
     {
+        $this->professionalService = $professionalService;
         $this->context = $context;
         $this->paginator = $paginator;
         $this->translator = $translator;
@@ -35,7 +38,7 @@ class NeedController extends AbstractController
 
     public function index(Request $request): Response
     {
-        $data = $this->needRepo->findBy(['status' => true], ['date_add' => 'DESC']);
+        $data = $this->professionalService->getAllNeed();
 
         $needs = $this->paginator->paginate(
             $data,
@@ -96,10 +99,12 @@ class NeedController extends AbstractController
     /**
      * @Security("is_granted('ROLE_USER')")
      */
-    public function nature(Proposal $proposal, Need $need, $nature, MailerService $mailer): Response
+    public function nature(Proposal $proposal, $nature, MailerService $mailer): Response
     {
+        $need = $proposal->getNeed();
         if($nature === 'accepted'){
             $proposal->setNature(Proposal::ACCEPTED);
+            $this->context->save($proposal);
             foreach ($need->getProposals()->getValues() as $value) 
                 if($value !== $proposal){
                     $value->setNature(Proposal::REFUSED);
@@ -117,7 +122,7 @@ class NeedController extends AbstractController
             $proposal->setNature(Proposal::REFUSED);
             $proposal = $this->context->save($proposal);
         }
-        
-        return $this->redirectToRoute('app_professional_proposal', ['id' => $need->getId()]);
+
+        return $this->redirectToRoute('app_account_professional_need_proposal', ['id' => $need->getId()]);
     }
 }

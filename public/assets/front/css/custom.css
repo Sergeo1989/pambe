@@ -351,12 +351,15 @@ description: Our custom pambe CSS
 .list--items-2 li span {
     width: 20px;
 }
-.available-btn {
+#available_link{
     color: #fff;
-    background-color: #7b68ee;
+    margin-top: 20px;
+    width: 100%;
+}
+.available-btn {
+    background-color: #7b68ee; 
 }
 .absent-btn {
-    color: #fff;
     background-color: #9e1919;
 }
 .absent-btn:hover, .available-btn:hover{
@@ -384,4 +387,10 @@ description: Our custom pambe CSS
 .card-body .control{
     margin-top: 15px;
     text-align: center;
+}
+.list-items-style-2 li + li {
+    display: flex;
+}
+.block-card-header.my-gallery{
+    padding-bottom: 0;
 }

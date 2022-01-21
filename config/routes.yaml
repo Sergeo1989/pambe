@@ -36,8 +36,76 @@ app_activation:
     controller: App\Controller\Front\RegistrationController::activation
     methods: GET
 app_account:
-    path: /account
+    path: /account/information
     controller: App\Controller\Front\AccountController::index
+app_account_password:
+    path: /account/password
+    controller: App\Controller\Front\AccountController::password
+app_account_need:
+    path: /account/need
+    controller: App\Controller\Front\AccountController::need
+app_account_coordonnee:
+    path: /account/coordonnee
+    controller: App\Controller\Front\AccountController::coordonnee
+app_account_professional_information:
+    path: /account/information/professional
+    controller: App\Controller\Front\AccountController::information
+app_account_professional_social:
+    path: /account/social/professional
+    controller: App\Controller\Front\AccountController::social
+app_account_professional_service:
+    path: /account/service/professional
+    controller: App\Controller\Front\AccountController::service
+app_account_professional_training:
+    path: /account/training/professional
+    controller: App\Controller\Front\AccountController::training
+app_account_professional_reference:
+    path: /account/reference/professional
+    controller: App\Controller\Front\AccountController::reference
+app_account_professional_proposal:
+    path: /account/proposal/professional
+    controller: App\Controller\Front\AccountController::proposal
+app_account_professional_proposal_edit:
+    path: /account/proposal/professional/{id}/edit
+    controller: App\Controller\Front\AccountController::editproposal
+    requirements:
+        id: '\d+'
+app_account_professional_proposal_show:
+    path: /account/proposal/professional/{id}/show
+    controller: App\Controller\Front\AccountController::showproposal
+    requirements:
+        id: '\d+'
+app_account_professional_need_proposal:
+    path: /account/need/{id}/proposal
+    controller: App\Controller\Front\AccountController::proposalneed
+    requirements:
+        id: '\d+'
+app_account_professional_proposal_delete:
+    path: /account/proposal/professional/{id}/delete
+    controller: App\Controller\Front\AccountController::deleteproposal
+    requirements:
+        id: '\d+'
+app_account_professional_gallery:
+    path: /account/gallery/professional
+    controller: App\Controller\Front\AccountController::gallery
+app_account_professional_option:
+    path: /account/option/professional
+    controller: App\Controller\Front\AccountController::option
+app_account_need_show:
+    path: /account/need/{id}/show
+    controller: App\Controller\Front\AccountController::showneed
+    requirements:
+        id: '\d+'
+app_account_need_edit:
+    path: /account/need/{id}/edit
+    controller: App\Controller\Front\AccountController::editneed
+    requirements:
+        id: '\d+'
+app_account_need_delete:
+    path: account/need/{id}/delete
+    controller: App\Controller\Front\AccountController::deleteneed
+    requirements:
+        id: '\d+'
 app_logout:
     path: /logout
     controller: App\Controller\Front\SecurityController::logout
@@ -113,24 +181,9 @@ app_professional_vip:
 app_professional_like:
     path: /professional/{slug}/like
     controller: App\Controller\Front\ProfessionalController::like
-app_professional_information:
-    path: /professional/information/edit
-    controller: App\Controller\Front\ProfessionalController::information
-    #requirements:
-        #_locale: '%app_locale%'
-app_professional_coordonnee:
-    path: /professional/coordonnee/edit
-    controller: App\Controller\Front\ProfessionalController::coordonnee
-    #requirements:
-        #_locale: '%app_locale%'
 app_professional_gallery:
     path: /professional/gallery/edit
     controller: App\Controller\Front\ProfessionalController::gallery
-    #requirements:
-        #_locale: '%app_locale%'
-app_professional_option:
-    path: /professional/option/edit
-    controller: App\Controller\Front\ProfessionalController::option
     #requirements:
         #_locale: '%app_locale%'
 app_professional_gallery_image_delete:
@@ -149,21 +202,6 @@ app_professional_gallery_image:
     methods: GET
     requirements:
         id: '\d+'
-app_professional_service:
-    path: /professional/service/edit
-    controller: App\Controller\Front\ProfessionalController::service
-    #requirements:
-        #_locale: '%app_locale%'
-app_professional_training:
-    path: /professional/training/edit
-    controller: App\Controller\Front\ProfessionalController::training
-    #requirements:
-        #_locale: '%app_locale%'
-app_professional_reference:
-    path: /professional/reference/edit
-    controller: App\Controller\Front\ProfessionalController::reference
-    #requirements:
-        #_locale: '%app_locale%'
 app_professional_area:
     path: /professional/index
     controller: App\Controller\Front\ProfessionalController::index
@@ -205,8 +243,7 @@ app_professional_proposal:
     path: professional/proposal/{id}/need
     controller: App\Controller\Front\NeedController::proposal
 app_professional_proposal_nature:
-    path: professional/proposal/{proposal}/need/{need}/{nature}
+    path: professional/proposal/{id}/nature/{nature}
     controller: App\Controller\Front\NeedController::nature
     requirements:
-        proposal: '\d+'
-        need: '\d+'
+        id: '\d+'

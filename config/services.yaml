@@ -8,6 +8,7 @@ parameters:
     app_locale: en|fr|de|es|nl|it
     app_locales: [en, fr]
     app.path.category_pro_images: /uploads/images/categorypro
+    app.path.user_profile: /uploads/images/professional
     app.path.professional_images: /uploads/images/professional
     app.path.need_files: /uploads/images/professional/need
     app.path.professional_video: /uploads/video/professional
@@ -15,7 +16,7 @@ parameters:
     app.path.banner_images: /uploads/images/banner
     app.path.category_art_images: /uploads/images/categoryart
     app.path.article_images: /uploads/images/article
-    app.notifications.email_sender: anonymous@example.com
+    app.notifications.email_sender: marxiobadel@gmail.com
 
 services:
     App\EventSubscriber\LocaleSubscriber:

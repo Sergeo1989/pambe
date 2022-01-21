@@ -1,0 +1,28 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Besoin - '~ parent() }}{% endblock %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">{{ need.title }}</h2>
+            </div>
+            <div class="block-card-body">
+                <div class="card-body row">
+                    <div class="list col-lg-6"><i class="la la-tag text-color-2 mr-2 font-size-18"></i>ID : #{{ need.id|strpad(5, '0') }}</div>
+                    <div class="list col-lg-6"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Publié le : {{ need.dateAdd|format_date() }}</div>
+                    <div class="list col-lg-6"><i class="la la-money text-color-2 mr-2 font-size-18"></i>Budget : {{ need.budget ?? 'inconnu' }} {{ need.budget is null ?: 'FCFA' }}</div>
+                    <div class="list col-lg-6"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Délai : {{ need.delay }} jours</div>
+                    <div class="list col-lg-12 expdesc">{{ need.description }}</div>
+                    {% if need.document is not null %}
+                        <div class="list col-lg-12"><a href="{{ vich_uploader_asset(need, 'documentFile') }}"><i class="la la-cloud-download-alt"></i> Téléchargez votre fichier</a></div>
+                    {% endif %}
+                    {% if need.document is not null %}
+                        <div class="list col-lg-12"><a href="{{ path('app_account_professional_need_proposal', {id: need.id}) }}"><i class="la la-exclamation"></i> Visualiser les propositions associées</a></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
