@@ -48,7 +48,7 @@ class NeedController extends AbstractController
 
         return $this->render('front/professional/need/index.html.twig', compact('needs'));
     }
-
+ 
     /**
      * @Security("is_granted('ROLE_USER')")
      */
@@ -60,13 +60,18 @@ class NeedController extends AbstractController
 
         if($needForm->isSubmitted() && $needForm->isValid()) {
             $need->setUser($context->getUser());
-            $context->save($need);
+            $need = $context->save($need);
+            $url = $this->generateUrl('app_account_need_show', ['id' => $need->getId()]);
             $message = $this->translator->trans('global.your_need_has_been_successfully_registered.');
-            $this->addFlash("message", $message);
+
+            $content['msg'] = $message;
+            $content['url'] = $url; 
+            $this->addFlash("message", $content);
             return $this->redirectToRoute('app_professional_need_create');
         }
 
-        return $this->render('front/professional/need/create.html.twig', ['needForm' => $needForm->createView()]);
+        $needForm = $needForm->createView();
+        return $this->render('front/professional/need/create.html.twig', compact('needForm'));
     }
 
     public function show(Need $need, Request $request, ContextService $context): Response

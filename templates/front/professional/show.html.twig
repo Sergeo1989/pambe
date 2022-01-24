@@ -1,6 +1,6 @@
 {% extends 'front/layout.html.twig' %}
 
-{% set profile = professional.profil and professional.profil.image ? vich_uploader_asset(professional.profil, 'imageFile') : asset('assets/front/images/photoshop.png') %}
+{% set profile = professional.user.profile and professional.user.profile.image ? vich_uploader_asset(professional.user.profile, 'imageFile') : asset('assets/front/images/photoshop.png') %}
 {% set cover = professional.cover and professional.cover.image ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
 
 {% set facebook     = professional.socialUrl ? professional.socialUrl.facebook : null %}
@@ -69,7 +69,7 @@
                             </div>
                             <div class="btn-box">
                                 <a href="#{{ is_granted('edit', professional) == false ? 'review' : 'see_review' }}" class="btn-gray mr-1"><i class="la la-star mr-1"></i>{{ is_granted('edit', professional) == false ? 'Écrire un avis' : 'Mes avis' }}</a>
-                                <a href="{{ path("app_professional_like", {"slug" : professional.slug}) }}" class="js-like btn-gray mr-1">
+                                <a href="{{ path("app_professional_like", {"slug" : professional.user.slug}) }}" class="js-like btn-gray mr-1">
                                     {% if app.user and professional.isLikedByUser(app.user) %}
                                         <i class="la la-heart mr-1"></i>
                                     {% else %}
@@ -467,8 +467,8 @@
                             <h3 class="widget-title">Informations générales </h3>
                             <div class="stroke-shape mb-4"></div>
                             <ul class="list-items list-items-style-2">
-                                {% if professional.website %}
-                                    <li><i class="la la-globe mr-2 text-color-2 font-size-18"></i><a href="{{ professional.website }}">{{ professional.website }}</a></li>
+                                {% if professional.user.website %}
+                                    <li><i class="la la-globe mr-2 text-color-2 font-size-18"></i><a href="{{ professional.user.website }}">{{ professional.user.website }}</a></li>
                                 {% endif %}
                                 {% if professional.user.email %}
                                     <li><i class="la la-envelope mr-2 text-color-2 font-size-18"></i><a href="mailto:{{ professional.user.email }}">{{ professional.user.email }}</a></li>
@@ -476,8 +476,8 @@
                                 {% if professional.user.phone %}
                                     <li><i class="la la-phone mr-2 text-color-2 font-size-18"></i><a href="tel:{{ professional.user.phone }}">{{ professional.user.phone }}</a></li>
                                 {% endif %}
-                                {% if professional.country %}
-                                    <li><i class="la la-map-signs mr-2 text-color-2 font-size-18"></i><a href="javascript:void(0)">{{ professional.country.name }}{{ professional.region ? ", "~ professional.region.name : "" }}</a></li>
+                                {% if professional.user.country %}
+                                    <li><i class="la la-map-signs mr-2 text-color-2 font-size-18"></i><a href="javascript:void(0)">{{ professional.user.country }}{{ professional.user.region ? ", "~ professional.user.region : "" }}</a></li>
                                 {% endif %}
                                 {% if professional.languages|length > 0 %}
                                     <li><i class="la la-language mr-2 text-color-2 font-size-18"></i><a href="#">{{ professional.languages|map(l => "#{l.name}")|join(', ') }} <i class="la la-external-link ml-1"></i></a></li>

@@ -18,10 +18,13 @@
                     <div class="col-lg-12">
                         <div class="input-box">
                             <label class="label-text">Tarif</label>
-                            <div class="form-group error">
-                                {{ form_widget(proposalForm.price, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_price'|trans ~ ' (FCFA)'} }) }}
-                                {{ form_errors(proposalForm.price) }}
+                            <div class="input-group form-group error">
+                                {{ form_widget(proposalForm.price, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_price'|trans ~ ' (FCFA)', 'aria-describedby': 'price'} }) }}
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="price">FCFA</span>
+                                </div>
                             </div>
+                            {{ form_errors(proposalForm.price) }}
                         </div>
                     </div>
                     <div class="col-lg-12">
@@ -36,10 +39,13 @@
                     <div class="col-lg-12">
                         <div class="input-box">
                             <label class="label-text">Délai</label>
-                            <div class="form-group error">
-                                {{ form_widget(proposalForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un délai'} }) }}
-                                {{ form_errors(proposalForm.delay) }}
+                            <div class="input-group form-group error">
+                                {{ form_widget(proposalForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un délai', 'aria-describedby': 'delay'} }) }}
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="delay">jour(s)</span>
+                                </div>
                             </div>
+                            {{ form_errors(proposalForm.delay) }}
                         </div>
                     </div>
                     <div class="submit-wrap pt-3">

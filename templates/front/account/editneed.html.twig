@@ -44,21 +44,27 @@
                     <div class="col-lg-12">
                         <div class="input-box">
                             <label class="label-text">Budget</label>
-                            <div class="form-group error">
-                                {{ form_widget(needForm.budget, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un budget'} }) }}
-                                <em style="font-size: 12px;">Ne rien renseigner si vous n'avez aucune idée</em>
-                                {{ form_errors(needForm.budget) }}
+                            <div class="input-group form-group error">
+                                {{ form_widget(needForm.budget, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un budget', 'aria-describedby': 'price'} }) }}
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="price">FCFA</span>
+                                </div>
                             </div>
+                            <em style="font-size: 12px;">Ne rien renseigner si vous n'avez aucune idée</em>
+                            {{ form_errors(needForm.budget) }}
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="input-box">
                             <label class="label-text">Délai</label>
-                            <div class="form-group error">
-                                {{ form_widget(needForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un delai en nombre de jours'} }) }}
-                                <em style="font-size: 12px;">Exemple: 4 jours</em>
-                                {{ form_errors(needForm.delay) }}
+                            <div class="input-group form-group error">
+                                {{ form_widget(needForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un delai en nombre de jours', 'aria-describedby': 'delay'} }) }}
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="delay">jour(s)</span>
+                                </div>
                             </div>
+                            <em style="font-size: 12px;">Exemple: 4 jours</em>
+                            {{ form_errors(needForm.delay) }}
                         </div>
                     </div>
                     <div class="col-lg-12">

@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use App\Entity\CategoryProfessional;
+use App\Entity\User;
 use App\Service\ContextService;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
@@ -20,7 +21,8 @@ class DatabaseActivitySubscriber implements EventSubscriberInterface
     public function getSubscribedEvents(): array
     {
         return [
-            Events::prePersist
+            Events::prePersist,
+            Events::preUpdate
         ];
     }
 
@@ -29,14 +31,19 @@ class DatabaseActivitySubscriber implements EventSubscriberInterface
         $this->logActivity('persist', $args);
     }
 
+    public function preUpdate(LifecycleEventArgs $args): void
+    {
+        $this->logActivity('update', $args);
+    }
+
     private function logActivity(string $action, LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
-        if (!$entity instanceof CategoryProfessional) {
-            return;
-        }
-
-        $entity->setSlug($this->context->slug($entity->getName()));
+        if ($entity instanceof CategoryProfessional && $action === 'persist') 
+            $entity->setSlug($this->context->slug($entity->getName()));
+        
+        if($entity instanceof User)
+            $entity->setSlug($this->context->slug($entity->getEmail()));
     }
 }

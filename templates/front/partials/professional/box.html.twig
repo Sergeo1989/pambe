@@ -1,11 +1,11 @@
-{% set profile = professional.profil and professional.profil.image is not null ? vich_uploader_asset(professional.profil, 'imageFile') : asset('assets/front/images/photoshop.png') %}
+{% set profile = professional.user.profile and professional.user.profile.image is not null ? vich_uploader_asset(professional.user.profile, 'imageFile') : asset('assets/front/images/photoshop.png') %}
 {% set cover = professional.cover and professional.cover.image is not null ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
 
 {% block professional %}
     <div class="col-lg-3 responsive-column">
         <div class="card-item">
             <div class="card-image">
-                <a href="{{ path("app_professional_show", {"slug" : professional.slug}) }}" class="d-block">
+                <a href="{{ path("app_professional_show", {"slug" : professional.user.slug}) }}" class="d-block">
                     <img src="{{ asset('assets/front/images/img-loading.png') }}" data-src="{{ cover|imagine_filter('cover_small') }}" class="card__img lazy" alt="{{ professional.user.lastname|e }}">
                     <span class="badge {{ professional.available ?: "bg-10" }}">{{ professional.available ? "disponible"|trans : "absent"|trans }}</span>
                 </a>
@@ -14,16 +14,16 @@
                 </span>
             </div>
             <div class="card-content">
-                <a href="{{ path("app_professional_show", {"slug" : professional.slug}) }}" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ professional.user.lastname ~ ' ' ~ professional.user.firstname }}">
+                <a href="{{ path("app_professional_show", {"slug" : professional.user.slug}) }}" class="user-thumb d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ professional.user.lastname ~ ' ' ~ professional.user.firstname }}">
                     <img src="{{ profile|imagine_filter('profile') }}" alt="{{ professional.user.firstname|e }}">
                 </a>
                 <h4 class="card-title pt-3">
-                    <a href="{{ path("app_professional_show", {"slug" : professional.slug}) }}">{{ professional.user }}</a>
+                    <a href="{{ path("app_professional_show", {"slug" : professional.user.slug}) }}">{{ professional.user }}</a>
                     {% if professional.verified %}
                         <i class="las la-check-circle ml-1 green" data-toggle="tooltip" data-placement="top" title="{{ 'global.certified'|trans }}"></i>
                     {% endif %}
                 </h4>
-                <p class="card-sub"><a href="{{ path("app_professional_show", {"slug" : professional.slug}) }}"><i class="la la-map-marker mr-1 text-color-2"></i>{{ professional.user.address }}</a></p>
+                <p class="card-sub"><a href="{{ path("app_professional_show", {"slug" : professional.user.slug}) }}"><i class="la la-map-marker mr-1 text-color-2"></i>{{ professional.user.address }}</a></p>
                 <ul class="listing-meta d-flex align-items-center">
                     <li class="d-flex align-items-center">
                         <span class="rate flex-shrink-0">{{ scoreavg(professional) }}</span>

@@ -3,9 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CategoryProfessional;
+use App\Entity\Country;
 use App\Entity\Language;
 use App\Entity\Professional;
 use App\Entity\Qualification;
+use App\Entity\Region;
 use App\Entity\Skill;
 use App\Form\UserFormType;
 use App\Form\SocialFormType;
@@ -40,7 +42,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ProfessionalCrudController extends AbstractCrudController
 {
@@ -85,12 +86,12 @@ class ProfessionalCrudController extends AbstractCrudController
     }
  
     public function configureFields(string $pageName): iterable
-    {
+    { 
         $id = IdField::new('id', 'ID');
         $email = EmailField::new('user.email', 'E-mail');
         $lastname = TextField::new('user.lastname', 'Nom');
         $user = TextField::new('user', false)->setFormType(UserFormType::class);
-        $profile = TextField::new('profil', 'Profil')
+        $profile = TextField::new('user.profile', 'Profil')
                             ->setFormType(ProfessionalImageFormType::class)
                             ->setHelp("Résolution: 1200x1200 pixels");
         $level = ChoiceField::new('level', 'Niveau')->setChoices(fn() => ['VIP' => Professional::VIP, 'NORMAL' => Professional::NORMAL]);
@@ -104,28 +105,34 @@ class ProfessionalCrudController extends AbstractCrudController
         $phone = TelephoneField::new('user.phone', 'Téléphone');
         $address = TextField::new('user.address', 'Adresse');
         $social_media = TextField::new('socialUrl', 'Médias Sociaux')->setFormType(SocialFormType::class);;
-        $website = UrlField::new('website', 'Site web');
+        $website = UrlField::new('user.website', 'Site web');
         $date_add = DateTimeField::new('date_add', 'Date d\'ajout');
         $date_upd = DateTimeField::new('date_upd', 'Date de mise à jour');
-        $country = AssociationField::new('country', 'Pays', Country::class);
-        $region = AssociationField::new('region', 'Région', Region::class);
+        $country = AssociationField::new('user.country', 'Pays')
+                                ->setFieldFqcn(Country::class)
+                                ->setFormTypeOptions(['class' => Country::class]);
+        $region = AssociationField::new('region', 'Région')
+                                ->setFieldFqcn(Region::class)
+                                ->setFormTypeOptions(['class' => Region::class]);
         $city = AssociationField::new('city', 'Ville', City::class);
         $langues = AssociationField::new('languages', 'Langues', Language::class);
         $categories = AssociationField::new('category_professionals', 'Catégories', CategoryProfessional::class);
         $default_category = AssociationField::new('category_professional_default', 'Catégorie principale', CategoryProfessional::class);
-        $short_description = TextEditorField::new('short_description', 'Courte description');
-        $description = TextEditorField::new('description', 'Description');
+        $short_description = TextEditorField::new('short_description', 'Courte description')
+                            ->setFormTypeOptions(['empty_data' => '']);
+        //$description = TextEditorField::new('description', 'Description')
+                            //->setFormTypeOptions(['empty_data' => '']);
         $verified = BooleanField::new('verified', 'Vérifié');
         $status = BooleanField::new('status', 'Status');
 
         if (Crud::PAGE_INDEX === $pageName)
             return [$id, $email, $name, $date_add, $date_upd, $default_category, $verified, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
-            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $level, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $services, $social_media];
+    return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $level, $default_category/*, $country, $region, $city, $langues, $categories/*, $short_description, $description, $services*/, $social_media];
         elseif(Crud::PAGE_DETAIL === $pageName)
-            return [$email, $name, $phone, $address, $website, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $verified, $status];
+            return [$email, $name, $phone, $address, $website, $default_category, $region, $city, $langues, $categories, $short_description/*, $description*/, $verified, $status];
         elseif(Crud::PAGE_NEW === $pageName)
-            return [$user, $website, $profile, $cover, $galleries, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description];
+    return [$user, $website, $profile, $cover, $galleries, $default_category, $region, $city, $langues, $categories, $short_description/*, $description*/];
     }
 
     public function configureActions(Actions $actions): Actions
@@ -147,21 +154,13 @@ class ProfessionalCrudController extends AbstractCrudController
     {
         $user = $entityInstance->getUser();
         $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
-        $entityInstance->setSlug($this->contextService->slug($user->getEmail()));
         parent::persistEntity($entityManager, $entityInstance);
-    }
-
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        $user = $entityInstance->getUser();
-        $entityInstance->setSlug($this->contextService->slug($user));
-        parent::updateEntity($entityManager, $entityInstance);
     }
 
     public function edit(AdminContext $context)
     {
         $request = $context->getRequest()->request->all();
-
+        
         if(!empty($request) && ($request["ea"]["newForm"]["btn"] === Action::SAVE_AND_CONTINUE || $request["ea"]["newForm"]["btn"] === Action::SAVE_AND_RETURN)){
             $name = $request["Professional"]["skill"];
             if(empty($name)) return parent::edit($context);

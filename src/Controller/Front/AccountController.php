@@ -5,6 +5,7 @@ namespace App\Controller\Front;
 use App\Entity\Need;
 use App\Entity\ProfessionalImage;
 use App\Entity\Proposal;
+use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\NeedFormType;
 use App\Form\Professional\Edit\GalleryFormType;
@@ -14,6 +15,7 @@ use App\Form\ProposalFormType;
 use App\Form\User\CoordonneeFormType;
 use App\Form\User\InformationFormType;
 use App\Service\ContextService;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,10 +26,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AccountController extends AbstractController
 {
     private $translator;
+    private $paginator;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, PaginatorInterface $paginator)
     {
         $this->translator = $translator;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -79,9 +83,18 @@ class AccountController extends AbstractController
         ]);
     }
 
-    public function need()
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function need(ContextService $context, Request $request)
     {
-        return $this->render('front/account/need.html.twig');
+        $data = array_reverse($context->getUser()->getNeeds()->getValues());
+        $needs = $this->paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            10
+        );
+        return $this->render('front/account/need.html.twig', compact('needs'));
     }
 
     /**
@@ -108,7 +121,7 @@ class AccountController extends AbstractController
         $needForm->handleRequest($request);
 
         if($needForm->isSubmitted() && $needForm->isValid()) {
-            $need->setUser($context->getUser());
+            $need->setNature(Need::PENDING);
             $context->save($need);
             $message = $this->translator->trans('global.your_need_has_been_successfully_registered.');
             $this->addFlash("message", $message);
@@ -327,5 +340,13 @@ class AccountController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $context->getUser(), $message);
 
         return $this->render('front/account/option.html.twig');
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function profile(User $user)
+    {
+        return $this->render('front/account/profile.html.twig', compact('user'));
     }
 }

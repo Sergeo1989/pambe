@@ -36,7 +36,7 @@
                                             <a class="btn btn-success" onclick="return confirm('Etes-vous sûr de choisir cette proposition ?')" href="{{ path('app_professional_proposal_nature', {id: proposal.id, nature: 'accepted'}) }}">Accepter</a>
                                             <a class="btn btn-danger" onclick="return confirm('Etes-vous sûr de refuser cette proposition ?')" href="{{ path('app_professional_proposal_nature', {id: proposal.id, nature: 'refused'}) }}">Refuser</a>
                                         {% endif %}
-                                        <a class="btn btn-info" target="_blank" href="{{ path('app_professional_show', {slug: proposal.professional.slug}) }}">{{ 'global.see_profile'|trans }}</a>
+                                        <a class="btn btn-info" target="_blank" href="{{ path('app_professional_show', {slug: proposal.professional.user.slug}) }}">{{ 'global.see_profile'|trans }}</a>
                                     </div>
                                 </div>
                             </div>

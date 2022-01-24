@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @Vich\Uploadable
  */
 class Need
-{
+{ 
     public const DISABLED = 0;
     public const PENDING = 1;
     public const CONFIRMED = 2;

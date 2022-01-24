@@ -1,0 +1,90 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Profil - '~ parent() }}{% endblock %}
+
+{% block header %}
+    {% embed "front/partials/header.html.twig" %}
+        {% block header_class %}header-area position-inherit top-auto bg-white{% endblock %} 
+        {% block header_top_bar_class %}header-top-bar bg-dark py-2 padding-right-30px padding-left-30px{% endblock %}
+        {% block header_bottom_bar_class %}header-top-bar bg-dark{% endblock %}
+        {% block header_menu_wrapper %}header-menu-wrapper padding-right-30px padding-left-30px additional-wrapper{% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% set profile = user.profile and user.profile.image is not null ? vich_uploader_asset(user.profile, 'imageFile') : asset('assets/front/images/photoshop.png') %}
+    <section class="breadcrumb-area bg-gray user-bread-bg pt-3 pb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content d-flex flex-wrap align-items-end justify-content-between">
+                        <div class="d-flex align-items-end">
+                            <div class="user-thumb user-thumb-xl bread-thumb mr-3 flex-shrink-0">
+                                <img src="{{ profile|imagine_filter('account_profile') }}" alt="{{ user }}">
+                            </div>
+                            <div class="section-heading pb-3">
+                                <h2 class="sec__title mb-0 font-size-28 line-height-30">
+                                    <span>{{ user }}</span>
+                                    {% if is_granted('edit', user) and user.professional.verified %}
+                                        <i class="la la-check-circle ml-1 font-size-24 text-success" data-toggle="tooltip" data-placement="top" title="{{ 'global.certified'|trans }}"></i>
+                                    {% endif %}
+                                </h2>
+                                <p class="sec__desc pt-1 font-size-16 line-height-22">{{ 'global.member_since'|trans }} {{ user.dateAdd|format_date() }}</p>
+                                <p class="sec__desc pt-1 font-size-16 line-height-22"><i class="la la-map-marker mr-1"></i>{{ user.address }}</p>
+                            </div>
+                        </div>
+                        {% if is_granted('edit', user) %}
+                            <div class="btn-box bread-btns d-flex align-items-center pb-3">
+                                <span class="btn-gray mr-2"><i class="la la-star-o mr-1"></i><span class="text-color font-weight-semi-bold mr-1">{{ user.professional.reviews|length }}</span>{{ 'global.reviews'|trans }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="user-detail-area padding-top-60px padding-bottom-100px">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12">
+                {% block account_content %}
+                    <div class="user-listing-detail-wrap">
+                        <div class="block-card mb-3">
+                            <div class="block-card-header">
+                                <h2 class="widget-title pb-0">{{ 'global.informations'|trans }}</h2>
+                            </div>
+                            <div class="block-card-body">
+                                <div class="card-body row">
+                                    <div class="list col-lg-6"><i class="la la-envelope text-color-2 mr-2 font-size-18"></i> {{ 'global.email'|trans }} : {{ user.email }} </div>
+                                    {% if user.address %}
+                                        <div class="list col-lg-6"><i class="la la-address-book text-color-2 mr-2 font-size-18"></i> {{ 'global.address'|trans }} : {{ user.address }}</div>
+                                    {% endif %}
+                                    {% if user.phone %}
+                                        <div class="list col-lg-6"><i class="la la-phone text-color-2 mr-2 font-size-18"></i> {{ 'global.phone'|trans }} : {{ user.phone }}</div>
+                                    {% endif %}
+                                    {% if user.website %}
+                                        <div class="list col-lg-6"><i class="la la-globe text-color-2 mr-2 font-size-18"></i> {{ 'global.website'|trans }} : {{ user.website }}</div>
+                                    {% endif %}
+                                    {% if user.country %}
+                                        <div class="list col-lg-6"><i class="la la-map-marked text-color-2 mr-2 font-size-18"></i> {{ 'global.country'|trans }} : {{ user.country }}</div>
+                                    {% endif %}
+                                    {% if user.region %}
+                                        <div class="list col-lg-6"><i class="la la-map-marked text-color-2 mr-2 font-size-18"></i> {{ 'global.region'|trans }} : {{ user.region }}</div>
+                                    {% endif %}
+                                    {% if user.city %}
+                                        <div class="list col-lg-6"><i class="la la-map-marked text-color-2 mr-2 font-size-18"></i> {{ 'global.city'|trans }} : {{ user.city }}</div>
+                                    {% endif %}
+                                    {% if is_granted('edit', user) and user.professional.languages|length > 0 %}
+                                        <div class="list col-lg-6"><i class="la la-language text-color-2 mr-2 font-size-18"></i> Langues : {{ user.professional.languages|map(l => "#{l.name}")|join(', ') }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

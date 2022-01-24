@@ -247,3 +247,6 @@ app_professional_proposal_nature:
     controller: App\Controller\Front\NeedController::nature
     requirements:
         id: '\d+'
+app_profile:
+    path: /{slug}/profile
+    controller: App\Controller\Front\AccountController::profile

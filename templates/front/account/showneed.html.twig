@@ -18,8 +18,8 @@
                     {% if need.document is not null %}
                         <div class="list col-lg-12"><a href="{{ vich_uploader_asset(need, 'documentFile') }}"><i class="la la-cloud-download-alt"></i> Téléchargez votre fichier</a></div>
                     {% endif %}
-                    {% if need.document is not null %}
-                        <div class="list col-lg-12"><a href="{{ path('app_account_professional_need_proposal', {id: need.id}) }}"><i class="la la-exclamation"></i> Visualiser les propositions associées</a></div>
+                    {% if need.proposals|filter((proposal) => proposal.nature != constant('App\\Entity\\Proposal::REFUSED'))|length > 0 %}
+                        <div class="list col-lg-12"><a href="{{ path('app_account_professional_need_proposal', {id: need.id}) }}"><i class="la la-exclamation"></i> Visualisez les propositions associées</a></div>
                     {% endif %}
                 </div>
             </div>

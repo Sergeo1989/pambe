@@ -13,6 +13,7 @@ use App\Entity\Country;
 use App\Entity\KeywordArticle;
 use App\Entity\Language;
 use App\Entity\Menu;
+use App\Entity\Need;
 use App\Entity\Page;
 use App\Entity\Professional;
 use App\Entity\Profile;
@@ -110,6 +111,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Administrateurs', 'bi bi-pin', Admin::class);
         yield MenuItem::linkToCrud('Pages', 'bi bi-pin', Page::class);
         yield MenuItem::linkToCrud('Menus', 'bi bi-pin', Menu::class);
+        yield MenuItem::linkToCrud('Besoins', 'bi bi-pin', Need::class);
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'bi bi-x-circle');
     }

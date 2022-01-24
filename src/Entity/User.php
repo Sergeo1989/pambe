@@ -129,6 +129,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $website;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -513,6 +518,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setWebsite(?string $website): self
     {
         $this->website = $website;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

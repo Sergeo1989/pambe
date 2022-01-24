@@ -20,13 +20,13 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Titre</th>
-                                <th>propositions</th>
+                                <th>Propositions</th>
                                 <th>Statut</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for need in app.user.needs|reverse(true) %}
+                            {% for need in needs %}
                             <tr>
                                 <td>#{{ need.id|strpad(5, '0') }}</td>
                                 <td class="text-color">{{ need.title }}</td>
@@ -45,8 +45,8 @@
                                     <td class="text-warning">Rejecté</td>
                                 {% endif %}
                                 <td>
-                                    <a title="Visualiser" href="{{ path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
-                                    <a title="Modifier" href="{{ path('app_account_need_edit', {id: need.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
+                                    <a title="Visualiser" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
+                                    <a title="Modifier" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_edit', {id: need.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
                                     <a title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce besoin ?')" href="{{ path('app_account_need_delete', {id: need.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
                                     {% if need.nature is constant('App\\Entity\\Need::EXPIRED') %}
                                         <a title="Re-publier" href="#" class="text-success"><i class="la la-share font-size-18"></i></a>
@@ -57,6 +57,12 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 pt-3 text-center">
+                {% do needs.setPageRange(4) %}
+                {{ knp_pagination_render(needs, 'front/partials/pagination.html.twig') }}   
             </div>
         </div>
     </div>

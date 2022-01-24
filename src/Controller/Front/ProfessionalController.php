@@ -8,6 +8,7 @@ use App\Entity\ProfessionalLike;
 use App\Entity\Qualification;
 use App\Entity\Review;
 use App\Entity\Service;
+use App\Entity\User;
 use App\Form\ProfessionalFormType;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
@@ -105,7 +106,7 @@ class ProfessionalController extends AbstractController
         return $this->render('front/professional/index.html.twig', compact('professionals', 'words', 'data'));
     }
 
-    public function show(Professional $professional, Request $request): Response
+    public function show(User $user, Request $request): Response
     {
         $professional_id = (int)$request->request->get('professional_id');
         $rating = $request->request->get('rating') ?? 0;
@@ -129,10 +130,11 @@ class ProfessionalController extends AbstractController
                 $review->setProfessional($this->professionalService->getProfessional($professional_id));
 
                 $this->context->save($review);
-                return $this->redirectToRoute("app_professional_show", ["slug" => $professional->getSlug()]);
+                return $this->redirectToRoute("app_professional_show", ["slug" => $user()->getSlug()]);
             }
         }
 
+        $professional = $user->getProfessional();
         if($this->isGranted('edit', $professional) == false)
             $this->professionalService->addView($professional);
         
@@ -178,7 +180,7 @@ class ProfessionalController extends AbstractController
 
     public function like(Professional $professional): Response
     {
-        $user = $this->context->getUser();
+        $user = $this->getUser();
 
         if (!$user) return $this->json([
             'code' => 403,
@@ -209,25 +211,20 @@ class ProfessionalController extends AbstractController
         ], 200);
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
     public function create(Request $request)
     {
-        if($this->isGranted('edit', $this->context->getUser()))
-            return $this->redirectToRoute('app_professional_information');
+        if($this->getUser() && $this->isGranted('edit', $this->getUser()))
+            return $this->redirectToRoute('app_account_professional_information');
 
         $professional = new Professional();
         $form = $this->createForm(ProfessionalFormType::class, $professional);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $slug = $this->context->slug($this->context->getUser()->getEmail());
-            $professional->setSlug($slug);
-            $professional->setUser($this->context->getUser());
+        
             $this->context->save($professional);
 
-            return $this->redirectToRoute('app_professional_information');
+            return $this->redirectToRoute('app_account_professional_information');
         }
 
         return $this->render('front/professional/create.html.twig', [

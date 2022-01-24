@@ -7,7 +7,7 @@
                     <span aria-hidden="true" class="la la-times-circle"></span>
                 </button>
             </div>
-            {% set professional_url = absolute_url(path('app_professional_show', {'slug': professional.slug})) %}
+            {% set professional_url = absolute_url(path('app_professional_show', {'slug': professional.user.slug})) %}
             <div class="modal-body">
                 <div class="copy-to-clipboard mb-3">
                     <form action="#" class="form-box d-flex align-items-center">

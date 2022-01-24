@@ -6,11 +6,11 @@
     {% embed "front/partials/breadcrumb.html.twig" %}
         {% block breadcrumb_heading %}
             <div class="section-heading">
-                <h2 class="sec__title text-white font-size-40 mb-0">Modification</h2>
+                <h2 class="sec__title text-white font-size-40 mb-0">Nouveau</h2>
             </div>
         {% endblock %}
         {% block breadcrumb_links %}
-            <li>Modification</li>
+            <li>Nouveau besoin</li>
         {% endblock %}
     {% endembed %}
     <section class="add-listing-area section-padding">
@@ -18,7 +18,7 @@
             <div class="row"> 
                 <div class="col-lg-10 mx-auto">
                     {% for message in app.flashes('message') %}
-                        <div class="alert alert-success">{{ message}}</div>
+                        <div class="alert alert-success">{{ message.msg }} <a href="{{ message.url }}"><strong>Voir le besoin</strong></a></div>
                     {% endfor %}
                     <div class="block-card mb-4">
                         <div class="block-card-header">
@@ -56,21 +56,27 @@
                                 <div class="col-lg-12">
                                     <div class="input-box">
                                         <label class="label-text">Budget</label>
-                                        <div class="form-group error">
-                                            {{ form_widget(needForm.budget, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un budget'} }) }}
-                                            <em style="font-size: 12px;">Ne rien renseigner si vous n'avez aucune idée</em>
-                                            {{ form_errors(needForm.budget) }}
+                                        <div class="input-group form-group error">
+                                            {{ form_widget(needForm.budget, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un budget', 'aria-describedby': 'price'} }) }} 
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="price">FCFA</span>
+                                            </div>   
                                         </div>
+                                        <em style="font-size: 12px;">Ne rien renseigner si vous n'avez aucune idée</em>
+                                        {{ form_errors(needForm.budget) }}
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="input-box">
                                         <label class="label-text">Délai</label>
-                                        <div class="form-group error">
-                                            {{ form_widget(needForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un delai en nombre de jours'} }) }}
-                                            <em style="font-size: 12px;">Exemple: 4 jours</em>
-                                            {{ form_errors(needForm.delay) }}
+                                        <div class="input-group form-group error">
+                                            {{ form_widget(needForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un delai en nombre de jours', 'aria-describedby': 'delay'} }) }}
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="delay">jours(s)</span>
+                                            </div>
                                         </div>
+                                        <em style="font-size: 12px;">Exemple: 4 jours</em>
+                                        {{ form_errors(needForm.delay) }}
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

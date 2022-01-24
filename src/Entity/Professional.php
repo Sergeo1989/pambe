@@ -83,11 +83,6 @@ class Professional
     private $qualifications;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $website;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Language::class, inversedBy="professionals")
      */
     private $languages;
@@ -101,11 +96,6 @@ class Professional
      * @ORM\ManyToMany(targetEntity=CategoryProfessional::class, inversedBy="all_professionals")
      */
     private $category_professionals;
-
-    /**
-     * @ORM\OneToOne(targetEntity=ProfessionalImage::class, cascade={"persist", "remove"})
-     */
-    private $profil;
 
     /**
      * @ORM\OneToOne(targetEntity=ProfessionalImage::class, cascade={"persist", "remove"})
@@ -131,11 +121,6 @@ class Professional
      * @ORM\Column(type="integer", nullable=true)
      */
     private $position;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $slug;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -378,18 +363,6 @@ class Professional
         return $this;
     }
 
-    public function getWebsite(): ?string
-    {
-        return $this->website;
-    }
-
-    public function setWebsite(?string $website): self
-    {
-        $this->website = $website;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Language[]
      */
@@ -446,18 +419,6 @@ class Professional
     public function removeCategoryProfessional(CategoryProfessional $categoryProfessional): self
     {
         $this->category_professionals->removeElement($categoryProfessional);
-
-        return $this;
-    }
-
-    public function getProfil(): ?ProfessionalImage
-    {
-        return $this->profil;
-    }
-
-    public function setProfil(?ProfessionalImage $profil): self
-    {
-        $this->profil = $profil;
 
         return $this;
     }
@@ -579,18 +540,6 @@ class Professional
     public function setPosition(?int $position): self
     {
         $this->position = $position;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): self
-    {
-        $this->slug = $slug;
 
         return $this;
     }
