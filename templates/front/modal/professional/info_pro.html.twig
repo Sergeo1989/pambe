@@ -1,0 +1,29 @@
+<div class="modal fade modal-container message-form" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header align-items-center mh-bg-2">
+                <h5 class="modal-title" id="infoModalTitle">{{'global.send_a_message'|trans}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="la la-times-circle"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="font-size-15 font-weight-medium pb-2">
+                    <span class="text-color">À :</span> {{ professional.user }}
+                </p>
+                <form method="post" class="form-box">
+                    <div class="input-box">
+                        <label class="label-text">Pour pouvoir laisser un message, vous devez être au préalble connecté. Merçi !</label>
+                    </div>
+                    <div class="input-box">
+                        <label class="label-text d-block">
+                            <a class="text-color-2" href="{{ path('app_register') }}">Inscrivez vous</a>
+                            <span class="text-gray">{{ 'global.or'|trans }}</span> 
+                            <a class="text-color-2" href="{{ path('app_login') }}">Connectez vous</a>
+                        </label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

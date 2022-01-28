@@ -14,7 +14,7 @@
                                             {% if menuSub.categories|length > 0 %}
                                                 <ul>
                                                     {% for menuSubSub in menuSub.categories %}
-                                                    <li><a href="{{ path("app_category_pro", {"slug": menuSubSub.slug}) }}">{{ menuSubSub.name|e }}</a></li>
+                                                    <li><a href="{{ path("app_category_pro", {"slug": menuSubSub.slug}) }}">{{ menuSubSub.job|e }}</a></li>
                                                     {% endfor %}
                                                 </ul>
                                             {% endif %}

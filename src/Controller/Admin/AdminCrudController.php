@@ -8,15 +8,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdminCrudController extends AbstractCrudController
@@ -53,18 +52,25 @@ class AdminCrudController extends AbstractCrudController
         $firstname = TextField::new('user.firstname', 'Prénom');
         $phone = TelephoneField::new('user.phone', 'Téléphone');
         $address = TextField::new('user.address', 'Adresse');
-        $date_add = DateTimeField::new('date_add', 'Date d\'ajout');
+        $date_add = DateTimeField::new('date_add', 'Date de création');
         $date_upd = DateTimeField::new('date_upd', 'Date de mise à jour');
         $status = BooleanField::new('status', 'Status');
+        $manage_needs = BooleanField::new('manage_needs', 'Gère les besoins ?');
+        $manage_proposals = BooleanField::new('manage_proposals', 'Gère les propositions ?');
+        $role = ChoiceField::new('user.roles', 'Rôles')->setChoices(fn() => [
+            'Super administrateur' => "ROLE_SUPER_ADMIN", 
+            'Admistrateur' => "ROLE_ADMIN", 
+            'Modérateur' => "ROLE_MODERATOR"
+        ])->allowMultipleChoices()->renderExpanded();
 
         if (Crud::PAGE_INDEX === $pageName)
             return [$id, $email, $name, $date_add, $date_upd, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
-            return [$email, $firstname, $lastname, $phone, $address];
+            return [$email, $firstname, $lastname, $phone, $address, $manage_needs, $manage_proposals, $role];
         elseif(Crud::PAGE_DETAIL === $pageName)
             return [$email, $name, $phone, $address, $status];
         elseif(Crud::PAGE_NEW === $pageName)
-            return [$user];
+            return [$user, $manage_needs, $manage_proposals];
     }
 
     public function configureActions(Actions $actions): Actions

@@ -36,6 +36,7 @@ class CategoryProfessionalCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('name', 'Nom'),
+            TextField::new('job', 'Métier'),
             TextEditorField::new('description'),
             TextField::new('iconFile', 'Icône')
                         ->setFormType(VichImageType::class)

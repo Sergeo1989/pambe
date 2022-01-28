@@ -134,10 +134,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender")
+     */
+    private $sent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recipient")
+     */
+    private $recieves;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
         $this->needs = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->sent = new ArrayCollection();
+        $this->recieves = new ArrayCollection();
     }
 
     public function __toString(){
@@ -530,6 +543,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getSent(): Collection
+    {
+        return $this->sent;
+    }
+
+    public function addSent(Message $sent): self
+    {
+        if (!$this->sent->contains($sent)) {
+            $this->sent[] = $sent;
+            $sent->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSent(Message $sent): self
+    {
+        if ($this->sent->removeElement($sent)) {
+            // set the owning side to null (unless already changed)
+            if ($sent->getSender() === $this) {
+                $sent->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getRecieves(): Collection
+    {
+        return $this->recieves;
+    }
+
+    public function addReciefe(Message $reciefe): self
+    {
+        if (!$this->recieves->contains($reciefe)) {
+            $this->recieves[] = $reciefe;
+            $reciefe->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReciefe(Message $reciefe): self
+    {
+        if ($this->recieves->removeElement($reciefe)) {
+            // set the owning side to null (unless already changed)
+            if ($reciefe->getRecipient() === $this) {
+                $reciefe->setRecipient(null);
+            }
+        }
 
         return $this;
     }

@@ -28,21 +28,6 @@ class Professional
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="professionals")
-     */
-    private $country;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="professionals")
-     */
-    private $region;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="professionals")
-     */
-    private $city;
-
-    /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="professional", cascade={"persist", "remove"})
      */
     private $user;
@@ -65,7 +50,7 @@ class Professional
     /**
      * @ORM\Column(type="boolean")
      */
-    private $verified = false;
+    private $verified;
 
     /**
      * @ORM\Column(type="datetime")
@@ -199,42 +184,6 @@ class Professional
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getRegion(): ?Region
-    {
-        return $this->region;
-    }
-
-    public function setRegion(?Region $region): self
-    {
-        $this->region = $region;
-
-        return $this;
-    }
-
-    public function getCity(): ?City
-    {
-        return $this->city;
-    }
-
-    public function setCity(?City $city): self
-    {
-        $this->city = $city;
-
-        return $this;
     }
 
     public function getUser(): ?User

@@ -1,0 +1,104 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Ajouter une proposition - '~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">Nouveau</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>Nouvelle proposition</li>
+        {% endblock %}
+    {% endembed %}
+    <section class="add-listing-area section-padding">
+        <div class="container">
+            <div class="row"> 
+                <div class="col-lg-10 mx-auto">
+                    {% for message in app.flashes('message') %}
+                        <div class="alert alert-success">{{ message.msg }} <a href="{{ message.url }}"><strong>Voir la proposition</strong></a></div>
+                    {% endfor %}
+                    <div class="block-card mb-4">
+                        <div class="block-card-header">
+                            <h2 class="widget-title">Enregistrez une proposition</h2>
+                            <div class="stroke-shape"></div>
+                        </div>
+                        <div class="block-card-body">
+                            {% if app.user and is_granted('edit', app.user) %}
+                                {{ form_start(proposalForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                                    <div class="col-lg-12">
+                                        <div class="input-box error">
+                                            <label class="label-text">Tarif</label>
+                                            <div class="input-group form-group">
+                                                {{ form_widget(proposalForm.price, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_price'|trans ~ ' (FCFA)', 'aria-describedby': 'price', 'disabled': (need.isAlreadyProposed(app.user.professional) or is_granted('edit', need))} }) }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="price">FCFA</span>
+                                                </div>
+                                            </div>
+                                            {{ form_errors(proposalForm.price) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.note'|trans }}</label>
+                                            <div class="form-group error">
+                                                {{ form_widget(proposalForm.note, {'required': false, 'attr': {'class': 'message-control form-control', 'placeholder': 'Entrez une note', 'disabled': (need.isAlreadyProposed(app.user.professional) or is_granted('edit', need))} }) }}
+                                                {{ form_errors(proposalForm.note) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-box error">
+                                            <label class="label-text">Délai</label>
+                                            <div class="input-group form-group">
+                                                {{ form_widget(proposalForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un délai', 'aria-describedby': 'delay', 'disabled': (need.isAlreadyProposed(app.user.professional) or is_granted('edit', need))} }) }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="delay">jour(s)</span>
+                                                </div>
+                                            </div>
+                                            {{ form_errors(proposalForm.delay) }}
+                                        </div>
+                                    </div>
+                                    <div class="submit-wrap pt-3">
+                                        <div class="btn-box mt-3 ml-3">
+                                            {{ form_widget(proposalForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0', 'disabled': (need.isAlreadyProposed(app.user.professional) or is_granted('edit', need))} }) }}
+                                        </div>
+                                    </div> 
+                                {{ form_end(proposalForm) }}
+                            {% else %}
+                                <p>Salut ! Content que vous ayez pris cette décision. Si vous voulez ajouter une proposition, vous devez être un professionnel. Mais avant, vous devez vous connectez ou créez un compte si vous n'êtes pas encore enregistré.</p><br>
+                                <p class="login-and-signup-wrap">
+                                    {% if app.user %}
+                                        <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="{{ path('app_professional_create') }}">{{ 'global.become_a_professional'|trans }}</a>
+                                    {% endif %}
+                                    <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="{{ path('app_login') }}">{{ 'global.login'|trans }}</a>
+                                    <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="{{ path('app_register') }}">Créer un compte</a>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+    {% embed "front/partials/stylesheets.html.twig" %}
+        {% block stylesheets_content %}
+            {{ parent() }}
+            <link rel="stylesheet" href="{{ asset('assets/front/css/jquery-te-1.4.0.css') }}">
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+{% block javascripts %}
+    {% embed "front/partials/javascripts.html.twig" %}
+        {% block javascripts_content %}
+            {{ parent() }}
+            <script src="{{ asset('assets/front/js/jquery-te-1.4.0.min.js') }}"></script>
+            <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

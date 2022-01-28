@@ -2,6 +2,7 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Conversation;
 use App\Entity\Need;
 use App\Entity\ProfessionalImage;
 use App\Entity\Proposal;
@@ -14,7 +15,11 @@ use App\Form\Professional\Edit\SocialMediaFormType;
 use App\Form\ProposalFormType;
 use App\Form\User\CoordonneeFormType;
 use App\Form\User\InformationFormType;
+use App\Repository\AdminRepository;
+use App\Repository\ConversationRepository;
+use App\Repository\UserRepository;
 use App\Service\ContextService;
+use App\Service\MailerService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,11 +32,13 @@ class AccountController extends AbstractController
 {
     private $translator;
     private $paginator;
+    private $emailSender;
 
-    public function __construct(TranslatorInterface $translator, PaginatorInterface $paginator)
+    public function __construct(TranslatorInterface $translator, PaginatorInterface $paginator, $emailSender)
     {
         $this->translator = $translator;
         $this->paginator = $paginator;
+        $this->emailSender = $emailSender;
     }
 
     /**
@@ -115,6 +122,29 @@ class AccountController extends AbstractController
         return $this->render('front/account/proposalneed.html.twig', compact('proposals'));
     }
 
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function createneed(ContextService $context, Request $request)
+    {
+        $need = new Need();
+        $needForm = $this->createForm(NeedFormType::class, $need);
+        $needForm->handleRequest($request);
+
+        if($needForm->isSubmitted() && $needForm->isValid()) {
+            $need->setUser($context->getUser());
+            $context->save($need);
+            $message = $this->translator->trans('global.your_need_has_been_successfully_registered.');
+            $this->addFlash("message", $message);
+            return $this->redirectToRoute('app_account_need');
+        }
+
+        return $this->render('front/account/createneed.html.twig', ['needForm' => $needForm->createView()]);
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
     public function editneed(Need $need, ContextService $context, Request $request)
     {
         $needForm = $this->createForm(NeedFormType::class, $need);
@@ -135,6 +165,24 @@ class AccountController extends AbstractController
     {
         $context->delete($need);
         $this->addFlash('message', $this->translator->trans('global.need_successfully_removed!'));
+        return $this->redirectToRoute('app_account_need');
+    }
+
+    public function republishneed(Need $need, ContextService $context, MailerService $mailer, AdminRepository $adminRepo)
+    {
+        $need->setNature(Need::PENDING);
+        $need = $context->save($need);
+        foreach ($adminRepo->findBy(['status' => true]) as $admin) 
+            if($admin->getManageNeeds())
+                $mailer->send(
+                    'Ré-publication d\'un besoin',
+                    $this->emailSender,
+                    $admin->getUser()->getEmail(),
+                    'front/email/republishneed.html.twig',
+                    ['need' => $need]
+                );
+            
+        $this->addFlash('message', $this->translator->trans('global.your_need_is_awaiting_moderation.'));
         return $this->redirectToRoute('app_account_need');
     }
 
@@ -348,5 +396,22 @@ class AccountController extends AbstractController
     public function profile(User $user)
     {
         return $this->render('front/account/profile.html.twig', compact('user'));
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function conversation(ConversationRepository $conversationRepo)
+    {
+        $conversations = $conversationRepo->getConversations($this->getUser());
+        return $this->render('front/account/conversation.html.twig', compact('conversations'));
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function message(Conversation $conversation)
+    {
+        return $this->render('front/account/message.html.twig', compact('conversation'));
     }
 }

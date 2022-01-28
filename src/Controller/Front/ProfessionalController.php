@@ -2,6 +2,8 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Conversation;
+use App\Entity\Message;
 use App\Entity\Professional;
 use App\Entity\ProfessionalImage;
 use App\Entity\ProfessionalLike;
@@ -10,17 +12,18 @@ use App\Entity\Review;
 use App\Entity\Service;
 use App\Entity\User;
 use App\Form\ProfessionalFormType;
+use App\Repository\ConversationRepository;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
 use App\Repository\QualificationRepository;
 use App\Repository\ServiceRepository;
+use App\Repository\UserRepository;
 use App\Service\ContextService;
 use App\Service\ProfessionalService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -35,6 +38,8 @@ class ProfessionalController extends AbstractController
     private $qualificationRepo;
     private $serviceRepo;
     private $proImgRepo;
+    private $userRepo;
+    private $conversationRepo;
     private $request;
     private $response;
     private $status = 200;
@@ -47,7 +52,9 @@ class ProfessionalController extends AbstractController
         ProfessionalLikeRepository $likeRepo,
         QualificationRepository $qualificationRepo,
         ServiceRepository $serviceRepo,
-        ProfessionalImageRepository $proImgRepo)
+        ProfessionalImageRepository $proImgRepo,
+        UserRepository $userRepo, 
+        ConversationRepository $conversationRepo)
     {
         $this->context = $context;
         $this->translator = $translator;
@@ -57,6 +64,8 @@ class ProfessionalController extends AbstractController
         $this->qualificationRepo = $qualificationRepo;
         $this->serviceRepo = $serviceRepo;
         $this->proImgRepo = $proImgRepo;
+        $this->userRepo = $userRepo;
+        $this->conversationRepo = $conversationRepo;
     }
 
     public function index(Request $request): Response
@@ -130,7 +139,7 @@ class ProfessionalController extends AbstractController
                 $review->setProfessional($this->professionalService->getProfessional($professional_id));
 
                 $this->context->save($review);
-                return $this->redirectToRoute("app_professional_show", ["slug" => $user()->getSlug()]);
+                return $this->redirectToRoute("app_professional_show", ["slug" => $user->getSlug()]);
             }
         }
 
@@ -178,8 +187,9 @@ class ProfessionalController extends AbstractController
         return $this->render('front/professional/index.html.twig', compact('professionals', 'data'));
     }
 
-    public function like(Professional $professional): Response
+    public function like(User $user): Response
     {
+        $professional = $user->getProfessional();
         $user = $this->getUser();
 
         if (!$user) return $this->json([
@@ -215,7 +225,7 @@ class ProfessionalController extends AbstractController
     {
         if($this->getUser() && $this->isGranted('edit', $this->getUser()))
             return $this->redirectToRoute('app_account_professional_information');
-
+ 
         $professional = new Professional();
         $form = $this->createForm(ProfessionalFormType::class, $professional);
         $form->handleRequest($request);
@@ -589,5 +599,48 @@ class ProfessionalController extends AbstractController
             $this->response = [
                 'status' => false
             ];
+    }
+
+    private function displayAjaxLeaveMessage()
+    {
+        $sender_id = (int)$this->request->get('sender_id');
+        $recipient_id = (int)$this->request->get('recipient_id');
+        $content = $this->request->get('message');
+       
+        $sender = $this->userRepo->find($sender_id);
+        $recipient = $this->userRepo->find($recipient_id);
+
+        if(empty($content)){
+            $error_message = $this->translator->trans('global.enter_a_message.');
+            $this->response = [
+                'status' => false,
+                'message' => $error_message
+            ];
+        }else{
+            $conversation = $this->conversationRepo->getConversation($sender, $recipient);
+            if(is_null($conversation))
+                $conversation = new Conversation();
+            $message = new Message();
+            $message->setSender($sender);
+            $message->setRecipient($recipient);
+            $message->setContent($content);
+            $conversation->addMessage($message);
+            $this->context->save($conversation);
+            $this->response = [
+                'status' => true,
+                'message' => 'Votre message a été correctement envoyé.'
+            ];
+        }
+    }
+
+    private function displayAjaxSendMessage()
+    {
+        $sender_id = (int)$this->request->get('sender_id');
+        $recipient_id = (int)$this->request->get('recipient_id');
+        $content = $this->request->get('message');
+       
+        $sender = $this->userRepo->find($sender_id);
+        $recipient = $this->userRepo->find($recipient_id);
+
     }
 }

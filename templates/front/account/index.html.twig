@@ -55,6 +55,7 @@
                             <li><span class="text-color mr-1"><i class="la la-info mr-2 text-color-2 font-size-18"></i></span><a href="{{ path('app_account') }}"> Mes informations</a></li>
                             <li><span class="text-color mr-1"><i class="la la-address-card  mr-2 text-color-2 font-size-18"></i></span><a href="{{ path('app_account_coordonnee') }}"> Mes coordonnées</a></li>
                             <li><span class="text-color mr-1"><i class="la la-tag mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_need') }}">Mes besoins</a></li>
+                            <li><span class="text-color mr-1"><i class="la la-envelope mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_conversation') }}">Messages</a></li>
                             <li class="{{ is_granted('edit', app.user) ? 'dropdown dot-action-wrap ml-1' : ''  }}">
                                 <span class="text-color mr-1"><i class="la la-business-time mr-2 text-color-2 font-size-18"></i> </span>
                                 {% if is_granted('edit', app.user) %}
@@ -165,6 +166,7 @@
         {% block stylesheets_content %}
             {{ parent() }}
             <link rel="stylesheet" href="{{ asset('assets/front/css/jquery-te-1.4.0.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/front/css/emojionearea.css') }}">
         {% endblock %}
     {% endembed %}
 {% endblock %}
@@ -174,8 +176,7 @@
             {{ parent() }}
             <script src="{{ asset('assets/front/js/jquery-te-1.4.0.min.js') }}"></script>
             <script src="{{ asset('assets/front/js/jquery.MultiFile.min.js') }}"></script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYzby4yYDVaXPmtu4jZAGR258K6IYwjIY&libraries"></script>
-            <script src="{{ asset('assets/front/js/map-add.js') }}"></script>
+            <script src="{{ asset('assets/front/js/emojionearea.min.js') }}"></script>
         {% endblock %}
     {% endembed %}
 {% endblock %}

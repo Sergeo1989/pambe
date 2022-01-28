@@ -47,6 +47,12 @@ app_account_need:
 app_account_coordonnee:
     path: /account/coordonnee
     controller: App\Controller\Front\AccountController::coordonnee
+app_account_conversation:
+    path: /account/conversation
+    controller: App\Controller\Front\AccountController::conversation
+app_account_message:
+    path: /account/{id}/conversation
+    controller: App\Controller\Front\AccountController::message
 app_account_professional_information:
     path: /account/information/professional
     controller: App\Controller\Front\AccountController::information
@@ -91,6 +97,9 @@ app_account_professional_gallery:
 app_account_professional_option:
     path: /account/option/professional
     controller: App\Controller\Front\AccountController::option
+app_account_need_create:
+    path: /account/need/create
+    controller: App\Controller\Front\AccountController::createneed
 app_account_need_show:
     path: /account/need/{id}/show
     controller: App\Controller\Front\AccountController::showneed
@@ -104,6 +113,11 @@ app_account_need_edit:
 app_account_need_delete:
     path: account/need/{id}/delete
     controller: App\Controller\Front\AccountController::deleteneed
+    requirements:
+        id: '\d+'
+app_account_need_re_publish:
+    path: account/need/{id}/re-publish
+    controller: App\Controller\Front\AccountController::republishneed
     requirements:
         id: '\d+'
 app_logout:
@@ -250,3 +264,8 @@ app_professional_proposal_nature:
 app_profile:
     path: /{slug}/profile
     controller: App\Controller\Front\AccountController::profile
+app_professional_proposal_create:
+    path: professional/proposal/{id}/create
+    controller: App\Controller\Front\NeedController::newproposal
+    requirements:
+        id: '\d+'

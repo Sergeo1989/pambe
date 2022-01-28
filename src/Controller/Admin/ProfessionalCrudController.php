@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CategoryProfessional;
+use App\Entity\City;
 use App\Entity\Country;
 use App\Entity\Language;
 use App\Entity\Professional;
@@ -111,28 +112,30 @@ class ProfessionalCrudController extends AbstractCrudController
         $country = AssociationField::new('user.country', 'Pays')
                                 ->setFieldFqcn(Country::class)
                                 ->setFormTypeOptions(['class' => Country::class]);
-        $region = AssociationField::new('region', 'Région')
+        $region = AssociationField::new('user.region', 'Région')
                                 ->setFieldFqcn(Region::class)
                                 ->setFormTypeOptions(['class' => Region::class]);
-        $city = AssociationField::new('city', 'Ville', City::class);
+        $city = AssociationField::new('user.city', 'Ville')
+                                ->setFieldFqcn(City::class)
+                                ->setFormTypeOptions(['class' => City::class]);
         $langues = AssociationField::new('languages', 'Langues', Language::class);
         $categories = AssociationField::new('category_professionals', 'Catégories', CategoryProfessional::class);
         $default_category = AssociationField::new('category_professional_default', 'Catégorie principale', CategoryProfessional::class);
         $short_description = TextEditorField::new('short_description', 'Courte description')
                             ->setFormTypeOptions(['empty_data' => '']);
-        //$description = TextEditorField::new('description', 'Description')
-                            //->setFormTypeOptions(['empty_data' => '']);
+        $description = TextEditorField::new('description', 'Description')
+                            ->setFormTypeOptions(['empty_data' => '']);
         $verified = BooleanField::new('verified', 'Vérifié');
         $status = BooleanField::new('status', 'Status');
 
         if (Crud::PAGE_INDEX === $pageName)
             return [$id, $email, $name, $date_add, $date_upd, $default_category, $verified, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
-    return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $level, $default_category/*, $country, $region, $city, $langues, $categories/*, $short_description, $description, $services*/, $social_media];
+            return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $level, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $services, $social_media];
         elseif(Crud::PAGE_DETAIL === $pageName)
-            return [$email, $name, $phone, $address, $website, $default_category, $region, $city, $langues, $categories, $short_description/*, $description*/, $verified, $status];
+            return [$email, $name, $phone, $address, $website, $default_category, $region, $city, $langues, $categories, $short_description, $description, $verified, $status];
         elseif(Crud::PAGE_NEW === $pageName)
-    return [$user, $website, $profile, $cover, $galleries, $default_category, $region, $city, $langues, $categories, $short_description/*, $description*/];
+            return [$user, $cover, $galleries, $default_category, $langues, $categories, $short_description, $description];
     }
 
     public function configureActions(Actions $actions): Actions

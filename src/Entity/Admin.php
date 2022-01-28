@@ -55,6 +55,16 @@ class Admin
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $manage_needs;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $manage_proposals;
+
     public function __construct()
     {
         $this->content = new ArrayCollection();
@@ -203,5 +213,29 @@ class Admin
     public function onPreUpdate()
     {
         $this->date_upd = new \DateTime("now");
+    }
+
+    public function getManageNeeds(): ?bool
+    {
+        return $this->manage_needs;
+    }
+
+    public function setManageNeeds(?bool $manage_needs): self
+    {
+        $this->manage_needs = $manage_needs;
+
+        return $this;
+    }
+
+    public function getManageProposals(): ?bool
+    {
+        return $this->manage_proposals;
+    }
+
+    public function setManageProposals(?bool $manage_proposals): self
+    {
+        $this->manage_proposals = $manage_proposals;
+
+        return $this;
     }
 }

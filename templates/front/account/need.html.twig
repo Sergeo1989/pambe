@@ -7,6 +7,7 @@
         <div class="block-card mb-3">
             <div class="block-card-header">
                 <h2 class="widget-title pb-0">Liste de mes besoins</h2>
+                <a href="{{ path('app_account_need_create') }}" class="theme-btn gradient-btn float-right add-experience">{{ 'global.add'|trans }}</a>
             </div>
             <div class="block-card-body">
                 {% for message in app.flashes("message") %}
@@ -45,12 +46,13 @@
                                     <td class="text-warning">Rejecté</td>
                                 {% endif %}
                                 <td>
-                                    <a title="Visualiser" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
-                                    <a title="Modifier" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_edit', {id: need.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
-                                    <a title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce besoin ?')" href="{{ path('app_account_need_delete', {id: need.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
                                     {% if need.nature is constant('App\\Entity\\Need::EXPIRED') %}
-                                        <a title="Re-publier" href="#" class="text-success"><i class="la la-share font-size-18"></i></a>
+                                        <a title="Re-publier" onclick="return confirm('Etes-vous sûr de vouloir re-publier ce besoin ?')" href="{{ path('app_account_need_re_publish', {id: need.id}) }}" class="text-success"><i class="la la-share font-size-18"></i></a>
+                                    {% else %}
+                                        <a title="Visualiser" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
+                                        <a title="Modifier" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_edit', {id: need.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
                                     {% endif %}
+                                    <a title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce besoin ?')" href="{{ path('app_account_need_delete', {id: need.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}

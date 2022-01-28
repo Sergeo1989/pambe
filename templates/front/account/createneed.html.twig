@@ -1,12 +1,12 @@
 {% extends 'front/account/index.html.twig' %}
 
-{% block title %}{{ 'Modifier ce besoin - '~ parent() }}{% endblock %}
+{% block title %}{{ 'Ajouter un besoin - '~ parent() }}{% endblock %}
 
 {% block account_content %}
     <div class="user-listing-detail-wrap">
         <div class="block-card mb-3">
             <div class="block-card-header">
-                <h2 class="widget-title pb-0">Modifier ce besoin</h2>
+                <h2 class="widget-title pb-0">Ajouter un besoin</h2>
             </div>
             <div class="block-card-body">
                 {% for message in app.flashes("success") %}

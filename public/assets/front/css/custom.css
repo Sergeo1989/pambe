@@ -329,15 +329,15 @@ description: Our custom pambe CSS
 .badge:hover, .badge-count:hover{
     color: #9f8fff;
 }
-.error ul li, .input-box ul li{
+.error ul li{
     color: #b51d1d;
     font-size: 12px;
     list-style: none;
 }
-.error ul li:not(:last-child), .input-box ul li:not(:last-child){
+.error ul li:not(:last-child){
     margin-bottom: 5px;
 }
-.error ul li:before, .input-box ul li:before{
+.error ul li:before{
     content: "\2716";
     color: #b51d1d;
     margin-right: 5px;

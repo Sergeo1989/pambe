@@ -8,7 +8,88 @@ description: Our custom pambe JS
  
 (function ($) {
     "use strict";
+
+    /** Response message to professional */
+    $(document).on('click', '#btn_send', function(event){
+        var url  = $('#professional_ajax_url').val();
+        var btn  = $(this);
+        var data = {};
+        data['action'] = 'send_message';
+        data['ajax'] = 1;
+        data['rand'] = new Date().getTime();
+        data['conversation_id'] = $('#conversation_id').val();
+        data['message'] = $('#message_send').val();
+        var text = btn.text();
+        btn.text(text + '...');
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data, 
+            dataType:"json",
+            success: function(data) {
+                if (data.status === true) {
+                
+                
+                    $('#message').val('');
+                }
+                btn.text(text);
+            },
+            complete: function() {
+                btn.text(text);
+            },
+            error: function(error){
+                btn.text(text);
+                console.log(error);
+                alert('veuillez ré-essayer plutard !');
+            }
+        });
+    });
  
+    /** Send message to professional */
+    $(document).on('submit', '#form_message', function(event){
+        event.preventDefault();
+        var url  = $('#professional_ajax_url').val();
+        var btn  = $('#btn_message');
+        var data = {};
+        data['action'] = 'leave_message';
+        data['ajax'] = 1;
+        data['rand'] = new Date().getTime();
+        data['sender_id'] = $('#sender_id').val();
+        data['recipient_id'] = $('#recipient_id').val();
+        data['message'] = $('#message').val();
+        var text = btn.text();
+        btn.text(text + '...');
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data, 
+            dataType:"json",
+            success: function(data) {
+                if (data.status === true) {
+                    setTimeout(function(){
+                        $('#messageModal').modal('hide');
+                    }, 250);
+        
+                    $(".modal-backdrop").removeClass('show').hide();
+                    
+                    alert(data.message);
+                    $('#message').val('');
+                } else {
+                    $('#message').after('<ul><li>'+ data.message +'</li></ul>').show().fadeIn(500).delay(5000);
+                }
+                btn.text(text);
+            },
+            complete: function() {
+                btn.text(text);
+            },
+            error: function(error){
+                btn.text(text);
+                console.log(error);
+                alert('veuillez ré-essayer plutard !');
+            }
+        });
+    });
+
     /** Sort professional values */
     $(document).on('change', '#sort_pro', function(event) {
         this.form.submit();
@@ -127,7 +208,7 @@ description: Our custom pambe JS
         event.preventDefault(); 
         var link = $(this);
         var url = link.attr("href");
-        
+         
         var getting = $.get(url, function(data){
             if(data.code == 200){
                 $('.js-likes').html('<i class="la la-heart mr-1"></i>Favoris - ' + data.likes);

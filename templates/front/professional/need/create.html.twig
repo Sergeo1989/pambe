@@ -26,74 +26,82 @@
                             <div class="stroke-shape"></div>
                         </div>
                         <div class="block-card-body">
-                            {{ form_start(needForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">{{ 'global.title'|trans }}</label>
-                                        <div class="form-group error">
-                                            {{ form_widget(needForm.title, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_title.'|trans ~'..'} }) }}
-                                            {{ form_errors(needForm.title) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">Catégorie</label>
-                                        <div class="form-group user-chosen-select-container">
-                                            {{ form_widget(needForm.category, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez une catégorie'} }) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">{{ 'global.description'|trans }}</label>
-                                        <div class="form-group error">
-                                            {{ form_widget(needForm.description, {'required': false, 'attr': {'class': 'message-control form-control', 'placeholder': 'Entrez une description de votre besoin'} }) }}
-                                            {{ form_errors(needForm.description) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">Budget</label>
-                                        <div class="input-group form-group error">
-                                            {{ form_widget(needForm.budget, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un budget', 'aria-describedby': 'price'} }) }} 
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="price">FCFA</span>
-                                            </div>   
-                                        </div>
-                                        <em style="font-size: 12px;">Ne rien renseigner si vous n'avez aucune idée</em>
-                                        {{ form_errors(needForm.budget) }}
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">Délai</label>
-                                        <div class="input-group form-group error">
-                                            {{ form_widget(needForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un delai en nombre de jours', 'aria-describedby': 'delay'} }) }}
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="delay">jours(s)</span>
+                            {% if app.user %}
+                                {{ form_start(needForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.title'|trans }}</label>
+                                            <div class="form-group error">
+                                                {{ form_widget(needForm.title, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_title.'|trans ~'..'} }) }}
+                                                {{ form_errors(needForm.title) }}
                                             </div>
                                         </div>
-                                        <em style="font-size: 12px;">Exemple: 4 jours</em>
-                                        {{ form_errors(needForm.delay) }}
                                     </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="input-box">
-                                        <label class="label-text">Fichier(optionnel)</label>
-                                        <div class="file-upload-wrap file-upload-wrap-2 profile need">
-                                            {{ form_widget(needForm.documentFile, {'multiple': true, 'attr': {'class': 'file-upload-input', 'maxlength': '1'} }) }}
-                                            <span class="file-upload-text"><i class="la la-photo mr-2"></i>{{ 'global.choose_a_file'|trans }}</span>
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">Catégorie</label>
+                                            <div class="form-group user-chosen-select-container">
+                                                {{ form_widget(needForm.category, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez une catégorie'} }) }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="submit-wrap pt-3">
-                                    <div class="btn-box mt-3 ml-3">
-                                        {{ form_widget(needForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">{{ 'global.description'|trans }}</label>
+                                            <div class="form-group error">
+                                                {{ form_widget(needForm.description, {'required': false, 'attr': {'class': 'message-control form-control', 'placeholder': 'Entrez une description de votre besoin'} }) }}
+                                                {{ form_errors(needForm.description) }}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            {{ form_end(needForm) }}
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">Budget</label>
+                                            <div class="input-group form-group error">
+                                                {{ form_widget(needForm.budget, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un budget', 'aria-describedby': 'price'} }) }} 
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="price">FCFA</span>
+                                                </div>   
+                                            </div>
+                                            <em style="font-size: 12px;">Ne rien renseigner si vous n'avez aucune idée</em>
+                                            {{ form_errors(needForm.budget) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">Délai</label>
+                                            <div class="input-group form-group error">
+                                                {{ form_widget(needForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un delai en nombre de jours', 'aria-describedby': 'delay'} }) }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="delay">jours(s)</span>
+                                                </div>
+                                            </div>
+                                            <em style="font-size: 12px;">Exemple: 4 jours</em>
+                                            {{ form_errors(needForm.delay) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-box">
+                                            <label class="label-text">Fichier(optionnel)</label>
+                                            <div class="file-upload-wrap file-upload-wrap-2 profile need">
+                                                {{ form_widget(needForm.documentFile, {'multiple': true, 'attr': {'class': 'file-upload-input', 'maxlength': '1'} }) }}
+                                                <span class="file-upload-text"><i class="la la-photo mr-2"></i>{{ 'global.choose_a_file'|trans }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="submit-wrap pt-3">
+                                        <div class="btn-box mt-3 ml-3">
+                                            {{ form_widget(needForm.save, {'label': 'global.save'|trans, 'attr': {'class': 'theme-btn gradient-btn border-0'} }) }}
+                                        </div>
+                                    </div>
+                                {{ form_end(needForm) }}
+                            {% else %}
+                                <p>Salut ! Content que vous ayez pris cette décision. Si vous voulez ajouter un besoin, vous devez au préalable vous connectez ou créé un compte si vous n'êtes pas déjà enregistré.</p><br>
+                                <p class="login-and-signup-wrap">
+                                    <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="{{ path('app_login') }}">{{ 'global.login'|trans }}</a>
+                                    <a class="theme-btn gradient-btn shadow-none add-listing-btn-hide" href="{{ path('app_register') }}">Créer un compte</a>
+                                </p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

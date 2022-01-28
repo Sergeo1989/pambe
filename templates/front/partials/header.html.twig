@@ -77,6 +77,22 @@
                                                 <ul>
                                                     {% if app.user %}
                                                         <li>
+                                                            <a href="#" class="text-white font-size-20"><i class="la la-bell"></i><sup class="text-white badge badge-primary badge-counter">0</sup></a>
+                                                            <ul class="dropdown-menu-item">
+                                                                <li><a href="{{ path('app_profile', {slug: app.user.slug}) }}"><span class="mr-1 la la-user-circle"></span>Mon profil</a></li>
+                                                                <li><a href="{{ path('app_account') }}"><span class="mr-1 la la-cog"></span>Paramètres</a></li>
+                                                                <li><a href="{{ logout_path('front') }}"><span class="mr-1 la la-sign-out"></span>{{ 'global.logout'|trans }}</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="text-white font-size-20"><i class="la la-envelope"></i><sup class="text-white badge badge-primary badge-counter" style="margin-left: 3px;">0</sup></a>
+                                                            <ul class="dropdown-menu-item">
+                                                                <li><a href="{{ path('app_profile', {slug: app.user.slug}) }}"><span class="mr-1 la la-user-circle"></span>Mon profil</a></li>
+                                                                <li><a href="{{ path('app_account') }}"><span class="mr-1 la la-cog"></span>Paramètres</a></li>
+                                                                <li><a href="{{ logout_path('front') }}"><span class="mr-1 la la-sign-out"></span>{{ 'global.logout'|trans }}</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
                                                             <a href="#" class="text-white">{{ 'global.account'|trans }} <span class="la la-angle-down"></span></a>
                                                             <ul class="dropdown-menu-item">
                                                                 <li><a href="{{ path('app_profile', {slug: app.user.slug}) }}"><span class="mr-1 la la-user-circle"></span>Mon profil</a></li>

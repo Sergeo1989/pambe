@@ -1,0 +1,50 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Conversations - '~ parent() }}{% endblock %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Conversations</h2>
+            </div>
+            <div class="block-card-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="block-card dashboard-card mb-4 px-0 pb-0">
+                            <div class="block-card-body">
+                                <div class="online-user-box">
+                                    <form action="#" class="form-box px-4">
+                                        <div class="form-group">
+                                            <span class="la la-search form-icon"></span>
+                                            <label class="mb-0 d-block">
+                                                <input type="text" class="form-control font-size-14" placeholder="Search for messages or users...">
+                                            </label>
+                                        </div>
+                                    </form>
+                                    <div class="online-user-list">
+                                        <div class="generic-list chat-list scrollable-content scrollbar-hidden">
+                                            {% for conversation in conversations %}
+                                                {% set message = conversation.messages|filter((message) => message.sender != app.user)|last %}
+                                                {% set profile = message.sender.profile and message.sender.profile.image ? vich_uploader_asset(message.sender.profile, 'imageFile') : asset('assets/front/images/photoshop.png') %}
+                                                <a class="generic-list-item d-flex align-items-center" href="{{ path('app_account_message', {id: conversation.id}) }}">
+                                                    <div class="user-thumb flex-shrink-0 position-relative">
+                                                        <img src="{{ profile }}" alt="{{ message.sender }}">
+                                                    </div>
+                                                    <div class="ml-2">
+                                                        <p class="text-truncate text-color font-size-14 font-weight-medium">{{ message.content }}</p>
+                                                        <p class="small text-gray">{{ message.sender }} · {{ message.dateAdd|format_date }}</p>
+                                                    </div>
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

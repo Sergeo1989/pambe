@@ -111,6 +111,12 @@ class CategoryProfessional
      */
     private $needs;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     */
+    private $job;
+
 
     public function __construct()
     {
@@ -359,6 +365,18 @@ class CategoryProfessional
                 $need->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getJob(): ?string
+    {
+        return $this->job;
+    }
+
+    public function setJob(?string $job): self
+    {
+        $this->job = $job;
 
         return $this;
     }

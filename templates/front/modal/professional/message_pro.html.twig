@@ -9,42 +9,24 @@
             </div>
             <div class="modal-body">
                 <p class="font-size-15 font-weight-medium pb-2">
-                    <span class="text-color">À :</span> {{ name }}
+                    <span class="text-color">À :</span> {{ professional.user }}
                 </p>
-                <form method="post" class="form-box">
-                    <div class="input-box">
+                <form id="form_message" method="post" class="form-box">
+                    <div class="input-box error">
                         <label class="label-text">Partagez quelques détails afin que nous puissions vous mettre en contact avec le freelance</label>
                         <div class="form-group">
                             <span class="la la-pencil form-icon"></span>
-                            <textarea class="message-control form-control" name="message" placeholder="Ecrivez quelque chose..."></textarea>
-                        </div>
-                    </div>
-                    <div class="input-box">
-                        <label class="label-text d-block">Inclure vos informations
-                            <span class="text-gray">{{ 'global.or'|trans }}</span> <a class="text-color-2" href="{{ path('app_login') }}">Connectez vous</a>
-                        </label>
-                        <label class="label-text">{{ 'global.email_address'|trans }}</label>
-                        <div class="form-group">
-                            <span class="la la-envelope-o form-icon"></span>
-                            <input value="{{ app.user ? app.user.email : '' }}" class="form-control form-control-styled" type="email" name="email" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="input-box">
-                        <label class="label-text">Nom</label>
-                        <div class="form-group">
-                            <span class="la la-user form-icon"></span>
-                            <input value="{{ app.user ?? '' }}" class="form-control form-control-styled" type="text" name="text" placeholder="Votre nom">
+                            <textarea id="message" class="message-control form-control" name="message" placeholder="Ecrivez quelque chose..."></textarea>
+                            <input type="hidden" id="sender_id" value="{{ app.user.id }}">
+                            <input type="hidden" id="recipient_id" value="{{ professional.user.id }}">
+                            <input type="hidden" id="professional_ajax_url" value="{{ path("app_professional_ajax") }}">
                         </div>
                     </div>
                     <div class="btn-box">
                         <p class="font-size-13 font-weight-medium pb-2 line-height-16">Nous enverrons vos informations à l'entreprise pour vous aider à obtenir une réponse.</p>
-                        <button type="submit" class="theme-btn gradient-btn w-100">
+                        <button id="btn_message" type="submit" class="theme-btn gradient-btn w-100">
                             {{'global.send_a_message'|trans}}<i class="la la-arrow-right ml-2"></i>
                         </button>
-                        <p class="font-size-13 font-weight-medium pt-1">En poursuivant, vous acceptez notre
-                            <a href="#" class="text-color-2">Conditions d'utilisation</a> et
-                            <a href="#"  class="text-color-2">Politique de confidentialité</a>.
-                        </p>
                     </div>
                 </form>
             </div>
