@@ -6,6 +6,11 @@
 
 {% block account_content %}
     <div class="user-listing-detail-wrap">
+        {% embed "front/partials/professional/edit/breadcrumb.html.twig" %}
+            {% block breadcrumb_training %}
+                <a class="active" href="javascript:void(0)">Formations</a>
+            {% endblock %}
+        {% endembed %}
         <div class="block-card mb-3">
             <div class="block-card-header">
                 <h2 class="widget-title pb-0">Formations</h2>

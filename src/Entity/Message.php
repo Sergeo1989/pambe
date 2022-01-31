@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class Message
+class Message implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -137,5 +137,14 @@ class Message
         $this->recipient = $recipient;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'            => $this->getId(),
+            'date_add'      => $this->getDateAdd()->format('F j, Y'),
+            'content'       => $this->getContent()
+        ];
     }
 }

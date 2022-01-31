@@ -71,6 +71,11 @@ app_account_professional_reference:
 app_account_professional_proposal:
     path: /account/proposal/professional
     controller: App\Controller\Front\AccountController::proposal
+app_account_notification:
+    path: /account/{id}/notification
+    controller: App\Controller\Front\NeedController::notification
+    requirements:
+        id: '\d+'
 app_account_professional_proposal_edit:
     path: /account/proposal/professional/{id}/edit
     controller: App\Controller\Front\AccountController::editproposal

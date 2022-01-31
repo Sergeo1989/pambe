@@ -397,3 +397,6 @@ description: Our custom pambe CSS
 .input-group.form-group{
     margin-bottom: 0;
 }
+.dropdown-menu-item.message, .dropdown-menu-item.notification{
+    width: 300px !important;
+}

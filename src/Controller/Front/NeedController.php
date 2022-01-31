@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Entity\Need;
+use App\Entity\Notification;
 use App\Entity\Proposal;
 use App\Form\NeedFormType;
 use App\Form\ProposalFormType;
@@ -114,6 +115,11 @@ class NeedController extends AbstractController
     public function nature(Proposal $proposal, $nature, MailerService $mailer, AdminRepository $adminRepo): Response
     {
         $need = $proposal->getNeed();
+        $notification = new Notification();
+        $notification->setObject($proposal);
+        $notification->setTitle('Statut de la proposiion');
+        $notification->setUser($proposal->getProfessional()->getUser());
+
         if($nature === 'accepted'){
             foreach ($need->getProposals()->getValues() as $value){ 
                 if($value !== $proposal)
@@ -122,6 +128,9 @@ class NeedController extends AbstractController
                     $value->setNature(Proposal::ACCEPTED);
                 $this->context->save($value);
             }
+            
+            $notification->setContent('Proposition #' . str_pad(strval($proposal->getId()), 5, '0', STR_PAD_LEFT) . ' a été accepté.');
+        
             $subject = $this->translator->trans('global.validation_of_proposal');
             $mailer->send(
                 $subject, 
@@ -141,9 +150,25 @@ class NeedController extends AbstractController
                     );
         }elseif ($nature === 'refused') {
             $proposal->setNature(Proposal::REFUSED);
+            $notification->setContent('Proposition #' . str_pad(strval($proposal->getId()), 5, '0', STR_PAD_LEFT) . ' a été refusé.');
             $this->context->save($proposal);
         }
-
+        $this->context->save($notification);
         return $this->redirectToRoute('app_account_professional_need_proposal', ['id' => $need->getId()]);
+    }
+
+    public function notification(Notification $notification, ContextService $context)
+    {
+        $object = $notification->getObject();
+        $notification->setIsRead(true);
+        $context->save($notification);
+        
+        if($object instanceof Proposal)
+            return $this->redirectToRoute('app_account_professional_proposal_show', ['id' => $object->getId()]);
+        elseif($object instanceof Need)
+            return $this->redirectToRoute('app_account_need_show', ['id' => $object->getId()]);
+        else
+            return $this->redirectToRoute('app_home');
+        
     }
 }

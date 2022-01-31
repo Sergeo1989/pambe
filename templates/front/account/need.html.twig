@@ -47,12 +47,12 @@
                                 {% endif %}
                                 <td>
                                     {% if need.nature is constant('App\\Entity\\Need::EXPIRED') %}
-                                        <a title="Re-publier" onclick="return confirm('Etes-vous sûr de vouloir re-publier ce besoin ?')" href="{{ path('app_account_need_re_publish', {id: need.id}) }}" class="text-success"><i class="la la-share font-size-18"></i></a>
+                                        <a data-toggle="tooltip" title="Re-publier" onclick="return confirm('Etes-vous sûr de vouloir re-publier ce besoin ?')" href="{{ path('app_account_need_re_publish', {id: need.id}) }}" class="text-success"><i class="la la-share font-size-18"></i></a>
                                     {% else %}
-                                        <a title="Visualiser" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
-                                        <a title="Modifier" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_edit', {id: need.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
+                                        <a data-toggle="tooltip" title="Visualiser" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
+                                        <a data-toggle="tooltip" title="Modifier" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_edit', {id: need.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
                                     {% endif %}
-                                    <a title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce besoin ?')" href="{{ path('app_account_need_delete', {id: need.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
+                                    <a data-toggle="tooltip" title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce besoin ?')" href="{{ path('app_account_need_delete', {id: need.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}

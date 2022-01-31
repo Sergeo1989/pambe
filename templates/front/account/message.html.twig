@@ -10,7 +10,7 @@
             <div class="block-card-header">
                 <h2 class="widget-title pb-0">Messages</h2>
             </div>
-            <div class="block-card-body">
+            <div class="block-card-body"> 
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="block-card dashboard-card mb-4 px-0 pb-3">
@@ -28,21 +28,23 @@
                                 </div>
                             </div>
                             <div class="block-card-body pt-2">
-                                <div class="message-body scrollable-content scrollbar-hidden mb-4">
+                                <div id="messages" class="message-body scrollable-content scrollbar-hidden mb-4">
                                     {% for message in conversation.messages %}
-                                        <div class="message-item{{ app.user == message.sender ? ' me' : '' }}">
+                                        <div id="message{{ message.id }}" class="message-item{{ is_granted('edit', message) ? ' me' : '' }}">
                                             <div class="generic-list-item d-flex align-items-center border-bottom-0 bg-transparent">
                                                 <div class="message-bubble ml-2 position-relative p-3 rounded">
                                                     <p class="text-color font-size-14 font-weight-medium">{{ message.content }}</p>
                                                 </div>
-                                                <div class="dropdown dot-action-wrap ml-1">
-                                                    <button class="dot-action-btn dropdown-toggle after-none border-0 font-size-22" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="la la-ellipsis-v"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="#"><i class="la la-trash mr-1"></i>{{ 'global.delete'|trans }}</a>
+                                                {% if is_granted('edit', message) %}
+                                                    <div class="dropdown dot-action-wrap ml-1">
+                                                        <button class="dot-action-btn dropdown-toggle after-none border-0 font-size-22" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="la la-ellipsis-v"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                            <a id="delete_message" data-id="{{ message.id }}" class="dropdown-item" href="#"><i class="la la-trash mr-1"></i>{{ 'global.delete'|trans }}</a>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     {% endfor %}
@@ -51,6 +53,8 @@
                                     <label class="mb-0 d-block flex-grow-1">
                                         <textarea id="message_send" class="emoji-picker" placeholder="Entrez votre message..."></textarea>
                                         <input type="hidden" id="conversation_id" value="{{ conversation.id }}">
+                                        <input type="hidden" id="sender_id" value="{{ app.user.id }}">
+                                        <input type="hidden" id="recipient_id" value="{{ message.sender.id }}">
                                         <input type="hidden" id="professional_ajax_url" value="{{ path("app_professional_ajax") }}">
                                     </label>
                                     <div id="btn_send" class="message-send icon-element ml-2">

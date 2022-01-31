@@ -13,6 +13,7 @@ use App\Entity\Service;
 use App\Entity\User;
 use App\Form\ProfessionalFormType;
 use App\Repository\ConversationRepository;
+use App\Repository\MessageRepository;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
 use App\Repository\QualificationRepository;
@@ -40,6 +41,7 @@ class ProfessionalController extends AbstractController
     private $proImgRepo;
     private $userRepo;
     private $conversationRepo;
+    private $messageRepo;
     private $request;
     private $response;
     private $status = 200;
@@ -54,7 +56,8 @@ class ProfessionalController extends AbstractController
         ServiceRepository $serviceRepo,
         ProfessionalImageRepository $proImgRepo,
         UserRepository $userRepo, 
-        ConversationRepository $conversationRepo)
+        ConversationRepository $conversationRepo,
+        MessageRepository $messageRepo)
     {
         $this->context = $context;
         $this->translator = $translator;
@@ -66,6 +69,7 @@ class ProfessionalController extends AbstractController
         $this->proImgRepo = $proImgRepo;
         $this->userRepo = $userRepo;
         $this->conversationRepo = $conversationRepo;
+        $this->messageRepo = $messageRepo;
     }
 
     public function index(Request $request): Response
@@ -637,10 +641,49 @@ class ProfessionalController extends AbstractController
     {
         $sender_id = (int)$this->request->get('sender_id');
         $recipient_id = (int)$this->request->get('recipient_id');
+        $conversation_id = (int)$this->request->get('conversation_id');
         $content = $this->request->get('message');
        
         $sender = $this->userRepo->find($sender_id);
         $recipient = $this->userRepo->find($recipient_id);
+        $conversation = $this->conversationRepo->find($conversation_id);
 
+        if(empty($content)){
+            $this->response = [
+                'status' => false
+            ];
+        }else{
+            $message = new Message();
+            $message->setSender($sender);
+            $message->setRecipient($recipient);
+            $message->setConversation($conversation);
+            $message->setContent($content);
+            
+            $this->response = [
+                'status' => true,
+                'value' => $this->context->save($message)
+            ];
+        }
+    }
+
+    private function displayAjaxDeleteMessage()
+    {
+        $message_id = (int)$this->request->get('id');
+
+        $message = $this->messageRepo->find($message_id);
+
+        if(isset($message)){
+            $this->context->delete($message);
+            $this->response = [
+                'status' => true
+            ];
+        }
+        else{
+            $message = $this->translator->trans('global.an_error_has_occurred.');
+            $this->response = [
+                'status' => false,
+                'message' => $message
+            ];
+        }
     }
 }

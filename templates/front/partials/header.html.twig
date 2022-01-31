@@ -77,20 +77,24 @@
                                                 <ul>
                                                     {% if app.user %}
                                                         <li>
-                                                            <a href="#" class="text-white font-size-20"><i class="la la-bell"></i><sup class="text-white badge badge-primary badge-counter">0</sup></a>
-                                                            <ul class="dropdown-menu-item">
-                                                                <li><a href="{{ path('app_profile', {slug: app.user.slug}) }}"><span class="mr-1 la la-user-circle"></span>Mon profil</a></li>
-                                                                <li><a href="{{ path('app_account') }}"><span class="mr-1 la la-cog"></span>Paramètres</a></li>
-                                                                <li><a href="{{ logout_path('front') }}"><span class="mr-1 la la-sign-out"></span>{{ 'global.logout'|trans }}</a></li>
-                                                            </ul>
+                                                            <a href="#" class="text-white font-size-20"><i class="la la-bell"></i><sup class="text-white badge badge-primary badge-counter">{{ notifications()|length }}</sup></a>
+                                                            {% if notifications()|length > 0 %}
+                                                                <ul class="dropdown-menu-item notification">
+                                                                    {% for notification in notifications()|slice(0, 9) %}
+                                                                        <li><a href="{{ path('app_account_notification', {id: notification.id}) }}"><b>Pambe</b> - {{ notification.content }}</a></li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            {% endif %}
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="text-white font-size-20"><i class="la la-envelope"></i><sup class="text-white badge badge-primary badge-counter" style="margin-left: 3px;">0</sup></a>
-                                                            <ul class="dropdown-menu-item">
-                                                                <li><a href="{{ path('app_profile', {slug: app.user.slug}) }}"><span class="mr-1 la la-user-circle"></span>Mon profil</a></li>
-                                                                <li><a href="{{ path('app_account') }}"><span class="mr-1 la la-cog"></span>Paramètres</a></li>
-                                                                <li><a href="{{ logout_path('front') }}"><span class="mr-1 la la-sign-out"></span>{{ 'global.logout'|trans }}</a></li>
-                                                            </ul>
+                                                            <a href="#" class="text-white font-size-20"><i class="la la-envelope"></i><sup class="text-white badge badge-primary badge-counter" style="margin-left: 3px;">{{ messages()|length }}</sup></a>
+                                                            {% if messages()|length > 0 %}
+                                                                <ul class="dropdown-menu-item message">
+                                                                    {% for message in messages()|slice(0, 9) %}
+                                                                        <li><a href="{{ path('app_account_message', {id: message.conversation.id}) }}"><b>{{ message.sender }}</b> - {{ message.content|u.truncate(50, '...', false) }}</a></li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            {% endif %}
                                                         </li>
                                                         <li>
                                                             <a href="#" class="text-white">{{ 'global.account'|trans }} <span class="la la-angle-down"></span></a>

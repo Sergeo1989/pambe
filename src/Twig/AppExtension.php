@@ -6,6 +6,8 @@ use App\Entity\Need;
 use App\Entity\Professional;
 use App\Entity\Proposal;
 use App\Repository\MenuRepository;
+use App\Repository\MessageRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Service\BlogService;
 use App\Service\ContextService;
@@ -21,16 +23,27 @@ class AppExtension extends AbstractExtension
     private $professionalService;
     private $blogService;
     private $menuRepo;
+    private $messageRepo;
+    private $notificationRepo;
 
-    public function __construct(ContextService $context, UserRepository $userRepo, ProfessionalService $professionalService, BlogService $blogService, MenuRepository $menuRepo)
+    public function __construct(
+        ContextService $context,
+        UserRepository $userRepo, 
+        ProfessionalService $professionalService, 
+        BlogService $blogService, 
+        MenuRepository $menuRepo,
+        MessageRepository $messageRepo,
+        NotificationRepository $notificationRepo)
     {
         $this->context = $context;
         $this->userRepo = $userRepo;
         $this->professionalService = $professionalService;
         $this->blogService = $blogService;
         $this->menuRepo = $menuRepo;
+        $this->messageRepo = $messageRepo;
+        $this->notificationRepo = $notificationRepo;
     }
-
+    
     public function getFilters(): array
     {
         return [
@@ -45,6 +58,8 @@ class AppExtension extends AbstractExtension
             new TwigFunction('menus', [$this, 'getMenus']),
             new TwigFunction('needs', [$this, 'getNeeds']),
             new TwigFunction('users', [$this, 'users']),
+            new TwigFunction('messages', [$this, 'getAllMessage']),
+            new TwigFunction('notifications', [$this, 'getAllNotification']),
             new TwigFunction('toprated', [$this, 'topsRatedProfessionals']),
             new TwigFunction('pros', [$this, 'professionals']),
             new TwigFunction('vippros', [$this, 'professionalsVip']),
@@ -57,6 +72,20 @@ class AppExtension extends AbstractExtension
             new TwigFunction('popart', [$this, 'getPopularArticle']),
             new TwigFunction('lastfiveart', [$this, 'getLast5Article'])
         ];
+    }
+
+    public function getAllMessage()
+    {
+        return $this->messageRepo->findBy(
+            ['recipient' => $this->context->getUser(), 'is_read' => false], 
+            ['date_add' => 'DESC']);
+    }
+
+    public function getAllNotification()
+    {
+        return $this->notificationRepo->findBy(
+            ['user' => $this->context->getUser(), 'is_read' => false], 
+            ['date_add' => 'DESC']);
     }
 
     public function users()

@@ -9,7 +9,7 @@ description: Our custom pambe JS
 (function ($) {
     "use strict";
 
-    /** Response message to professional */
+    /** Response message to other user */
     $(document).on('click', '#btn_send', function(event){
         var url  = $('#professional_ajax_url').val();
         var btn  = $(this);
@@ -17,10 +17,13 @@ description: Our custom pambe JS
         data['action'] = 'send_message';
         data['ajax'] = 1;
         data['rand'] = new Date().getTime();
+        data['sender_id'] = $('#sender_id').val();
+        data['recipient_id'] = $('#recipient_id').val();
         data['conversation_id'] = $('#conversation_id').val();
         data['message'] = $('#message_send').val();
-        var text = btn.text();
-        btn.text(text + '...');
+        var text = btn.html();
+        btn.html('...');
+        console.log(data);
         $.ajax({
             type: 'POST',
             url: url,
@@ -28,23 +31,62 @@ description: Our custom pambe JS
             dataType:"json",
             success: function(data) {
                 if (data.status === true) {
-                
-                
-                    $('#message').val('');
+                    var div = '<div id="message'+ data.value.id +'" class="message-item me">'
+                                +'<div class="generic-list-item d-flex align-items-center border-bottom-0 bg-transparent">'
+                                    +'<div class="message-bubble ml-2 position-relative p-3 rounded">'
+                                        +'<p class="text-color font-size-14 font-weight-medium">'+ data.value.content +'</p>'
+                                    +'</div>'
+                                    +'<div class="dropdown dot-action-wrap ml-1">'
+                                        +'<button class="dot-action-btn dropdown-toggle after-none border-0 font-size-22" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+                                            +'<i class="la la-ellipsis-v"></i>'
+                                        +'</button>'
+                                        +'<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">'
+                                            +'<a id="delete_message" data-id="'+ data.value.id +'" class="dropdown-item" href="#"><i class="la la-trash mr-1"></i>Supprimer</a>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>';
+                    $('#messages').append(div);
+                    $('.emojionearea-editor').text('');
                 }
-                btn.text(text);
+                btn.html(text);
             },
             complete: function() {
-                btn.text(text);
+                btn.html(text);
             },
             error: function(error){
-                btn.text(text);
+                btn.html(text);
                 console.log(error);
                 alert('veuillez ré-essayer plutard !');
             }
         });
     });
- 
+
+    /** Delete message */
+    $(document).on('click', 'a#delete_message', function(event) {
+        event.preventDefault();
+        var link = $(this);
+        var message_id = link.data('id');
+        var url  = $('#professional_ajax_url').val();
+        var data = {};
+        data['action'] = 'delete_message';
+        data['id'] = message_id;
+        data['ajax'] = 1;
+        data['rand'] = new Date().getTime();
+       
+        var posting = $.post(url, data);
+        posting.always(function(data) {
+            if(data.status === true) {
+                $('#message' + message_id).fadeOut(200, function(){
+                    $('#message' + message_id).remove();
+                });
+            }else{
+                alert(data.message);
+            }
+        });
+        
+    });
+
     /** Send message to professional */
     $(document).on('submit', '#form_message', function(event){
         event.preventDefault();

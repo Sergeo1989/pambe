@@ -17,7 +17,7 @@ use App\Form\User\CoordonneeFormType;
 use App\Form\User\InformationFormType;
 use App\Repository\AdminRepository;
 use App\Repository\ConversationRepository;
-use App\Repository\UserRepository;
+use App\Repository\MessageRepository;
 use App\Service\ContextService;
 use App\Service\MailerService;
 use Knp\Component\Pager\PaginatorInterface;
@@ -410,8 +410,13 @@ class AccountController extends AbstractController
     /**
      * @Security("is_granted('ROLE_USER')")
      */
-    public function message(Conversation $conversation)
+    public function message(Conversation $conversation, ContextService $context, MessageRepository $messageRepo)
     {
+        $messages = $messageRepo->findBy(['recipient' => $context->getUser(), 'conversation' => $conversation]);
+        foreach ($messages as $message) {
+            $message->setIsRead(true);
+            $context->save($message);
+        }
         return $this->render('front/account/message.html.twig', compact('conversation'));
     }
 }
