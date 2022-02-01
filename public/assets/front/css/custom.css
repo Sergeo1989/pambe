@@ -398,5 +398,8 @@ description: Our custom pambe CSS
     margin-bottom: 0;
 }
 .dropdown-menu-item.message, .dropdown-menu-item.notification{
-    width: 300px !important;
+    width: 350px !important;
+}
+.main-menu ul li .dropdown-menu-item li a{
+    text-transform: none;
 }

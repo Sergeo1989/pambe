@@ -29,12 +29,13 @@ class ConversationRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getOneOrNullResult();
     }
-    public function getConversations($recipient)
+    
+    public function getConversations($user)
     {
         return $this->createQueryBuilder('c')
                     ->leftJoin('c.messages', 'm')
-                    ->andWhere('m.recipient = :recipient')
-                    ->setParameter('recipient', $recipient)
+                    ->andWhere('m.recipient = :user OR m.sender = :user')
+                    ->setParameter('user', $user)
                     ->orderBy('c.date_upd', 'DESC')
                     ->getQuery()
                     ->getResult();

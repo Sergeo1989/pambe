@@ -3,8 +3,9 @@
 {% block title %}{{ 'Messages - '~ parent() }}{% endblock %}
 
 {% block account_content %}
-    {% set message = conversation.messages|filter((message) => message.sender != app.user)|last %}
-    {% set profile = message.sender.profile and message.sender.profile.image ? vich_uploader_asset(message.sender.profile, 'imageFile') : asset('assets/front/images/photoshop.png') %}
+    {% set message = conversation.messages|last %}
+    {% set user = message.sender != app.user ? message.sender : message.recipient %}
+    {% set profile = user.profile and user.profile.image ? vich_uploader_asset(user.profile, 'imageFile') : asset('assets/front/images/photoshop.png') %}
     <div class="user-listing-detail-wrap">
         <div class="block-card mb-3">
             <div class="block-card-header">
@@ -20,7 +21,7 @@
                                         <img src="{{ profile }}" alt="author-image">
                                     </div>
                                     <div class="ml-2 flex-grow-1 position-relative">
-                                        <p class="text-color font-size-14 font-weight-medium">{{ message.sender }}</p>
+                                        <p class="text-color font-size-14 font-weight-medium">{{ user }}</p>
                                         <div class="action-buttons position-absolute top-0 right-0">
                                             <a href="#" class="btn bg-rgb-danger font-weight-medium p-1 line-height-18" data-toggle="tooltip" data-placement="left" title="Delete Conversation"><i class="la la-trash"></i></a>
                                         </div>
@@ -54,7 +55,7 @@
                                         <textarea id="message_send" class="emoji-picker" placeholder="Entrez votre message..."></textarea>
                                         <input type="hidden" id="conversation_id" value="{{ conversation.id }}">
                                         <input type="hidden" id="sender_id" value="{{ app.user.id }}">
-                                        <input type="hidden" id="recipient_id" value="{{ message.sender.id }}">
+                                        <input type="hidden" id="recipient_id" value="{{ user.id }}">
                                         <input type="hidden" id="professional_ajax_url" value="{{ path("app_professional_ajax") }}">
                                     </label>
                                     <div id="btn_send" class="message-send icon-element ml-2">

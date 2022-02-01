@@ -621,6 +621,62 @@
         <source>global.see_profile</source>
         <target>Voir le profil</target>
       </trans-unit>
+      <trans-unit id="Svz99Ru" resname="global.need_successfully_removed!">
+        <source>global.need_successfully_removed!</source>
+        <target>Votre besoin a été supprimé avec succès!</target>
+      </trans-unit>
+      <trans-unit id="54g1XwK" resname="global.your_need_is_awaiting_moderation.">
+        <source>global.your_need_is_awaiting_moderation.</source>
+        <target>Votre besoin est en attente de modération.</target>
+      </trans-unit>
+      <trans-unit id="ouwdFxV" resname="global.enter_a_message.">
+        <source>global.enter_a_message.</source>
+        <target>Entrez un message.</target>
+      </trans-unit>
+      <trans-unit id="CibEN1f" resname="global.coordonnee">
+        <source>global.coordonnee</source>
+        <target>Coordonnée</target>
+      </trans-unit>
+      <trans-unit id="_FPMXvQ" resname="global.pending">
+        <source>global.pending</source>
+        <target>En attente</target>
+      </trans-unit>
+      <trans-unit id="M4myjny" resname="global.disabled">
+        <source>global.disabled</source>
+        <target>Désactivé</target>
+      </trans-unit>
+      <trans-unit id="MyRc4hc" resname="global.expired">
+        <source>global.expired</source>
+        <target>Expiré</target>
+      </trans-unit>
+      <trans-unit id="IfpQ_Su" resname="global.confirmed">
+        <source>global.confirmed</source>
+        <target>Validé</target>
+      </trans-unit>
+      <trans-unit id="Yceq46I" resname="global.published">
+        <source>global.published</source>
+        <target>Publié</target>
+      </trans-unit>
+      <trans-unit id="5d_UPt0" resname="global.rejected">
+        <source>global.rejected</source>
+        <target>Rejeté</target>
+      </trans-unit>
+      <trans-unit id="g_pCBJb" resname="global.proposals">
+        <source>global.proposals</source>
+        <target>Propositions</target>
+      </trans-unit>
+      <trans-unit id="UC3.DTF" resname="global.re-publish">
+        <source>global.re-publish</source>
+        <target>Re-publié</target>
+      </trans-unit>
+      <trans-unit id="HxPY2_1" resname="global.view">
+        <source>global.view</source>
+        <target>Visualiser</target>
+      </trans-unit>
+      <trans-unit id="BuCkeff" resname="global.see_all">
+        <source>global.see_all</source>
+        <target>Voir tout</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

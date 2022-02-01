@@ -72,6 +72,9 @@ app_account_professional_proposal:
     path: /account/proposal/professional
     controller: App\Controller\Front\AccountController::proposal
 app_account_notification:
+    path: /account/notification
+    controller: App\Controller\Front\AccountController::notification
+app_account_notification_show:
     path: /account/{id}/notification
     controller: App\Controller\Front\NeedController::notification
     requirements:

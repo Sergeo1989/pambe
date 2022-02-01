@@ -84,7 +84,7 @@ class AppExtension extends AbstractExtension
     public function getAllNotification()
     {
         return $this->notificationRepo->findBy(
-            ['user' => $this->context->getUser(), 'is_read' => false], 
+            ['user' => $this->context->getUser()], 
             ['date_add' => 'DESC']);
     }
 

@@ -401,9 +401,9 @@ class AccountController extends AbstractController
     /**
      * @Security("is_granted('ROLE_USER')")
      */
-    public function conversation(ConversationRepository $conversationRepo)
+    public function conversation(ConversationRepository $conversationRepo, ContextService $context)
     {
-        $conversations = $conversationRepo->getConversations($this->getUser());
+        $conversations = $conversationRepo->getConversations($context->getUser());
         return $this->render('front/account/conversation.html.twig', compact('conversations'));
     }
 
@@ -418,5 +418,13 @@ class AccountController extends AbstractController
             $context->save($message);
         }
         return $this->render('front/account/message.html.twig', compact('conversation'));
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function notification()
+    {
+        return $this->render('front/account/notification.html.twig');
     }
 }

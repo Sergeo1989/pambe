@@ -20,8 +20,8 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>ID</th>
-                                <th>Titre</th>
-                                <th>Propositions</th>
+                                <th>{{ 'global.title'|trans }}</th>
+                                <th>{{ 'global.proposals'|trans }}</th>
                                 <th>Statut</th>
                                 <th>Action</th>
                             </tr>
@@ -33,26 +33,26 @@
                                 <td class="text-color">{{ need.title }}</td>
                                 <td class="text-info">{{ need.proposals|filter((proposal) => proposal.nature != constant('App\\Entity\\Proposal::REFUSED'))|length }}</td>
                                 {% if need.nature is constant('App\\Entity\\Need::PENDING') %}
-                                    <td class="text-primary">En attente</td>
+                                    <td class="text-primary">{{ 'global.pending'|trans }}</td>
                                 {% elseif need.nature is constant('App\\Entity\\Need::DISABLED') %}
-                                    <td class="text-danger">Désactivé</td>
+                                    <td class="text-danger">{{ 'global.disabled'|trans }}</td>
                                 {% elseif need.nature is constant('App\\Entity\\Need::EXPIRED') %}
-                                    <td class="text-danger">Expiré</td>
+                                    <td class="text-danger">{{ 'global.expired'|trans }}</td>
                                 {% elseif need.nature is constant('App\\Entity\\Need::CONFIRMED') %}
-                                    <td class="text-success">Validé</td>
+                                    <td class="text-success">{{ 'global.confirmed'|trans }}</td>
                                 {% elseif need.nature is constant('App\\Entity\\Need::PUBLISHED') %}
-                                    <td class="text-info">Publié</td>
+                                    <td class="text-info">{{ 'global.published'|trans }}</td>
                                 {% elseif need.nature is constant('App\\Entity\\Need::REJECTED') %}
-                                    <td class="text-warning">Rejecté</td>
+                                    <td class="text-warning">{{ 'global.rejected'|trans }}</td>
                                 {% endif %}
                                 <td>
                                     {% if need.nature is constant('App\\Entity\\Need::EXPIRED') %}
-                                        <a data-toggle="tooltip" title="Re-publier" onclick="return confirm('Etes-vous sûr de vouloir re-publier ce besoin ?')" href="{{ path('app_account_need_re_publish', {id: need.id}) }}" class="text-success"><i class="la la-share font-size-18"></i></a>
+                                        <a data-toggle="tooltip" title="{{ 'global.re-publish'|trans }}" onclick="return confirm('Etes-vous sûr de vouloir re-publier ce besoin ?')" href="{{ path('app_account_need_re_publish', {id: need.id}) }}" class="text-success"><i class="la la-share font-size-18"></i></a>
                                     {% else %}
-                                        <a data-toggle="tooltip" title="Visualiser" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
-                                        <a data-toggle="tooltip" title="Modifier" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_edit', {id: need.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
+                                        <a data-toggle="tooltip" title="{{ 'global.view'|trans }}" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
+                                        <a data-toggle="tooltip" title="{{ 'global.edit'|trans }}" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_edit', {id: need.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
                                     {% endif %}
-                                    <a data-toggle="tooltip" title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce besoin ?')" href="{{ path('app_account_need_delete', {id: need.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
+                                    <a data-toggle="tooltip" title="{{ 'global.delete'|trans }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce besoin ?')" href="{{ path('app_account_need_delete', {id: need.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}

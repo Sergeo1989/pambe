@@ -76,13 +76,15 @@
                                             <nav class="main-menu">
                                                 <ul>
                                                     {% if app.user %}
+                                                        {% set notifications = notifications()|filter((notification) => notification.isRead == false) %}
                                                         <li>
-                                                            <a href="#" class="text-white font-size-20"><i class="la la-bell"></i><sup class="text-white badge badge-primary badge-counter">{{ notifications()|length }}</sup></a>
-                                                            {% if notifications()|length > 0 %}
+                                                            <a href="#" class="text-white font-size-20"><i class="la la-bell"></i><sup class="text-white badge badge-primary badge-counter">{{ notifications|length }}</sup></a>
+                                                            {% if notifications|length > 0 %}
                                                                 <ul class="dropdown-menu-item notification">
-                                                                    {% for notification in notifications()|slice(0, 9) %}
-                                                                        <li><a href="{{ path('app_account_notification', {id: notification.id}) }}"><b>Pambe</b> - {{ notification.content }}</a></li>
+                                                                    {% for notification in notifications|slice(0, 9) %}
+                                                                        <li><a href="{{ path('app_account_notification_show', {id: notification.id}) }}"><b>{{ website_title }}</b> - {{ notification.content|capitalize }}</a></li>
                                                                     {% endfor %}
+                                                                    <li><a style="border-top: 1px solid aliceblue;" href="{{ path('app_account_notification') }}">{{ 'global.see_all'|trans }}</a></li>
                                                                 </ul>
                                                             {% endif %}
                                                         </li>
@@ -91,7 +93,7 @@
                                                             {% if messages()|length > 0 %}
                                                                 <ul class="dropdown-menu-item message">
                                                                     {% for message in messages()|slice(0, 9) %}
-                                                                        <li><a href="{{ path('app_account_message', {id: message.conversation.id}) }}"><b>{{ message.sender }}</b> - {{ message.content|u.truncate(50, '...', false) }}</a></li>
+                                                                        <li><a href="{{ path('app_account_message', {id: message.conversation.id}) }}"><b>{{ message.sender }}</b> - {{ message.content|u.truncate(40, '...', false) }}</a></li>
                                                                     {% endfor %}
                                                                 </ul>
                                                             {% endif %}

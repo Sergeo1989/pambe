@@ -39,9 +39,9 @@
                                     <td class="text-danger">Refusé</td>
                                 {% endif %}
                                 <td>
-                                    <a title="Visualiser" href="{{ path('app_account_professional_proposal_show', {id: proposal.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
-                                    <a title="Modifier" href="{{ path('app_account_professional_proposal_edit', {id: proposal.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
-                                    <a title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette proposaition ?')" href="{{ path('app_account_professional_proposal_delete', {id: proposal.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
+                                    <a data-toggle="tooltip" title="Visualiser" href="{{ path('app_account_professional_proposal_show', {id: proposal.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
+                                    <a data-toggle="tooltip" title="Modifier" href="{{ path('app_account_professional_proposal_edit', {id: proposal.id}) }}" class="text-warning"><i class="la la-pencil font-size-18"></i></a>
+                                    <a data-toggle="tooltip" title="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette proposaition ?')" href="{{ path('app_account_professional_proposal_delete', {id: proposal.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
