@@ -4,6 +4,11 @@
 
 {% block account_content %}
     <div class="user-listing-detail-wrap">
+        {% embed "front/partials/professional/edit/breadcrumb.html.twig" %}
+            {% block breadcrumb_proposal %}
+                <a class="active" href="javascript:void(0)">Propositions</a>
+            {% endblock %}
+        {% endembed %}
         <div class="block-card mb-3">
             <div class="block-card-header">
                 <h2 class="widget-title pb-0">Proposition #{{ proposal.id|strpad(5, '0') }}</h2>
@@ -15,6 +20,15 @@
                     <div class="list col-lg-6"><i class="la la-money text-color-2 mr-2 font-size-18"></i>Tarif : {{ proposal.price ?? 'inconnu' }} {{ proposal.price is null ?: 'FCFA' }}</div>
                     <div class="list col-lg-6"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i>Délai : {{ proposal.delay }} jours</div>
                     <div class="list col-lg-12 expdesc">{{ proposal.note }}</div>
+                    <div class="list col-lg-12">Statut : 
+                        {% if proposal.nature is constant('App\\Entity\\Proposal::PENDING') %}
+                            <span class="badge badge-primary text-white font-weight-medium line-height-16 p-1 font-size-12 px-2 ml-1 w-auto">{{ 'global.pending'|trans }}</span>
+                        {% elseif proposal.nature is constant('App\\Entity\\Proposal::ACCEPTED') %}
+                            <span class="badge badge-success text-white font-weight-medium line-height-16 p-1 font-size-12 px-2 ml-1 w-auto">{{ 'global.confirmed'|trans }}</span>
+                        {% elseif proposal.nature is constant('App\\Entity\\Proposal::REFUSED') %}
+                            <span class="badge badge-danger text-white font-weight-medium line-height-16 p-1 font-size-12 px-2 ml-1 w-auto">{{ 'global.rejected'|trans }}</span>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

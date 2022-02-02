@@ -35,11 +35,6 @@ class Region
     private $cities;
 
     /**
-     * @ORM\OneToMany(targetEntity=Professional::class, mappedBy="region")
-     */
-    private $professionals;
-
-    /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="region")
      */
     private $users;
@@ -47,7 +42,6 @@ class Region
     public function __construct()
     {
         $this->cities = new ArrayCollection();
-        $this->professionals = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
 
@@ -109,36 +103,6 @@ class Region
             // set the owning side to null (unless already changed)
             if ($city->getRegion() === $this) {
                 $city->setRegion(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Professional[]
-     */
-    public function getProfessionals(): Collection
-    {
-        return $this->professionals;
-    }
-
-    public function addProfessional(Professional $professional): self
-    {
-        if (!$this->professionals->contains($professional)) {
-            $this->professionals[] = $professional;
-            $professional->setRegion($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfessional(Professional $professional): self
-    {
-        if ($this->professionals->removeElement($professional)) {
-            // set the owning side to null (unless already changed)
-            if ($professional->getRegion() === $this) {
-                $professional->setRegion(null);
             }
         }
 

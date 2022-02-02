@@ -403,3 +403,22 @@ description: Our custom pambe CSS
 .main-menu ul li .dropdown-menu-item li a{
     text-transform: none;
 }
+.bg-rgb-info{
+    color: #17a2b8;
+    background-color: #17a2b812;
+}
+.bg-rgb-info:hover{
+    color: #17a2b8;
+    background-color: #17a2b82e;
+}
+.info-box-layout-2, .info-box-layout-3 {
+    text-align: center;
+}
+.info-box-layout-2 .info-icon, .info-box-layout-3{
+    margin: 0 auto 20px;
+}
+.info-box .info__title{
+    font-size: 17px;
+    margin-bottom: 0;
+}
+    

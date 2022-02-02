@@ -5,7 +5,7 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-lg-6 d-flex align-items-center header-top-info">
-                                        {{ render(url('app_social_url')) }}
+                                        {{ render(controller('App\\Controller\\Front\\HomeController::socialUrl')) }}
                                         <span class="contact ml-2 text-white font-weight-semi-bold font-size-14">
                                             <a href="{{ path("app_contact") }}">{{ 'global.contact'|trans }}</a>
                                         </span>
@@ -78,7 +78,7 @@
                                                     {% if app.user %}
                                                         {% set notifications = notifications()|filter((notification) => notification.isRead == false) %}
                                                         <li>
-                                                            <a href="#" class="text-white font-size-20"><i class="la la-bell"></i><sup class="text-white badge badge-primary badge-counter">{{ notifications|length }}</sup></a>
+                                                            <a href="#" class="text-white font-size-20"><i class="la la-bell"></i><sup class="text-white badge badge-primary badge-counter">{{ notifications|length > 9 ? '9+' : notifications|length }}</sup></a>
                                                             {% if notifications|length > 0 %}
                                                                 <ul class="dropdown-menu-item notification">
                                                                     {% for notification in notifications|slice(0, 9) %}
@@ -89,7 +89,7 @@
                                                             {% endif %}
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="text-white font-size-20"><i class="la la-envelope"></i><sup class="text-white badge badge-primary badge-counter" style="margin-left: 3px;">{{ messages()|length }}</sup></a>
+                                                            <a href="#" class="text-white font-size-20"><i class="la la-envelope"></i><sup class="text-white badge badge-primary badge-counter" style="margin-left: 3px;">{{ messages()|length > 9 ? '9+' : messages()|length }}</sup></a>
                                                             {% if messages()|length > 0 %}
                                                                 <ul class="dropdown-menu-item message">
                                                                     {% for message in messages()|slice(0, 9) %}

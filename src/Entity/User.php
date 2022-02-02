@@ -120,11 +120,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $region;
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="users")
-     */
-    private $city;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $website;
@@ -148,6 +143,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user")
      */
     private $notifications;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $city;
 
     public function __construct()
     {
@@ -517,18 +517,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCity(): ?City
-    {
-        return $this->city;
-    }
-
-    public function setCity(?City $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
     public function getWebsite(): ?string
     {
         return $this->website;
@@ -639,6 +627,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $notification->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

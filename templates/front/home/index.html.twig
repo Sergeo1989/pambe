@@ -7,7 +7,7 @@
                     <section class="hero-wrapper overflow-hidden">
                         {% block banner %}
                             <div class="overlay"></div>
-                            {{ render(url('app_banner')) }}
+                            {{ render(controller('App\\Controller\\Front\\HomeController::banner')) }}
                         {% endblock %}
                         <div class="container">
                             <div class="row">

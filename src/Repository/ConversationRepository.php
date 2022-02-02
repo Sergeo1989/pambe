@@ -36,7 +36,7 @@ class ConversationRepository extends ServiceEntityRepository
                     ->leftJoin('c.messages', 'm')
                     ->andWhere('m.recipient = :user OR m.sender = :user')
                     ->setParameter('user', $user)
-                    ->orderBy('c.date_upd', 'DESC')
+                    ->orderBy('m.date_add', 'DESC')
                     ->getQuery()
                     ->getResult();
     }

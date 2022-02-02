@@ -20,9 +20,9 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $user1 = new User();
-        $user1->setEmail('admin1@admin.com')
-             ->setFirstname('admin1')
-             ->setLastname('admin1')
+        $user1->setEmail('admin@admin.com')
+             ->setFirstname('admin')
+             ->setLastname('admin')
              ->setDateAdd(new DateTime('now'))
              ->setDateUpd(new DateTime('now'))
              ->setStatus(false)

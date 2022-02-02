@@ -384,9 +384,6 @@ class AccountController extends AbstractController
      */
     public function option(ContextService $context)
     {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $context->getUser(), $message);
-
         return $this->render('front/account/option.html.twig');
     }
 

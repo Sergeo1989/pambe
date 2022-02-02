@@ -12,6 +12,7 @@ use App\Entity\Review;
 use App\Entity\Service;
 use App\Entity\User;
 use App\Form\ProfessionalFormType;
+use App\Repository\CityRepository;
 use App\Repository\ConversationRepository;
 use App\Repository\MessageRepository;
 use App\Repository\ProfessionalImageRepository;
@@ -42,6 +43,7 @@ class ProfessionalController extends AbstractController
     private $userRepo;
     private $conversationRepo;
     private $messageRepo;
+    private $cityRepo;
     private $request;
     private $response;
     private $status = 200;
@@ -57,7 +59,8 @@ class ProfessionalController extends AbstractController
         ProfessionalImageRepository $proImgRepo,
         UserRepository $userRepo, 
         ConversationRepository $conversationRepo,
-        MessageRepository $messageRepo)
+        MessageRepository $messageRepo,
+        CityRepository $cityRepo)
     {
         $this->context = $context;
         $this->translator = $translator;
@@ -70,6 +73,7 @@ class ProfessionalController extends AbstractController
         $this->userRepo = $userRepo;
         $this->conversationRepo = $conversationRepo;
         $this->messageRepo = $messageRepo;
+        $this->cityRepo = $cityRepo;
     }
 
     public function index(Request $request): Response
@@ -685,5 +689,20 @@ class ProfessionalController extends AbstractController
                 'message' => $message
             ];
         }
+    }
+
+    private function displayAjaxGetCities()
+    {
+        $search = $this->request->get('q');
+        if (null != $search) {
+            $cities = $this->cityRepo->findAllByTerm($search);
+        } else {
+            $cities = $this->cityRepo->findAll();
+        }
+
+        $this->response = [
+            'status' => 200,
+            'data' => $cities
+        ];
     }
 }

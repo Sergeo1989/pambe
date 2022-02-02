@@ -143,11 +143,6 @@ class Professional
     private $likes;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Profile::class, inversedBy="professionals")
-     */
-    private $profile;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $videoUrl;
@@ -166,6 +161,11 @@ class Professional
      * @ORM\OneToMany(targetEntity=Proposal::class, mappedBy="professional")
      */
     private $proposals;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profile;
 
     public function __construct()
     {
@@ -590,18 +590,6 @@ class Professional
         return $this;
     }
 
-    public function getProfile(): ?Profile
-    {
-        return $this->profile;
-    }
-
-    public function setProfile(?Profile $profile): self
-    {
-        $this->profile = $profile;
-
-        return $this;
-    }
-
     public function getVideoUrl(): ?string
     {
         return $this->videoUrl;
@@ -682,6 +670,18 @@ class Professional
                 $proposal->setProfessional(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?string $profile): self
+    {
+        $this->profile = $profile;
 
         return $this;
     }

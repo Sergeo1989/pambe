@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\CountryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,11 +33,6 @@ class Country
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="country")
      */
     private $regions;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Professional::class, mappedBy="country")
-     */
-    private $professionals;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="country")
@@ -110,36 +104,6 @@ class Country
             // set the owning side to null (unless already changed)
             if ($region->getCountry() === $this) {
                 $region->setCountry(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Professional[]
-     */
-    public function getProfessionals(): Collection
-    {
-        return $this->professionals;
-    }
-
-    public function addProfessional(Professional $professional): self
-    {
-        if (!$this->professionals->contains($professional)) {
-            $this->professionals[] = $professional;
-            $professional->setCountry($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfessional(Professional $professional): self
-    {
-        if ($this->professionals->removeElement($professional)) {
-            // set the owning side to null (unless already changed)
-            if ($professional->getCountry() === $this) {
-                $professional->setCountry(null);
             }
         }
 

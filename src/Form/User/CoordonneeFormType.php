@@ -27,7 +27,7 @@ class CoordonneeFormType extends AbstractType
                 'class' => Country::class,
                 'required' => false
             ])
-            ->add('city')
+            ->add('city', TextType::class)
             ->add('save', SubmitType::class); 
 
         $builder->addEventListener(

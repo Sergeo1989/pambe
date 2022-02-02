@@ -8,7 +8,39 @@ description: Our custom pambe JS
  
 (function ($) {
     "use strict";
-
+    /** Load city into textfield */
+    $(window).on('load', function(){
+        var url  = $('#professional_ajax_url').val();
+        $("#coordonnee_form_city").autocomplete({
+            autoFocus: false,
+            classes: {
+                "ui-autocomplete": "highlight"
+            },
+            source: function(data, cb){
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        q: data.term,
+                        rand: new Date().getTime(),
+                        ajax: 1,
+                        action: 'get_cities'
+                    },
+                    success: function(res){
+                        var result = $.map(res.data, function(city){
+                            return{
+                                label: city.name,
+                                value: city.name,
+                                id: city.id
+                            }
+                        })
+                        cb(result);
+                    }
+                })
+            }
+        });
+    });
     /** Response message to other user */
     $(document).on('click', '#btn_send', function(event){
         var url  = $('#professional_ajax_url').val();
@@ -281,7 +313,7 @@ description: Our custom pambe JS
 
     /** Add professional profile */
     $(document).ready(function() {
-        $('#information_form_profil_imageFile_file').MultiFile({ 
+        $('#information_form_profile_imageFile_file').MultiFile({ 
             accept: 'gif|jpg|png|jpeg',
             onFileSelect: function(element, value, master_element) {
                 console.log(master_element);

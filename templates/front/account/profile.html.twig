@@ -46,7 +46,6 @@
     <section class="user-detail-area padding-top-60px padding-bottom-100px">
     <div class="container">
         <div class="row">
-
             <div class="col-lg-12">
                 {% block account_content %}
                     <div class="user-listing-detail-wrap">
@@ -56,27 +55,99 @@
                             </div>
                             <div class="block-card-body">
                                 <div class="card-body row">
-                                    <div class="list col-lg-6"><i class="la la-envelope text-color-2 mr-2 font-size-18"></i> {{ 'global.email'|trans }} : {{ user.email }} </div>
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="info-box info-box-layout-2">
+                                            <div class="info-icon bg-gradient-1">
+                                                <span class="la la-envelope"></span>
+                                            </div>
+                                            <div class="info-content">
+                                                <h4 class="info__title">{{ user.email }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% if user.address %}
-                                        <div class="list col-lg-6"><i class="la la-address-book text-color-2 mr-2 font-size-18"></i> {{ 'global.address'|trans }} : {{ user.address }}</div>
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="info-box info-box-layout-2">
+                                            <div class="info-icon bg-gradient-2">
+                                                <span class="la la-address-book"></span>
+                                            </div>
+                                            <div class="info-content">
+                                                <h4 class="info__title">{{ user.address }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
                                     {% if user.phone %}
-                                        <div class="list col-lg-6"><i class="la la-phone text-color-2 mr-2 font-size-18"></i> {{ 'global.phone'|trans }} : {{ user.phone }}</div>
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="info-box info-box-layout-2">
+                                            <div class="info-icon bg-gradient-3">
+                                                <span class="la la-phone"></span>
+                                            </div>
+                                            <div class="info-content">
+                                                <h4 class="info__title">{{ user.phone }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
                                     {% if user.website %}
-                                        <div class="list col-lg-6"><i class="la la-globe text-color-2 mr-2 font-size-18"></i> {{ 'global.website'|trans }} : {{ user.website }}</div>
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="info-box info-box-layout-2">
+                                            <div class="info-icon bg-gradient-4">
+                                                <span class="la la-globe"></span>
+                                            </div>
+                                            <div class="info-content">
+                                                <h4 class="info__title">{{ user.website }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
                                     {% if user.country %}
-                                        <div class="list col-lg-6"><i class="la la-map-marked text-color-2 mr-2 font-size-18"></i> {{ 'global.country'|trans }} : {{ user.country }}</div>
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="info-box info-box-layout-2">
+                                            <div class="info-icon bg-gradient-1">
+                                                <span class="la la-map-marked"></span>
+                                            </div>
+                                            <div class="info-content">
+                                                <h4 class="info__title">{{ user.country }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
                                     {% if user.region %}
-                                        <div class="list col-lg-6"><i class="la la-map-marked text-color-2 mr-2 font-size-18"></i> {{ 'global.region'|trans }} : {{ user.region }}</div>
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="info-box info-box-layout-2">
+                                            <div class="info-icon bg-gradient-1">
+                                                <span class="la la-map-marked"></span>
+                                            </div>
+                                            <div class="info-content">
+                                                <h4 class="info__title">{{ user.region }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
                                     {% if user.city %}
-                                        <div class="list col-lg-6"><i class="la la-map-marked text-color-2 mr-2 font-size-18"></i> {{ 'global.city'|trans }} : {{ user.city }}</div>
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="info-box info-box-layout-2">
+                                            <div class="info-icon bg-gradient-1">
+                                                <span class="la la-map-marked"></span>
+                                            </div>
+                                            <div class="info-content">
+                                                <h4 class="info__title">{{ user.city }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
                                     {% if is_granted('edit', user) and user.professional.languages|length > 0 %}
-                                        <div class="list col-lg-6"><i class="la la-language text-color-2 mr-2 font-size-18"></i> Langues : {{ user.professional.languages|map(l => "#{l.name}")|join(', ') }}</div>
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="info-box info-box-layout-2">
+                                            <div class="info-icon bg-gradient-1">
+                                                <span class="la la-language"></span>
+                                            </div>
+                                            <div class="info-content">
+                                                <h4 class="info__title">{{ user.professional.languages|map(l => "#{l.name}")|join(', ') }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
                                 </div>
                             </div>

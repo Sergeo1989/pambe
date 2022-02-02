@@ -4,6 +4,11 @@
 
 {% block account_content %}
     <div class="user-listing-detail-wrap">
+        {% embed "front/partials/professional/edit/breadcrumb.html.twig" %}
+            {% block breadcrumb_proposal %}
+                <a class="active" href="javascript:void(0)">Propositions</a>
+            {% endblock %}
+        {% endembed %}
         <div class="block-card mb-3">
             <div class="block-card-header">
                 <h2 class="widget-title pb-0">Proposition #{{ proposal.id|strpad(5, '0') }}</h2>

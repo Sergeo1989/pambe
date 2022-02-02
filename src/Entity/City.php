@@ -3,15 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\CityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CityRepository::class)
  */
-class City
+class City implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -29,22 +26,6 @@ class City
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="cities")
      */
     private $region;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Professional::class, mappedBy="city")
-     */
-    private $professionals;
-
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="city")
-     */
-    private $users;
-
-    public function __construct()
-    {
-        $this->professionals = new ArrayCollection();
-        $this->users = new ArrayCollection();
-    }
 
     public function __toString()
     {
@@ -80,63 +61,11 @@ class City
         return $this;
     }
 
-    /**
-     * @return Collection|Professional[]
-     */
-    public function getProfessionals(): Collection
+    public function jsonSerialize()
     {
-        return $this->professionals;
-    }
-
-    public function addProfessional(Professional $professional): self
-    {
-        if (!$this->professionals->contains($professional)) {
-            $this->professionals[] = $professional;
-            $professional->setCity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfessional(Professional $professional): self
-    {
-        if ($this->professionals->removeElement($professional)) {
-            // set the owning side to null (unless already changed)
-            if ($professional->getCity() === $this) {
-                $professional->setCity(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setCity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getCity() === $this) {
-                $user->setCity(null);
-            }
-        }
-
-        return $this;
+        return [
+            'id'            => $this->getId(),
+            'name'          => $this->getName()
+        ];
     }
 }

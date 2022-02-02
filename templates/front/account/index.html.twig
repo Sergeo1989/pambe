@@ -49,7 +49,7 @@
             <div class="col-lg-4">
                 <div class="sidebar">
                     <div class="sidebar-widget">
-                        <h3 class="widget-title">Mon compte</h3>
+                        <h3 class="widget-title">{{ 'global.my_account'|trans }}</h3>
                         <div class="stroke-shape mb-4"></div>
                         <ul class="list-items list--items list--items-2 list-items-style-2">
                             <li><span class="text-color mr-1"><i class="la la-info mr-2 text-color-2 font-size-18"></i></span><a href="{{ path('app_account') }}"> Mes informations</a></li>
@@ -57,22 +57,12 @@
                             <li><span class="text-color mr-1"><i class="la la-tag mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_need') }}">Mes besoins</a></li>
                             <li><span class="text-color mr-1"><i class="la la-bell mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_notification') }}">Notifications</a></li>
                             <li><span class="text-color mr-1"><i class="la la-envelope mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_conversation') }}">Messages</a></li>
-                            <li class="{{ is_granted('edit', app.user) ? 'dropdown dot-action-wrap ml-1' : ''  }}">
+                            <li>
                                 <span class="text-color mr-1"><i class="la la-business-time mr-2 text-color-2 font-size-18"></i> </span>
                                 {% if is_granted('edit', app.user) %}
-                                    <a href="javascript:void(0)" class="dot-action-btn dropdown-toggle after-none border-0 font-size-16" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {{ 'global.professional_area'|trans }} <i class="font-size-18 la la-braille"></i>
+                                    <a href="{{ path('app_account_professional_information') }}">
+                                        {{ 'global.professional_area'|trans }}
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton2">
-                                        <a class="dropdown-item" href="{{ path('app_account_professional_information') }}"><i class="la la-info mr-1"></i>Informations supplémentaires</a>
-                                        <a class="dropdown-item" href="{{ path('app_account_professional_social') }}"><i class="la la-font-awesome mr-1"></i>Médias sociaux</a>
-                                        <a class="dropdown-item" href="{{ path('app_account_professional_service') }}"><i class="la la-tag mr-1"></i>Services</a>
-                                        <a class="dropdown-item" href="{{ path('app_account_professional_training') }}"><i class="la la-certificate mr-1"></i>Formations</a>
-                                        <a class="dropdown-item" href="{{ path('app_account_professional_reference') }}"><i class="la la-industry mr-1"></i>Références</a>
-                                        <a class="dropdown-item" href="{{ path('app_account_professional_gallery') }}"><i class="la la-images mr-1"></i>Gallerie</a>
-                                        <a class="dropdown-item" href="{{ path('app_account_professional_proposal') }}"><i class="la la-exclamation mr-1"></i>Propositions</a>
-                                        <a class="dropdown-item" href="{{ path('app_account_professional_option') }}"><i class="la la-cog mr-1"></i>Options</a>
-                                    </div>
                                 {% else %}
                                     <a href="{{ path('app_professional_create') }}">
                                         {{ 'global.become_a_professional'|trans }}
@@ -80,6 +70,7 @@
                                 {% endif %}
                             </li>
                             <li><span class="text-color mr-1"><i class="la la-lock mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_password') }}">{{ 'global.password'|trans }}</a></li>
+                            <li><span class="text-color mr-1"><i class="la la-cog mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_professional_option') }}">Options</a></li>
                             <li><span class="text-color mr-1"><i class="la la-sign-out mr-2 text-color-2 font-size-18"></i> </span><a href="{{ logout_path('front') }}">{{ 'global.logout'|trans }}</a></li>
                         </ul>
                    

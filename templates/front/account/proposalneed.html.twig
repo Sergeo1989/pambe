@@ -33,10 +33,10 @@
                                     <div class="list col-lg-12 expdesc">{{ proposal.note }}</div>
                                     <div class="list col-lg-12 control">
                                         {% if proposal.nature is not constant('App\\Entity\\Proposal::ACCEPTED') %}
-                                            <a class="btn btn-success" onclick="return confirm('Etes-vous sûr de choisir cette proposition ?')" href="{{ path('app_professional_proposal_nature', {id: proposal.id, nature: 'accepted'}) }}">Accepter</a>
-                                            <a class="btn btn-danger" onclick="return confirm('Etes-vous sûr de refuser cette proposition ?')" href="{{ path('app_professional_proposal_nature', {id: proposal.id, nature: 'refused'}) }}">Refuser</a>
+                                            <a class="btn bg-rgb-success font-weight-medium" onclick="return confirm('Etes-vous sûr de choisir cette proposition ?')" href="{{ path('app_professional_proposal_nature', {id: proposal.id, nature: 'accepted'}) }}">Accepter</a>
+                                            <a class="btn bg-rgb-danger font-weight-medium" onclick="return confirm('Etes-vous sûr de refuser cette proposition ?')" href="{{ path('app_professional_proposal_nature', {id: proposal.id, nature: 'refused'}) }}">Refuser</a>
                                         {% endif %}
-                                        <a class="btn btn-info" target="_blank" href="{{ path('app_professional_show', {slug: proposal.professional.user.slug}) }}">{{ 'global.see_profile'|trans }}</a>
+                                        <a class="btn bg-rgb-info font-weight-medium" target="_blank" href="{{ path('app_professional_show', {slug: proposal.professional.user.slug}) }}">{{ 'global.see_profile'|trans }}</a>
                                     </div>
                                 </div>
                             </div>

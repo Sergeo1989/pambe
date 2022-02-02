@@ -19,6 +19,17 @@ class CityRepository extends ServiceEntityRepository
         parent::__construct($registry, City::class);
     }
 
+    public function findAllByTerm($search, $n = 8)
+    {
+        return $this->createQueryBuilder('c')
+            ->select(array('c.name', 'c.id'))
+            ->andWhere('c.name LIKE :val')
+            ->setParameter('val', '%'.$search.'%')
+            ->setMaxResults($n)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     // /**
     //  * @return City[] Returns an array of City objects
     //  */

@@ -25,16 +25,14 @@ class NeedController extends AbstractController
     private $context;
     private $paginator;
     private $translator;
-    private $needRepo;
     private $emailSender;
 
-    public function __construct(ProfessionalService $professionalService, ContextService $context, PaginatorInterface $paginator, TranslatorInterface $translator, NeedRepository $needRepo, $emailSender)
+    public function __construct(ProfessionalService $professionalService, ContextService $context, PaginatorInterface $paginator, TranslatorInterface $translator, $emailSender)
     {
         $this->professionalService = $professionalService;
         $this->context = $context;
         $this->paginator = $paginator;
         $this->translator = $translator;
-        $this->needRepo = $needRepo;
         $this->emailSender = $emailSender;
     }
 

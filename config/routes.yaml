@@ -116,7 +116,7 @@ app_account_need_show:
 app_account_need_edit:
     path: /account/need/{id}/edit
     controller: App\Controller\Front\AccountController::editneed
-    requirements:
+    requirements: 
         id: '\d+'
 app_account_need_delete:
     path: account/need/{id}/delete
@@ -131,15 +131,6 @@ app_account_need_re_publish:
 app_logout:
     path: /logout
     controller: App\Controller\Front\SecurityController::logout
-app_social_url:
-    path: /social_url
-    controller: App\Controller\Front\Partials\SocialUrlController::index
-app_banner:
-    path: /banner
-    controller: App\Controller\Front\Partials\BannerController::index
-app_main_menu:
-    path: /main_menu
-    controller: App\Controller\Front\Partials\MainMenuController::index
 app_contact:
     path: /contact
     controller: App\Controller\Front\ContactController::index

@@ -115,9 +115,7 @@ class ProfessionalCrudController extends AbstractCrudController
         $region = AssociationField::new('user.region', 'Région')
                                 ->setFieldFqcn(Region::class)
                                 ->setFormTypeOptions(['class' => Region::class]);
-        $city = AssociationField::new('user.city', 'Ville')
-                                ->setFieldFqcn(City::class)
-                                ->setFormTypeOptions(['class' => City::class]);
+        $city = TextField::new('user.city', 'Ville');
         $langues = AssociationField::new('languages', 'Langues', Language::class);
         $categories = AssociationField::new('category_professionals', 'Catégories', CategoryProfessional::class);
         $default_category = AssociationField::new('category_professional_default', 'Catégorie principale', CategoryProfessional::class);
