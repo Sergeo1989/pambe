@@ -158,7 +158,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('app_account_need');
         }
 
-        return $this->render('front/account/editneed.html.twig', ['needForm' => $needForm->createView()]);
+        return $this->render('front/account/editneed.html.twig', ['need' => $need, 'needForm' => $needForm->createView()]);
     }
 
     public function deleteneed(Need $need, ContextService $context)

@@ -30,7 +30,7 @@
                                     <div class="list col-lg-6"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Dépuis le : {{ proposal.dateAdd|format_date() }}</div>
                                     <div class="list col-lg-6"><i class="la la-money text-color-2 mr-2 font-size-18"></i> Tarif : {{ proposal.price }} FCFA</div>
                                     <div class="list col-lg-6"><i class="la la-calendar text-color-2 mr-2 font-size-18"></i> Délai : {{ proposal.delay }} jours</div>
-                                    <div class="list col-lg-12 expdesc">{{ proposal.note }}</div>
+                                    <div class="list col-lg-12 expdesc">{{ proposal.note|raw }}</div>
                                     <div class="list col-lg-12 control">
                                         {% if proposal.nature is not constant('App\\Entity\\Proposal::ACCEPTED') %}
                                             <a class="btn bg-rgb-success font-weight-medium" onclick="return confirm('Etes-vous sûr de choisir cette proposition ?')" href="{{ path('app_professional_proposal_nature', {id: proposal.id, nature: 'accepted'}) }}">Accepter</a>

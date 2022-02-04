@@ -6,6 +6,7 @@ use App\Form\ResetPassFormType;
 use App\Repository\UserRepository;
 use App\Service\ContextService;
 use App\Service\MailerService;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -113,5 +114,25 @@ class SecurityController extends AbstractController
         }else{
             return $this->render('front/security/reset_password.html.twig', compact('token'));
         }
+    }
+
+    public function google(ClientRegistry $clientRegistry)
+    {
+        return $clientRegistry->getClient('google')->redirect([], []);
+    }
+
+    public function facebook(ClientRegistry $clientRegistry)
+    {
+        return $clientRegistry->getClient('facebook')->redirect([], []);
+    }
+
+    public function linkedin(ClientRegistry $clientRegistry)
+    {
+        return $clientRegistry->getClient('linkedin')->redirect([], []);
+    }
+
+    public function instagram(ClientRegistry $clientRegistry)
+    {
+        return $clientRegistry->getClient('instagram')->redirect([], []);
     }
 }

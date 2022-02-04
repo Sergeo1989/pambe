@@ -6,12 +6,16 @@
     <div class="user-listing-detail-wrap">
         {% embed "front/partials/professional/edit/breadcrumb.html.twig" %}
             {% block breadcrumb_proposal %}
-                <a class="active" href="javascript:void(0)">Propositions</a>
+                <a class="active" href="javascript:void(0)">{{ 'global.proposal'|trans }}s</a>
             {% endblock %}
         {% endembed %}
         <div class="block-card mb-3">
             <div class="block-card-header">
-                <h2 class="widget-title pb-0">Proposition #{{ proposal.id|strpad(5, '0') }}</h2>
+                <h2 class="widget-title pb-0">{{ 'global.proposal'|trans }} #{{ proposal.id|strpad(5, '0') }}</h2>
+                <div class="float-right add-experience">
+                    <a data-toggle="tooltip" title="{{ 'global.view'|trans }}" href="{{ path('app_account_professional_proposal_show', {id: proposal.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
+                    <a data-toggle="tooltip" title="{{ 'global.delete'|trans }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette proposition ?')" href="{{ path('app_account_professional_proposal_delete', {id: proposal.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
+                </div>
             </div>
             <div class="block-card-body">
                 {% for message in app.flashes("message") %}
@@ -22,7 +26,7 @@
                 {{ form_start(proposalForm, {'method': 'post', 'attr': {'class': 'form-box row'} }) }}
                     <div class="col-lg-12">
                         <div class="input-box error">
-                            <label class="label-text">Tarif</label>
+                            <label class="label-text">{{ 'global.tariff'|trans }}</label>
                             <div class="input-group form-group">
                                 {{ form_widget(proposalForm.price, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'global.enter_a_price'|trans ~ ' (FCFA)', 'aria-describedby': 'price'} }) }}
                                 <div class="input-group-append">
@@ -43,11 +47,11 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="input-box error">
-                            <label class="label-text">Délai</label>
+                            <label class="label-text">{{ 'global.delay'|trans }}</label>
                             <div class="input-group form-group">
                                 {{ form_widget(proposalForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un délai', 'aria-describedby': 'delay'} }) }}
                                 <div class="input-group-append">
-                                    <span class="input-group-text" id="delay">jour(s)</span>
+                                    <span class="input-group-text" id="delay">{{ 'global.day'|trans }}(s)</span>
                                 </div>
                             </div>
                             {{ form_errors(proposalForm.delay) }}

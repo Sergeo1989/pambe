@@ -677,6 +677,38 @@
         <source>global.see_all</source>
         <target>Voir tout</target>
       </trans-unit>
+      <trans-unit id="Fwo8k.n" resname="global.do_not_fill_in_anything_if_you_have_no_idea">
+        <source>global.do_not_fill_in_anything_if_you_have_no_idea</source>
+        <target>Ne rien renseigner si vous n'avez aucune idée</target>
+      </trans-unit>
+      <trans-unit id="YmpBvQg" resname="global.file">
+        <source>global.file</source>
+        <target>Fichier</target>
+      </trans-unit>
+      <trans-unit id="aEKKBds" resname="global.optional">
+        <source>global.optional</source>
+        <target>optionnel</target>
+      </trans-unit>
+      <trans-unit id="TD4VCG8" resname="global.delay">
+        <source>global.delay</source>
+        <target>Délai</target>
+      </trans-unit>
+      <trans-unit id="HxQTBhF" resname="global.day">
+        <source>global.day</source>
+        <target>jour</target>
+      </trans-unit>
+      <trans-unit id="vjHwq89" resname="global.proposal">
+        <source>global.proposal</source>
+        <target>Proposition</target>
+      </trans-unit>
+      <trans-unit id="R_800NR" resname="global.category">
+        <source>global.category</source>
+        <target>Catégorie</target>
+      </trans-unit>
+      <trans-unit id="v1l0fuo" resname="global.tariff">
+        <source>global.tariff</source>
+        <target>Tarif</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

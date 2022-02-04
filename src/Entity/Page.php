@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PageRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  *     fields={"title"},
  *     message="Ce titre de page existe déjà."
@@ -112,5 +113,23 @@ class Page
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->status = true;
+        $this->date_add = new \DateTime("now");
+        $this->date_upd = new \DateTime("now");
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->date_upd = new \DateTime("now");
     }
 }

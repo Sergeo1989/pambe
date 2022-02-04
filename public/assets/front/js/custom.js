@@ -8,7 +8,7 @@ description: Our custom pambe JS
  
 (function ($) {
     "use strict";
-    /** Load city into textfield */
+    /** Load cities into textfield */
     $(window).on('load', function(){
         var url  = $('#professional_ajax_url').val();
         $("#coordonnee_form_city").autocomplete({
@@ -41,6 +41,7 @@ description: Our custom pambe JS
             }
         });
     });
+    
     /** Response message to other user */
     $(document).on('click', '#btn_send', function(event){
         var url  = $('#professional_ajax_url').val();
@@ -765,6 +766,7 @@ description: Our custom pambe JS
         $("#information_form_description").jqte({placeholder: "Entrez une description de vous..."}); 
         $("#professional_form_short_description").jqte({placeholder: "Entrez une brève description de vous..."}); 
         $("#professional_form_description").jqte({placeholder: "Entrez une description de vous..."}); 
+        $("#proposal_form_note").jqte(); 
     });
 
 })(jQuery);

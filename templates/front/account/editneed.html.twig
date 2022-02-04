@@ -7,6 +7,10 @@
         <div class="block-card mb-3">
             <div class="block-card-header">
                 <h2 class="widget-title pb-0">Modifier ce besoin</h2>
+                <div class="float-right add-experience">
+                    <a data-toggle="tooltip" title="{{ 'global.view'|trans }}" href="{{ need.nature is constant('App\\Entity\\Need::DISABLED') ? 'javascript:void(0)' : path('app_account_need_show', {id: need.id}) }}" class="text-primary"><i class="la la-eye font-size-18"></i></a>
+                    <a data-toggle="tooltip" title="{{ 'global.delete'|trans }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce besoin ?')" href="{{ path('app_account_need_delete', {id: need.id}) }}" class="text-danger"><i class="la la-trash font-size-18"></i></a>
+                </div>
             </div>
             <div class="block-card-body">
                 {% for message in app.flashes("success") %}
@@ -26,7 +30,7 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="input-box">
-                            <label class="label-text">Catégorie</label>
+                            <label class="label-text">{{ 'global.category'|trans }}</label>
                             <div class="form-group user-chosen-select-container">
                                 {{ form_widget(needForm.category, {'attr': {'class': 'user-chosen-select', 'data-placeholder': 'Choississez une catégorie'} }) }}
                             </div>
@@ -50,26 +54,26 @@
                                     <span class="input-group-text" id="price">FCFA</span>
                                 </div>
                             </div>
-                            <em style="font-size: 12px;">Ne rien renseigner si vous n'avez aucune idée</em>
+                            <em style="font-size: 12px;">{{ 'global.do_not_fill_in_anything_if_you_have_no_idea'|trans }}</em>
                             {{ form_errors(needForm.budget) }}
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="input-box error">
-                            <label class="label-text">Délai</label>
+                            <label class="label-text">{{ 'global.delay'|trans }}</label>
                             <div class="input-group form-group">
                                 {{ form_widget(needForm.delay, {'required': false, 'attr': {'class': 'form-control', 'placeholder': 'Entrez un delai en nombre de jours', 'aria-describedby': 'delay'} }) }}
                                 <div class="input-group-append">
-                                    <span class="input-group-text" id="delay">jour(s)</span>
+                                    <span class="input-group-text" id="delay">{{ 'global.day'|trans }}(s)</span>
                                 </div>
                             </div>
-                            <em style="font-size: 12px;">Exemple: 4 jours</em>
+                            <em style="font-size: 12px;">Exemple: 4 {{ 'global.day'|trans }}s</em>
                             {{ form_errors(needForm.delay) }}
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="input-box">
-                            <label class="label-text">Fichier(optionnel)</label>
+                            <label class="label-text">{{ 'global.file'|trans }}({{ 'global.optional'|trans }})</label>
                             <div class="file-upload-wrap file-upload-wrap-2 profile need">
                                 {{ form_widget(needForm.documentFile, {'multiple': true, 'attr': {'class': 'file-upload-input', 'maxlength': '1'} }) }}
                                 <span class="file-upload-text"><i class="la la-photo mr-2"></i>{{ 'global.choose_a_file'|trans }}</span>

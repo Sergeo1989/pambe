@@ -25,7 +25,7 @@
                             <div class="section-heading pb-3">
                                 <h2 class="sec__title mb-0 font-size-28 line-height-30">
                                     <span>{{ app.user }}</span>
-                                    {% if is_granted('edit', app.user) and app.user.professional.verified %}
+                                    {% if is_granted('edit', app.user) and app.user.professional and app.user.professional.verified %}
                                         <i class="la la-check-circle ml-1 font-size-24 text-success" data-toggle="tooltip" data-placement="top" title="{{ 'global.certified'|trans }}"></i>
                                     {% endif %}
                                 </h2>
@@ -33,7 +33,7 @@
                                 <p class="sec__desc pt-1 font-size-16 line-height-22"><i class="la la-map-marker mr-1"></i>{{ app.user.address }}</p>
                             </div>
                         </div>
-                        {% if is_granted('edit', app.user) %}
+                        {% if is_granted('edit', app.user) and app.user.professional %}
                             <div class="btn-box bread-btns d-flex align-items-center pb-3">
                                 <span class="btn-gray mr-2"><i class="la la-star-o mr-1"></i><span class="text-color font-weight-semi-bold mr-1">{{ app.user.professional.reviews|length }}</span>{{ 'global.reviews'|trans }}</span>
                             </div>
@@ -74,7 +74,7 @@
                             <li><span class="text-color mr-1"><i class="la la-sign-out mr-2 text-color-2 font-size-18"></i> </span><a href="{{ logout_path('front') }}">{{ 'global.logout'|trans }}</a></li>
                         </ul>
                    
-                        {% if is_granted('edit', app.user) %}
+                        {% if is_granted('edit', app.user) and app.user.professional %}
                             {% set professional = app.user.professional %}
                             <a href="#" id="available_link" data-url="{{ path("app_professional_ajax") }}" data-id="{{ professional.id }}" class="btn-gray {{ professional.available ? "available-btn" : "absent-btn" }}">{{ professional.available ? "available"|trans : "absent"|trans }}</a>
                         {% endif %}

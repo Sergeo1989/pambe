@@ -697,7 +697,7 @@ class ProfessionalController extends AbstractController
         if (null != $search) {
             $cities = $this->cityRepo->findAllByTerm($search);
         } else {
-            $cities = $this->cityRepo->findAll();
+            $cities = $this->cityRepo->findBy([], [], 8);
         }
 
         $this->response = [

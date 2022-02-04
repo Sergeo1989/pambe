@@ -25,6 +25,21 @@ app_login:
     methods: POST|GET
     #requirements:
         #_locale: '%app_locale%'
+connect_google_start:
+    path: /connect/google
+    controller: App\Controller\Front\SecurityController::google
+connect_facebook_start:
+    path: /connect/facebook
+    controller: App\Controller\Front\SecurityController::facebook
+connect_linkedin_start:
+    path: /connect/linkedin
+    controller: App\Controller\Front\SecurityController::linkedin
+connect_instagram_start:
+    path: /connect/instagram
+    controller: App\Controller\Front\SecurityController::instagram
+connect_service_check:
+    path: /connect/{service}/check
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
 app_register:
     path: /register
     controller: App\Controller\Front\RegistrationController::register
