@@ -18,6 +18,7 @@ use App\Form\User\InformationFormType;
 use App\Repository\AdminRepository;
 use App\Repository\ConversationRepository;
 use App\Repository\MessageRepository;
+use App\Repository\ProfessionalLikeRepository;
 use App\Service\ContextService;
 use App\Service\MailerService;
 use Knp\Component\Pager\PaginatorInterface;
@@ -49,7 +50,7 @@ class AccountController extends AbstractController
         $user = $context->getUser();
         $userForm = $this->createForm(InformationFormType::class, $user);
         $userForm->handleRequest($request);
-
+        
         if($userForm->isSubmitted() && $userForm->isValid()){
             $context->save($user);
             $this->addFlash('message', $this->translator->trans('global.your_information_has_been_correctly_modified!'));
@@ -423,5 +424,14 @@ class AccountController extends AbstractController
     public function notification()
     {
         return $this->render('front/account/notification.html.twig');
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function favoris(ProfessionalLikeRepository $professionalLikeRepo, ContextService $context)
+    {
+        $professionalLikes = $professionalLikeRepo->findBy(['user' => $context->getUser()]);
+        return $this->render('front/account/favoris.html.twig', compact('professionalLikes'));
     }
 }

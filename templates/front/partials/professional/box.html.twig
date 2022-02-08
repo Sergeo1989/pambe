@@ -1,8 +1,8 @@
 {% set profile = professional.user.profile and professional.user.profile.image is not null ? vich_uploader_asset(professional.user.profile, 'imageFile') : asset('assets/front/images/photoshop.png') %}
 {% set cover = professional.cover and professional.cover.image is not null ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
-
+    
 {% block professional %}
-    <div class="col-lg-3 responsive-column">
+    <div class="{% block col_pro %}col-lg-3{% endblock %} responsive-column">
         <div class="card-item">
             <div class="card-image">
                 <a href="{{ path("app_professional_show", {"slug" : professional.user.slug}) }}" class="d-block">

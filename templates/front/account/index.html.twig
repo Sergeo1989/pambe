@@ -69,6 +69,7 @@
                                     </a> 
                                 {% endif %}
                             </li>
+                            <li><span class="text-color mr-1"><i class="la la-heart-o mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_favoris') }}">Favoris</a></li>
                             <li><span class="text-color mr-1"><i class="la la-lock mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_password') }}">{{ 'global.password'|trans }}</a></li>
                             <li><span class="text-color mr-1"><i class="la la-cog mr-2 text-color-2 font-size-18"></i> </span><a href="{{ path('app_account_professional_option') }}">Options</a></li>
                             <li><span class="text-color mr-1"><i class="la la-sign-out mr-2 text-color-2 font-size-18"></i> </span><a href="{{ logout_path('front') }}">{{ 'global.logout'|trans }}</a></li>

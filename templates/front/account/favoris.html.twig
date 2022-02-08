@@ -1,0 +1,22 @@
+{% extends 'front/account/index.html.twig' %}
+
+{% block title %}{{ 'Favoris - '~ parent() }}{% endblock %}
+
+{% block account_content %}
+    <div class="user-listing-detail-wrap">
+        <div class="block-card mb-3">
+            <div class="block-card-header">
+                <h2 class="widget-title pb-0">Mes favoris</h2>
+            </div>
+            <div class="block-card-body">
+                <div class="row">
+                    {% for pl in professionalLikes %}
+                        {% embed "front/partials/professional/box.html.twig" with {'professional' : pl.professional} %}
+                            {% block col_pro %}col-lg-5{% endblock %}
+                        {% endembed %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

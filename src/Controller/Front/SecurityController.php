@@ -130,9 +130,4 @@ class SecurityController extends AbstractController
     {
         return $clientRegistry->getClient('linkedin')->redirect([], []);
     }
-
-    public function instagram(ClientRegistry $clientRegistry)
-    {
-        return $clientRegistry->getClient('instagram')->redirect([], []);
-    }
 }

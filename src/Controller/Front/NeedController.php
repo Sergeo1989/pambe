@@ -140,7 +140,7 @@ class NeedController extends AbstractController
             foreach ($adminRepo->findBy(['status' => true]) as $admin) 
                 if($admin->getManageProposals())
                     $mailer->send(
-                        'Validation d\'une proposition',
+                        $subject,
                         $this->emailSender,
                         $admin->getUser()->getEmail(),
                         'front/email/adminneed.html.twig',

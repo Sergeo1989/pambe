@@ -1,0 +1,7 @@
+{% extends 'front/email/layout.html.twig' %}
+
+{% block content %}
+    <p><b>Bienvenue chez Pambe. Vos identifiants :</b></p>
+    <p><strong>{{ 'global.email'|trans }} : </strong>{{ email }}</p>
+    <p><strong>{{ 'global.password'|trans }} : </strong>{{ password }}</p>
+{% endblock %}

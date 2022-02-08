@@ -70,7 +70,7 @@ class RegistrationController extends AbstractController
         $context->save($user);
 
         $message = $this->translator->trans('global.you_have_activated_your_account');
-        $this->addFlash("message", $message);
+        $this->addFlash("info", $message);
 
         return $this->redirectToRoute('app_home');
     }

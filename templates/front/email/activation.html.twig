@@ -1,6 +1,8 @@
-{% autoescape false %}
-    <h1>Activation de votre compte</h1>
-    <p>Vous avez créé un compte sur notre site, veuillez cliquer sur le lien ci-dessous pour l'activer</p>
-    <p><a href="{{ absolute_url(path('app_activation', {'token': token})) }}">Activer mon compte</a></p>
-{% endautoescape %}
+{% extends 'front/email/layout.html.twig' %}
+
+{% block content %}
+    <h3>Activation de votre compte</h3>
+    <p>Vous avez créé un compte sur notre site, veuillez cliquer sur le lien ci-dessous pour l'activer.</p>
+    <p><a href="{{ absolute_url(path('app_activation', {'token': token})) }}">Activez mon compte</a></p>
+{% endblock %}
     

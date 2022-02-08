@@ -1,4 +1,6 @@
-{% autoescape false %}
-    <h1>{{ proposal.need.title }}</h1>
-    <p>Votre proposition a été acceptée</p>
-{% endautoescape %}
+{% extends 'front/email/layout.html.twig' %}
+
+{% block content %}
+    <h3>Pour ce besoin : {{ proposal.need.title }}</h3>
+    <p>Votre proposition a été acceptée. </p>
+{% endblock %}

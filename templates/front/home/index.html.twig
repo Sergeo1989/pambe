@@ -83,6 +83,11 @@
                     <section class="card-area section-padding">
                         <div class="container">
                             <div class="row">
+                                {% for message in app.flashes("info") %}
+                                    <div class="col-lg-12 alert alert-success font-size-15 text-color" role="alert">
+                                        <span class="font-weight-semi-bold">{{ message }}</span>
+                                    </div>
+                                {% endfor %}
                                 <div class="col-lg-12">
                                     <div class="section-heading text-center">
                                         <h2 class="sec__title">{{ 'global.vip_professionals'|trans }}</h2>

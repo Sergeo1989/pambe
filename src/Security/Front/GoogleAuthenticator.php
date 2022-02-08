@@ -2,7 +2,8 @@
 
 namespace App\Security\Front;
 
-use App\Entity\User; 
+use App\Entity\User;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
@@ -10,7 +11,6 @@ use League\OAuth2\Client\Provider\GoogleUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -28,16 +28,18 @@ class GoogleAuthenticator extends OAuth2Authenticator
     private $em;
     private $router;
     private $encoder;
-    private $session;
+    private $mailer;
+    private $emailSender;
     private $clientName = 'google';
 
-    public function __construct(SessionInterface $session, UserPasswordHasherInterface $encoder, ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router)
+    public function __construct($emailSender, MailerService $mailer, UserPasswordHasherInterface $encoder, ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router)
     {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
 	    $this->router = $router;
         $this->encoder = $encoder;
-        $this->session = $session;
+        $this->mailer = $mailer;
+        $this->emailSender = $emailSender;
     }
 
     public function supports(Request $request): ?bool
@@ -51,7 +53,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
         $accessToken = $this->fetchAccessToken($client);
 
         return new SelfValidatingPassport(
-            new UserBadge($accessToken->getToken(), function() use ($accessToken, $client) {
+            new UserBadge($accessToken->getToken(), function() use ($accessToken, $client, $request) {
                 /** @var GoogleUser $googleUser */
                 $googleUser = $client->fetchUserFromToken($accessToken);
 
@@ -66,10 +68,19 @@ class GoogleAuthenticator extends OAuth2Authenticator
                         ->setFirstname($googleUser->getFirstName())
                         ->setLastname($googleUser->getLastName())
                         ->setPassword($this->encoder->hashPassword($user, $password));
-                    // Send password by mail
-                    $this->session->getFlashBag()->add('info', 'Votre mot de passe : ' . $password);
+
                     $this->em->persist($user);
                     $this->em->flush();
+
+                    $this->mailer->send(
+                        'Identifiants', 
+                        $this->emailSender, 
+                        $email, 
+                        'front/email/identifiers.html.twig', 
+                        ['email' => $email, 'password' => $password]
+                    );
+                
+                    $request->getSession()->getFlashBag()->add('info', 'Enregistrement effectué avec succès. Veuillez consulter votre boite e-mail pour récupérer vos identifiants.');
                 }
 
                 return $user;

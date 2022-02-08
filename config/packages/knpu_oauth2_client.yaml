@@ -23,10 +23,3 @@ knpu_oauth2_client:
             redirect_route: connect_service_check
             redirect_params: 
                 service: linkedin
-        instagram:
-            type: instagram
-            client_id: '%env(OAUTH_INSTAGRAM_ID)%'
-            client_secret: '%env(OAUTH_INSTAGRAM_SECRET)%'
-            redirect_route: connect_service_check
-            redirect_params: 
-                service: instagram

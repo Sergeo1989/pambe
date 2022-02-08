@@ -86,23 +86,18 @@
                     <p class="font-size-15 font-weight-medium">Connectez-vous avec un réseau social</p>
                     <ul class="social-profile social-profile-colored py-3">
                         <li>
-                            <a href="#" class="google-bg mx-1" data-toggle="tooltip" data-placement="top" title="Google">
+                            <a href="{{ path('connect_google_start') }}" class="google-bg mx-1" data-toggle="tooltip" data-placement="top" title="Google">
                                 <i class="lab la-google"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="facebook-bg mx-1" data-toggle="tooltip" data-placement="top" title="Facebook">
+                            <a href="{{ path('connect_facebook_start') }}" class="facebook-bg mx-1" data-toggle="tooltip" data-placement="top" title="Facebook">
                                 <i class="lab la-facebook-f"></i>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="twitter-bg mx-1" data-toggle="tooltip" data-placement="top" title="Twitter">
-                                <i class="lab la-twitter"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="instagram-bg mx-1" data-toggle="tooltip" data-placement="top" title="Instagram">
-                                <i class="lab la-instagram"></i>
+                        <li> 
+                            <a href="{{ path('connect_linkedin_start') }}" class="linkedin-bg mx-1" data-toggle="tooltip" data-placement="top" title="LinkedIn">
+                                <i class="lab la-linkedin"></i>
                             </a>
                         </li>
                     </ul>
