@@ -3,6 +3,7 @@
 namespace App\Security\Front;
 
 use App\Entity\User;
+use App\Security\Front\Exception\NotVerifiedEmailException;
 use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
@@ -15,6 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -56,6 +58,10 @@ class GoogleAuthenticator extends OAuth2Authenticator
             new UserBadge($accessToken->getToken(), function() use ($accessToken, $client, $request) {
                 /** @var GoogleUser $googleUser */
                 $googleUser = $client->fetchUserFromToken($accessToken);
+ 
+                if(true !== ($googleUser->toArray()['email_verified'] ?? null)){
+                    throw new NotVerifiedEmailException();
+                }
 
                 $email = $googleUser->getEmail();
 
@@ -65,8 +71,8 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $password = uniqid();
                     $user = new User();
                     $user->setEmail($email)
-                        ->setFirstname($googleUser->getFirstName())
-                        ->setLastname($googleUser->getLastName())
+                        ->setFirstname($googleUser->getFirstName() ?? '')
+                        ->setLastname($googleUser->getLastName() ?? '')
                         ->setPassword($this->encoder->hashPassword($user, $password));
 
                     $this->em->persist($user);
@@ -100,9 +106,10 @@ class GoogleAuthenticator extends OAuth2Authenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $message = strtr($exception->getMessageKey(), $exception->getMessageData());
+        if($request->hasSession())
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
 
-        return new Response($message, Response::HTTP_FORBIDDEN);
+        return new RedirectResponse($this->router->generate('app_login'));
     }
 
 }

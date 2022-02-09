@@ -19,6 +19,17 @@ class ProfessionalRepository extends ServiceEntityRepository
         parent::__construct($registry, Professional::class);
     }
 
+    public function getProfessionalsBetween2Dates($date1, $date2)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.day >= :date1 AND p.day <= :date2')
+            ->setParameter('date1', $date1)
+            ->setParameter('date2', $date2)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function searchByName($words = null, $category = null, $address = null){
         $query = $this->createQueryBuilder('p');
         $query->where('p.status = 1');

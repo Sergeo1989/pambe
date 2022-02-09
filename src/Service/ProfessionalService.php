@@ -98,11 +98,6 @@ class ProfessionalService
         return $this->needRepo->findBy(['status' => true, 'nature' => Need::PUBLISHED], ['date_add' => 'DESC']);
     }
 
-    public function addView(Professional $professional): void{
-        $professional->setView($professional->getView() + 1);
-        $this->context->save($professional);
-    }
-
     public function getProfessional(int $id): Professional
     {
         return $this->professionalRepo->find($id);

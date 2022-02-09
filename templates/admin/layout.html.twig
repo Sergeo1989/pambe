@@ -24,6 +24,7 @@
     {% block head_stylesheets %}
         <link rel="stylesheet" href="{{ asset('bundles/easyadmin/app.css') }}">
     {% endblock %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     {% block head_favicon %}
         <link rel="shortcut icon" href="{{ asset(ea.dashboardFaviconPath) }}">
@@ -45,6 +46,9 @@
     {% endblock %}
     <script src="{{ asset('assets/vendors/jquery/jquery.min.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 </head>
 {% block body %}

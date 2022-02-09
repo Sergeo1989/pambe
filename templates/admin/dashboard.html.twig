@@ -1,10 +1,26 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content_title 'Profile Statistics' %}
+{% block content_title 'Tableau de bord' %}
 
 {% block main %}
+    <div class="page-heading">
+        <h4>Statistique des 7 derniers jours</h4>
+    </div>
     <section class="row">
+        <div class="col-lg-3 offset-lg-9" style="margin-bottom: 2rem;">
+            <form method="post">
+                <div class="form-group has-icon-left">
+                    <div class="position-relative">
+                        <input class="form-control" type="text" name="daterange" />
+                        <div class="form-control-icon">
+                            <i class="bi bi-calendar"></i>
+                        </div>
+                    </div>
+                </div>
+                <input id="professional_ajax_url" type="hidden" value="{{ path("app_professional_ajax") }}">
+            </form>
+        </div>
         <div class="col-12">
             <div class="row">
                 <div class="col-6 col-lg-3 col-md-6">
@@ -13,12 +29,12 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="stats-icon purple">
-                                        <i class="iconly-boldShow"></i>
+                                        <i class="iconly-boldProfile"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Profile Views</h6>
-                                    <h6 class="font-extrabold mb-0">112.000</h6>
+                                    <h5 class="text-muted font-semibold">Utilisateurs</h5>
+                                    <h5 id="stat_nb_user" class="font-extrabold mb-0">{{ nb_of_users }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -34,8 +50,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Followers</h6>
-                                    <h6 class="font-extrabold mb-0">183.000</h6>
+                                    <h5 class="text-muted font-semibold">Professionnels</h5>
+                                    <h5 id="stat_nb_professional" class="font-extrabold mb-0">{{ nb_of_professionals }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -47,12 +63,12 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="stats-icon green">
-                                        <i class="iconly-boldAdd-User"></i>
+                                        <i class="iconly-boldBookmark"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Following</h6>
-                                    <h6 class="font-extrabold mb-0">80.000</h6>
+                                    <h5 class="text-muted font-semibold">Besoins</h5>
+                                    <h5 id="stat_nb_need" class="font-extrabold mb-0">{{ nb_of_needs }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -64,12 +80,29 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="stats-icon red">
-                                        <i class="iconly-boldBookmark"></i>
+                                        <i class="iconly-boldShow"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Saved Post</h6>
-                                    <h6 class="font-extrabold mb-0">112</h6>
+                                    <h5 class="text-muted font-semibold">Visiteurs</h5>
+                                    <h5 id="stat_nb_visitor" class="font-extrabold mb-0">{{ nb_of_visitors }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body px-3 py-4-5">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="stats-icon red">
+                                        <i class="iconly-boldShow"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5 class="text-muted font-semibold">Messages</h5>
+                                    <h5 id="stat_nb_message" class="font-extrabold mb-0">{{ nb_of_messages }}</h5>
                                 </div>
                             </div>
                         </div>

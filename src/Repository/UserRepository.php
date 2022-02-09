@@ -36,6 +36,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function getUsersBetween2Dates($date1, $date2)
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.professional', 'p')
+            ->leftJoin('u.admin', 'a')
+            ->where('p IS NULL AND a IS NULL')
+            ->andWhere('u.day >= :date1 AND u.day <= :date2')
+            ->setParameter('date1', $date1)
+            ->setParameter('date2', $date2)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

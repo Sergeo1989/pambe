@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Need;
-use App\Entity\Proposal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +17,17 @@ class NeedRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Need::class);
+    }
+
+    public function getNeedsBetween2Dates($date1, $date2)
+    {
+        return $this->createQueryBuilder('n')
+            ->where('n.day >= :date1 AND n.day <= :date2')
+            ->setParameter('date1', $date1)
+            ->setParameter('date2', $date2)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     // /**

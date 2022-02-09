@@ -20,6 +20,12 @@ use App\Entity\Region;
 use App\Entity\Service;
 use App\Entity\SocialUrl;
 use App\Entity\Testimonial;
+use App\Repository\MessageRepository;
+use App\Repository\NeedRepository;
+use App\Repository\ProfessionalRepository;
+use App\Repository\UserRepository;
+use App\Repository\ViewCounterRepository;
+use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -34,13 +40,37 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
+    private $needRepo;
+    private $userRepo;
+    private $professionalRepo;
+    private $viewCounterRepo;
+    private $messageRepo;
+
+    public function __construct(
+        NeedRepository $needRepo,
+        UserRepository $userRepo, 
+        ProfessionalRepository $professionalRepo,
+        ViewCounterRepository $viewCounterRepo,
+        MessageRepository $messageRepo)
+    {
+        $this->needRepo = $needRepo;
+        $this->userRepo = $userRepo;
+        $this->professionalRepo = $professionalRepo;
+        $this->viewCounterRepo = $viewCounterRepo;
+        $this->messageRepo = $messageRepo;
+    }
+
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(): Response
     {
         return $this->render('admin/dashboard.html.twig', [
-            'users' => []
+            'nb_of_professionals' => count($this->professionalRepo->getProfessionalsBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d'))),
+            'nb_of_users' => count($this->userRepo->getUsersBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d'))),
+            'nb_of_needs' => count($this->needRepo->getNeedsBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d'))),
+            'nb_of_visitors' => count(array_unique(array_column($this->viewCounterRepo->getVisitorsBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d')), 'ip'))),
+            'nb_of_messages' => count($this->messageRepo->getMessagesBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d')))
         ]);
     }
 

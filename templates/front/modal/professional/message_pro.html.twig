@@ -17,7 +17,7 @@
                         <div class="form-group">
                             <span class="la la-pencil form-icon"></span>
                             <textarea id="message" class="message-control form-control" name="message" placeholder="Ecrivez quelque chose..."></textarea>
-                            <input type="hidden" id="sender_id" value="{{ app.user.id }}">
+                            <input type="hidden" id="sender_id" value="{{ app.user ? app.user.id : '0' }}">
                             <input type="hidden" id="recipient_id" value="{{ professional.user.id }}">
                             <input type="hidden" id="professional_ajax_url" value="{{ path("app_professional_ajax") }}">
                         </div>

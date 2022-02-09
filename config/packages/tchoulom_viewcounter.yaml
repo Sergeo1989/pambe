@@ -1,0 +1,11 @@
+tchoulom_view_counter:
+    view_counter:
+        view_strategy: daily_view
+    statistics:
+        enabled: false
+        stats_file_name: stats
+        stats_file_extension:
+    storage:
+        engine: filesystem # filesystem or mongodb or a custom service
+    #geolocation:
+        #geolocator_id: App\Service\Geolocator

@@ -149,6 +149,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $city;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $day;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -386,6 +391,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->status = true;
         $this->date_add = new \DateTime("now");
+        $this->day = (new \DateTime("now"))->format('Y-m-d');
         $this->date_upd = new \DateTime("now");
     }
 
@@ -639,6 +645,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCity(?string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getDay(): ?string
+    {
+        return $this->day;
+    }
+
+    public function setDay(?string $day): self
+    {
+        $this->day = $day;
 
         return $this;
     }

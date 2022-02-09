@@ -15,11 +15,14 @@ use App\Form\ProfessionalFormType;
 use App\Repository\CityRepository;
 use App\Repository\ConversationRepository;
 use App\Repository\MessageRepository;
+use App\Repository\NeedRepository;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
+use App\Repository\ProfessionalRepository;
 use App\Repository\QualificationRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
+use App\Repository\ViewCounterRepository;
 use App\Service\ContextService;
 use App\Service\ProfessionalService;
 use Knp\Component\Pager\PaginatorInterface;
@@ -28,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Tchoulom\ViewCounterBundle\Counter\ViewCounter as Counter;
 
 class ProfessionalController extends AbstractController
 {
@@ -47,6 +51,10 @@ class ProfessionalController extends AbstractController
     private $request;
     private $response;
     private $status = 200;
+    protected $viewCounter;
+    private $professionalRepo;
+    private $needRepo;
+    private $viewCounterRepo;
 
     public function __construct(
         ContextService $context, 
@@ -60,7 +68,11 @@ class ProfessionalController extends AbstractController
         UserRepository $userRepo, 
         ConversationRepository $conversationRepo,
         MessageRepository $messageRepo,
-        CityRepository $cityRepo)
+        CityRepository $cityRepo,
+        Counter $viewCounter, 
+        ProfessionalRepository $professionalRepo,
+        NeedRepository $needRepo,
+        ViewCounterRepository $viewCounterRepo)
     {
         $this->context = $context;
         $this->translator = $translator;
@@ -74,6 +86,10 @@ class ProfessionalController extends AbstractController
         $this->conversationRepo = $conversationRepo;
         $this->messageRepo = $messageRepo;
         $this->cityRepo = $cityRepo;
+        $this->viewCounter = $viewCounter;
+        $this->professionalRepo = $professionalRepo;
+        $this->needRepo = $needRepo;
+        $this->viewCounterRepo = $viewCounterRepo;
     }
 
     public function index(Request $request): Response
@@ -152,8 +168,18 @@ class ProfessionalController extends AbstractController
         }
 
         $professional = $user->getProfessional();
-        if($this->isGranted('edit', $professional) == false)
-            $this->professionalService->addView($professional);
+        $viewCounter = $this->viewCounter->getViewCounter($professional);
+
+        if ($this->viewCounter->isNewView($viewCounter)) {
+            $views = $this->viewCounter->getViews($professional);
+            $viewCounter->setIp($request->getClientIp());
+            $viewCounter->setProfessional($professional);
+            $viewCounter->setViewDate(new \DateTime('now'));
+        
+            $professional->setViews($views);
+        
+            $this->context->save($viewCounter); 
+        }
         
         return $this->render('front/professional/show.html.twig', [
             'professional' => $professional, 
@@ -704,5 +730,31 @@ class ProfessionalController extends AbstractController
             'status' => 200,
             'data' => $cities
         ];
+    }
+
+    private function displayAjaxGetMessages()
+    {
+        $startDate = (string)$this->request->get('startDate');
+        $endDate = (string)$this->request->get('endDate');
+
+        $nb_of_messages = count($this->messageRepo->getMessagesBetween2Dates($startDate, $endDate));
+        $nb_of_professionals = count($this->professionalRepo->getProfessionalsBetween2Dates($startDate, $endDate));
+        $nb_of_users = count($this->userRepo->getUsersBetween2Dates($startDate, $endDate));
+        $nb_of_needs = count($this->needRepo->getNeedsBetween2Dates($startDate, $endDate));
+        $nb_of_visitors = count(array_unique(array_column($this->viewCounterRepo->getVisitorsBetween2Dates($startDate, $endDate), 'ip')));
+
+        if(isset($nb_of_messages) && isset($nb_of_professionals) && isset($nb_of_users) && isset($nb_of_needs) && isset($nb_of_visitors))
+            $this->response = [
+                'status' => true,
+                'nb_of_messages' => $nb_of_messages,
+                'nb_of_professionals' => $nb_of_professionals,
+                'nb_of_users' => $nb_of_users,
+                'nb_of_needs' => $nb_of_needs,
+                'nb_of_visitors' => $nb_of_visitors
+            ];
+        else
+            $this->response = [
+                'status' => false
+            ];
     }
 }

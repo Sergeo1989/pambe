@@ -130,4 +130,9 @@ class SecurityController extends AbstractController
     {
         return $clientRegistry->getClient('linkedin')->redirect([], []);
     }
+
+    public function github(ClientRegistry $clientRegistry)
+    {
+        return $clientRegistry->getClient('github')->redirect(['user'], []);
+    }
 }

@@ -8,7 +8,8 @@ use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
-use League\OAuth2\Client\Provider\LinkedInResourceOwner;
+use League\OAuth2\Client\Provider\GithubResourceOwner;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LinkedInAuthenticator extends OAuth2Authenticator
+class GithubAuthenticator extends OAuth2Authenticator
 {
     use TargetPathTrait; 
 
@@ -32,7 +33,7 @@ class LinkedInAuthenticator extends OAuth2Authenticator
     private $mailer;
     private $encoder;
     private $emailSender;
-    private $clientName = 'linkedin';
+    private $clientName = 'github';
 
     public function __construct($emailSender, MailerService $mailer, UserPasswordHasherInterface $encoder, ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router)
     {
@@ -56,10 +57,30 @@ class LinkedInAuthenticator extends OAuth2Authenticator
 
         return new SelfValidatingPassport(
             new UserBadge($accessToken->getToken(), function() use ($accessToken, $client, $request) {
-                /** @var LinkedInResourceOwner $linkedInUser */
-                $linkedInUser = $client->fetchUserFromToken($accessToken);
+                /** @var GithubResourceOwner $githubUser */
+                $githubUser = $client->fetchUserFromToken($accessToken);
+        
+                $response = HttpClient::create()->request(
+                    'GET',
+                    'https://api.github.com/user/emails',
+                    [
+                        'headers' => [
+                            'authorization' => "token {$accessToken->getToken()}"
+                        ]
+                    ]
+                );
 
-                $email = $linkedInUser->getEmail();
+                $emails = json_decode($response->getContent(), true);
+
+                foreach($emails as $email){
+                    if($email['primary'] == true && $email['verified'] == true){
+                        $data = $githubUser->toArray();
+                        $data['email'] = $email['email'];
+                        $githubUser = new GithubResourceOwner($data);
+                    }
+                }
+
+                $email = $githubUser->getEmail();
                 if($email == null){
                     throw new NotVerifiedEmailException();
                 }
@@ -70,8 +91,8 @@ class LinkedInAuthenticator extends OAuth2Authenticator
                     $password = uniqid();
                     $user = new User();
                     $user->setEmail($email)
-                        ->setFirstname($linkedInUser->getFirstName() ?? '')
-                        ->setLastname($linkedInUser->getLastName() ?? '')
+                        ->setFirstname('')
+                        ->setLastname($githubUser->getName() ?? '')
                         ->setPassword($this->encoder->hashPassword($user, $password));
 
                     $this->em->persist($user);

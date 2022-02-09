@@ -43,6 +43,7 @@ security:
                 - App\Security\Front\GoogleAuthenticator
                 - App\Security\Front\FacebookAuthenticator
                 - App\Security\Front\LinkedInAuthenticator
+                - App\Security\Front\GithubAuthenticator
             logout:
                 path: app_logout
                 target: app_home

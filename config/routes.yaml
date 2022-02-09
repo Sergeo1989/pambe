@@ -34,6 +34,9 @@ connect_facebook_start:
 connect_linkedin_start:
     path: /connect/linkedin
     controller: App\Controller\Front\SecurityController::linkedin
+connect_github_start:
+    path: /connect/github
+    controller: App\Controller\Front\SecurityController::github
 connect_service_check:
     path: /connect/{service}/check
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController

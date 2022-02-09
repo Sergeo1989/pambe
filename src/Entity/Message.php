@@ -48,6 +48,11 @@ class Message implements \JsonSerializable
      */
     private $recipient;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $day;
+
     public function __toString()
     {
         return $this->content;
@@ -113,6 +118,7 @@ class Message implements \JsonSerializable
     {
         $this->is_read = false;
         $this->date_add = new \DateTime("now");
+        $this->day = (new \DateTime("now"))->format('Y-m-d');
     }
 
     public function getSender(): ?User
@@ -146,5 +152,17 @@ class Message implements \JsonSerializable
             'date_add'      => $this->getDateAdd()->format('F j, Y'),
             'content'       => $this->getContent()
         ];
+    }
+
+    public function getDay(): ?string
+    {
+        return $this->day;
+    }
+
+    public function setDay(?string $day): self
+    {
+        $this->day = $day;
+
+        return $this;
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CategoryProfessional;
-use App\Entity\City;
 use App\Entity\Country;
 use App\Entity\Language;
 use App\Entity\Professional;

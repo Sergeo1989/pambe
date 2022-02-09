@@ -17,6 +17,34 @@
     <section class="overflow-hidden">
         <div class="login">
             <form method="post" id="login-form" class="form-box">
+                <div class="text-center">
+                    <h2 class="font-size-18 mt-4 mb-4 font-weight-medium">Connectez-vous avec votre réseau social</h2>
+                    <ul class="social-profile social-profile-colored py-3">
+                        <li>
+                            <a href="{{ path('connect_google_start') }}" class="google-bg mx-1" data-toggle="tooltip" data-placement="top" title="Google">
+                                <i class="lab la-google"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('connect_facebook_start') }}" class="facebook-bg mx-1" data-toggle="tooltip" data-placement="top" title="Facebook">
+                                <i class="lab la-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li> 
+                            <a href="{{ path('connect_linkedin_start') }}" class="linkedin-bg mx-1" data-toggle="tooltip" data-placement="top" title="LinkedIn">
+                                <i class="lab la-linkedin"></i>
+                            </a>
+                        </li>
+                        <li> 
+                            <a href="{{ path('connect_github_start') }}" class="linkedin-bg mx-1" data-toggle="tooltip" data-placement="top" title="Github">
+                                <i class="lab la-github"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="icon-element font-size-16 font-weight-semi-bold mt-4 mb-4 mx-auto">
+                    {{ 'global.or'|trans }}
+                </div>
                 {% for message in app.flashes('message') %}
                     <div class="alert alert-success">{{ message}}</div>
                 {% endfor %}
@@ -51,36 +79,13 @@
                     </div>
                     <a href="{{ path('app_forgotten_password') }}" class="margin-bottom-10px font-size-14">{{ 'global.forgotten_password'|trans }} ?</a>
                 </div>
-                <div class="btn-box">
+                <div class="btn-box mb-5">
                     <button type="submit" class="theme-btn gradient-btn w-100">
                         <i class="la la-sign-in mr-1"></i> Connectez-vous
                     </button>
                     <p class="sub-text-box text-right pt-1 font-weight-medium font-size-14">
                         Nouveau chez Pambe ? <a class="text-color-2" href="{{ path('app_register') }}">Créer un compte</a>
                     </p>
-                </div>
-                <div class="icon-element font-size-16 font-weight-semi-bold mt-5 mb-4 mx-auto">
-                                    {{ 'global.or'|trans }}
-                </div>
-                <div class="text-center">
-                    <p class="font-size-15 font-weight-medium">Connectez-vous avec votre réseau social</p>
-                    <ul class="social-profile social-profile-colored py-3">
-                        <li>
-                            <a href="{{ path('connect_google_start') }}" class="google-bg mx-1" data-toggle="tooltip" data-placement="top" title="Google">
-                                <i class="lab la-google"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ path('connect_facebook_start') }}" class="facebook-bg mx-1" data-toggle="tooltip" data-placement="top" title="Facebook">
-                                <i class="lab la-facebook-f"></i>
-                            </a>
-                        </li>
-                        <li> 
-                            <a href="{{ path('connect_linkedin_start') }}" class="linkedin-bg mx-1" data-toggle="tooltip" data-placement="top" title="LinkedIn">
-                                <i class="lab la-linkedin"></i>
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </form>
         </div>

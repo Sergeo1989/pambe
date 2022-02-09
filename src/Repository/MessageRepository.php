@@ -19,6 +19,16 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
+    public function getMessagesBetween2Dates($date1, $date2)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.day >= :date1 AND m.day <= :date2')
+            ->setParameter('date1', $date1)
+            ->setParameter('date2', $date2)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     // /**
     //  * @return Message[] Returns an array of Message objects
     //  */

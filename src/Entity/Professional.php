@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProfessionalRepository;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="professional", indexes={@ORM\Index(columns={"description"}, flags={"fulltext"})})
  * @ORM\HasLifecycleCallbacks()
  */
-class Professional
+class Professional implements ViewCountable
 {
     public const NORMAL = 0;
     public const VIP = 1;
@@ -118,9 +119,9 @@ class Professional
     private $nb_of_service;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="views", type="integer", nullable=true)
      */
-    private $view;
+    protected $views = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -167,6 +168,16 @@ class Professional
      */
     private $profile;
 
+    /**
+      * @ORM\OneToMany(targetEntity=ViewCounter::class, mappedBy="professional")
+      */
+    protected $viewCounters;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $day;
+
     public function __construct()
     {
         $this->category_professional_professionals = new ArrayCollection();
@@ -179,6 +190,7 @@ class Professional
         $this->professionalLikes = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->proposals = new ArrayCollection();
+        $this->viewCounters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -453,11 +465,11 @@ class Professional
         $this->verified = false;
         $this->level = self::NORMAL;
         $this->position = 0;
-        $this->view = 0;
         $this->share = 0;
         $this->nb_of_service = 6;
         $this->available = true;
         $this->date_add = new \DateTime("now");
+        $this->day = (new \DateTime("now"))->format('Y-m-d');
         $this->date_upd = new \DateTime("now");
     }
 
@@ -517,14 +529,14 @@ class Professional
         return $this;
     }
 
-    public function getView(): ?int
+    public function getViews()
     {
-        return $this->view;
+        return $this->views;
     }
 
-    public function setView(int $view): self
+    public function setViews($views)
     {
-        $this->view = $view;
+        $this->views = $views;
 
         return $this;
     }
@@ -682,6 +694,45 @@ class Professional
     public function setProfile(?string $profile): self
     {
         $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+      * @return Collection
+      */
+    public function getViewCounters()
+    {
+        return $this->viewCounters;
+    }
+    
+    /**
+      * @param ViewCounter $viewCounter
+      * @return $this
+      */
+    public function addViewCounter(ViewCounter $viewCounter)
+    {
+        $this->viewCounters[] = $viewCounter;
+    
+        return $this;
+    }
+    
+    /**
+      * @param ViewCounter $viewCounter
+      */
+    public function removeViewCounter(ViewCounter $viewCounter)
+    {
+        $this->viewCounters->removeElement($viewCounter);
+    }
+
+    public function getDay(): ?string
+    {
+        return $this->day;
+    }
+
+    public function setDay(?string $day): self
+    {
+        $this->day = $day;
 
         return $this;
     }

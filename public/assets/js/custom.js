@@ -2,6 +2,64 @@
 
 (function() {
     'use strict';
+    $(window).on('load', function(){
+        var url  = $('#professional_ajax_url').val();
+        var data = {};
+        data['action'] = 'get_messages';
+        data['ajax'] = 1;
+        data['rand'] = new Date().getTime();
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left',
+            startDate: moment().subtract(6, 'days'),
+            endDate: moment(),
+            locale: {
+                "format": "MMMM DD, YYYY",
+                "separator": " - ",
+                "fromLabel": "De",
+                "toLabel": "à",
+                "customRangeLabel": "Personnaliser",
+                "applyLabel": "Valider",
+                "cancelLabel": "Annuler",
+                "daysOfWeek": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+                "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+            },
+            ranges: {
+                'Aujourd\'hui': [moment(), moment()],
+                'Hier': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Les 7 derniers jours': [moment().subtract(6, 'days'), moment()],
+                'Les 30 derniers jours': [moment().subtract(29, 'days'), moment()],
+                'Ce mois': [moment().startOf('month'), moment().endOf('month')],
+                'Le mois dernier': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, function(start, end, label) {
+            data['startDate'] = start.format('YYYY-MM-DD');
+            data['endDate'] = end.format('YYYY-MM-DD');
+            console.log(data);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data, 
+                dataType:"json",
+                success: function(data) {
+                    if (data.status === true) {
+                        $('#stat_nb_message').text(data.nb_of_messages);
+                        $('#stat_nb_professional').text(data.nb_of_professionals);
+                        $('#stat_nb_user').text(data.nb_of_users);
+                        $('#stat_nb_need').text(data.nb_of_needs);
+                        $('#stat_nb_visitor').text(data.nb_of_visitors);
+                    }else{
+                        alert("Quelque chose s'est mal passée");
+                    }
+                },
+                complete: function() {
+
+                },
+                error: function(){
+                    alert('veuillez ré-essayer plutard !');
+                }
+            });
+        });
+    });
 
     $(document).on('click', '#exp_btn_add',function(event) {
         event.preventDefault();

@@ -97,6 +97,11 @@ class Need
      */
     private $nature;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $day;
+
     public function __construct()
     {
         $this->proposals = new ArrayCollection();
@@ -206,6 +211,7 @@ class Need
         $this->status = true;
         $this->nature = self::PENDING;
         $this->date_add = new \DateTime("now");
+        $this->day = (new \DateTime("now"))->format('Y-m-d');
         $this->date_upd = new \DateTime("now");
     }
 
@@ -310,6 +316,18 @@ class Need
     public function setNature(?int $nature): self
     {
         $this->nature = $nature;
+
+        return $this;
+    }
+
+    public function getDay(): ?string
+    {
+        return $this->day;
+    }
+
+    public function setDay(?string $day): self
+    {
+        $this->day = $day;
 
         return $this;
     }
