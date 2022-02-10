@@ -30,6 +30,11 @@ class Conversation
      */
     private $date_upd;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_add;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -82,11 +87,24 @@ class Conversation
         return $this;
     }
 
+    public function getDateAdd(): ?\DateTimeInterface
+    {
+        return $this->date_add;
+    }
+
+    public function setDateAdd(?\DateTimeInterface $date_add): self
+    {
+        $this->date_add = $date_add;
+
+        return $this;
+    }
+
     /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
     {
+        $this->date_add = new \DateTime("now");
         $this->date_upd = new \DateTime("now");
     }
 

@@ -1,0 +1,50 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ 'Plan tarifaire'|e ~ parent() }}{% endblock %}
+
+{% block content %}
+    {% embed "front/partials/breadcrumb.html.twig" %}
+        {% block breadcrumb_heading %}
+            <div class="section-heading">
+                <h2 class="sec__title text-white font-size-40 mb-0">{{ 'Plans tarifaires'|e }}</h2>
+            </div>
+        {% endblock %}
+        {% block breadcrumb_links %}
+            <li>{{ 'Tarif'|e }}</li>
+        {% endblock %}
+    {% endembed %}
+    <section class="pricing-area section--padding">
+        <div class="container">
+            <div class="row">
+                {% for tariff in tariffs %}
+                    <div class="col-lg-4 responsive-column">
+                        <div class="price-item">
+                            <div class="price-head" style="background-color: {{ tariff.color }};">
+                                {% if tariff.mostPopular %}
+                                    <span class="ribbon ribbon-2">Most Popular</span>
+                                {% endif %}
+                                <h3 class="price__title text-uppercase">{{ tariff.title }}</h3>
+                                <svg class="svg-bg h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path fill="#fff" d="M0 10 0 0 A 90 59, 0, 0, 0, 100 0 L 100 10 Z"></path></svg>
+                            </div>
+                            <div class="price-box d-flex flex-column align-items-center justify-content-center mx-auto text-color-4">
+                                <h3 class="price__text text-color-4">{{ tariff.amount == 0 ? 'Gratuit' : tariff.amount ~ ' FCFA' }}</h3>
+                                <span class="price__text-meta">/ par mois</span>
+                            </div>
+                            <ul class="list-items price-list mt-4">
+                                {% for option in tariffOptions %}
+                                    <li>
+                                        <i class="la {{ option in tariff.tariffTariffOptions|column('tariffOption') ? 'la-check text-success' : 'la-close text-danger' }} mr-2"></i>
+                                        {{ option }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="price-btn-box text-center">
+                                <a href="#" class="theme-btn bg-2 text-white">Get Started <i class="la la-arrow-right ml-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -157,6 +157,9 @@ app_contact:
 app_blog:
     path: /blog
     controller: App\Controller\Front\BlogController::index
+app_tariff:
+    path: /tariff
+    controller: App\Controller\Front\TariffController::index
     #requirements:
         #_locale: '%app_locale%'
 app_blog_article:

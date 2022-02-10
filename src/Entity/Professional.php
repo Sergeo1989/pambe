@@ -193,6 +193,11 @@ class Professional implements ViewCountable
         $this->viewCounters = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->user->getLastname();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
