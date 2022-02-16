@@ -37,15 +37,15 @@ class CategoryProfessionalCrudController extends AbstractCrudController
             IdField::new('id')->onlyOnIndex(),
             TextField::new('name', 'Nom'),
             TextField::new('job', 'Métier'),
-            TextEditorField::new('description'),
+            TextEditorField::new('description')->hideOnIndex(),
             TextField::new('iconFile', 'Icône')
                         ->setFormType(VichImageType::class)
                         ->setHelp("La largeur et la hauteur doivent être comprise entre 200px et 400px")
                         ->onlyOnForms(),
-            ImageField::new('icon', 'Icône')
-                        ->setBasePath('/uploads/images/categorypro/')
+            ImageField::new('icon', 'Image')
+                        ->setBasePath('/uploads/images/categorypro/')->setCssClass('admin-image-size')
                         ->onlyOnIndex(),
-            BooleanField::new('status')->onlyOnIndex(),
+            BooleanField::new('status', 'Statut')->onlyOnIndex(),
             ChoiceField::new('grade', 'Niveau')->setChoices(fn() => ['Standard' => CategoryProfessional::NORMAL, 'Populaire' => CategoryProfessional::POPULAR])->onlyWhenUpdating(),
             IntegerField::new('position')->onlyWhenUpdating()
         ];
@@ -55,14 +55,16 @@ class CategoryProfessionalCrudController extends AbstractCrudController
     {
         return $actions
                 ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
-                    return $action->setIcon('fa fa-eye')->addCssClass('btn btn-info');
+                    return $action->setLabel('Visualiser')->setIcon('fa fa-eye')->addCssClass('btn btn-info');
                 })
                 ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                    return $action->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
+                    return $action->setLabel('Modifier')->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
                 })
                 ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                    return $action->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
+                    return $action->setLabel('Supprimer')->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
                 })
-                    ;
+                ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+                    return $action->setLabel('Ajouter une catégorie');
+                });
     }
 }

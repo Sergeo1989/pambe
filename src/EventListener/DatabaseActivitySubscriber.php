@@ -44,6 +44,6 @@ class DatabaseActivitySubscriber implements EventSubscriberInterface
             $entity->setSlug($this->context->slug($entity->getName()));
         
         if($entity instanceof User)
-            $entity->setSlug($this->context->slug($entity->getEmail()));
+            $entity->setSlug($this->context->slug($entity));
     }
 }

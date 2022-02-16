@@ -106,8 +106,8 @@ class ProfessionalCrudController extends AbstractCrudController
         $address = TextField::new('user.address', 'Adresse');
         $social_media = TextField::new('socialUrl', 'Médias Sociaux')->setFormType(SocialFormType::class);;
         $website = UrlField::new('user.website', 'Site web');
-        $date_add = DateTimeField::new('date_add', 'Date d\'ajout');
-        $date_upd = DateTimeField::new('date_upd', 'Date de mise à jour');
+        $date_add = DateTimeField::new('date_add', 'Date d\'ajout')->setCssClass('admin-text-align');
+        $date_upd = DateTimeField::new('date_upd', 'Date de mise à jour')->setCssClass('admin-text-align');
         $country = AssociationField::new('user.country', 'Pays')
                                 ->setFieldFqcn(Country::class)
                                 ->setFormTypeOptions(['class' => Country::class]);
@@ -126,7 +126,7 @@ class ProfessionalCrudController extends AbstractCrudController
         $status = BooleanField::new('status', 'Status');
 
         if (Crud::PAGE_INDEX === $pageName)
-            return [$id, $email, $name, $date_add, $date_upd, $default_category, $verified, $status];
+            return [$id, $email, $name, $date_add, $date_upd, $verified, $status];
         elseif(Crud::PAGE_EDIT === $pageName)
             return [$email, $firstname, $lastname, $phone, $address, $website, $profile, $cover, $galleries, $level, $default_category, $country, $region, $city, $langues, $categories, $short_description, $description, $services, $social_media];
         elseif(Crud::PAGE_DETAIL === $pageName)
@@ -139,15 +139,17 @@ class ProfessionalCrudController extends AbstractCrudController
     {
         return $actions
                 ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
-                    return $action->setIcon('fa fa-eye')->addCssClass('btn btn-info');
+                    return $action->setLabel('Visualiser')->setIcon('fa fa-eye')->addCssClass('btn btn-info');
                 })
                 ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                    return $action->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
+                    return $action->setLabel('Modifier')->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
                 })
                 ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                    return $action->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
+                    return $action->setLabel('Supprimer')->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
                 })
-                ;
+                ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+                    return $action->setLabel('Ajouter un professionnel');
+                });
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void

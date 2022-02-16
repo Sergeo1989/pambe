@@ -11,6 +11,7 @@ use App\Entity\Qualification;
 use App\Entity\Review;
 use App\Entity\Service;
 use App\Entity\User;
+use App\Entity\ViewCounter;
 use App\Form\ProfessionalFormType;
 use App\Repository\CityRepository;
 use App\Repository\ConversationRepository;
@@ -149,11 +150,11 @@ class ProfessionalController extends AbstractController
 
         if ($request->request->count() > 0) {
             if(empty($name))
-                $this->errors['name'] = 'Entrez un nom.';
+                $this->errors['name'] = $this->translator->trans('global.enter_a_name.');
             if(empty($email))
-                $this->errors['email'] = 'Entrez votre adresse email.';
+                $this->errors['email'] = $this->translator->trans('global.enter_your_email_address.');
             if(empty($message))
-                $this->errors['message'] = 'Entrez votre avis.';
+                $this->errors['message'] = $this->translator->trans('global.enter_your_review.');
             if(count($this->errors) == 0){
                 $review = new Review();
                 $review->setName($name);
@@ -168,6 +169,7 @@ class ProfessionalController extends AbstractController
         }
 
         $professional = $user->getProfessional();
+        /** @var ViewCounter $viewCounter */ 
         $viewCounter = $this->viewCounter->getViewCounter($professional);
 
         if ($this->viewCounter->isNewView($viewCounter)) {
@@ -243,8 +245,7 @@ class ProfessionalController extends AbstractController
         }
 
         $like = new ProfessionalLike();
-        $like->setProfessional($professional)
-             ->setUser($user);
+        $like->setProfessional($professional)->setUser($user);
 
         $this->context->save($like);
 
@@ -687,7 +688,7 @@ class ProfessionalController extends AbstractController
             $message->setSender($sender);
             $message->setRecipient($recipient);
             $message->setConversation($conversation);
-            $message->setContent($content);
+            $message->setContent(strip_tags($content));
             
             $this->response = [
                 'status' => true,

@@ -12,6 +12,7 @@ use League\OAuth2\Client\Provider\FacebookUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -72,7 +73,7 @@ class FacebookAuthenticator extends OAuth2Authenticator
                     $user = new User();
                     $user->setEmail($email)
                         ->setFirstname($facebookUser->getFirstName() ?? '')
-                        ->setLastname($facebookUser->getLastName() ?? '')
+                        ->setLastname($facebookUser->getLastName() ?? 'ChangeMe')
                         ->setPassword($this->encoder->hashPassword($user, $password));
 
                     $this->em->persist($user);
@@ -85,8 +86,10 @@ class FacebookAuthenticator extends OAuth2Authenticator
                         'front/email/identifiers.html.twig', 
                         ['email' => $email, 'password' => $password]
                     );
-                
-                    $request->getSession()->getFlashBag()->add('info', 'Enregistrement effectué avec succès. Veuillez consulter votre boite e-mail pour récupérer vos identifiants.');
+
+                    /** @var Session $session */
+                    $session = $request->getSession();
+                    $session->getFlashBag()->add('info', 'Enregistrement effectué avec succès. Veuillez consulter votre boite e-mail pour récupérer vos identifiants.');
                 }
 
                 return $user;

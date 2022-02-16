@@ -26,6 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -65,7 +66,7 @@ class AccountController extends AbstractController
     /**
      * @Security("is_granted('ROLE_USER')")
      */
-    public function password(Request $request, UserPasswordHasherInterface $encoder, ContextService $context): Response
+    public function password(Request $request, UserPasswordHasherInterface $hasher, ContextService $context): Response
     {
         $user = $context->getUser();
         $passwordForm = $this->createForm(ChangePasswordFormType::class);
@@ -75,8 +76,8 @@ class AccountController extends AbstractController
             $oldPassword = $passwordForm->get("oldPassword")->getData();
             $newPassword = $passwordForm->get("newPassword")->getData();
 
-            if($encoder->isPasswordValid($user, $oldPassword)){
-                $user->setPassword($encoder->hashPassword($user, $newPassword));
+            if($hasher->isPasswordValid($user, $oldPassword)){
+                $user->setPassword($hasher->hashPassword($user, $newPassword));
                 $context->save($user);
                 $this->addFlash('success', $this->translator->trans('global.your_password_has_been_successfully_changed !'));
             }else{
@@ -110,6 +111,8 @@ class AccountController extends AbstractController
      */
     public function showneed(Need $need)
     {
+        $this->denyAccessUnlessGranted('view', $need);
+
         return $this->render('front/account/showneed.html.twig', compact('need'));
     }
 
@@ -135,8 +138,7 @@ class AccountController extends AbstractController
         if($needForm->isSubmitted() && $needForm->isValid()) {
             $need->setUser($context->getUser());
             $context->save($need);
-            $message = $this->translator->trans('global.your_need_has_been_successfully_registered.');
-            $this->addFlash("message", $message);
+            $this->addFlash("message", $this->translator->trans('global.your_need_has_been_successfully_registered.'));
             return $this->redirectToRoute('app_account_need');
         }
 
@@ -148,14 +150,15 @@ class AccountController extends AbstractController
      */
     public function editneed(Need $need, ContextService $context, Request $request)
     {
+        $this->denyAccessUnlessGranted('edit', $need);
+
         $needForm = $this->createForm(NeedFormType::class, $need);
         $needForm->handleRequest($request);
 
         if($needForm->isSubmitted() && $needForm->isValid()) {
             $need->setNature(Need::PENDING);
             $context->save($need);
-            $message = $this->translator->trans('global.your_need_has_been_successfully_registered.');
-            $this->addFlash("message", $message);
+            $this->addFlash("message", $this->translator->trans('global.your_need_has_been_successfully_registered.'));
             return $this->redirectToRoute('app_account_need');
         }
 
@@ -164,6 +167,8 @@ class AccountController extends AbstractController
 
     public function deleteneed(Need $need, ContextService $context)
     {
+        $this->denyAccessUnlessGranted('delete', $need);
+
         $context->delete($need);
         $this->addFlash('message', $this->translator->trans('global.need_successfully_removed!'));
         return $this->redirectToRoute('app_account_need');
@@ -210,8 +215,7 @@ class AccountController extends AbstractController
      */
     public function information(Request $request, ContextService $context)
     { 
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $context->getUser(), $message);
+        $this->denyAccessUnlessGranted('edit', $context->getUser(), $this->translator->trans('global.you_are_not_a_professional.'));
         $professional = $context->getUser()->getProfessional();
 
         $form = $this->createForm(EditInformationFormType::class, $professional);
@@ -221,17 +225,22 @@ class AccountController extends AbstractController
 
             $context->save($professional);
 
-            $message = $this->translator->trans('global.content_successfully_registered!');
-            $this->addFlash('success', $message);
+            $this->addFlash('success', $this->translator->trans('global.content_successfully_registered!'));
 
-            if($form->get('saveAndContinue')->isClicked())
+            /** @var SubmitButton $buttonSaveAndContinue */ 
+            $buttonSaveAndContinue = $form->get('saveAndContinue');
+
+            /** @var SubmitButton $buttonSave */ 
+            $buttonSave = $form->get('save');
+
+            if($buttonSaveAndContinue->isClicked())
                 return $this->redirectToRoute('app_account_professional_social');
-            if($form->get('save')->isClicked())
+            if($buttonSave->isClicked())
                 return $this->redirectToRoute('app_account_professional_information');
         }
          
         return $this->render('front/account/information.html.twig', [
-            'informationForm' => $form->createView(),
+            'informationForm' => $form->createView()
         ]);
     }
 
@@ -240,8 +249,7 @@ class AccountController extends AbstractController
      */
     public function social(Request $request, ContextService $context)
     {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $context->getUser(), $message);
+        $this->denyAccessUnlessGranted('edit', $context->getUser(), $this->translator->trans('global.you_are_not_a_professional.'));
 
         $professional = $context->getUser()->getProfessional();
         $form = $this->createForm(SocialMediaFormType::class, $professional);
@@ -251,17 +259,22 @@ class AccountController extends AbstractController
             
             $context->save($professional);
 
-            $message = $this->translator->trans('global.content_successfully_registered!');
-            $this->addFlash('success', $message);
+            $this->addFlash('success', $this->translator->trans('global.content_successfully_registered!'));
             
-            if($form->get('saveAndContinue')->isClicked())
+            /** @var SubmitButton $buttonSaveAndContinue */ 
+            $buttonSaveAndContinue = $form->get('saveAndContinue');
+
+            /** @var SubmitButton $buttonSave */ 
+            $buttonSave = $form->get('save');
+
+            if($buttonSaveAndContinue->isClicked())
                 return $this->redirectToRoute('app_account_professional_service');
-            if($form->get('save')->isClicked())
+            if($buttonSave->isClicked())
                 return $this->redirectToRoute('app_account_professional_social');
         }
 
         return $this->render('front/account/socialmedia.html.twig', [
-            'socialForm' => $form->createView(),
+            'socialForm' => $form->createView()
         ]);
     }
 
@@ -270,8 +283,7 @@ class AccountController extends AbstractController
      */
     public function service(ContextService $context)
     {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $context->getUser(), $message);
+        $this->denyAccessUnlessGranted('edit', $context->getUser(), $this->translator->trans('global.you_are_not_a_professional.'));
 
         return $this->render('front/account/service.html.twig');
     }
@@ -281,8 +293,7 @@ class AccountController extends AbstractController
      */
     public function training(ContextService $context)
     {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $context->getUser(), $message);
+        $this->denyAccessUnlessGranted('edit', $context->getUser(), $this->translator->trans('global.you_are_not_a_professional.'));
 
         return $this->render('front/account/training.html.twig');
     }
@@ -292,8 +303,7 @@ class AccountController extends AbstractController
      */
     public function reference(ContextService $context)
     {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $context->getUser(), $message);
+        $this->denyAccessUnlessGranted('edit', $context->getUser(), $this->translator->trans('global.you_are_not_a_professional.'));
 
         return $this->render('front/account/reference.html.twig');
     }
@@ -303,8 +313,7 @@ class AccountController extends AbstractController
      */
     public function gallery(Request $request, ContextService $context)
     {
-        $message = $this->translator->trans('global.you_are_not_a_professional.');
-        $this->denyAccessUnlessGranted('edit', $context->getUser(), $message);
+        $this->denyAccessUnlessGranted('edit', $context->getUser(), $this->translator->trans('global.you_are_not_a_professional.'));
 
         $professional = $context->getUser()->getProfessional();
         $form = $this->createForm(GalleryFormType::class, $professional);
@@ -349,6 +358,8 @@ class AccountController extends AbstractController
      */
     public function showproposal(Proposal $proposal)
     {
+        $this->denyAccessUnlessGranted('view', $proposal);
+
         return $this->render('front/account/showproposal.html.twig', compact('proposal'));
     }
 
@@ -357,14 +368,15 @@ class AccountController extends AbstractController
      */
     public function editproposal(Proposal $proposal, Request $request, ContextService $context)
     {
+        $this->denyAccessUnlessGranted('edit', $proposal);
+
         $proposalForm = $this->createForm(ProposalFormType::class, $proposal);
         $proposalForm->handleRequest($request);
 
         if($proposalForm->isSubmitted() && $proposalForm->isValid()) {
             $context->save($proposal);
 
-            $message = $this->translator->trans('global.your_proposal_is_awaiting_moderation.');
-            $this->addFlash("message", $message);
+            $this->addFlash("message", $this->translator->trans('global.your_proposal_is_awaiting_moderation.'));
             return $this->redirectToRoute('app_account_professional_proposal_edit', ['id' => $proposal->getId()]);
         }
         return $this->render('front/account/editproposal.html.twig', [
@@ -375,6 +387,8 @@ class AccountController extends AbstractController
 
     public function deleteproposal(Proposal $proposal, ContextService $context)
     {
+        $this->denyAccessUnlessGranted('delete', $proposal);
+
         $context->delete($proposal);
         $this->addFlash('message', $this->translator->trans('global.need_successfully_removed!'));
         return $this->redirectToRoute('app_account_professional_proposal');
@@ -388,9 +402,6 @@ class AccountController extends AbstractController
         return $this->render('front/account/option.html.twig');
     }
 
-    /**
-     * @Security("is_granted('ROLE_USER')")
-     */
     public function profile(User $user)
     {
         return $this->render('front/account/profile.html.twig', compact('user'));

@@ -71,7 +71,7 @@ class LinkedInAuthenticator extends OAuth2Authenticator
                     $user = new User();
                     $user->setEmail($email)
                         ->setFirstname($linkedInUser->getFirstName() ?? '')
-                        ->setLastname($linkedInUser->getLastName() ?? '')
+                        ->setLastname($linkedInUser->getLastName() ?? 'ChangeMe')
                         ->setPassword($this->encoder->hashPassword($user, $password));
 
                     $this->em->persist($user);
@@ -85,7 +85,9 @@ class LinkedInAuthenticator extends OAuth2Authenticator
                         ['email' => $email, 'password' => $password]
                     );
                 
-                    $request->getSession()->getFlashBag()->add('info', 'Enregistrement effectué avec succès. Veuillez consulter votre boite e-mail pour récupérer vos identifiants.');
+                    /** @var Session $session */
+                    $session = $request->getSession();
+                    $session->getFlashBag()->add('info', 'Enregistrement effectué avec succès. Veuillez consulter votre boite e-mail pour récupérer vos identifiants.');
                 }
 
                 return $user;

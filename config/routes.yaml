@@ -188,10 +188,10 @@ app_professional:
     #requirements:
         #_locale: '%app_locale%'
 app_professional_show:
-    path: /professional/{slug}/show
+    path: /professional/{id}/{slug}/show
     controller: App\Controller\Front\ProfessionalController::show
-    #requirements:
-        #_locale: '%app_locale%'
+    requirements:
+        id: '\d+'
 app_professional_new:
     path: /professional/new
     controller: App\Controller\Front\ProfessionalController::new
@@ -213,8 +213,10 @@ app_professional_vip:
     #requirements:
         #_locale: '%app_locale%'
 app_professional_like:
-    path: /professional/{slug}/like
+    path: /professional/{id}/{slug}/like
     controller: App\Controller\Front\ProfessionalController::like
+    requirements:
+        id: '\d+'
 app_professional_gallery:
     path: /professional/gallery/edit
     controller: App\Controller\Front\ProfessionalController::gallery
@@ -282,7 +284,7 @@ app_professional_proposal_nature:
     requirements:
         id: '\d+'
 app_profile:
-    path: /{slug}/profile
+    path: /{id}/{slug}/profile
     controller: App\Controller\Front\AccountController::profile
 app_professional_proposal_create:
     path: professional/proposal/{id}/create

@@ -12,6 +12,7 @@ parameters:
         - Indépendant: Indépendant
         - Agence: Agence
         - Grande entreprise: Grande entreprise
+    app_website_title: Pambe
     app.path.category_pro_images: /uploads/images/categorypro
     app.path.user_profile: /uploads/images/professional
     app.path.professional_images: /uploads/images/professional
@@ -35,6 +36,7 @@ services:
             $defaultLocale: '%locale%'
             $emailSender: '%app.notifications.email_sender%'
             $profile: '%app_user_status%'
+            $website_title: '%app_website_title%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

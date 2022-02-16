@@ -93,14 +93,16 @@ class NeedCrudController extends AbstractCrudController
     {
         return $actions
                 ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
-                    return $action->setIcon('fa fa-eye')->addCssClass('btn btn-info');
+                    return $action->setLabel('Visualiser')->setIcon('fa fa-eye')->addCssClass('btn btn-info');
                 })
                 ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                    return $action->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
+                    return $action->setLabel('Modifier')->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
                 })
                 ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                    return $action->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
+                    return $action->setLabel('Supprimer')->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
                 })
-                    ;
+                ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+                    return $action->setLabel('Ajouter un besoin');
+                });
     }
 }

@@ -57,7 +57,7 @@ class UserVoter extends Voter
 
     private function canView(Professional $professional, User $user): bool
     {
-        if ($this->security->isGranted(self::EDIT, $user)) 
+        if ($this->security->isGranted(self::VIEW, $user)) 
             return $user->getProfessional() === $professional;
         else 
             return false;

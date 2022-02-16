@@ -25,6 +25,7 @@
         <link rel="stylesheet" href="{{ asset('bundles/easyadmin/app.css') }}">
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/custom.css') }}" />
 
     {% block head_favicon %}
         <link rel="shortcut icon" href="{{ asset(ea.dashboardFaviconPath) }}">
@@ -119,7 +120,7 @@
                                                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                                                     <ol class="breadcrumb">
                                                         <li class="breadcrumb-item"><a href="{{ path(ea.dashboardRouteName) }}">Tableau de bord</a></li>
-                                                        <li class="breadcrumb-item active" aria-current="page">Pambe</li>
+                                                        <li class="breadcrumb-item active" aria-current="page">{{ website_title }}</li>
                                                     </ol>
                                                 </nav>
                                                 {% block page_actions_wrapper %}
@@ -138,11 +139,7 @@
                             <footer>
                                 <div class="footer clearfix mb-0 text-muted">
                                     <div class="float-start">
-                                        <p>2021 &copy; Mazer</p>
-                                    </div>
-                                    <div class="float-end">
-                                        <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a
-                                                href="http://ahmadsaugi.com">A. Saugi</a></p>
+                                        <p>{{ 'now'|date('Y') }} &copy; {{ website_title }}</p>
                                     </div>
                                 </div>
                             </footer>

@@ -10,7 +10,7 @@
             </div>
         {% endblock %}
         {% block breadcrumb_links %}
-            <li>Connexion</li>
+            <li>{{ 'global.login'|trans }}</li>
         {% endblock %}
     {% endembed %}
 
@@ -19,7 +19,7 @@
             <form method="post" id="login-form" class="form-box">
                 <div class="text-center">
                     <h2 class="font-size-18 mt-4 mb-4 font-weight-medium">Connectez-vous avec votre réseau social</h2>
-                    <ul class="social-profile social-profile-colored py-3">
+                    <ul id="login" class="social-profile social-profile-colored py-3">
                         <li>
                             <a href="{{ path('connect_google_start') }}" class="google-bg mx-1" data-toggle="tooltip" data-placement="top" title="Google">
                                 <i class="lab la-google"></i>
@@ -84,7 +84,7 @@
                         <i class="la la-sign-in mr-1"></i> Connectez-vous
                     </button>
                     <p class="sub-text-box text-right pt-1 font-weight-medium font-size-14">
-                        Nouveau chez Pambe ? <a class="text-color-2" href="{{ path('app_register') }}">Créer un compte</a>
+                        Nouveau chez {{ website_title }} ? <a class="text-color-2" href="{{ path('app_register') }}">Créer un compte</a>
                     </p>
                 </div>
             </form>

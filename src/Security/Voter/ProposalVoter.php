@@ -2,30 +2,33 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Message;
+use App\Entity\Proposal;
 use App\Entity\User;
 use App\Service\ContextService;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class MessageVoter extends Voter
+class ProposalVoter extends Voter
 {
     const VIEW = 'view';
     const EDIT = 'edit';
     const DEL = 'delete';
 
     private $context;
+    private $security;
 
-    public function __construct(ContextService $context)
+    public function __construct(ContextService $context, Security $security)
     {
         $this->context = $context;
+        $this->security = $security;
     }
 
     protected function supports($attribute, $subject)
     {
         return in_array($attribute, [self::VIEW, self::EDIT, self::DEL])
-            && $subject instanceof Message;
+            && $subject instanceof Proposal;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -52,21 +55,21 @@ class MessageVoter extends Voter
         return false;
     }
 
-    private function canView(Message $message, User $user): bool
+    private function canView(Proposal $proposal, User $user): bool
     {
-        if ($this->context->hasRole("ROLE_USER")) 
-            return $message->getSender() === $user;
+        if ($this->security->isGranted(self::VIEW, $user)) 
+            return $proposal->getProfessional()->getUser() === $user;
         else 
             return false;
     }
 
-    private function canEdit(Message $message, User $user): bool
+    private function canEdit(Proposal $proposal, User $user): bool
     {
-        return $this->canView($message, $user);
+        return $this->canView($proposal, $user);
     }
 
-    private function canDel(Message $message, User $user): bool
+    private function canDel(Proposal $proposal, User $user): bool
     {
-        return $this->canView($message, $user);
+        return $this->canView($proposal, $user);
     }
 }

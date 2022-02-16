@@ -64,12 +64,12 @@
                                     <p class="font-size-14 pl-2 font-weight-medium">{{ professional.reviews|length }} avis</p>
                                 </div>
                                 <div class="timestamp font-weight-medium ml-3 pl-3 border-left border-left-color line-height-20">
-                                    <span class="{{ professional.available ? "text-color-4" : "text-color-2" }} mr-2">{{ professional.available ? "available"|trans : "absent"|trans }}</span>
+                                    <span class="{{ professional.available ? "text-color-4" : "text-color-2" }} mr-2">{{ professional.available ? "available"|trans|capitalize : "absent"|trans|capitalize }}</span>
                                 </div>
                             </div>
                             <div class="btn-box">
                                 <a href="#{{ is_granted('edit', professional) == false ? 'review' : 'see_review' }}" class="btn-gray mr-1"><i class="la la-star mr-1"></i>{{ is_granted('edit', professional) == false ? 'Écrire un avis' : 'Mes avis' }}</a>
-                                <a href="{{ path("app_professional_like", {"slug" : professional.user.slug}) }}" class="js-like btn-gray mr-1">
+                                <a href="{{ path("app_professional_like", {id: professional.user.id, slug: professional.user.slug}) }}" class="js-like btn-gray mr-1">
                                     {% if app.user and professional.isLikedByUser(app.user) %}
                                         <i class="la la-heart mr-1"></i>
                                     {% else %}
@@ -86,14 +86,6 @@
                         <div class="btn-box d-flex align-items-center">
                             <span class="btn-gray mr-2"><i class="la la-eye mr-1"></i>Vues - {{ professional.views }}</span>
                             <span class="btn-gray mr-2 js-likes"><i class="la la-heart mr-1"></i>Favoris - {{ professional.likes|length }}</span>
-                            <div class="dropdown dot-action-wrap">
-                                <button class="dot-action-btn dropdown-toggle after-none border-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="la la-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#reportModal"><i class="la la-flag mr-1"></i>Report</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -460,7 +452,7 @@
                                 <h3 class="widget-title pb-0 line-height-26">“La chance aide parfois, le travail toujours.”</h3>
                             </div>
                             {% if is_granted('edit', professional) == false %}
-                                <a href="#" class="theme-btn gradient-btn w-100">Contactez-Moi</a>
+                                <a href="#" data-toggle="modal" data-target="#{{ app.user ? 'messageModal' : 'infoModal' }}" class="theme-btn gradient-btn w-100">Contactez-Moi</a>
                             {% endif %}
                         </div>
                         <div class="sidebar-widget">
@@ -482,51 +474,13 @@
                                 {% if professional.languages|length > 0 %}
                                     <li><i class="la la-language mr-2 text-color-2 font-size-18"></i><a href="#">{{ professional.languages|map(l => "#{l.name}")|join(', ') }} <i class="la la-external-link ml-1"></i></a></li>
                                 {% endif %}
-                                <li><i class="la la-comment mr-2 text-color-2 font-size-18"></i><a href="#" data-toggle="modal" data-target="#messageModal">Envoyez un message</a></li>
+                                <li><i class="la la-comment mr-2 text-color-2 font-size-18"></i><a href="#" data-toggle="modal" data-target="#{{ app.user ? 'messageModal' : 'infoModal' }}">Laissez un message</a></li>
                             </ul>
-                        </div>
-                        <div class="card-item card-item-layout-4">
-                            <a href="#" class="card-image d-block">
-                                <img src="{{ asset('assets/front/images/single-listing-img1.jpg') }}" class="card__img" alt="">
-                                <span class="badge gradient-btn font-size-16 font-weight-semi-bold">50% de réduction</span>
-                                <div class="card-content">
-                                    <h4 class="card-title pb-3">Commandez 1 burger et obtenez 50 % de rabais sur le deuxième</h4>
-                                    <span class="bg-white text-color py-1 px-2 rounded font-size-15 font-weight-medium">Expire le 14/10/2020</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="sidebar-widget">
-                            <h3 class="widget-title">Rendez-vous</h3>
-                            <div class="stroke-shape mb-4"></div>
-                            <form method="post" class="form-box">
-                                <div class="form-group">
-                                    <span class="la la-calendar-o form-icon"></span>
-                                    <input class="date-dropper-input form-control" type="text"  placeholder="Check in"/>
-                                </div>
-                                <div class="user-chosen-select-container">
-                                    <select class="user-chosen-select">
-                                        <option value="0">Time Slots</option>
-                                        <option value="1">8:00am - 8:30am</option>
-                                        <option value="2">9:00am - 9:30am</option>
-                                    </select>
-                                </div>
-                            </form>
-                            <div class="quantity-wrap d-flex align-items-center justify-content-between py-4">
-                                <span class="font-weight-semi-bold"><i class="la la-user-plus mr-1"></i>Personnes:</span>
-                                <div class="quantity-item d-flex align-items-center justify-content-end">
-                                    <button class="qtyDec"><i class="la la-minus"></i></button>
-                                    <input class="qtyInput" type="text" name="qty-input" value="0">
-                                    <button class="qtyInc"><i class="la la-plus"></i></button>
-                                </div>
-                            </div>
-                            <div class="btn-box">
-                                <a href="booking.html" class="theme-btn gradient-btn w-100">Démandez un rendez-vous<i class="la la-arrow-right ml-2"></i></a>
-                            </div>
                         </div>
                         {% set categories = professional.categoryProfessionals %}
                         {% if categories|length > 0 %}
                             <div class="sidebar-widget">
-                                <h3 class="widget-title">Categories</h3>
+                                <h3 class="widget-title">{{ 'global.categories'|trans }}</h3>
                                 <div class="stroke-shape mb-4"></div>
                                 <div class="category-list">
                                     {% for category in categories|slice(0, 4) %}

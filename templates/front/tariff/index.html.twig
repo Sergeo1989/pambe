@@ -1,6 +1,6 @@
 {% extends 'front/layout.html.twig' %}
 
-{% block title %}{{ 'Plan tarifaire'|e ~ parent() }}{% endblock %}
+{% block title %}{{ 'Plan tarifaire'|e ~' - ' ~ parent() }}{% endblock %}
 
 {% block content %}
     {% embed "front/partials/breadcrumb.html.twig" %}
@@ -32,9 +32,10 @@
                             </div>
                             <ul class="list-items price-list mt-4">
                                 {% for option in tariffOptions %}
+                                    {% set label = tariff.tariffTariffOptions|filter((tto) => tto.tariffOption == option)|first %}
                                     <li>
                                         <i class="la {{ option in tariff.tariffTariffOptions|column('tariffOption') ? 'la-check text-success' : 'la-close text-danger' }} mr-2"></i>
-                                        {{ option }}
+                                       {{ label == false ? option : label }}
                                     </li>
                                 {% endfor %}
                             </ul>

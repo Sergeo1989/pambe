@@ -80,6 +80,8 @@ description: Our custom pambe JS
                                 +'</div>'
                             +'</div>';
                     $('#messages').append(div);
+                
+                    $('#messages').scrollTop($('#messages').get(0).scrollHeight);
                     $('.emojionearea-editor').text('');
                 }
                 btn.html(text);

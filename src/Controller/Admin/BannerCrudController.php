@@ -47,7 +47,7 @@ class BannerCrudController extends AbstractCrudController
                         ->setHelp('Résolution: 1200x300 pixels')
                         ->onlyOnForms(),
             ImageField::new('image', 'Image')
-                        ->setBasePath('/uploads/images/banner/')
+                        ->setBasePath('/uploads/images/banner/')->setCssClass('admin-image-size')
                         ->onlyOnIndex(),
         ];
     }
@@ -55,15 +55,15 @@ class BannerCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-                ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
-                    return $action->setIcon('fa fa-eye')->addCssClass('btn btn-info');
-                })
+                ->remove(Crud::PAGE_INDEX, Action::DETAIL)
                 ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                    return $action->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
+                    return $action->setLabel('Modifier')->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
                 })
                 ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                    return $action->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
+                    return $action->setLabel('Supprimer')->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
                 })
-                ;
+                ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+                    return $action->setLabel('Ajouter une bannière');
+                });
     }
 }

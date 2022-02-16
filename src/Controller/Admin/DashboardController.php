@@ -18,7 +18,6 @@ use App\Entity\Need;
 use App\Entity\Page;
 use App\Entity\Professional;
 use App\Entity\Region;
-use App\Entity\Service;
 use App\Entity\SocialUrl;
 use App\Entity\Tariff;
 use App\Entity\TariffOption;
@@ -48,19 +47,22 @@ class DashboardController extends AbstractDashboardController
     private $professionalRepo;
     private $viewCounterRepo;
     private $messageRepo;
+    private $website_title;
 
     public function __construct(
         NeedRepository $needRepo,
         UserRepository $userRepo, 
         ProfessionalRepository $professionalRepo,
         ViewCounterRepository $viewCounterRepo,
-        MessageRepository $messageRepo)
+        MessageRepository $messageRepo,
+        $website_title)
     {
         $this->needRepo = $needRepo;
         $this->userRepo = $userRepo;
         $this->professionalRepo = $professionalRepo;
         $this->viewCounterRepo = $viewCounterRepo;
         $this->messageRepo = $messageRepo;
+        $this->website_title = $website_title;
     }
 
     /**
@@ -68,19 +70,21 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
+        $today = date('Y-m-d');
+        $last7day = date('Y-m-d', strtotime(date('Y-m-d').'- 6 days'));
+
         return $this->render('admin/dashboard.html.twig', [
-            'nb_of_professionals' => count($this->professionalRepo->getProfessionalsBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d'))),
-            'nb_of_users' => count($this->userRepo->getUsersBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d'))),
-            'nb_of_needs' => count($this->needRepo->getNeedsBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d'))),
-            'nb_of_visitors' => count(array_unique(array_column($this->viewCounterRepo->getVisitorsBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d')), 'ip'))),
-            'nb_of_messages' => count($this->messageRepo->getMessagesBetween2Dates(date('Y-m-d', strtotime(date('Y-m-d').'- 6 days')), date('Y-m-d')))
+            'nb_of_professionals' => count($this->professionalRepo->getProfessionalsBetween2Dates($last7day, $today)),
+            'nb_of_users' => count($this->userRepo->getUsersBetween2Dates($last7day, $today)),
+            'nb_of_needs' => count($this->needRepo->getNeedsBetween2Dates($last7day, $today)),
+            'nb_of_visitors' => count(array_unique(array_column($this->viewCounterRepo->getVisitorsBetween2Dates($last7day, $today), 'ip'))),
+            'nb_of_messages' => count($this->messageRepo->getMessagesBetween2Dates($last7day, $today))
         ]);
     }
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle('Pambe');
+        return Dashboard::new()->setTitle($this->website_title); 
     }
 
     public function configureCrud(): Crud
@@ -91,6 +95,7 @@ class DashboardController extends AbstractDashboardController
                         'main_menu' => 'admin/menu.html.twig',
                         'crud/index' => 'admin/crud/index.html.twig',
                     ])
+                    ->setDateTimeFormat('dd/MM/YYYY')
                     ->showEntityActionsInlined()
                     ->setDefaultSort(['id' => 'DESC'])
                     ->setEntityPermission('ROLE_ADMIN');
@@ -122,7 +127,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Catalogue');
         yield MenuItem::linkToCrud('Catégories', 'bi bi-wallet-fill', CategoryProfessional::class);
         yield MenuItem::linkToCrud('Professionnels', 'bi bi-person-lines-fill', Professional::class);
-        yield MenuItem::linkToCrud('Services', 'bi bi-person-bounding-box', Service::class);
         yield MenuItem::linkToCrud('Tarifs', 'bi bi-pin', Tariff::class);
         yield MenuItem::linkToCrud('Options de tarifs', 'bi bi-pin', TariffOption::class);
         yield MenuItem::section('Zone');
@@ -139,7 +143,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Réseaux sociaux', 'bi bi-pin', SocialUrl::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
         yield MenuItem::linkToCrud('Témoignages', 'bi bi-pin', Testimonial::class);
         yield MenuItem::linkToCrud('Bannières', 'bi bi-pin', Banner::class);
-        yield MenuItem::linkToCrud('Utilisateurs', 'bi bi-pin', User::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'bi bi-person-bounding-box', User::class);
         yield MenuItem::linkToCrud('Administrateurs', 'bi bi-pin', Admin::class);
         yield MenuItem::linkToCrud('Pages', 'bi bi-pin', Page::class);
         yield MenuItem::linkToCrud('Menus', 'bi bi-pin', Menu::class);
