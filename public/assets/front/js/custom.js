@@ -5,9 +5,38 @@ Author Email:   contact@izipresta.com
 description: Our custom pambe JS
 
 ----------------------------------------------*/
- 
+
 (function ($) {
     "use strict";
+
+    /** Chat with admin */
+    $(document).on('click', '.chatbox-open', function(){
+        $(".chatbox-popup, .chatbox-close").show().fadeIn();
+    });
+
+    $(document).on('click', '.chatbox-close', function(){
+        $(".chatbox-popup, .chatbox-close").hide().fadeOut();
+    });
+
+    $(document).on('click', '.chatbox-maximize', function(){
+        $(".chatbox-popup, .chatbox-open, .chatbox-close").hide().fadeOut();
+        $(".chatbox-panel").show().fadeIn();
+        $(".chatbox-panel").css({ display: "flex" });
+    });
+
+    $(document).on('click', '.chatbox-minimize', function(){
+        $(".chatbox-panel").hide().fadeOut();
+        $(".chatbox-popup, .chatbox-open, .chatbox-close").show().fadeIn();
+    });
+
+    $(document).on('click', '.chatbox-panel-close', function(){
+        $(".chatbox-panel").hide().fadeOut();
+        $(".chatbox-open").show().fadeIn();
+    });
+
+    /** Test mercure functionnalities */
+   
+
     /** Load cities into textfield */
     $(window).on('load', function(){
         var url  = $('#professional_ajax_url').val();

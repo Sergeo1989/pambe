@@ -33,6 +33,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Tchoulom\ViewCounterBundle\Counter\ViewCounter as Counter;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 
 class ProfessionalController extends AbstractController
 {
@@ -56,6 +58,7 @@ class ProfessionalController extends AbstractController
     private $professionalRepo;
     private $needRepo;
     private $viewCounterRepo;
+    private $hub;
 
     public function __construct(
         ContextService $context, 
@@ -73,7 +76,8 @@ class ProfessionalController extends AbstractController
         Counter $viewCounter, 
         ProfessionalRepository $professionalRepo,
         NeedRepository $needRepo,
-        ViewCounterRepository $viewCounterRepo)
+        ViewCounterRepository $viewCounterRepo,
+        HubInterface $hub)
     {
         $this->context = $context;
         $this->translator = $translator;
@@ -91,6 +95,7 @@ class ProfessionalController extends AbstractController
         $this->professionalRepo = $professionalRepo;
         $this->needRepo = $needRepo;
         $this->viewCounterRepo = $viewCounterRepo;
+        $this->hub = $hub;
     }
 
     public function index(Request $request): Response
@@ -661,6 +666,14 @@ class ProfessionalController extends AbstractController
             $message->setContent($content);
             $conversation->addMessage($message);
             $this->context->save($conversation);
+
+            $update = new Update(
+                'https://example.com/my-private-topic',
+                json_encode(['status' => 'I understand now'])
+            );
+    
+            $this->hub->publish($update);
+
             $this->response = [
                 'status' => true,
                 'message' => 'Votre message a été correctement envoyé.'

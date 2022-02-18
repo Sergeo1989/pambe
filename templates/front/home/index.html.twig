@@ -22,6 +22,9 @@
                                                 {% endfor %}
                                             </span>
                                             </h2>
+                                            <form method="post" action="{{ path('ping') }}">
+                                                <button type="submit">ping</button>
+                                            </form>
                                             <p class="sec__desc">
                                                 Trouver des professionnels qualifiés pour vous rendre le meilleur service.
                                             </p>
