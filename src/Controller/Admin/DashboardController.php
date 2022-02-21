@@ -149,6 +149,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Menus', 'bi bi-pin', Menu::class);
         yield MenuItem::linkToCrud('Besoins', 'bi bi-pin', Need::class);
         yield MenuItem::linkToCrud('Conversations', 'bi bi-pin', Conversation::class);
+        yield MenuItem::linkToRoute('Messages', 'bi bi-pin', 'admin_exchange');
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'bi bi-x-circle');
     }

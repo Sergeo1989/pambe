@@ -90,7 +90,7 @@
                                 <h2 class="widget-title pb-0">{{ 'global.informations'|trans }}</h2>
                             </div>
                             <div class="block-card-body">
-                                {% for message in app.flashes("message") %}
+                                {% for message in app.flashes("success") %}
                                     <div class="alert alert-success font-size-15 text-color" role="alert">
                                         <span class="font-weight-semi-bold">{{ message }}</span>
                                     </div>

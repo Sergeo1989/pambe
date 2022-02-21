@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Entity\Conversation;
+use App\Entity\Exchange;
 use App\Entity\Message;
 use App\Entity\Professional;
 use App\Entity\ProfessionalImage;
@@ -13,8 +14,10 @@ use App\Entity\Service;
 use App\Entity\User;
 use App\Entity\ViewCounter;
 use App\Form\ProfessionalFormType;
+use App\Repository\AdminRepository;
 use App\Repository\CityRepository;
 use App\Repository\ConversationRepository;
+use App\Repository\ExchangeRepository;
 use App\Repository\MessageRepository;
 use App\Repository\NeedRepository;
 use App\Repository\ProfessionalImageRepository;
@@ -58,6 +61,8 @@ class ProfessionalController extends AbstractController
     private $professionalRepo;
     private $needRepo;
     private $viewCounterRepo;
+    private $exchangeRepo;
+    private $adminRepo;
     private $hub;
 
     public function __construct(
@@ -77,6 +82,8 @@ class ProfessionalController extends AbstractController
         ProfessionalRepository $professionalRepo,
         NeedRepository $needRepo,
         ViewCounterRepository $viewCounterRepo,
+        ExchangeRepository $exchangeRepo,
+        AdminRepository $adminRepo,
         HubInterface $hub)
     {
         $this->context = $context;
@@ -95,6 +102,8 @@ class ProfessionalController extends AbstractController
         $this->professionalRepo = $professionalRepo;
         $this->needRepo = $needRepo;
         $this->viewCounterRepo = $viewCounterRepo;
+        $this->exchangeRepo = $exchangeRepo;
+        $this->adminRepo = $adminRepo;
         $this->hub = $hub;
     }
 
@@ -770,5 +779,78 @@ class ProfessionalController extends AbstractController
             $this->response = [
                 'status' => false
             ];
+    }
+
+    private function displayAjaxGetExchanges()
+    {
+        $exchanges = $this->exchangeRepo->findBy(['user' => $this->getUser()]);
+
+        $this->response = [
+            'value' => $exchanges
+        ];
+        
+    }
+
+    private function displayAjaxGetAdminExchanges()
+    {
+        $user_id = (int)$this->request->get('user_id');
+        $user = $this->userRepo->find($user_id);
+
+        $exchanges = $this->exchangeRepo->findBy(['user' => $user]);
+
+        $this->response = [
+            'value' => $exchanges
+        ];
+        
+    }
+
+    private function displayAjaxCreateExchange()
+    {
+        $user_id = $this->request->get('user_id');
+        $content = $this->request->get('content');
+
+        $user = $this->userRepo->find($user_id);
+
+        if(empty($content))
+            $this->response = [
+                'status' => false
+            ];
+        else{
+            $exchange = new Exchange();
+            $exchange->setUser($user);
+            $exchange->setIp($this->request->getClientIp());
+            $exchange->setContent(strip_tags($content));
+            $this->context->save($exchange);
+            
+            $this->response = [
+                'status' => true
+            ];
+        }
+    }
+
+    private function displayAjaxCreateAdminExchange()
+    {
+        $user_id = (int)$this->request->get('user_id');
+        $admin_id = (int)$this->request->get('admin_id');
+        $content = $this->request->get('content');
+
+        $user = $this->userRepo->find($user_id);
+        $admin = $this->adminRepo->find($admin_id);
+
+        if(empty($content)){
+            $this->response = [
+                'status' => false
+            ];
+        }else{
+            $exchange = new Exchange();
+            $exchange->setUser($user);
+            $exchange->setAdmin($admin);
+            $exchange->setContent(strip_tags($content));
+            $this->context->save($exchange);
+            
+            $this->response = [
+                'status' => true
+            ];
+        }
     }
 }

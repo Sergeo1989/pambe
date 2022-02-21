@@ -49,6 +49,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult()
         ;
     }
+
+    public function getAdminConversation()
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.exchanges', 'e')
+            ->leftJoin('u.admin', 'a')
+            ->where('e IS NOT NULL AND a IS NULL')
+            ->orderBy('e.date_add', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     
     // /**
     //  * @return User[] Returns an array of User objects

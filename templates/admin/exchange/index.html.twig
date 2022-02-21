@@ -1,0 +1,24 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title 'Conversations' %}
+
+{% block main %}
+<ol class="list-group list-group-numbered">
+    {% for user in data %}
+        {% set lastExchange = user.exchanges|last %}
+        {% set nb_of_message = user.exchanges|filter((exchange) => exchange.admin is null and exchange.isRead == false)|length %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold"><a href="{{ ea_url().setRoute('admin_exchange_message', { id: user.id }) }}">{{ user }}</a></div>
+                    {{ lastExchange.content|striptags|u.truncate(100, '...', false) }} 
+                    {% if nb_of_message > 0 %}
+                        <span class="badge bg-primary rounded-pill" style="color:#fff;font-size:10px;line-height:11px;padding: 1.5px 3.5px;">
+                        {{ nb_of_message }}
+                    </span>
+                    {% endif %}
+            </div>
+            <span class="badge rounded-pill">{{ lastExchange.dateAdd|format_datetime('full', 'short', locale='fr') }}</span>
+        </li>              
+    {% endfor %}
+</ol>
+{% endblock %}

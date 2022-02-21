@@ -5,6 +5,7 @@ namespace App\Twig;
 use App\Entity\Need;
 use App\Entity\Professional;
 use App\Entity\Proposal;
+use App\Repository\ExchangeRepository;
 use App\Repository\MenuRepository;
 use App\Repository\MessageRepository;
 use App\Repository\NotificationRepository;
@@ -24,6 +25,7 @@ class AppExtension extends AbstractExtension
     private $blogService;
     private $menuRepo;
     private $messageRepo;
+    private $exchangeRepo;
     private $notificationRepo;
 
     public function __construct(
@@ -33,6 +35,7 @@ class AppExtension extends AbstractExtension
         BlogService $blogService, 
         MenuRepository $menuRepo,
         MessageRepository $messageRepo,
+        ExchangeRepository $exchangeRepo,
         NotificationRepository $notificationRepo)
     {
         $this->context = $context;
@@ -41,6 +44,7 @@ class AppExtension extends AbstractExtension
         $this->blogService = $blogService;
         $this->menuRepo = $menuRepo;
         $this->messageRepo = $messageRepo;
+        $this->exchangeRepo = $exchangeRepo;
         $this->notificationRepo = $notificationRepo;
     }
     
@@ -57,6 +61,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('menus', [$this, 'getMenus']),
             new TwigFunction('needs', [$this, 'getNeeds']),
+            new TwigFunction('exchanges', [$this, 'getExchanges']),
             new TwigFunction('users', [$this, 'users']),
             new TwigFunction('messages', [$this, 'getAllMessage']),
             new TwigFunction('notifications', [$this, 'getAllNotification']),
@@ -72,6 +77,11 @@ class AppExtension extends AbstractExtension
             new TwigFunction('popart', [$this, 'getPopularArticle']),
             new TwigFunction('lastfiveart', [$this, 'getLast5Article'])
         ];
+    }
+
+    public function getExchanges()
+    {
+        return $this->exchangeRepo->findBy(['user' => $this->context->getUser()]);
     }
 
     public function getAllMessage()

@@ -13,6 +13,14 @@ app_home:
 admin:
     path: /admin
     controller: App\Controller\Admin\DashboardController::index
+admin_exchange:
+    path: /admin/exchange
+    controller: App\Controller\Admin\ExchangeController::index
+admin_exchange_message:
+    path: /admin/{id}/exchange
+    controller: App\Controller\Admin\ExchangeController::message
+    requirements:
+        id: '\d+'
 app_admin_login:
     path: /admin/login
     controller: App\Controller\Admin\SecurityController::login

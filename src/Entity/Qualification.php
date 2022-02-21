@@ -223,13 +223,13 @@ class Qualification implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id'            => $this->getId(),
-            'title'         => $this->getTitle(),
-            'place'         => $this->getPlace(),
-            'start_date'    => $this->getStartDate()->format('d-m-Y'),
-            'end_date'      => $this->getEndDate()->format('d-m-Y'),
-            'description'   => $this->getDescription(),
-            'type'          => $this->getType()
+            'id'            => $this->id,
+            'title'         => $this->title,
+            'place'         => $this->place,
+            'start_date'    => date_format($this->start_date, 'd-m-Y'),
+            'end_date'      => date_format($this->end_date, 'd-m-Y'),
+            'description'   => $this->description,
+            'type'          => $this->type
         ];
     }
 }

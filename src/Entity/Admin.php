@@ -65,11 +65,17 @@ class Admin
      */
     private $manage_proposals;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Exchange::class, mappedBy="admin")
+     */
+    private $exchanges;
+
     public function __construct()
     {
         $this->content = new ArrayCollection();
         $this->testimonials = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->exchanges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,6 +241,36 @@ class Admin
     public function setManageProposals(?bool $manage_proposals): self
     {
         $this->manage_proposals = $manage_proposals;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Exchange[]
+     */
+    public function getExchanges(): Collection
+    {
+        return $this->exchanges;
+    }
+
+    public function addExchange(Exchange $exchange): self
+    {
+        if (!$this->exchanges->contains($exchange)) {
+            $this->exchanges[] = $exchange;
+            $exchange->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExchange(Exchange $exchange): self
+    {
+        if ($this->exchanges->removeElement($exchange)) {
+            // set the owning side to null (unless already changed)
+            if ($exchange->getAdmin() === $this) {
+                $exchange->setAdmin(null);
+            }
+        }
 
         return $this;
     }

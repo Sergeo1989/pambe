@@ -2,6 +2,18 @@
 
 (function() {
     'use strict';
+
+    /** response to user message */
+    $(document).on('click', '#send_message_admin', function(event){
+        var btn = $(this);
+        createAdminExchange(btn);
+    });
+
+    $(window).on('load', function(){
+        //setInterval(getExchangesByAdmin, 3000);
+    })
+
+    /** Calendar for stattistic */
     $(window).on('load', function(){
         var url  = $('#professional_ajax_url').val();
         var data = {};
@@ -244,3 +256,58 @@
         });
     });
 })();
+
+function getExchangesByAdmin()
+{
+    var url  = $('#professional_ajax_url').val();
+    var data = {};
+    data['action'] = 'get_admin_exchanges';
+    data['ajax'] = 1;
+    data['rand'] = new Date().getTime();
+    data['user_id'] =  $('#id_user').val();
+    console.log(data)
+    $.get(url, data, function(data){
+        const html = $.map(data.value, function(exchange){
+            return '<div class="message-item '+ (exchange.admin == 0 ? 'me' : 'you') +'">'
+                        +'<p>'+ exchange.content +'</p>'
+                    +'</div>'
+        }).join('');
+
+        $('div.chatbox-popup__main').html(html);
+    }, 'json');
+}
+
+function createAdminExchange(btn)
+{
+    var url  = $('#professional_ajax_url').val();
+    var data = {};
+    data['action'] = 'create_admin_exchange';
+    data['ajax'] = 1;
+    data['rand'] = new Date().getTime();
+    data['user_id'] = $('#id_user').val();
+    data['admin_id'] = $('#id_admin').val();
+    data['content'] = $('#admin_send_message').val();
+    var text = btn.html();
+    btn.html('...');
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data, 
+        dataType: "json",
+        success: function(data) {
+            if (data.status === true) {
+                getExchangesByAdmin();
+                $('#admin_send_message').val('');
+            }
+            btn.html(text);
+        },
+        complete: function() {
+            btn.html(text);
+        },
+        error: function(error){
+            btn.html(text);
+            console.log(error);
+            alert('veuillez ré-essayer plutard !');
+        }
+    });
+}

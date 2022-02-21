@@ -166,6 +166,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $day;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Exchange::class, mappedBy="user")
+     */
+    private $exchanges;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -174,6 +179,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sent = new ArrayCollection();
         $this->recieves = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->exchanges = new ArrayCollection();
     }
 
     public function __toString(){
@@ -669,6 +675,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDay(?string $day): self
     {
         $this->day = $day;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Exchange[]
+     */
+    public function getExchanges(): Collection
+    {
+        return $this->exchanges;
+    }
+
+    public function addExchange(Exchange $exchange): self
+    {
+        if (!$this->exchanges->contains($exchange)) {
+            $this->exchanges[] = $exchange;
+            $exchange->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExchange(Exchange $exchange): self
+    {
+        if ($this->exchanges->removeElement($exchange)) {
+            // set the owning side to null (unless already changed)
+            if ($exchange->getUser() === $this) {
+                $exchange->setUser(null);
+            }
+        }
 
         return $this;
     }
