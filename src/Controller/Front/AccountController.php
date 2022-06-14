@@ -54,7 +54,7 @@ class AccountController extends AbstractController
         
         if($userForm->isSubmitted() && $userForm->isValid()){
             $context->save($user);
-            $this->addFlash('message', $this->translator->trans('global.your_information_has_been_correctly_modified!'));
+            $this->addFlash('success', $this->translator->trans('global.your_information_has_been_correctly_modified!'));
             return $this->redirectToRoute('app_account');
         }
 
@@ -224,7 +224,7 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $context->save($professional);
-
+            
             $this->addFlash('success', $this->translator->trans('global.content_successfully_registered!'));
 
             /** @var SubmitButton $buttonSaveAndContinue */ 

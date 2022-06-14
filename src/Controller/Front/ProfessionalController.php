@@ -166,7 +166,7 @@ class ProfessionalController extends AbstractController
         $name = $request->request->get('name');
         $email = $request->request->get('email');
         $message = $request->request->get('message');
-
+       
         if ($request->request->count() > 0) {
             if(empty($name))
                 $this->errors['name'] = $this->translator->trans('global.enter_a_name.');
@@ -183,7 +183,7 @@ class ProfessionalController extends AbstractController
                 $review->setProfessional($this->professionalService->getProfessional($professional_id));
 
                 $this->context->save($review);
-                return $this->redirectToRoute("app_professional_show", ["slug" => $user->getSlug()]);
+                return $this->redirectToRoute("app_professional_show", ["id" => $user->getId(), "slug" => $user->getSlug()]);
             }
         }
 
@@ -824,7 +824,7 @@ class ProfessionalController extends AbstractController
             );
     
             $this->hub->publish($update);
-            
+             
             $this->response = [
                 'status' => true,
                 'sender' => $ip

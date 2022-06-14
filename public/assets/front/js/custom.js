@@ -30,7 +30,7 @@ description: Our custom pambe JS
             }
         });
     })
-
+  
     /** Chat with admin */
     $(document).on('click', '.chatbox-open', function(){
         $(".chatbox-popup, .chatbox-close").show().fadeIn();
