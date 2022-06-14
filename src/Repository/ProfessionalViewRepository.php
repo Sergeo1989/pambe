@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\ViewCounter;
+use App\Entity\ProfessionalView;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,11 +12,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ViewCounter[]    findAll()
  * @method ViewCounter[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ViewCounterRepository extends ServiceEntityRepository
+class ProfessionalViewRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ViewCounter::class);
+        parent::__construct($registry, ProfessionalView::class);
     }
 
     public function getVisitorsBetween2Dates($date1, $date2)

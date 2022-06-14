@@ -52,53 +52,17 @@
 
             {% include "front/modal/resetpassword.html.twig" %}
 
+            {% include "front/partials/chat_box.html.twig" %}
+
         {% endblock %}
 
         {% block javascripts %}
             {% embed "front/partials/javascripts.html.twig" %}{% endembed %}
         {% endblock %}
+        {#<script type="application/json" id="mercure-url">
+            {{ mercure('http://monsite.com/chat/user')|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+        </script>#}
         <script src="{{ asset('assets/front/js/main.js') }}"></script>
         <script src="{{ asset('assets/front/js/custom.js') }}"></script>
-        <script>
-            const eventSource = new EventSource("{{ mercure('https://example.com/my-private-topic')|escape('js') }}");
-            eventSource.onmessage = event => {
-                console.log(JSON.parse(event.data));
-            }
-            window.addEventListener('beforeunload', function(){
-                if(eventSource != null){
-                    eventSource.close();
-                }
-            });
-        </script>
-        <!-- Messenger Plugin de discussion Code -->
-    <div id="fb-root"></div>
-
-    <!-- Your Plugin de discussion code -->
-    <div id="fb-customer-chat" class="fb-customerchat">
-    </div>
-
-    <script>
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "100865155624247");
-      chatbox.setAttribute("attribution", "biz_inbox");
-    </script>
-
-    <!-- Your SDK code -->
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v13.0'
-        });
-      };
-
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/fr_FR/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-    </script>
     </body>
 </html>

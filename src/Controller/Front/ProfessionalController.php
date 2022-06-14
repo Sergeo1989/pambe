@@ -4,29 +4,31 @@ namespace App\Controller\Front;
 
 use App\Entity\Conversation;
 use App\Entity\Exchange;
+use App\Entity\Invite;
 use App\Entity\Message;
 use App\Entity\Professional;
 use App\Entity\ProfessionalImage;
 use App\Entity\ProfessionalLike;
+use App\Entity\ProfessionalView;
 use App\Entity\Qualification;
 use App\Entity\Review;
 use App\Entity\Service;
 use App\Entity\User;
-use App\Entity\ViewCounter;
 use App\Form\ProfessionalFormType;
 use App\Repository\AdminRepository;
 use App\Repository\CityRepository;
 use App\Repository\ConversationRepository;
 use App\Repository\ExchangeRepository;
+use App\Repository\InviteRepository;
 use App\Repository\MessageRepository;
 use App\Repository\NeedRepository;
 use App\Repository\ProfessionalImageRepository;
 use App\Repository\ProfessionalLikeRepository;
 use App\Repository\ProfessionalRepository;
+use App\Repository\ProfessionalViewRepository;
 use App\Repository\QualificationRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
-use App\Repository\ViewCounterRepository;
 use App\Service\ContextService;
 use App\Service\ProfessionalService;
 use Knp\Component\Pager\PaginatorInterface;
@@ -35,7 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Tchoulom\ViewCounterBundle\Counter\ViewCounter as Counter;
+use Tchoulom\ViewCounterBundle\Counter\ViewCounter;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 
@@ -56,13 +58,14 @@ class ProfessionalController extends AbstractController
     private $cityRepo;
     private $request;
     private $response;
-    private $status = 200;
+    private $status = Response::HTTP_OK;
     protected $viewCounter;
     private $professionalRepo;
     private $needRepo;
     private $viewCounterRepo;
     private $exchangeRepo;
     private $adminRepo;
+    private $inviteRepo;
     private $hub;
 
     public function __construct(
@@ -78,12 +81,13 @@ class ProfessionalController extends AbstractController
         ConversationRepository $conversationRepo,
         MessageRepository $messageRepo,
         CityRepository $cityRepo,
-        Counter $viewCounter, 
+        ViewCounter $viewCounter, 
         ProfessionalRepository $professionalRepo,
         NeedRepository $needRepo,
-        ViewCounterRepository $viewCounterRepo,
+        ProfessionalViewRepository $viewCounterRepo,
         ExchangeRepository $exchangeRepo,
         AdminRepository $adminRepo,
+        InviteRepository $inviteRepo,
         HubInterface $hub)
     {
         $this->context = $context;
@@ -104,6 +108,7 @@ class ProfessionalController extends AbstractController
         $this->viewCounterRepo = $viewCounterRepo;
         $this->exchangeRepo = $exchangeRepo;
         $this->adminRepo = $adminRepo;
+        $this->inviteRepo = $inviteRepo;
         $this->hub = $hub;
     }
 
@@ -183,18 +188,18 @@ class ProfessionalController extends AbstractController
         }
 
         $professional = $user->getProfessional();
-        /** @var ViewCounter $viewCounter */ 
-        $viewCounter = $this->viewCounter->getViewCounter($professional);
+        /** @var ProfessionalView $professionalView */ 
+        $professionalView = $this->viewCounter->getViewCounter($professional);
 
-        if ($this->viewCounter->isNewView($viewCounter)) {
+        if ($this->viewCounter->isNewView($professionalView)) {
             $views = $this->viewCounter->getViews($professional);
-            $viewCounter->setIp($request->getClientIp());
-            $viewCounter->setProfessional($professional);
-            $viewCounter->setViewDate(new \DateTime('now'));
+            $professionalView->setIp($request->getClientIp());
+            $professionalView->setProfessional($professional);
+            $professionalView->setViewDate(new \DateTime('now'));
         
             $professional->setViews($views);
         
-            $this->context->save($viewCounter); 
+            $this->context->save($professionalView); 
         }
         
         return $this->render('front/professional/show.html.twig', [
@@ -676,13 +681,6 @@ class ProfessionalController extends AbstractController
             $conversation->addMessage($message);
             $this->context->save($conversation);
 
-            $update = new Update(
-                'https://example.com/my-private-topic',
-                json_encode(['status' => 'I understand now'])
-            );
-    
-            $this->hub->publish($update);
-
             $this->response = [
                 'status' => true,
                 'message' => 'Votre message a été correctement envoyé.'
@@ -783,7 +781,11 @@ class ProfessionalController extends AbstractController
 
     private function displayAjaxGetExchanges()
     {
-        $exchanges = $this->exchangeRepo->findBy(['user' => $this->getUser()]);
+        $user_ip = $this->request->get('user_ip');
+
+        $invite = $this->inviteRepo->findOneBy(['ip' => $user_ip]);
+
+        $exchanges = $this->exchangeRepo->findBy(['invite' => $invite]);
 
         $this->response = [
             'value' => $exchanges
@@ -793,48 +795,50 @@ class ProfessionalController extends AbstractController
 
     private function displayAjaxGetAdminExchanges()
     {
-        $user_id = (int)$this->request->get('user_id');
-        $user = $this->userRepo->find($user_id);
-
-        $exchanges = $this->exchangeRepo->findBy(['user' => $user]);
-
-        $this->response = [
-            'value' => $exchanges
-        ];
-        
+        $this->displayAjaxGetExchanges();
     }
 
     private function displayAjaxCreateExchange()
     {
-        $user_id = $this->request->get('user_id');
         $content = $this->request->get('content');
-
-        $user = $this->userRepo->find($user_id);
 
         if(empty($content))
             $this->response = [
                 'status' => false
             ];
         else{
+            $ip = $this->request->getClientIp();
             $exchange = new Exchange();
-            $exchange->setUser($user);
-            $exchange->setIp($this->request->getClientIp());
+            $invite = $this->inviteRepo->findOneBy(['ip' => $ip]);
+                if(is_null($invite)){
+                    $invite = new Invite();
+                    $invite->setIp($ip);
+                }
+            $exchange->setInvite($invite);
             $exchange->setContent(strip_tags($content));
-            $this->context->save($exchange);
+            $exchange = $this->context->save($exchange);
+
+            $update = new Update(
+                'http://monsite.com/chat/admin',
+                json_encode(['status' => true, 'sender' => $ip])
+            );
+    
+            $this->hub->publish($update);
             
             $this->response = [
-                'status' => true
+                'status' => true,
+                'sender' => $ip
             ];
         }
     }
 
     private function displayAjaxCreateAdminExchange()
     {
-        $user_id = (int)$this->request->get('user_id');
+        $user_ip = $this->request->get('user_ip');
         $admin_id = (int)$this->request->get('admin_id');
         $content = $this->request->get('content');
 
-        $user = $this->userRepo->find($user_id);
+        $invite = $this->inviteRepo->findOneBy(['ip' => $user_ip]);
         $admin = $this->adminRepo->find($admin_id);
 
         if(empty($content)){
@@ -843,13 +847,21 @@ class ProfessionalController extends AbstractController
             ];
         }else{
             $exchange = new Exchange();
-            $exchange->setUser($user);
+            $exchange->setInvite($invite);
             $exchange->setAdmin($admin);
             $exchange->setContent(strip_tags($content));
             $this->context->save($exchange);
+
+            $update = new Update(
+                'http://monsite.com/chat/user',
+                json_encode(['status' => true, 'sender' => $user_ip])
+            );
+    
+            $this->hub->publish($update);
             
             $this->response = [
-                'status' => true
+                'status' => true, 
+                'sender' => $user_ip
             ];
         }
     }

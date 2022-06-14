@@ -450,6 +450,7 @@ button.chatbox-open {
     border-radius: 50%;
     cursor: pointer;
     margin: 16px;
+    z-index: 999;
 }
 
 button.chatbox-close {
@@ -468,6 +469,7 @@ button.chatbox-close {
     cursor: pointer;
     display: none;
     margin: 16px calc(2 * 16px + 52px) 16px 16px;
+    z-index: 999;
 }
 
 textarea {
@@ -592,4 +594,9 @@ textarea::placeholder {
     justify-content: space-around;
     flex: 0 0 auto;
 }
-    
+.chatbox-popup__header h1 {
+    margin: 0;
+    font-family: "Lato", sans-serif;
+    font-size: 16px;
+    line-height: 1;
+}

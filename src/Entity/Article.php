@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     message="Ce titre d'article existe déjà."
  * )
  */
-class Article
+class Article implements ViewCountable
 {
     /**
      * @ORM\Id
@@ -86,7 +87,7 @@ class Article
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $view;
+    protected $views = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -98,12 +99,18 @@ class Article
      */
     private $keywords;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticleView::class, mappedBy="article")
+     */
+    private $viewCounters;
+
     public function __construct()
     {
         $this->categoryArticles = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->articleImages = new ArrayCollection();
         $this->keywords = new ArrayCollection();
+        $this->viewCounters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,27 +271,6 @@ class Article
         return $this;
     }
 
-     /**
-     * @ORM\PrePersist
-     */
-    public function onPrePersist()
-    {
-        $this->status = true;
-        $this->position = 0;
-        $this->view = 0;
-        $this->share = 0;
-        $this->date_add = new \DateTime("now");
-        $this->date_upd = new \DateTime("now");
-    }
- 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function onPreUpdate()
-    {
-        $this->date_upd = new \DateTime("now");
-    }
-
     /**
      * @return Collection|ArticleImage[]
      */
@@ -315,14 +301,14 @@ class Article
         return $this;
     }
 
-    public function getView(): ?int
+    public function getViews()
     {
-        return $this->view;
+        return $this->views;
     }
 
-    public function setView(?int $view): self
+    public function setViews($views)
     {
-        $this->view = $view;
+        $this->views = $views;
 
         return $this;
     }
@@ -364,5 +350,55 @@ class Article
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|ArticleView[]
+     */
+    public function getViewCounters(): Collection
+    {
+        return $this->viewCounters;
+    }
+
+    public function addViewCounter(ArticleView $viewCounter): self
+    {
+        if (!$this->viewCounters->contains($viewCounter)) {
+            $this->viewCounters[] = $viewCounter;
+            $viewCounter->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeViewCounter(ArticleView $viewCounter): self
+    {
+        if ($this->viewCounters->removeElement($viewCounter)) {
+            // set the owning side to null (unless already changed)
+            if ($viewCounter->getArticle() === $this) {
+                $viewCounter->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->status = true;
+        $this->position = 0;
+        $this->share = 0;
+        $this->date_add = new \DateTime("now");
+        $this->date_upd = new \DateTime("now");
+    }
+ 
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->date_upd = new \DateTime("now");
     }
 }

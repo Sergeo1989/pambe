@@ -5,7 +5,7 @@
 {% block main %}
     <section class="chatbox-popup">
         <div class="chatbox-popup__main message-body scrollable-content scrollbar-hidden" style="height: 700px;">
-            {% for exchange in user.exchanges %}
+            {% for exchange in invite.exchanges %}
                 <div class="message-item {{ exchange.admin is null ? 'me' : 'you' }}">
                     <p>{{ exchange.content }}</p>
                 </div>
@@ -15,7 +15,7 @@
             <aside style="flex:10">
                 <textarea id="admin_send_message" type="text" placeholder="Ecrivez-votre message ici..." autofocus></textarea>
                 <input id="professional_ajax_url" type="hidden" value="{{ path("app_professional_ajax") }}">
-                <input id="id_user" type="hidden" value="{{ user.id }}">
+                <input id="ip_user" type="hidden" value="{{ invite.ip }}">
                 <input id="id_admin" type="hidden" value="{{ app.user.admin.id }}">
             </aside>
             <aside id="send_message_admin" style="flex:1;color:#888;text-align:center;cursor:pointer">

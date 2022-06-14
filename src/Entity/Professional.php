@@ -169,7 +169,7 @@ class Professional implements ViewCountable
     private $profile;
 
     /**
-      * @ORM\OneToMany(targetEntity=ViewCounter::class, mappedBy="professional")
+      * @ORM\OneToMany(targetEntity=ProfessionalView::class, mappedBy="professional")
       */
     protected $viewCounters;
 
@@ -712,10 +712,10 @@ class Professional implements ViewCountable
     }
     
     /**
-      * @param ViewCounter $viewCounter
+      * @param ProfessionalView $viewCounter
       * @return $this
       */
-    public function addViewCounter(ViewCounter $viewCounter)
+    public function addViewCounter(ProfessionalView $viewCounter)
     {
         $this->viewCounters[] = $viewCounter;
     
@@ -723,9 +723,9 @@ class Professional implements ViewCountable
     }
     
     /**
-      * @param ViewCounter $viewCounter
+      * @param ProfessionalView $viewCounter
       */
-    public function removeViewCounter(ViewCounter $viewCounter)
+    public function removeViewCounter(ProfessionalView $viewCounter)
     {
         $this->viewCounters->removeElement($viewCounter);
     }

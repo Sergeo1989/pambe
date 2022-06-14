@@ -1,0 +1,44 @@
+<button class="chatbox-open">
+    <i class="la la-comment la-2x" aria-hidden="true"></i>
+</button>
+<button class="chatbox-close">
+    <i class="la la-close la-2x" aria-hidden="true"></i>
+</button>
+<section class="chatbox-popup">
+    <header class="chatbox-popup__header">
+        <aside style="flex:3">
+            <i class="la la-user-circle la-4x chatbox-popup__avatar" aria-hidden="true"></i>
+        </aside>
+        <aside style="flex:8">
+            <h1>Admin</h1> Agent (Online)
+        </aside>
+    </header>
+    <main class="chatbox-popup__main message-body scrollable-content scrollbar-hidden" style="height: 400px;">
+    {% if exchanges()|length > 0 %}
+        {% for exchange in exchanges() %}
+            <div class="message-item{{ exchange.admin is not null ? '' : ' me' }}">
+                <div class="generic-list-item d-flex align-items-center border-bottom-0 bg-transparent" style="padding: 5px;">
+                    <div class="message-bubble ml-2 position-relative p-2 rounded">
+                        <p class="text-color font-size-14 font-weight-medium">{{ exchange.content }}</p>
+                    </div>                  
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        Bonjour et merci d'avoir pris contact avec nous ! En quoi pouvons-nous vous aider aujourd'hui ?
+    {% endif %}
+    </main>
+    <footer class="chatbox-popup__footer">
+        <aside style="flex:1;color:#888;text-align:center;">
+            <i class="lab la-discourse" aria-hidden="true"></i>
+        </aside>
+        <aside style="flex:10">
+            <textarea id="admin_message_send" type="text" placeholder="Ecrivez-votre message ici..." autofocus></textarea>
+            <input id="professional_ajax_url" type="hidden" value="{{ path("app_professional_ajax") }}">
+            <input id="user_id" type="hidden" value="{{ app.user ? app.user.id : 0 }}">
+        </aside>
+        <aside id="send_admin_message" style="flex:1;color:#888;text-align:center;cursor:pointer">
+            <i class="la la-paper-plane" aria-hidden="true"></i>
+        </aside>
+    </footer>
+</section>

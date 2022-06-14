@@ -26,8 +26,8 @@ use App\Entity\User;
 use App\Repository\MessageRepository;
 use App\Repository\NeedRepository;
 use App\Repository\ProfessionalRepository;
+use App\Repository\ProfessionalViewRepository;
 use App\Repository\UserRepository;
-use App\Repository\ViewCounterRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -53,7 +53,7 @@ class DashboardController extends AbstractDashboardController
         NeedRepository $needRepo,
         UserRepository $userRepo, 
         ProfessionalRepository $professionalRepo,
-        ViewCounterRepository $viewCounterRepo,
+        ProfessionalViewRepository $viewCounterRepo,
         MessageRepository $messageRepo,
         $website_title)
     {

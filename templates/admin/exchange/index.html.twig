@@ -4,12 +4,12 @@
 
 {% block main %}
 <ol class="list-group list-group-numbered">
-    {% for user in data %}
-        {% set lastExchange = user.exchanges|last %}
-        {% set nb_of_message = user.exchanges|filter((exchange) => exchange.admin is null and exchange.isRead == false)|length %}
+    {% for invite in invites %}
+        {% set lastExchange = invite.exchanges|last %}
+        {% set nb_of_message = invite.exchanges|filter((exchange) => exchange.admin is null and exchange.isRead == false)|length %}
         <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
-                <div class="fw-bold"><a href="{{ ea_url().setRoute('admin_exchange_message', { id: user.id }) }}">{{ user }}</a></div>
+                <div class="fw-bold"><a href="{{ ea_url().setRoute('admin_exchange_message', { id: invite.id }) }}">Invité #{{ invite.id|strpad(7, '0') }}</a></div>
                     {{ lastExchange.content|striptags|u.truncate(100, '...', false) }} 
                     {% if nb_of_message > 0 %}
                         <span class="badge bg-primary rounded-pill" style="color:#fff;font-size:10px;line-height:11px;padding: 1.5px 3.5px;">

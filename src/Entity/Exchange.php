@@ -44,9 +44,14 @@ class Exchange implements \JsonSerializable
     private $is_read;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $ip;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Invite::class, inversedBy="exchanges", cascade={"persist", "remove"})
+     */
+    private $invite;
 
     public function getId(): ?int
     {
@@ -140,6 +145,18 @@ class Exchange implements \JsonSerializable
     public function setIp(string $ip): self
     {
         $this->ip = $ip;
+
+        return $this;
+    }
+
+    public function getInvite(): ?Invite
+    {
+        return $this->invite;
+    }
+
+    public function setInvite(?Invite $invite): self
+    {
+        $this->invite = $invite;
 
         return $this;
     }

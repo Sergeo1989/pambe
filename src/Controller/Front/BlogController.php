@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Entity\Article;
+use App\Entity\ArticleView;
 use App\Entity\CategoryArticle;
 use App\Entity\Comment;
 use App\Form\CommentFormType;
@@ -13,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Tchoulom\ViewCounterBundle\Counter\ViewCounter;
 
 class BlogController extends AbstractController
 {
@@ -20,9 +22,11 @@ class BlogController extends AbstractController
     private $paginator;
     private $blogService;
     private $translator;
+    private $viewCounter;
 
-    public function __construct(ContextService $context, PaginatorInterface $paginator, BlogService $blogService, TranslatorInterface $translator)
+    public function __construct(ViewCounter $viewCounter, ContextService $context, PaginatorInterface $paginator, BlogService $blogService, TranslatorInterface $translator)
     {
+        $this->viewCounter = $viewCounter;
         $this->context = $context;
         $this->paginator = $paginator;
         $this->blogService = $blogService;
@@ -58,6 +62,20 @@ class BlogController extends AbstractController
             $this->addFlash('success', $message);
             
             return $this->redirectToRoute('app_blog_article', ["slug" => $article->getSlug()]);
+        }
+
+        /** @var ArticleView $articleView */ 
+        $articleView = $this->viewCounter->getViewCounter($article);
+
+        if ($this->viewCounter->isNewView($articleView)) {
+            $views = $this->viewCounter->getViews($article);
+            $articleView->setIp($request->getClientIp());
+            $articleView->setArticle($article);
+            $articleView->setViewDate(new \DateTime('now'));
+        
+            $article->setViews($views);
+        
+            $this->context->save($articleView); 
         }
 
         $comments = $this->blogService->getAllComments($article);

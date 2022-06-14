@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\ViewCounterRepository;
+use App\Repository\ProfessionalViewRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Tchoulom\ViewCounterBundle\Entity\ViewCounter as BaseViewCounter;
+use Tchoulom\ViewCounterBundle\Entity\ViewCounter;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 
 /**
- * @ORM\Entity(repositoryClass=ViewCounterRepository::class)
+ * @ORM\Entity(repositoryClass=ProfessionalViewRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class ViewCounter extends BaseViewCounter
+class ProfessionalView extends ViewCounter
 {
     /**
      * @ORM\ManyToOne(targetEntity="Professional", cascade={"persist"}, inversedBy="viewCounters")

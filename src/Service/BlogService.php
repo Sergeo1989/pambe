@@ -81,7 +81,7 @@ class BlogService
     {
         $articles = $this->articleRepo->findBy(['status' => true], ['date_add' => 'DESC']);
 
-        return $this->context->sort($articles, 'view');
+        return $this->context->sort($articles, 'views');
     }
 
     public function getAllComments(Article $article)

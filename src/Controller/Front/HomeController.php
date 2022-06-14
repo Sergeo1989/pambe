@@ -10,9 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
-use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
@@ -57,20 +54,5 @@ class HomeController extends AbstractController
         return $this->render('front/partials/banner.html.twig', [
             'banners' => $bannerRepo->findAll()
         ]);
-    }
-
-    /**
-     * @Route("/ping", name="ping", methods={"POST"})
-     */
-    public function ping(HubInterface $hub): Response
-    {
-        $update = new Update(
-            'https://example.com/my-private-topic',
-            json_encode(['status' => 'success'])
-        );
-
-        $hub->publish($update);
-
-        return $this->redirectToRoute('app_home');
     }
 }

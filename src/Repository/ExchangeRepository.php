@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Exchange;
+use App\Entity\Invite;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,38 @@ class ExchangeRepository extends ServiceEntityRepository
         parent::__construct($registry, Exchange::class);
     }
 
+    /**
+     * Retourne les messages non lus de l'invité par l'admin
+     *
+     * @param Invite $invite
+     * @return Exchange[]
+     */
+    public function getExchangesByInvite($invite)
+    {
+        return $this->createQueryBuilder('e')
+            ->leftJoin('e.admin', 'a')
+            ->where('a IS NULL AND e.is_read = 0 AND e.invite = :invite')
+            ->setParameter('invite', $invite)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Retourne les messages de l'invité
+     *
+     * @param Invite $invite
+     * @return Exchange[]
+     */
+    public function getExchanges($invite)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.invite = :invite')
+            ->setParameter('invite', $invite)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     // /**
     //  * @return Exchange[] Returns an array of Exchange objects
     //  */

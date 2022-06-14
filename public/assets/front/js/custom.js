@@ -16,7 +16,19 @@ description: Our custom pambe JS
     });
 
     $(window).on('load', function(){
-        setInterval(getExchangesByUser, 3000);
+        const url = new URL('http://localhost:3000/.well-known/mercure');
+        url.searchParams.append('topic', 'http://monsite.com/chat/user');
+
+        const eventSource = new EventSource(url);
+
+        eventSource.onmessage = event => {
+            getExchangesByUser(JSON.parse(event.data).sender);
+        }
+        window.addEventListener('beforeunload', function(){
+            if(eventSource != null){ 
+                eventSource.close();
+            }
+        });
     })
 
     /** Chat with admin */
@@ -1021,29 +1033,27 @@ function popupCenter(url, title, width, height)
     return true;
 }
 
-function getExchangesByUser()
+function getExchangesByUser(sender)
 {
     var url  = $('#professional_ajax_url').val();
-    var user_id = $('#user_id').val();
     var data = {};
     data['action'] = 'get_exchanges';
     data['ajax'] = 1;
     data['rand'] = new Date().getTime();
-    if(user_id != 0){
-        $.get(url, data, function(data){
-            const html = $.map(data.value, function(exchange){
-                return '<div class="message-item '+ (exchange.admin == 0 ? 'me': '') +'">'
-                            +'<div class="generic-list-item d-flex align-items-center border-bottom-0 bg-transparent" style="padding: 5px;">'
-                                +'<div class="message-bubble ml-2 position-relative p-2 rounded">'
-                                    +'<p class="text-color font-size-14 font-weight-medium">'+ exchange.content +'</p>'
-                                +'</div>'                  
-                            +'</div>'
+    data['user_ip'] = sender;
+    $.get(url, data, function(data){
+        const html = $.map(data.value, function(exchange){
+            return '<div class="message-item '+ (exchange.admin == 0 ? 'me': '') +'">'
+                        +'<div class="generic-list-item d-flex align-items-center border-bottom-0 bg-transparent" style="padding: 5px;">'
+                            +'<div class="message-bubble ml-2 position-relative p-2 rounded">'
+                                +'<p class="text-color font-size-14 font-weight-medium">'+ exchange.content +'</p>'
+                            +'</div>'                  
                         +'</div>'
-            }).join('');
-            $('main.chatbox-popup__main').html(html);
-            $('main.chatbox-popup__main').scrollTop($('main.chatbox-popup__main').get(0).scrollHeight);
-        }, 'json');
-    }
+                    +'</div>'
+        }).join('');
+        $('main.chatbox-popup__main').html(html);
+        $('main.chatbox-popup__main').scrollTop($('main.chatbox-popup__main').get(0).scrollHeight);
+    }, 'json');
 }
 
 function createExchange(btn)
@@ -1053,34 +1063,23 @@ function createExchange(btn)
     data['action'] = 'create_exchange';
     data['ajax'] = 1;
     data['rand'] = new Date().getTime();
-    data['user_id'] = $('#user_id').val();
     data['content'] = $('#admin_message_send').val();
     var text = btn.html();
     btn.html('...');
-    if(data['user_id'] == 0){
-        alert("Veuillez vous connectez avant s'il vous plaît");
-        btn.html(text);
-    }
-    else{$.ajax({
-            type: 'POST',
-            url: url,
-            data: data, 
-            dataType: "json",
-            success: function(data) {
-                if (data.status === true) {
-                    getExchangesByUser();
-                    $('#admin_message_send').val('');
-                }
-                btn.html(text);
-            },
-            complete: function() {
-                btn.html(text);
-            },
-            error: function(error){
-                btn.html(text);
-                console.log(error);
-                alert('veuillez ré-essayer plutard !');
+  
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data, 
+        dataType: "json",
+        success: function(data) {
+            if (data.status === true) {
+                getExchangesByUser(data.sender);
+                $('#admin_message_send').val('');
             }
-        });
-    }
+            btn.html(text);
+        },
+        complete: function() { btn.html(text); },
+        error: function(error) { btn.html(text); console.log(error); alert('veuillez ré-essayer plutard !');}
+    });
 }

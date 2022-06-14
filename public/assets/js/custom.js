@@ -10,7 +10,19 @@
     });
 
     $(window).on('load', function(){
-        //setInterval(getExchangesByAdmin, 3000);
+        const url = new URL('http://localhost:3000/.well-known/mercure');
+        url.searchParams.append('topic', 'http://monsite.com/chat/admin');
+
+        const eventSource = new EventSource(url);
+
+        eventSource.onmessage = event => {
+            getExchangesByAdmin(JSON.parse(event.data).sender);
+        }
+        window.addEventListener('beforeunload', function(){
+            if(eventSource != null){ 
+                eventSource.close();
+            }
+        });
     })
 
     /** Calendar for stattistic */
@@ -256,15 +268,15 @@
         });
     });
 })();
-
-function getExchangesByAdmin()
+ 
+function getExchangesByAdmin(sender)
 {
     var url  = $('#professional_ajax_url').val();
     var data = {};
     data['action'] = 'get_admin_exchanges';
     data['ajax'] = 1;
     data['rand'] = new Date().getTime();
-    data['user_id'] =  $('#id_user').val();
+    data['user_ip'] = sender;
     console.log(data)
     $.get(url, data, function(data){
         const html = $.map(data.value, function(exchange){
@@ -284,7 +296,7 @@ function createAdminExchange(btn)
     data['action'] = 'create_admin_exchange';
     data['ajax'] = 1;
     data['rand'] = new Date().getTime();
-    data['user_id'] = $('#id_user').val();
+    data['user_ip'] = $('#ip_user').val();
     data['admin_id'] = $('#id_admin').val();
     data['content'] = $('#admin_send_message').val();
     var text = btn.html();
@@ -296,7 +308,7 @@ function createAdminExchange(btn)
         dataType: "json",
         success: function(data) {
             if (data.status === true) {
-                getExchangesByAdmin();
+                getExchangesByAdmin(data.sender);
                 $('#admin_send_message').val('');
             }
             btn.html(text);

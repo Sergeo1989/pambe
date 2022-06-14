@@ -37,6 +37,7 @@ services:
             $emailSender: '%app.notifications.email_sender%'
             $profile: '%app_user_status%'
             $website_title: '%app_website_title%'
+            $secret: '%env(MERCURE_SECRET_KEY)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

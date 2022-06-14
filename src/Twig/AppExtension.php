@@ -2,10 +2,9 @@
 
 namespace App\Twig;
 
-use App\Entity\Need;
 use App\Entity\Professional;
-use App\Entity\Proposal;
 use App\Repository\ExchangeRepository;
+use App\Repository\InviteRepository;
 use App\Repository\MenuRepository;
 use App\Repository\MessageRepository;
 use App\Repository\NotificationRepository;
@@ -13,6 +12,7 @@ use App\Repository\UserRepository;
 use App\Service\BlogService;
 use App\Service\ContextService;
 use App\Service\ProfessionalService;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -27,9 +27,14 @@ class AppExtension extends AbstractExtension
     private $messageRepo;
     private $exchangeRepo;
     private $notificationRepo;
+    private $inviteRepo;
+    private $requestStack;
+
 
     public function __construct(
+        RequestStack $requestStack,
         ContextService $context,
+        InviteRepository $inviteRepo, 
         UserRepository $userRepo, 
         ProfessionalService $professionalService, 
         BlogService $blogService, 
@@ -38,7 +43,9 @@ class AppExtension extends AbstractExtension
         ExchangeRepository $exchangeRepo,
         NotificationRepository $notificationRepo)
     {
+        $this->requestStack = $requestStack;
         $this->context = $context;
+        $this->inviteRepo = $inviteRepo;
         $this->userRepo = $userRepo;
         $this->professionalService = $professionalService;
         $this->blogService = $blogService;
@@ -81,7 +88,9 @@ class AppExtension extends AbstractExtension
 
     public function getExchanges()
     {
-        return $this->exchangeRepo->findBy(['user' => $this->context->getUser()]);
+        $invite = $this->inviteRepo->findOneBy(['ip' => $this->requestStack->getCurrentRequest()->getClientIp()]);
+
+        return $this->exchangeRepo->getExchanges($invite);
     }
 
     public function getAllMessage()
