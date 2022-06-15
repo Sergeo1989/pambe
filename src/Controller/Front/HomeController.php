@@ -43,10 +43,8 @@ class HomeController extends AbstractController
     public function socialUrl(SocialUrlRepository $socialUrlRepo): Response
     {
         $social_url = $socialUrlRepo->find(1);
-        if(isset($social_url))        
-            return $this->render('front/partials/social_url.html.twig', compact('social_url'));
-        else
-            throw new BadRequestException('Vous devez charger la fixture "SocialFixture au préalable" !');
+        
+        return $this->render('front/partials/social_url.html.twig', compact('social_url'));
     }
 
     public function banner(BannerRepository $bannerRepo): Response
