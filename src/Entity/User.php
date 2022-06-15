@@ -87,9 +87,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToOne(targetEntity=Admin::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $admin;
-    
+
     /**
      * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="user", cascade={"persist", "remove"})
      */
