@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity("email")
- * @ORM\Table(name="user", indexes={@ORM\Index(columns={"firstname", "lastname"}, flags={"fulltext"})})
+ * @ORM\Table(name="`user`", indexes={@ORM\Index(columns={"firstname", "lastname"}, flags={"fulltext"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
