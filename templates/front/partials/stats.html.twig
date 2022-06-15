@@ -6,7 +6,7 @@
                                         <h2 class="sec__title">Since 2004 & Still Counting</h2>
                                         <p class="sec__desc">
                                             Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, <br>
-                                            a feugiat eros. Nunc ut lacinia tortors.
+                                            a feugiat eros. Nunc ut lacinia .
                                         </p>
                                     </div>
                                 </div>
@@ -95,12 +95,12 @@
                                         </div>
                                         <div class="counter-content pl-3">
                                             <h3 class="counter__number text-color-4 mb-2">
-                                                {% set users = users()|length %}
-                                                <span class="counter">{{ app.request.locale == 'fr' ? users|number_format(0, ',', '.') : users|number_format(0, '.', ',') }}</span>
+                                                {# set users = users()|length #}
+                                                <span class="counter">{# app.request.locale == 'fr' ? users|number_format(0, ',', '.') : users|number_format(0, '.', ',') #}200</span>
                                                 <span class="count-symbol">+</span>
                                             </h3>
                                             <p class="counter__title">{{ 'global.happy_clients'|trans }}</p>
-                                        </div>
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-lg-3 responsive-column">
