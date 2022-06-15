@@ -86,14 +86,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $address;
 
     /**
-     * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $professional;
-
-    /**
      * @ORM\OneToOne(targetEntity=Admin::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $admin;
+    
+    /**
+     * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $professional;
 
     /**
      * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="user")
