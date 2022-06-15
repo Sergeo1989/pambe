@@ -36,6 +36,7 @@ class RegistrationController extends AbstractController
             $user->setPassword($hashPassword->hashPassword($user, $password));
 
             $user->setRoles(array('ROLE_USER'));
+            $user->setAdmin(null);
 
             $token = md5(uniqid());
             $user->setActivationToken($token);
