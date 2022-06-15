@@ -93,11 +93,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $professional;
 
     /**
      * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="user")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $likes;
 
@@ -113,21 +115,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Need::class, mappedBy="user")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $needs;
 
     /**
      * @ORM\OneToOne(targetEntity=ProfessionalImage::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $profile;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $country;
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $region;
 
@@ -143,16 +149,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $sent;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recipient")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $recieves;
 
     /**
      * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $notifications;
 
@@ -168,6 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Exchange::class, mappedBy="user")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $exchanges;
 
