@@ -52,16 +52,16 @@
                     <label class="label-text">{{ 'global.password'|trans }}</label>
                     <div class="form-group error">
                         <span class="la la-lock form-icon"></span>
-                        {{ form_widget(registration.plainPassword.first, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.password'|trans }}) }}
-                        {{ form_errors(registration.plainPassword.first) }}
+                        {{ form_widget(registration.password.first, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder': 'global.password'|trans }}) }}
+                        {{ form_errors(registration.password.first) }}
                     </div>
                 </div>
                 <div class="input-box">
                     <label class="label-text">{{ 'global.confirmation'|trans }}</label>
                     <div class="form-group error">
                         <span class="la la-lock form-icon"></span>
-                        {{ form_widget(registration.plainPassword.second, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder':'Confirmation de mot de passe'}}) }}
-                        {{ form_errors(registration.plainPassword.second) }}
+                        {{ form_widget(registration.password.second, {'required': false, 'attr': {'class': 'form-control form-control-styled', 'placeholder':'Confirmation de mot de passe'}}) }}
+                        {{ form_errors(registration.password.second) }}
                     </div>
                 </div>
                 <div class="input-box py-4 user-action-meta">
