@@ -73,9 +73,9 @@ class CategoryProfessional
      * @Vich\UploadableField(mapping="category_pro_images", fileNameProperty="icon")
      * @var File
      * @Assert\Image(
-     *     minWidth = 200,
+     *     minWidth = 175,
      *     maxWidth = 400,
-     *     minHeight = 200,
+     *     minHeight = 175,
      *     maxHeight = 400
      * )
      */
