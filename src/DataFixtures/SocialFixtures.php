@@ -10,7 +10,10 @@ class SocialFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $manager->persist(new SocialUrl());
+        $social = new SocialUrl();
+        $social->setFacebook('#')->setInstagram('#')
+                ->setLinkedin('#');
+        $manager->persist($social);
         $manager->flush();
     }
 }

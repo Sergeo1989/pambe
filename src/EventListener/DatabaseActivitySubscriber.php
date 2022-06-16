@@ -40,10 +40,12 @@ class DatabaseActivitySubscriber implements EventSubscriberInterface
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof CategoryProfessional && $action === 'persist') 
+        if ($entity instanceof CategoryProfessional && $action === 'persist') {
             $entity->setSlug($this->context->slug($entity->getName()));
+        }
         
-        if($entity instanceof User)
+        if($entity instanceof User) {
             $entity->setSlug($this->context->slug($entity));
+        }
     }
 }
