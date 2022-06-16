@@ -233,16 +233,16 @@
                             </div>
                         </div>
                         {% endif %}
-                        {% if keysart()|length > 0 %}
-                        <div class="sidebar-widget">
-                            <h3 class="widget-title">{{ 'global.keywords'|trans }}</h3>
-                            <div class="stroke-shape mb-4"></div>
-                            <ul class="tag-list">
-                                {% for keyword in keysart() %}
-                                    <li><a href="javascript:void(0)">{{ keyword.name }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                        {% if article.keywords|length > 0 %}
+                            <div class="sidebar-widget">
+                                <h3 class="widget-title">{{ 'global.keywords'|trans }}</h3>
+                                <div class="stroke-shape mb-4"></div>
+                                <ul class="tag-list">
+                                    {% for keyword in article.keywords %}
+                                        <li><a href="javascript:void(0)">{{ keyword.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         {% endif %}
                         <div class="sidebar-widget">
                             <div class="section-tab section-tab-layout-2 mb-4">
