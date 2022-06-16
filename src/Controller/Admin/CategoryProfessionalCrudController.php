@@ -32,7 +32,7 @@ class CategoryProfessionalCrudController extends AbstractCrudController
     }
 
     public function configureFields(string $pageName): iterable
-    {
+    { 
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('name', 'Nom'),

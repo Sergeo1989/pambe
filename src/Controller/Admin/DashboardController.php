@@ -140,7 +140,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Commentaires', 'bi bi-pin', Comment::class);
         yield MenuItem::section('Configuration');
         yield MenuItem::linkToCrud('Langues', 'bi bi-pin', Language::class);
-        // yield MenuItem::linkToCrud('Réseaux sociaux', 'bi bi-pin', SocialUrl::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
+        yield MenuItem::linkToCrud('Réseaux sociaux', 'bi bi-pin', SocialUrl::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
         yield MenuItem::linkToCrud('Témoignages', 'bi bi-pin', Testimonial::class);
         yield MenuItem::linkToCrud('Bannières', 'bi bi-pin', Banner::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'bi bi-person-bounding-box', User::class);

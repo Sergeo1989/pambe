@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\BannerRepository;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,10 +26,14 @@ class Banner
      * @var string
      */
     private $image;
-
+ 
     /**
      * @Vich\UploadableField(mapping="banner_images", fileNameProperty="image")
      * @var File
+     * @Assert\Image(
+     *     minWidth = 1920,
+     *     minHeight = 1024
+     * )
      */
     private $imageFile;
 
@@ -47,7 +52,7 @@ class Banner
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage($image)
     {
         $this->image = $image;
 

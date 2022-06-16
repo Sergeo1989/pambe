@@ -36,22 +36,15 @@ class BannerCrudController extends AbstractCrudController
             IdField::new('id')->onlyOnIndex(),
             TextField::new('imageFile', 'Bannière')
                         ->setFormType(VichImageType::class)
-                        ->setFormTypeOptions(['constraints' => [
-                            new Image([
-                                'minWidth' => 1920,
-                                'minHeight' => 1024,
-                                'minWidthMessage' => 'La largeur de l\'image est trop petite',
-                                'minHeightMessage' => 'La hauteur de l\'image est trop petite'
-                                ])
-                        ]])
-                        ->setHelp('Résolution: 1200x300 pixels')
+                        ->setFormTypeOptions(['empty_data' => ''])
+                        ->setHelp('Résolution: 1920x1024 pixels')
                         ->onlyOnForms(),
             ImageField::new('image', 'Image')
                         ->setBasePath('/uploads/images/banner/')->setCssClass('admin-image-size')
                         ->onlyOnIndex(),
         ];
     }
-
+ 
     public function configureActions(Actions $actions): Actions
     {
         return $actions
