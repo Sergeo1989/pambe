@@ -250,6 +250,7 @@ class CategoryProfessional
         $this->grade = self::NORMAL;
         $this->position = 0;
         $this->status = true;
+        $this->date_upd = new \DateTime('now');
     }
 
     public function getIcon(): ?string
