@@ -73,7 +73,7 @@ class Need
     private $date_upd;
 
     /**
-     * @ORM\OneToMany(targetEntity=Proposal::class, mappedBy="need")
+     * @ORM\OneToMany(targetEntity=Proposal::class, mappedBy="need", cascade={"persist", "remove"})
      */
     private $proposals;
 

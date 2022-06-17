@@ -64,7 +64,7 @@ class Professional implements ViewCountable
     private $date_upd;
 
     /**
-     * @ORM\OneToMany(targetEntity=Qualification::class, mappedBy="professional")
+     * @ORM\OneToMany(targetEntity=Qualification::class, mappedBy="professional", cascade={"remove"})
      */
     private $qualifications;
 
@@ -84,7 +84,7 @@ class Professional implements ViewCountable
     private $category_professionals;
 
     /**
-     * @ORM\OneToOne(targetEntity=ProfessionalImage::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=ProfessionalImage::class, mappedBy="pros", cascade={"persist", "remove"})
      */
     private $cover;
 
@@ -129,17 +129,17 @@ class Professional implements ViewCountable
     private $share;
 
     /**
-     * @ORM\OneToOne(targetEntity=ProfessionalSocialUrl::class, inversedBy="professional", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=ProfessionalSocialUrl::class, inversedBy="professional")
      */
     private $socialUrl;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Skill::class, inversedBy="professional", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Skill::class, inversedBy="professional")
      */
     private $skill;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="professional")
+     * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="professional", cascade={"persist", "remove"})
      */
     private $likes;
 
@@ -154,12 +154,12 @@ class Professional implements ViewCountable
     private $videoType;
 
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="professional")
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="professional", cascade={"persist", "remove"})
      */
     private $reviews;
 
     /**
-     * @ORM\OneToMany(targetEntity=Proposal::class, mappedBy="professional")
+     * @ORM\OneToMany(targetEntity=Proposal::class, mappedBy="professional", cascade={"persist", "remove"})
      */
     private $proposals;
 
@@ -169,7 +169,7 @@ class Professional implements ViewCountable
     private $profile;
 
     /**
-      * @ORM\OneToMany(targetEntity=ProfessionalView::class, mappedBy="professional")
+      * @ORM\OneToMany(targetEntity=ProfessionalView::class, mappedBy="professional", cascade={"persist", "remove"})
       */
     protected $viewCounters;
 

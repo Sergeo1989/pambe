@@ -25,7 +25,7 @@ class Skill
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Professional::class, mappedBy="skill")
+     * @ORM\OneToMany(targetEntity=Professional::class, mappedBy="skill", cascade={"persist", "remove"})
      */
     private $professional;
 

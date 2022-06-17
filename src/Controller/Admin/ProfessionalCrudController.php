@@ -36,6 +36,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -52,6 +53,7 @@ class ProfessionalCrudController extends AbstractCrudController
     private $skillRepo;
     private $hasher;
     private $contextService;
+    public const CUSTOM_DELETE = 'customdelete';
 
     public function __construct(
         UserPasswordHasherInterface $hasher, 
@@ -137,6 +139,9 @@ class ProfessionalCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $delete = Action::new(self::CUSTOM_DELETE)->linkToCrudAction('customDelete')
+        ->setLabel('Supprimer')->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
+
         return $actions
                 ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                     return $action->setLabel('Visualiser')->setIcon('fa fa-eye')->addCssClass('btn btn-info');
@@ -144,12 +149,21 @@ class ProfessionalCrudController extends AbstractCrudController
                 ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
                     return $action->setLabel('Modifier')->setIcon('fa fa-edit')->addCssClass('btn btn-warning');
                 })
-                ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                    return $action->setLabel('Supprimer')->setIcon('fa fa-trash')->addCssClass('btn btn-outline-danger');
-                })
+                ->remove(Crud::PAGE_INDEX, Action::DELETE)
                 ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
                     return $action->setLabel('Ajouter un professionnel');
-                });
+                })->add(Crud::PAGE_INDEX, $delete)
+                ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, self::CUSTOM_DELETE]);
+    }
+
+    public function customDelete(AdminContext $context, AdminUrlGenerator $adminUrlGenerator) 
+    {
+        /** @var Professional $professional */
+        $professional = $context->getEntity()->getInstance();
+       
+        $this->contextService->delete($professional);
+
+        return $this->redirect($adminUrlGenerator->setController(self::class)->setAction(Action::INDEX)->generateUrl());
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void

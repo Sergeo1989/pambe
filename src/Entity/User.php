@@ -91,12 +91,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $admin;
 
     /**
-     * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="user")
      */
     private $professional;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=ProfessionalLike::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $likes;
 
@@ -111,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $reset_token;
 
     /**
-     * @ORM\OneToMany(targetEntity=Need::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Need::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $needs;
 
@@ -141,17 +141,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender", cascade={"remove"})
      */
     private $sent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recipient")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recipient", cascade={"remove"})
      */
     private $recieves;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $notifications;
 

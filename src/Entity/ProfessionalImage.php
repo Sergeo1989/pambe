@@ -44,6 +44,11 @@ class ProfessionalImage implements \Serializable, \JsonSerializable
     private $professional;
 
     /**
+     * @ORM\OneToOne(targetEntity=Professional::class, inversedBy="cover")
+     */
+    private $pros;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $legend;
@@ -105,6 +110,18 @@ class ProfessionalImage implements \Serializable, \JsonSerializable
     public function setProfessional(?Professional $professional): self
     {
         $this->professional = $professional;
+
+        return $this;
+    }
+
+    public function getPros(): ?Professional
+    {
+        return $this->pros;
+    }
+
+    public function setPros(?Professional $pros): self
+    {
+        $this->pros = $pros;
 
         return $this;
     }
