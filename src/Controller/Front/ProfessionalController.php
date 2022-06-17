@@ -279,13 +279,13 @@ class ProfessionalController extends AbstractController
     {
         if($this->getUser() && $this->isGranted('edit', $this->getUser()))
             return $this->redirectToRoute('app_account_professional_information');
- 
+        
         $professional = new Professional();
         $form = $this->createForm(ProfessionalFormType::class, $professional);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-        
+            $professional->setUser($this->context->getUser());
             $this->context->save($professional);
 
             return $this->redirectToRoute('app_account_professional_information');

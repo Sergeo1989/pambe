@@ -1,6 +1,5 @@
   
 {% block professional %}
-    {% if professional %}
         {% set profile = professional.user.profile and professional.user.profile.image is not null ? vich_uploader_asset(professional.user.profile, 'imageFile') : asset('assets/front/images/photoshop.png') %}
         {% set cover = professional.cover and professional.cover.image is not null ? vich_uploader_asset(professional.cover, 'imageFile') : asset('assets/front/images/img1.jpg') %}
         <div class="{% block col_pro %}col-lg-3{% endblock %} responsive-column">
@@ -39,5 +38,4 @@
                 </div>
             </div>
         </div>
-    {% endif %}
 {% endblock %}
