@@ -53,7 +53,9 @@ class ProfessionalSocialUrl
     private $pinterest;
 
     /**
-     * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="socialUrl", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="socialUrl")
+     * 
+     * This one is OK
      */
     private $professional;
 

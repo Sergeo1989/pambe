@@ -42,6 +42,16 @@ class SecurityController extends AbstractController
         return $this->render('front/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
+    public function apilogin()
+    {
+        $user = $this->getUser();
+        
+        return $this->json([
+            'email' => $user->getUserIdentifier(),
+            'roles' => $user->getRoles()
+        ]);
+    }
+
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');

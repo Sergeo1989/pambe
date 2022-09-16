@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounter;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleViewRepository::class)

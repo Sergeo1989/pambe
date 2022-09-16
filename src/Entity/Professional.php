@@ -7,8 +7,23 @@ use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"professional:read"}},
+ *      denormalizationContext={"groups"={"professional:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=ProfessionalRepository::class)
  * @ORM\Table(name="professional", indexes={@ORM\Index(columns={"description"}, flags={"fulltext"})})
  * @ORM\HasLifecycleCallbacks()
@@ -25,41 +40,63 @@ class Professional implements ViewCountable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"professional:read"})
      */
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="professional", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="professional", cascade={"persist"})
+     * @Groups({"professional:read", "professional:write"})
      */
     private $user;
 
     /**
+     * @ORM\OneToOne(targetEntity=ProfessionalImage::class, inversedBy="pros", cascade={"persist"})
+     * 
+     * This one is OK
+     */
+    private $cover;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ProfessionalSocialUrl::class, inversedBy="professional", cascade={"persist"})
+     * 
+     * This one is OK
+     */
+    private $socialUrl;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $short_description;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"professional:read", "professional:write"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"professional:read", "professional:write"})
      */
     private $verified;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"professional:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"professional:read"})
      */
     private $date_upd;
 
@@ -84,11 +121,6 @@ class Professional implements ViewCountable
     private $category_professionals;
 
     /**
-     * @ORM\OneToOne(targetEntity=ProfessionalImage::class, mappedBy="pros", cascade={"persist", "remove"})
-     */
-    private $cover;
-
-    /**
      * @ORM\OneToMany(targetEntity=ProfessionalImage::class, mappedBy="professional", cascade={"persist", "remove"})
      */
     private $galleries;
@@ -100,41 +132,42 @@ class Professional implements ViewCountable
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $level;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $position;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $available;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $nb_of_service;
 
     /**
      * @ORM\Column(name="views", type="integer", nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     protected $views = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $share;
 
     /**
-     * @ORM\OneToOne(targetEntity=ProfessionalSocialUrl::class, inversedBy="professional")
-     */
-    private $socialUrl;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Skill::class, inversedBy="professional")
+     * @ORM\ManyToOne(targetEntity=Skill::class, inversedBy="professional", cascade={"persist"})
      */
     private $skill;
 
@@ -145,6 +178,7 @@ class Professional implements ViewCountable
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $videoUrl;
 
@@ -165,6 +199,7 @@ class Professional implements ViewCountable
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"professional:read", "professional:write"})
      */
     private $profile;
 

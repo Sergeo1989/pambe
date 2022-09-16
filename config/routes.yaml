@@ -33,6 +33,10 @@ app_login:
     methods: POST|GET
     #requirements:
         #_locale: '%app_locale%'
+app_login_api:
+    path: /api/v1/login
+    controller: App\Controller\Front\SecurityController::apilogin
+    methods: POST
 connect_google_start:
     path: /connect/google
     controller: App\Controller\Front\SecurityController::google

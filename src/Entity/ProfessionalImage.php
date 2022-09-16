@@ -44,7 +44,9 @@ class ProfessionalImage implements \Serializable, \JsonSerializable
     private $professional;
 
     /**
-     * @ORM\OneToOne(targetEntity=Professional::class, inversedBy="cover")
+     * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="cover")
+     * 
+     * This one is OK
      */
     private $pros;
 

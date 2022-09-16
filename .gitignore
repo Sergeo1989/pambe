@@ -23,3 +23,6 @@
 /public/media/cache/
 ###< liip/imagine-bundle ###
 /migrations/*
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

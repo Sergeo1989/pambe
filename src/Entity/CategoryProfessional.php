@@ -116,8 +116,7 @@ class CategoryProfessional
      * @Assert\NotBlank
      */
     private $job;
-
-
+    
     public function __construct()
     {
         $this->categoryProfessionalProfessionals = new ArrayCollection();

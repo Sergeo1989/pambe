@@ -4,8 +4,26 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"comment:read"}, "swagger_definition_name"="Read"},
+ *      denormalizationContext={"groups"={"comment:write"}, "swagger_definition_name"="Write"},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
+ * @ApiFilter(BooleanFilter::class, properties={"status"})
  * @ORM\Entity(repositoryClass=CommentRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
@@ -15,46 +33,55 @@ class Comment
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"comment:read", "article:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"comment:read", "comment:write", "article:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"comment:read", "comment:write", "article:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"comment:read", "comment:write", "article:read"})
      */
     private $website;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"comment:read", "comment:write", "article:read"})
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="comments")
+     * @Groups({"comment:write"})
      */
     private $article;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"comment:read", "article:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"comment:read", "article:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"comment:read", "comment:write", "article:read"})
      */
     private $status;
 

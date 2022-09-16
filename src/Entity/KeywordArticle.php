@@ -8,8 +8,23 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"keyarticle:read"}},
+ *      denormalizationContext={"groups"={"keyarticle:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=KeywordArticleRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
@@ -23,37 +38,44 @@ class KeywordArticle
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"keyarticle:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"keyarticle:read", "keyarticle:write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"keyarticle:read"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"keyarticle:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"keyarticle:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"keyarticle:read", "keyarticle:write"})
      */
     private $status;
 
     /**
      * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="keywords")
+     * @Groups({"keyarticle:read"})
      */
     private $articles;
 

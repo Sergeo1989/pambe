@@ -1,0 +1,9 @@
+api_platform:
+    resource: .
+    type: api_platform
+    prefix: /api/v1
+
+app_swagger_ui:
+    path: /api/pambe2021/documentation
+    methods: GET
+    defaults: { _controller: api_platform.swagger.action.ui, area: default }

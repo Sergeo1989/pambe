@@ -4,8 +4,23 @@ namespace App\Entity;
 
 use App\Repository\QualificationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"qualification:read"}},
+ *      denormalizationContext={"groups"={"qualification:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=QualificationRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
@@ -19,56 +34,67 @@ class Qualification implements \JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"qualification:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"qualification:read", "qualification:write"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"qualification:read", "qualification:write"})
      */
     private $place;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"qualification:read", "qualification:write"})
      */
     private $start_date;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"qualification:read", "qualification:write"})
      */
     private $end_date;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"qualification:read", "qualification:write"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"qualification:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"qualification:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"qualification:read", "qualification:write"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"qualification:read", "qualification:write"})
      */
     private $type;
 
     /**
      * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="qualifications")
+     * @Groups({"qualification:write"})
      */
     private $professional;
 

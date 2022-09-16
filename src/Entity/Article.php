@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -9,8 +10,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"article:read"}, "swagger_definition_name"="Read"},
+ *      denormalizationContext={"groups"={"article:write"}, "swagger_definition_name"="Write"},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *          "delete"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *      }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"title": "partial"})
+ * @ApiFilter(BooleanFilter::class, properties={"status"})
+ * @ApiFilter(OrderFilter::class, properties={"date_add"})
+ * @ApiFilter(DateFilter::class, properties={"date_add"})
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  * @ORM\Table(name="article", indexes={@ORM\Index(columns={"title", "content"}, flags={"fulltext"})})
  * @ORM\HasLifecycleCallbacks()
@@ -25,37 +49,44 @@ class Article implements ViewCountable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"article:read", "catarticle:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"article:read", "article:write", "catarticle:read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"article:read", "catarticle:read"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"article:read", "catarticle:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"article:read", "catarticle:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"article:read", "article:write", "catarticle:read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"article:read", "article:write", "catarticle:read"})
      */
     private $content;
 
@@ -66,16 +97,19 @@ class Article implements ViewCountable
 
     /**
      * @ORM\ManyToMany(targetEntity=CategoryArticle::class, inversedBy="articles")
+     * @Groups({"article:write"})
      */
     private $categoryArticles;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article")
+     * @Groups({"article:read"})
      */
     private $comments;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"article:read", "article:write", "catarticle:read"})
      */
     private $position;
 
@@ -86,16 +120,19 @@ class Article implements ViewCountable
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"article:read", "article:write", "catarticle:read"})
      */
     protected $views = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"article:read", "article:write", "catarticle:read"})
      */
     private $share;
 
     /**
      * @ORM\ManyToMany(targetEntity=KeywordArticle::class, inversedBy="articles")
+     * @Groups({"article:write"})
      */
     private $keywords;
 

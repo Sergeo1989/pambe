@@ -10,8 +10,29 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 
+ 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"user:read"}},
+ *      denormalizationContext={"groups"={"user:write"}},
+ *      attributes={"pagination_enabled"=true},
+ *      paginationItemsPerPage=20,
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
+ * @ApiFilter(ExistsFilter::class, properties={"professional"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity("email")
  * @ORM\Table(name="`user`", indexes={@ORM\Index(columns={"firstname", "lastname"}, flags={"fulltext"})})
@@ -23,6 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
@@ -32,17 +54,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Email(
      *     message = "The email '{{ value }}' is not a valid email."
      * )
-     */
+     * @Groups({"user:read", "user:write", "professional:read"})
+     */ 
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:read", "user:write", "professional:read"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"user:write"})
      */
     private $password;
 
@@ -50,6 +75,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank
      * @Assert\Length(min=3)
+     * @Groups({"user:read", "user:write", "professional:read"})
      */
     private $firstname;
 
@@ -57,31 +83,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Length(min=3)
+     * @Groups({"user:read", "user:write", "professional:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user:read", "professional:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user:read", "professional:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"user:read", "user:write", "professional:read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "user:write", "professional:read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "user:write", "professional:read"})
      */
     private $address;
 
@@ -92,6 +124,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="user")
+     * 
+     * This one is OK
      */
     private $professional;
 
@@ -102,11 +136,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:write"})
      */
     private $activation_token;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:write"})
      */
     private $reset_token;
 
@@ -132,11 +168,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "user:write", "professional:read"})
      */
     private $website;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "professional:read"})
      */
     private $slug;
 

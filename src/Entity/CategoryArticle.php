@@ -10,8 +10,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"catarticle:read"}},
+ *      denormalizationContext={"groups"={"catarticle:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "patch"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=CategoryArticleRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
@@ -26,37 +42,44 @@ class CategoryArticle
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"catarticle:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"catarticle:read", "catarticle:write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"catarticle:read"})
      */
     private $slug;
 
     /**
      * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="categoryArticles")
+     * @Groups({"catarticle:read"})
      */
     private $articles;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"catarticle:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"catarticle:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"catarticle:read", "catarticle:write"})
      */
     private $status;
 
@@ -78,11 +101,13 @@ class CategoryArticle
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"catarticle:read", "catarticle:write"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"catarticle:read", "catarticle:write"})
      */
     private $position;
 
