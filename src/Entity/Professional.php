@@ -9,21 +9,66 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * @ApiResource(
- *      normalizationContext={"groups"={"professional:read"}},
- *      denormalizationContext={"groups"={"professional:write"}},
+ *      normalizationContext={"groups"={"professional:read"}, "swagger_definition_name"="Read"},
+ *      denormalizationContext={"groups"={"professional:write"}, "swagger_definition_name"="Write"},
  *      collectionOperations={
+ *          "check_professionals"={
+ *              "read"=false,
+ *              "method"="GET",
+ *              "path"="/professionals/search",
+ *              "controller"=App\Controller\Api\CheckProfessional::class,
+ *              "pagination_enabled"=false,
+ *              "filters"={},
+ *              "openapi_context"={
+ *                  "summary"="Récupère les professionnels actifs selon un mot clé, une catégorie ou une adresse.",
+ *                  "parameters"={
+ *                      {
+ *                          "in"="query",
+ *                          "name"="word",
+ *                          "schema"={
+ *                              "type"="string"
+ *                          },
+ *                          "description"="Correspond à une partie d'un nom, d'un titre de service ou d'une description de professionnels."
+ *                      },
+ *                      {
+ *                          "in"="query",
+ *                          "name"="category",
+ *                          "schema"={
+ *                              "type"="integer"
+ *                          },
+ *                          "description"="Correspond à l'ID d'une catégorie de professionnel."
+ *                      },
+ *                      {
+ *                          "in"="query",
+ *                          "name"="address",
+ *                          "schema"={
+ *                              "type"="string"
+ *                          },
+ *                          "description"="Correspond à une partie d'adresse du professionnel."
+ *                      },
+ *                  }
+ *              }
+ *          },
  *          "get"={},
  *          "post"={},
  *      },
  *      itemOperations={
  *          "get"={},
  *          "put"={},
+ *          "patch"={},
  *          "delete"={}
  *      }
  * )
+ * @ApiFilter(OrderFilter::class, properties={"date_add", "position"})
+ * @ApiFilter(DateFilter::class, properties={"date_add"})
+ * @ApiFilter(BooleanFilter::class, properties={"status"})
  * @ORM\Entity(repositoryClass=ProfessionalRepository::class)
  * @ORM\Table(name="professional", indexes={@ORM\Index(columns={"description"}, flags={"fulltext"})})
  * @ORM\HasLifecycleCallbacks()
@@ -102,21 +147,25 @@ class Professional implements ViewCountable
 
     /**
      * @ORM\OneToMany(targetEntity=Qualification::class, mappedBy="professional", cascade={"remove"})
+     * @Groups({"professional:read"})
      */
     private $qualifications;
 
     /**
      * @ORM\ManyToMany(targetEntity=Language::class, inversedBy="professionals")
+     * @Groups({"professional:read", "professional:write"})
      */
     private $languages;
 
     /**
      * @ORM\ManyToOne(targetEntity=CategoryProfessional::class, inversedBy="professionals")
+     * @Groups({"professional:read", "professional:write"})
      */
     private $category_professional_default;
 
     /**
      * @ORM\ManyToMany(targetEntity=CategoryProfessional::class, inversedBy="all_professionals")
+     * @Groups({"professional:read", "professional:write"})
      */
     private $category_professionals;
 
@@ -127,6 +176,7 @@ class Professional implements ViewCountable
 
     /**
      * @ORM\OneToMany(targetEntity=Service::class, mappedBy="professional", cascade={"persist", "remove"})
+     * @Groups({"professional:read"})
      */
     private $services;
 

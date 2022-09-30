@@ -30,8 +30,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          "put"={"access_control"="is_granted('ROLE_ADMIN')"},
  *          "delete"={"access_control"="is_granted('ROLE_ADMIN')"}
  *      }
- * )
- * @ApiFilter(SearchFilter::class, properties={"title": "partial"})
+ * ) 
+ * @ApiFilter(SearchFilter::class, properties={"title": "partial", "content": "partial"})
  * @ApiFilter(BooleanFilter::class, properties={"status"})
  * @ApiFilter(OrderFilter::class, properties={"date_add"})
  * @ApiFilter(DateFilter::class, properties={"date_add"})
@@ -49,44 +49,44 @@ class Article implements ViewCountable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"article:read", "catarticle:read"})
+     * @Groups({"article:read", "catarticle:read", "keyarticle:read"})
      */
     private $id;
-
+ 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"article:read", "article:write", "catarticle:read"})
+     * @Groups({"article:read", "article:write", "catarticle:read", "keyarticle:read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"article:read", "catarticle:read"})
+     * @Groups({"article:read", "catarticle:read", "keyarticle:read"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"article:read", "catarticle:read"})
+     * @Groups({"article:read", "catarticle:read", "keyarticle:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"article:read", "catarticle:read"})
+     * @Groups({"article:read", "catarticle:read", "keyarticle:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"article:read", "article:write", "catarticle:read"})
+     * @Groups({"article:read", "article:write", "catarticle:read", "keyarticle:read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"article:read", "article:write", "catarticle:read"})
+     * @Groups({"article:read", "article:write", "catarticle:read", "keyarticle:read"})
      */
     private $content;
 
@@ -97,7 +97,7 @@ class Article implements ViewCountable
 
     /**
      * @ORM\ManyToMany(targetEntity=CategoryArticle::class, inversedBy="articles")
-     * @Groups({"article:write"})
+     * @Groups({"article:write", "keyarticle:read"})
      */
     private $categoryArticles;
 
@@ -109,7 +109,7 @@ class Article implements ViewCountable
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"article:read", "article:write", "catarticle:read"})
+     * @Groups({"article:read", "article:write", "catarticle:read", "keyarticle:read"})
      */
     private $position;
 
@@ -120,19 +120,19 @@ class Article implements ViewCountable
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"article:read", "article:write", "catarticle:read"})
+     * @Groups({"article:read", "article:write", "catarticle:read", "keyarticle:read"})
      */
     protected $views = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"article:read", "article:write", "catarticle:read"})
+     * @Groups({"article:read", "article:write", "catarticle:read", "keyarticle:read"})
      */
     private $share;
 
     /**
      * @ORM\ManyToMany(targetEntity=KeywordArticle::class, inversedBy="articles")
-     * @Groups({"article:write"})
+     * @Groups({"article:write", "catarticle:read"})
      */
     private $keywords;
 

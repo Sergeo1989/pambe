@@ -34,67 +34,67 @@ class Qualification implements \JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"qualification:read"})
+     * @Groups({"qualification:read", "professional:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"qualification:read", "qualification:write"})
+     * @Groups({"qualification:read", "qualification:write", "professional:read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"qualification:read", "qualification:write"})
+     * @Groups({"qualification:read", "qualification:write", "professional:read"})
      */
     private $place;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"qualification:read", "qualification:write"})
+     * @Groups({"qualification:read", "qualification:write", "professional:read"})
      */
     private $start_date;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"qualification:read", "qualification:write"})
+     * @Groups({"qualification:read", "qualification:write", "professional:read"})
      */
     private $end_date;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"qualification:read", "qualification:write"})
+     * @Groups({"qualification:read", "qualification:write", "professional:read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"qualification:read"})
+     * @Groups({"qualification:read", "professional:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"qualification:read"})
+     * @Groups({"qualification:read", "professional:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"qualification:read", "qualification:write"})
+     * @Groups({"qualification:read", "qualification:write", "professional:read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"qualification:read", "qualification:write"})
+     * @Groups({"qualification:read", "qualification:write", "professional:read"})
      */
     private $type;
 
     /**
      * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="qualifications")
-     * @Groups({"qualification:write"})
+     * @Groups({"qualification:read", "qualification:write"})
      */
     private $professional;
 

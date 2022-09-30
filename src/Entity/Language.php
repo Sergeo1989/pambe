@@ -11,6 +11,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"language:read"}, "swagger_definition_name"="Read"},
+ *      denormalizationContext={"groups"={"language:write"}, "swagger_definition_name"="Write"},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=LanguageRepository::class)
  */
 class Language
@@ -19,21 +32,25 @@ class Language
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"language:read", "professional:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"language:read", "language:write", "professional:read"})
      */
     private $iso_code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"language:read", "language:write", "professional:read"})
      */
     private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity=Professional::class, mappedBy="languages")
+     * @Groups({"language:read"})
      */
     private $professionals;
 

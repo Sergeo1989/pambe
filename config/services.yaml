@@ -25,10 +25,11 @@ parameters:
     app.notifications.email_sender: marxiobadel@gmail.com
 
 services:
+    
     App\EventSubscriber\LocaleSubscriber:
         arguments: ['%kernel.default_locale%']
 
-    # default configuration for services in *this* file
+    # default configuration for services in *this* file 
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
@@ -51,3 +52,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\EventListener\DeserializeListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', method: 'onKernelRequest', priority: 2 }
+        decorates: api_platform.listener.request.deserialize
+        autoconfigure: false

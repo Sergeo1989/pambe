@@ -10,8 +10,81 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Action\NotFoundAction;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"catprofessional:read"}, "swagger_definition_name"="Read"},
+ *      denormalizationContext={"groups"={"catprofessional:write"}, "swagger_definition_name"="Write"},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={
+ *              "openapi_context"={
+ *                  "requestBody"={
+ *                      "content"={
+ *                          "multipart/form-data"={
+ *                              "schema"={
+ *                                  "type"="object",
+ *                                  "properties"={
+ *                                      "name"={
+ *                                          "type"="string"
+ *                                      },
+ *                                      "description"={
+ *                                          "type"="string"
+ *                                      },
+ *                                      "iconFile"={
+ *                                          "type"="string",
+ *                                          "format"="binary"
+ *                                      },
+ *                                      "job"={
+ *                                          "type"="string"
+ *                                      }
+ *                                  }
+ *                              }
+ *                          }
+ *                      }
+ *                  }
+ *              },
+ *          }
+ *      },
+ *      itemOperations={
+ *          "get"={"requirements"={"id"="\d+"}},
+ *          "put"={},
+ *          "delete"={"requirements"={"id"="\d+"}},
+ *          "edit"={
+ *              "method"="POST",
+ *              "path"="/category_professionals/{id}/edit",
+ *              "controller"=App\Controller\Api\EmptyController::class,
+ *              "openapi_context"={
+ *                  "requestBody"={
+ *                      "content"={
+ *                          "multipart/form-data"={
+ *                              "schema"={
+ *                                  "type"="object",
+ *                                  "properties"={
+ *                                      "iconFile"={
+ *                                          "type"="string",
+ *                                          "format"="binary"
+ *                                      }
+ *                                  }
+ *                              }
+ *                          } 
+ *                      }
+ *                  }
+ *               }
+ *           }
+ *      }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"grade": "exact"})
+ * @ApiFilter(OrderFilter::class, properties={"position"})
+ * @ApiFilter(BooleanFilter::class, properties={"status"})
  * @ORM\Entity(repositoryClass=CategoryProfessionalRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
@@ -29,17 +102,20 @@ class CategoryProfessional
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"catprofessional:read", "professional:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"catprofessional:read", "catprofessional:write", "professional:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"catprofessional:read", "catprofessional:write"})
      */
     private $description;
 
@@ -50,11 +126,13 @@ class CategoryProfessional
 
     /**
      * @ORM\ManyToMany(targetEntity=Professional::class, mappedBy="category_professionals")
+     * @Groups({"catprofessional:read"})
      */
     private $all_professionals;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"catprofessional:read"})
      */
     private $slug;
 
@@ -78,26 +156,38 @@ class CategoryProfessional
      *     minHeight = 175,
      *     maxHeight = 400
      * )
+     * @Groups({"catprofessional:write"})
      */
     private $iconFile;
 
     /**
+     * @var string|null
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"catprofessional:read"})
+     */
+    private $iconUrl;
+
+    /**
      * @ORM\Column(type="datetime")
+     * @Groups({"catprofessional:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"catprofessional:read", "catprofessional:write"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"catprofessional:read", "catprofessional:write"})
      */
     private $position;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"catprofessional:read", "catprofessional:write"})
      */
     private $grade;
 
@@ -114,6 +204,7 @@ class CategoryProfessional
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"catprofessional:read", "catprofessional:write", "professional:read"})
      */
     private $job;
     
@@ -260,6 +351,18 @@ class CategoryProfessional
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getIconUrl(): ?string
+    {
+        return $this->iconUrl;
+    }
+
+    public function setIconUrl(?string $iconUrl): self
+    {
+        $this->iconUrl = $iconUrl;
 
         return $this;
     }

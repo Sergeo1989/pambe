@@ -46,7 +46,7 @@ class ProfessionalRepository extends ServiceEntityRepository
             $query->andWhere('u.address LIKE :val2')
                 ->setParameter('val2', '%'.$address.'%');
         }
-
+ 
         return $query->getQuery()->getResult();
     }
 

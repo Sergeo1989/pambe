@@ -12,6 +12,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"service:read"}, "swagger_definition_name"="Read"},
+ *      denormalizationContext={"groups"={"service:write"}, "swagger_definition_name"="Write"},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=ServiceRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
@@ -22,16 +35,19 @@ class Service implements \JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"service:read", "professional:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"service:read", "service:write", "professional:read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"service:read", "service:write", "professional:read"})
      */
     private $description;
 
@@ -54,31 +70,37 @@ class Service implements \JsonSerializable
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"service:read", "professional:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"service:read", "professional:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"service:read", "service:write", "professional:read"})
      */
     private $status = true;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"service:read", "service:write", "professional:read"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"service:read", "service:write", "professional:read"})
      */
     private $unit;
 
     /**
      * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="services")
+     * @Groups({"service:read", "service:write"})
      */
     private $professional;
 
