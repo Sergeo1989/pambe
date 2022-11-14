@@ -10,8 +10,28 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"need:read"}},
+ *      denormalizationContext={"groups"={"need:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"date_add"})
+ * @ApiFilter(SearchFilter::class, properties={"nature": "exact"})
+ * @ApiFilter(BooleanFilter::class, properties={"status"})
  * @ORM\Entity(repositoryClass=NeedRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
@@ -29,21 +49,25 @@ class Need
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"need:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"need:read", "need:write"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"need:read", "need:write"})
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="needs")
+     * @Groups({"need:write"})
      */
     private $user;
 
@@ -61,41 +85,49 @@ class Need
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"need:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"need:read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"need:write"})
      */
     private $date_upd;
 
     /**
      * @ORM\OneToMany(targetEntity=Proposal::class, mappedBy="need", cascade={"persist", "remove"})
+     * @Groups({"need:read"})
      */
     private $proposals;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"need:read", "need:write"})
      */
     private $delay;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"need:read", "need:write"})
      */
     private $budget;
 
     /**
      * @ORM\ManyToOne(targetEntity=CategoryProfessional::class, inversedBy="needs")
+     * @Groups({"need:write"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"need:read"})
      */
     private $nature;
 

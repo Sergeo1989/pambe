@@ -69,6 +69,12 @@ class Service implements \JsonSerializable
     private $thumbnailFile;
 
     /**
+     * @var string|null
+     * @Groups({"service:read", "professional:read"})
+     */
+    private $thumbnailUrl;
+
+    /**
      * @ORM\Column(type="datetime")
      * @Groups({"service:read", "professional:read"})
      */
@@ -203,6 +209,18 @@ class Service implements \JsonSerializable
             // if 'updatedAt' is not defined in your entity, use another property
             $this->date_upd = new \DateTime('now');
         }
+
+        return $this;
+    }
+
+    public function getThumbnailUrl(): ?string
+    {
+        return $this->thumbnailUrl;
+    }
+
+    public function setThumbnailUrl(?string $thumbnailUrl): self
+    {
+        $this->thumbnailUrl = $thumbnailUrl;
 
         return $this;
     }

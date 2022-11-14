@@ -6,8 +6,23 @@ use App\Repository\ProfessionalImageRepository;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"prosimg:read"}},
+ *      denormalizationContext={"groups"={"prosimg:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=ProfessionalImageRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
@@ -18,28 +33,39 @@ class ProfessionalImage implements \Serializable, \JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"prosimg:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @var string
+     * @Groups({"prosimg:write"})
      */
     private $image;
 
     /**
      * @Vich\UploadableField(mapping="professional_images", fileNameProperty="image")
      * @var File
+     * @Groups({"prosimg:write"})
      */
     private $imageFile; 
 
     /**
+     * @var string|null
+     * @Groups({"prosimg:read", "professional:read", "user:read"})
+     */
+    private $imageUrl;
+
+    /**
      * @ORM\Column(type="datetime")
+     * @Groups({"prosimg:read", "professional:read"})
      */
     private $date_upd;
  
     /**
      * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="galleries")
+     * @Groups({"prosimg:read", "prosimg:write"})
      */
     private $professional;
 
@@ -47,11 +73,13 @@ class ProfessionalImage implements \Serializable, \JsonSerializable
      * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="cover")
      * 
      * This one is OK
+     * @Groups({"prosimg:read", "prosimg:write"})
      */
     private $pros;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"prosimg:read", "prosimg:write"})
      */
     private $legend;
 
@@ -90,6 +118,18 @@ class ProfessionalImage implements \Serializable, \JsonSerializable
             // if 'updatedAt' is not defined in your entity, use another property
             $this->date_upd = new \DateTime('now');
         }
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(?string $imageUrl): self
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
     }
 
     public function getDateUpd(): ?\DateTimeInterface

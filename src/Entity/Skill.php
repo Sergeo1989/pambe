@@ -10,6 +10,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"skill:read"}},
+ *      denormalizationContext={"groups"={"skill:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=SkillRepository::class)
  */
 class Skill
@@ -18,16 +31,19 @@ class Skill
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"skill:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"skill:read", "skill:write", "professional:read"})
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Professional::class, mappedBy="skill", cascade={"persist", "remove"})
+     * @Groups({"skill:read", "skill:write"})
      */
     private $professional;
 

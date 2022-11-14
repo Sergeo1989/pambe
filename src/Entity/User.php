@@ -153,11 +153,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToOne(targetEntity=ProfessionalImage::class, cascade={"persist", "remove"})
+     * @Groups({"user:read", "professional:read"})
      */
     private $profile;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="users")
+     * @Groups({"user:read", "professional:read"})
      */
     private $country;
 

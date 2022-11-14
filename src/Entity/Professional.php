@@ -10,9 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * @ApiResource(
@@ -66,6 +68,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *          "delete"={}
  *      }
  * )
+ * @ApiFilter(SearchFilter::class, properties={"level": "exact"})
  * @ApiFilter(OrderFilter::class, properties={"date_add", "position"})
  * @ApiFilter(DateFilter::class, properties={"date_add"})
  * @ApiFilter(BooleanFilter::class, properties={"status"})
@@ -97,14 +100,14 @@ class Professional implements ViewCountable
 
     /**
      * @ORM\OneToOne(targetEntity=ProfessionalImage::class, inversedBy="pros", cascade={"persist"})
-     * 
+     * @Groups({"professional:read"})
      * This one is OK
      */
     private $cover;
 
     /**
      * @ORM\OneToOne(targetEntity=ProfessionalSocialUrl::class, inversedBy="professional", cascade={"persist"})
-     * 
+     * @Groups({"professional:read"})
      * This one is OK
      */
     private $socialUrl;
@@ -112,6 +115,7 @@ class Professional implements ViewCountable
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Groups({"professional:read", "professional:write"})
+     * @ApiProperty(writable=true)
      */
     private $short_description;
 
@@ -160,17 +164,20 @@ class Professional implements ViewCountable
     /**
      * @ORM\ManyToOne(targetEntity=CategoryProfessional::class, inversedBy="professionals")
      * @Groups({"professional:read", "professional:write"})
+     * @ApiProperty(writable=true)
      */
     private $category_professional_default;
 
     /**
      * @ORM\ManyToMany(targetEntity=CategoryProfessional::class, inversedBy="all_professionals")
      * @Groups({"professional:read", "professional:write"})
+     * @ApiProperty(writable=true)
      */
     private $category_professionals;
 
     /**
      * @ORM\OneToMany(targetEntity=ProfessionalImage::class, mappedBy="professional", cascade={"persist", "remove"})
+     * @Groups({"professional:read"})
      */
     private $galleries;
 
@@ -218,6 +225,7 @@ class Professional implements ViewCountable
 
     /**
      * @ORM\ManyToOne(targetEntity=Skill::class, inversedBy="professional", cascade={"persist"})
+     * @Groups({"professional:read", "professional:write"})
      */
     private $skill;
 
@@ -239,6 +247,7 @@ class Professional implements ViewCountable
 
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="professional", cascade={"persist", "remove"})
+     * @Groups({"professional:read"})
      */
     private $reviews;
 

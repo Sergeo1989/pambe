@@ -8,6 +8,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"message:read"}},
+ *      denormalizationContext={"groups"={"message:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
@@ -17,36 +30,43 @@ class Message implements \JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"message:read", "conversation:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"message:read", "message:write", "conversation:read"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"message:read", "conversation:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"message:read", "conversation:read"})
      */
     private $is_read;
 
     /**
      * @ORM\ManyToOne(targetEntity=Conversation::class, inversedBy="messages")
+     * @Groups({"message:write"})
      */
     private $conversation;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sent")
+     * @Groups({"message:read", "message:write", "conversation:read"})
      */
     private $sender;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recieves")
+     * @Groups({"message:read", "message:write", "conversation:read"})
      */
     private $recipient;
 

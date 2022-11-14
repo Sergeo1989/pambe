@@ -4,8 +4,28 @@ namespace App\Entity;
 
 use App\Repository\ProposalRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"proposal:read"}},
+ *      denormalizationContext={"groups"={"proposal:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"nature": "exact"})
+ * @ApiFilter(OrderFilter::class, properties={"date_add"})
  * @ORM\Entity(repositoryClass=ProposalRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
@@ -19,51 +39,61 @@ class Proposal
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"proposal:read", "professional:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"proposal:read", "proposal:write", "professional:read"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"proposal:read", "proposal:write", "professional:read"})
      */
     private $note;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"proposal:read", "professional:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"proposal:read", "professional:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"proposal:read", "proposal:write", "professional:read"})
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="proposals")
+     * @Groups({"proposal:read", "proposal:write"})
      */
     private $professional;
 
     /**
      * @ORM\ManyToOne(targetEntity=Need::class, inversedBy="proposals")
+     * @Groups({"proposal:write", "professional:read"})
      */
     private $need;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"proposal:read", "proposal:write", "professional:read"})
      */
     private $delay;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"proposal:read", "proposal:write", "professional:read"})
      */
     private $nature;
 

@@ -10,6 +10,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"conversation:read"}},
+ *      denormalizationContext={"groups"={"conversation:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=ConversationRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
@@ -19,21 +32,25 @@ class Conversation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"conversation:read"})
      */
     private $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="conversation", cascade={"persist", "remove"})
+     * @Groups({"conversation:read"})
      */
     private $messages;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"conversation:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"conversation:read"})
      */
     private $date_add;
 

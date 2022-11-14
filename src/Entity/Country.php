@@ -10,6 +10,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"country:read"}},
+ *      denormalizationContext={"groups"={"country:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=CountryRepository::class)
  */
 class Country
@@ -18,16 +31,19 @@ class Country
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"country:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"country:read", "country:write"})
      */
     private $iso_code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"country:read", "country:write", "user:read", "professional:read"})
      */
     private $name;
 

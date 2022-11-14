@@ -8,6 +8,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"notification:read"}},
+ *      denormalizationContext={"groups"={"notification:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=NotificationRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
@@ -17,36 +30,43 @@ class Notification
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"notification:read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="notifications")
+     * @Groups({"notification:read", "notification:write"})
      */
     private $user;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"notification:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"notification:read", "notification:write"})
      */
     private $is_read;
 
     /**
      * @ORM\Column(type="object", nullable=true)
+     * @Groups({"notification:read", "notification:write"})
      */
     private $object;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"notification:read", "notification:write"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"notification:read", "notification:write"})
      */
     private $content;
 

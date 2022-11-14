@@ -4,8 +4,23 @@ namespace App\Entity;
 
 use App\Repository\ProfessionalSocialUrlRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"socialurl:read"}},
+ *      denormalizationContext={"groups"={"socialurl:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=ProfessionalSocialUrlRepository::class)
  */
 class ProfessionalSocialUrl
@@ -14,47 +29,55 @@ class ProfessionalSocialUrl
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"socialurl:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"socialurl:read", "socialurl:write", "professional:read"})
      */
     private $facebook;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"socialurl:read", "socialurl:write", "professional:read"})
      */
     private $twitter;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"socialurl:read", "socialurl:write", "professional:read"})
      */
     private $youtube;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"socialurl:read", "socialurl:write", "professional:read"})
      */
     private $instagram;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"socialurl:read", "socialurl:write", "professional:read"})
      */
     private $linkedin;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"socialurl:read", "socialurl:write", "professional:read"})
      */
     private $whatsapp;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"socialurl:read", "socialurl:write", "professional:read"})
      */
     private $pinterest;
 
     /**
      * @ORM\OneToOne(targetEntity=Professional::class, mappedBy="socialUrl")
-     * 
+     * @Groups({"socialurl:write"})
      * This one is OK
      */
     private $professional;

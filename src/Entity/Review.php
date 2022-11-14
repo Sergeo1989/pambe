@@ -8,6 +8,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={"groups"={"review:read"}},
+ *      denormalizationContext={"groups"={"review:write"}},
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={},
+ *      },
+ *      itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
@@ -17,46 +30,55 @@ class Review implements \JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"review:read", "professional:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"review:read", "review:write", "professional:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"review:read", "review:write", "professional:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"review:read", "review:write", "professional:read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"review:read", "review:write", "professional:read"})
      */
     private $score;
 
     /**
      * @ORM\ManyToOne(targetEntity=Professional::class, inversedBy="reviews")
+     * @Groups({"review:read", "review:write"})
      */
     private $professional;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"review:read", "professional:read"})
      */
     private $date_add;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"review:read", "professional:read"})
      */
     private $date_upd;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"review:read", "review:write", "professional:read"})
      */
     private $status;
 

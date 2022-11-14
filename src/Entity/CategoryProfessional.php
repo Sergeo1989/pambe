@@ -112,15 +112,16 @@ class CategoryProfessional
      * @Groups({"catprofessional:read", "catprofessional:write", "professional:read"})
      */
     private $name;
-
+ 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"catprofessional:read", "catprofessional:write"})
+     * @Groups({"catprofessional:read", "catprofessional:write", "professional:read"})
      */
     private $description;
 
     /**
      * @ORM\OneToMany(targetEntity=Professional::class, mappedBy="category_professional_default")
+     * @Groups({"catprofessional:read"})
      */
     private $professionals;
 

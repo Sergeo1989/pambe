@@ -78,6 +78,10 @@ security:
         - { path: ^/api/v1/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/pambe2021/documentation, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/v1/users$, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST] }
+        - { path: ^/api/v1/professionals, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
+        - { path: ^/api/v1/professional_images$, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
+        - { path: ^/api/v1/category_professionals$, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
+        - { path: ^/api/v1/needs, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
         - { path: ^/api/v1/, roles: IS_AUTHENTICATED_FULLY }
     
     role_hierarchy:
