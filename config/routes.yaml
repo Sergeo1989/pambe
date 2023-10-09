@@ -303,3 +303,9 @@ app_professional_proposal_create:
     controller: App\Controller\Front\NeedController::newproposal
     requirements:
         id: '\d+'
+app_clear_cache:
+    path: clear_cache
+    controller: App\Controller\CommandController::cacheClear
+app_extract_translation:
+    path: extract_translation/{lang}
+    controller: App\Controller\CommandController::extractTranslation
